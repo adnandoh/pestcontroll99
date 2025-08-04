@@ -1,18 +1,14 @@
 {
   "redirects": [
     {
-      "source": "https://pestcontrol99.com/:path*",
-      "destination": "https://www.pestcontrol99.com/:path*",
-      "permanent": true
-    },
-    {
-      "source": "http://pestcontrol99.com/:path*",
-      "destination": "https://www.pestcontrol99.com/:path*",
-      "permanent": true
-    },
-    {
-      "source": "http://www.pestcontrol99.com/:path*",
-      "destination": "https://www.pestcontrol99.com/:path*",
+      "source": "/(.*)",
+      "has": [
+        {
+          "type": "host",
+          "value": "pestcontrol99.com"
+        }
+      ],
+      "destination": "https://www.pestcontrol99.com/$1",
       "permanent": true
     }
   ],
