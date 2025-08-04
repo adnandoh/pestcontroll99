@@ -11,6 +11,7 @@
   "theme_color": "#0C9500",
   "background_color": "#ffffff",
   "display": "standalone",
-  "start_url": "/",
-  "description": "Professional pest control services for residential and commercial properties"
+  "start_url": "https://www.pestcontrol99.com/",
+  "scope": "https://www.pestcontrol99.com/",
+  "description": "Professional pest control services for residential and commercial properties in Mumbai, Pune and surrounding areas"
 }

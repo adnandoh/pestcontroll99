@@ -13,6 +13,17 @@ export function middleware(request: NextRequest) {
     return NextResponse.redirect(url, 301);
   }
 
+  // Handle trailing slash for www domain
+  if (host === 'www.pestcontrol99.com' || host?.includes('localhost')) {
+    const pathname = url.pathname;
+    
+    // Add trailing slash if it doesn't exist and it's not a file
+    if (!pathname.endsWith('/') && !pathname.includes('.')) {
+      url.pathname = pathname + '/';
+      return NextResponse.redirect(url, 301);
+    }
+  }
+
   // Continue with the request if it's already www or localhost
   return NextResponse.next();
 }

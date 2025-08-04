@@ -7,6 +7,9 @@ const nextConfig: NextConfig = {
     unoptimized: true,
   },
   
+  // Force trailing slashes
+  trailingSlash: true,
+  
   // Redirect non-www to www
   async redirects() {
     return [

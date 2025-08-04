@@ -3,3 +3,6 @@ https://pestcontrol99.com/* https://www.pestcontrol99.com/:splat 301!
 
 # Force HTTPS for www
 http://www.pestcontrol99.com/* https://www.pestcontrol99.com/:splat 301!
+
+# Add trailing slashes
+https://www.pestcontrol99.com/* https://www.pestcontrol99.com/:splat/ 301!
