@@ -4,6 +4,16 @@
       "source": "https://pestcontrol99.com/:path*",
       "destination": "https://www.pestcontrol99.com/:path*",
       "permanent": true
+    },
+    {
+      "source": "http://pestcontrol99.com/:path*",
+      "destination": "https://www.pestcontrol99.com/:path*",
+      "permanent": true
+    },
+    {
+      "source": "http://www.pestcontrol99.com/:path*",
+      "destination": "https://www.pestcontrol99.com/:path*",
+      "permanent": true
     }
   ],
   "trailingSlash": true,
@@ -26,6 +36,10 @@
         {
           "key": "Referrer-Policy",
           "value": "strict-origin-when-cross-origin"
+        },
+        {
+          "key": "Strict-Transport-Security",
+          "value": "max-age=31536000; includeSubDomains; preload"
         }
       ]
     }
