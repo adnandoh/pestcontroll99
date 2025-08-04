@@ -1,4 +1,5 @@
 import Link from 'next/link';
+import Image from 'next/image';
 
 export default function Footer() {
   return (
@@ -7,7 +8,15 @@ export default function Footer() {
         <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
           {/* Company Info */}
           <div>
-            <h3 className="text-xl font-bold mb-4 text-gray-900">PestControl99</h3>
+            <div className="mb-4">
+              <Image 
+                src="/images/logo.png" 
+                alt="PestControl99 Logo" 
+                width={180} 
+                height={60} 
+                className="h-auto"
+              />
+            </div>
             <p className="text-gray-600 mb-4">
               Professional pest control services for residential and commercial properties.
             </p>
@@ -80,7 +89,7 @@ export default function Footer() {
         </div>
 
         <div className="border-t border-gray-200 mt-8 pt-8 text-center text-gray-600">
-          <p>&copy; 2024 PestControl99. All rights reserved.</p>
+          <p>&copy; 2024 <Image src="/images/logo.png" alt="PestControl99 Logo" width={120} height={40} className="h-auto inline-block mx-1" />. All rights reserved.</p>
         </div>
       </div>
     </footer>

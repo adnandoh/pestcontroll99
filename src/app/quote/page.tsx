@@ -65,7 +65,7 @@ export default function QuotePage() {
               Get Your Free Quote
             </h1>
             <p className="text-lg text-gray-600">
-              Fill out the form below and we'll provide you with a customized pest control solution
+              Fill out the form below and we&apos;ll provide you with a customized pest control solution
             </p>
           </div>
           

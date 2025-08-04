@@ -46,38 +46,44 @@ export default function ServicesPage() {
     {
       title: "ANTI TERMITE PEST CONTROL",
       description: "Protect your property from termites with our specialized termite control services.",
-      image: "/images/termite-control-service.jpg",
+      image: "/images/Termite.webp",
       href: "/services/termite-control"
     },
     {
       title: "BED BUGS PEST CONTROL",
       description: "Effective solutions to eradicate bed bugs from your home or commercial space.",
-      image: "/images/bed-bugs-control.jpg",
+      image: "/images/BedBug.webp",
       href: "/services/bed-bugs-control"
-    },
-    {
-      title: "HOUSEHOLD PEST CONTROL",
-      description: "Comprehensive household pest control to protect your home from various pests.",
-      image: "/images/household-pest-control.jpg",
-      href: "/services/household-pest-control"
     },
     {
       title: "COCKROACH PEST CONTROL",
       description: "Say goodbye to cockroaches with our reliable and long-lasting treatments.",
-      image: "/images/cockroach-control.jpg",
+      image: "/images/Cockroach.webp",
       href: "/services/cockroach-control"
     },
     {
-      title: "FUMIGATION PEST CONTROL",
-      description: "Safe fumigation services for residential and commercial properties.",
-      image: "/images/fumigation-service.jpg",
-      href: "/services/fumigation-control"
+      title: "MOSQUITO PEST CONTROL",
+      description: "Protect your family from mosquito-borne diseases with our effective control solutions.",
+      image: "/images/Mosquito.webp",
+      href: "/services/mosquito-control"
     },
     {
-      title: "GARDEN PEST CONTROL",
-      description: "Keep your garden free from harmful pests with our tailored garden pest control solutions.",
-      image: "/images/garden-pest-control.jpg",
-      href: "/services/garden-pest-control"
+      title: "WOOD BORER PEST CONTROL",
+      description: "Prevent damage to wooden structures with our specialized wood borer treatments.",
+      image: "/images/Wood Borer.webp",
+      href: "/services/wood-borer-control"
+    },
+    {
+      title: "HONEY BEE REMOVAL",
+      description: "Safe and humane honey bee removal services for residential and commercial properties.",
+      image: "/images/Honey Bee.webp",
+      href: "/services/honey-bee-removal"
+    },
+    {
+      title: "HOUSE FLY CONTROL",
+      description: "Effective solutions to eliminate house flies and prevent infestations in your property.",
+      image: "/images/House Fly.webp",
+      href: "/services/house-fly-control"
     }
   ];
 

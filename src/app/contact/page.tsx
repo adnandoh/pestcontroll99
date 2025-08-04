@@ -111,7 +111,7 @@ export default function Contact() {
                     <div>
                       <h3 className="text-lg font-semibold text-gray-900 mb-1">Email</h3>
                       <p className="text-gray-600">info@pestcontrol99.com</p>
-                      <p className="text-sm text-gray-500">We'll respond within 24 hours</p>
+                      <p className="text-sm text-gray-500">We&apos;ll respond within 24 hours</p>
                     </div>
                   </div>
 

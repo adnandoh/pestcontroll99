@@ -24,7 +24,7 @@ export default function Home() {
               <span className="sm:inline"> Pest Control in Mumbai</span>
             </h1>
             <p className="text-base sm:text-lg md:text-xl mb-6 max-w-lg opacity-90">
-              Police-verified, ISO 9001-certified experts with 3+ years' experience. 
+              Police-verified, ISO 9001-certified experts with 3+ years&apos; experience. 
               Odour clears in 3 hrs—zero wall stains. Kid- and pet-safe herbal options.
             </p>
             
@@ -248,10 +248,10 @@ export default function Home() {
         <div className="container mx-auto px-4 sm:px-6">
           <div className="text-center mb-8 sm:mb-12 md:mb-16">
             <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold text-gray-900 mb-4 sm:mb-6">
-              Why Pests Explode During Mumbai's Monsoon—and How to Stop Them
+              Why Pests Explode During Mumbai&apos;s Monsoon—and How to Stop Them
             </h2>
             <p className="text-base sm:text-lg md:text-xl text-gray-700 max-w-3xl mx-auto leading-relaxed">
-              Here's how to protect your home this monsoon with expert tips from our certified pest control specialists
+              Here&apos;s how to protect your home this monsoon with expert tips from our certified pest control specialists
             </p>
           </div>
           
@@ -333,7 +333,7 @@ export default function Home() {
         <div className="container mx-auto px-4 sm:px-6">
           <div className="text-center mb-8 sm:mb-12">
             <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold mb-3 sm:mb-4">
-              How We Stack Up Against "Big Brands"
+              How We Stack Up Against &ldquo;Big Brands&rdquo;
             </h2>
             <p className="text-base sm:text-lg md:text-xl text-gray-300 max-w-3xl mx-auto">
               365-day warranty • Herbals & lab-tested chemicals • Same-day response • Up-front pricing — none of the big three match all four.
@@ -365,7 +365,7 @@ export default function Home() {
       <section className="py-12 sm:py-16 md:py-20 bg-gradient-to-br from-green-400 to-green-500 text-white">
         <div className="container mx-auto px-4 sm:px-6 text-center">
           <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold mb-4 sm:mb-6">
-            Still Seeing Pests? Get a Same-Day Quote—Pay Only After They're Gone.
+            Still Seeing Pests? Get a Same-Day Quote—Pay Only After They&apos;re Gone.
           </h2>
           <p className="text-base sm:text-lg md:text-xl mb-6 sm:mb-8 max-w-3xl mx-auto opacity-90">
             Fill our 60-second form, lock a same-day slot, and relax under a 365-day no-return warranty.

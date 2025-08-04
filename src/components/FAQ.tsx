@@ -55,7 +55,7 @@ export default function FAQ() {
         },
         {
           id: 'warranty',
-          question: 'What\'s included in your 365-day warranty?',
+          question: 'What&apos;s included in your 365-day warranty?',
           answer: 'Our 365-day warranty covers free re-service if pests return within a year. We also provide FSSAI-ready reports for commercial clients and maintain detailed service records.',
           icon: (
             <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -210,7 +210,7 @@ export default function FAQ() {
           </h2>
           <p className="text-lg text-gray-600 max-w-3xl mx-auto">
             These are the most commonly asked questions about our pest control services. 
-            Can't find what you're looking for? <a href="/contact" className="text-green-600 hover:text-green-700 underline">Chat to our friendly team!</a>
+            Can&apos;t find what you&apos;re looking for? <a href="/contact" className="text-green-600 hover:text-green-700 underline">Chat to our friendly team!</a>
           </p>
         </div>
 

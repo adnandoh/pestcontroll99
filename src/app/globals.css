@@ -132,4 +132,8 @@ body {
     padding-top: 2rem;
     padding-bottom: 2rem;
   }
+}/* Foot
+er element styling */
+.footerelement.style {
+  margin-bottom: 34px !important;
 }

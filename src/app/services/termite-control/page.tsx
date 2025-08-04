@@ -70,7 +70,7 @@ export default function TermiteControlPage() {
         <div className="container mx-auto px-4">
           <div className="max-w-4xl mx-auto">
             <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-8 text-center">
-              What's Included in Our Service
+              What&apos;s Included in Our Service
             </h2>
             
             <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
@@ -361,7 +361,7 @@ export default function TermiteControlPage() {
             Ready to Eliminate Termites?
           </h2>
           <p className="text-xl mb-8 max-w-2xl mx-auto opacity-90">
-            Don't let termites damage your property. Get professional treatment today.
+            Don&apos;t let termites damage your property. Get professional treatment today.
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <Link 

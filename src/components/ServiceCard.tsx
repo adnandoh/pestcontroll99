@@ -9,7 +9,7 @@ interface ServiceCardProps {
   index?: number;
 }
 
-export default function ServiceCard({ title, description, icon, href, features, index = 0 }: ServiceCardProps) {
+export default function ServiceCard({ title, description, icon, href, features }: ServiceCardProps) {
   return (
     <Link href={href} className="block group">
       <div className="bg-white border-2 border-gray-100 rounded-2xl p-8 hover:shadow-2xl hover:border-green-200 transition-all duration-300 transform hover:-translate-y-2 relative overflow-hidden cursor-pointer">
