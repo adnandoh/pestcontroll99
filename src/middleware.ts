@@ -17,6 +17,11 @@ export function middleware(request: NextRequest) {
   if (host === 'www.pestcontrol99.com' || host?.includes('localhost')) {
     const pathname = url.pathname;
     
+    // Skip processing for sitemap.xml and robots.txt
+    if (pathname === '/sitemap.xml' || pathname === '/robots.txt') {
+      return NextResponse.next();
+    }
+    
     // Add trailing slash if it doesn't exist and it's not a file
     if (!pathname.endsWith('/') && !pathname.includes('.')) {
       url.pathname = pathname + '/';
@@ -36,7 +41,9 @@ export const config = {
      * - _next/static (static files)
      * - _next/image (image optimization files)
      * - favicon.ico (favicon file)
+     * - sitemap.xml (sitemap file)
+     * - robots.txt (robots file)
      */
-    '/((?!api|_next/static|_next/image|favicon.ico).*)',
+    '/((?!api|_next/static|_next/image|favicon.ico|sitemap.xml|robots.txt).*)',
   ],
 };
