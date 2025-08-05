@@ -1,5 +1,18 @@
 import Link from 'next/link';
 import Image from 'next/image';
+import { Metadata } from 'next';
+import Breadcrumb from '@/components/Breadcrumb';
+
+export const metadata: Metadata = {
+  title: "Professional Pest Control Services | Termite, Cockroach, Rodent Control | PestControl99",
+  description: "Comprehensive pest control services in Mumbai, Pune & Navi Mumbai. Expert termite, cockroach, bed bug, mosquito & rodent control. ISO-certified, same-day service.",
+  keywords: "pest control services, termite control, cockroach control, bed bug control, mosquito control, rodent control, professional pest control, Mumbai pest control, Pune pest control",
+  openGraph: {
+    title: "Professional Pest Control Services | PestControl99",
+    description: "Comprehensive pest control services with same-day response. ISO-certified experts for all pest problems.",
+    type: "website",
+  },
+};
 
 interface ServiceCardProps {
   title: string;
@@ -92,6 +105,7 @@ export default function ServicesPage() {
       {/* Header Section */}
       <section className="py-10 sm:py-16 bg-white">
         <div className="container mx-auto px-4">
+          <Breadcrumb items={[{ label: 'Services' }]} />
           <div className="text-center">
             <h1 className="text-3xl sm:text-4xl md:text-5xl font-bold text-gray-800 mb-3 sm:mb-4">
               Our Services

@@ -1,5 +1,17 @@
 import Link from 'next/link';
 import Image from 'next/image';
+import { Metadata } from 'next';
+
+export const metadata: Metadata = {
+  title: "About PestControl99 | ISO-Certified Pest Control Experts | Mumbai, Pune & Navi Mumbai",
+  description: "Learn about PestControl99 - your trusted pest control partner. ISO 9001 certified, police-verified technicians, eco-friendly treatments. Serving Mumbai, Pune & Navi Mumbai.",
+  keywords: "about pestcontrol99, pest control company, ISO certified pest control, professional pest control, Mumbai pest control company, Pune pest control experts",
+  openGraph: {
+    title: "About PestControl99 | Trusted Pest Control Experts",
+    description: "ISO 9001 certified pest control company with police-verified technicians and eco-friendly treatments.",
+    type: "website",
+  },
+};
 
 export default function AboutPage() {
   return (

@@ -1,5 +1,18 @@
 import Link from 'next/link';
 import Image from 'next/image';
+import { Metadata } from 'next';
+import Breadcrumb from '@/components/Breadcrumb';
+
+export const metadata: Metadata = {
+  title: "Professional Termite Control Services | White Ant Treatment | PestControl99",
+  description: "Expert termite control & white ant treatment in Mumbai, Pune & Navi Mumbai. 100% safe, odorless treatment with warranty. Same-day service available.",
+  keywords: "termite control, white ant treatment, termite pest control, anti termite treatment, termite inspection, termite prevention, Mumbai termite control, Pune termite control",
+  openGraph: {
+    title: "Professional Termite Control Services | PestControl99",
+    description: "Expert termite control with 100% safe, odorless treatment and comprehensive warranty.",
+    type: "website",
+  },
+};
 
 export default function TermiteControlPage() {
   const treatmentSteps = [
@@ -55,13 +68,21 @@ export default function TermiteControlPage() {
           backgroundPosition: 'center'
         }}
       >
-        <div className="container mx-auto px-4 text-center">
-          <h1 className="text-4xl md:text-6xl font-bold mb-4">
-            Termite Control
-          </h1>
-          <p className="text-xl md:text-2xl opacity-90">
-            White Ant Protection for Homes & Offices
-          </p>
+        <div className="container mx-auto px-4">
+          <div className="text-white mb-4">
+            <Breadcrumb items={[
+              { label: 'Services', href: '/services' },
+              { label: 'Termite Control' }
+            ]} />
+          </div>
+          <div className="text-center">
+            <h1 className="text-4xl md:text-6xl font-bold mb-4">
+              Termite Control
+            </h1>
+            <p className="text-xl md:text-2xl opacity-90">
+              White Ant Protection for Homes & Offices
+            </p>
+          </div>
         </div>
       </section>
 
@@ -352,6 +373,25 @@ export default function TermiteControlPage() {
             </div>
           </div>
         </div>
+        
+        {/* FAQ Structured Data */}
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify({
+              "@context": "https://schema.org",
+              "@type": "FAQPage",
+              "mainEntity": faqs.map(faq => ({
+                "@type": "Question",
+                "name": faq.question,
+                "acceptedAnswer": {
+                  "@type": "Answer",
+                  "text": faq.answer
+                }
+              }))
+            })
+          }}
+        />
       </section>
 
       {/* Book Now CTA */}

@@ -1,5 +1,17 @@
 import Link from 'next/link';
 import Image from 'next/image';
+import { Metadata } from 'next';
+
+export const metadata: Metadata = {
+  title: "5 Essential Termite Prevention Tips for Homeowners | PestControl99 Blog",
+  description: "Learn 5 proven termite prevention tips from pest control experts. Protect your home from termite damage with these professional prevention strategies.",
+  keywords: "termite prevention tips, prevent termites, termite prevention, home termite protection, termite control tips, white ant prevention, termite damage prevention",
+  openGraph: {
+    title: "5 Essential Termite Prevention Tips for Homeowners",
+    description: "Expert termite prevention tips to protect your home from costly termite damage.",
+    type: "article",
+  },
+};
 
 export default function TermitePreventionBlogPost() {
   return (
