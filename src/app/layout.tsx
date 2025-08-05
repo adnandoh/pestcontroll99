@@ -28,6 +28,9 @@ export const metadata: Metadata = {
   },
   manifest: '/site.webmanifest',
   themeColor: '#0C9500',
+  other: {
+    'msapplication-TileColor': '#0C9500',
+  },
   openGraph: {
     title: "Same-Day Pest Control Services in Mumbai, Pune & Navi Mumbai",
     description: "Professional pest control for homes and offices. Safe, odourless treatment with ISO-certified experts.",
@@ -43,13 +46,18 @@ export default function RootLayout({
   return (
     <html lang="en">
       <head>
-        <link rel="icon" type="image/x-icon" href="/favicon.ico" />
-        <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png" />
-        <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />
-        <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
-        <link rel="manifest" href="/site.webmanifest" />
-        <meta name="theme-color" content="#0C9500" />
-        <meta name="msapplication-TileColor" content="#0C9500" />
+        {/* Google tag (gtag.js) */}
+        <script async src="https://www.googletagmanager.com/gtag/js?id=G-69K3FRS21R"></script>
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `
+              window.dataLayer = window.dataLayer || [];
+              function gtag(){dataLayer.push(arguments);}
+              gtag('js', new Date());
+              gtag('config', 'G-69K3FRS21R');
+            `,
+          }}
+        />
       </head>
       <body
         className={`${lexend.variable} font-lexend antialiased min-h-screen flex flex-col`}

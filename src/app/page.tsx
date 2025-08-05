@@ -64,32 +64,32 @@ export default function Home() {
           </div>
           
           <div className="max-w-4xl mx-auto bg-white rounded-2xl sm:rounded-3xl p-5 sm:p-8 shadow-lg sm:shadow-xl">
-            <form className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4 sm:gap-6">
+            <form className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4 sm:gap-6" suppressHydrationWarning>
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-2">Pest Type</label>
                 <select className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-green-500 text-sm sm:text-base">
-                  <option>Cockroaches</option>
-                  <option>Rats</option>
-                  <option>Termites</option>
-                  <option>Mosquitoes</option>
+                  <option value="cockroaches">Cockroaches</option>
+                  <option value="rats">Rats</option>
+                  <option value="termites">Termites</option>
+                  <option value="mosquitoes">Mosquitoes</option>
                 </select>
               </div>
               
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-2">Property Type</label>
                 <select className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-green-500 text-sm sm:text-base">
-                  <option>1BHK</option>
-                  <option>3BHK</option>
-                  <option>Restaurant</option>
+                  <option value="1bhk">1BHK</option>
+                  <option value="3bhk">3BHK</option>
+                  <option value="restaurant">Restaurant</option>
                 </select>
               </div>
               
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-2">Size</label>
                 <select className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-green-500 text-sm sm:text-base">
-                  <option>500 sq.ft</option>
-                  <option>1000 sq.ft</option>
-                  <option>2000+ sq.ft</option>
+                  <option value="500">500 sq.ft</option>
+                  <option value="1000">1000 sq.ft</option>
+                  <option value="2000">2000+ sq.ft</option>
                 </select>
               </div>
               
