@@ -106,14 +106,7 @@ export default function Home() {
         </div>
       </section>
 
-      {/* Seasonal Alert Banner */}
-      <section className="py-4 sm:py-6 bg-orange-100 border-l-4 border-orange-500">
-        <div className="container mx-auto px-4 sm:px-6">
-          <h3 className="text-sm sm:text-base md:text-xl font-bold text-orange-800 text-center leading-tight sm:leading-normal">
-            🚨 Monsoon Mosquito Watch: July–Sept Special—Free Larvae Treatment with Any Plan!
-          </h3>
-        </div>
-      </section>
+     
 
       {/* Our Services Grid */}
       <section className="py-12 sm:py-16 md:py-20 bg-white">
