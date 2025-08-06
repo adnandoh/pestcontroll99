@@ -6,10 +6,10 @@ const nextConfig: NextConfig = {
     domains: [],
     unoptimized: true,
   },
-  
+
   // Force trailing slashes
   trailingSlash: true,
-  
+
   // Redirect all non-www and non-https to https://www
   async redirects() {
     return [

@@ -19,7 +19,7 @@ export default function Home() {
         {/* Content Container */}
         <div className="relative z-20 container mx-auto px-4 sm:px-6 h-full flex items-center">
           <div className="max-w-2xl text-left text-white py-12 md:py-20">
-            <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl xl:text-8xl font-bold mb-6 leading-tight">
+            <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold mb-4 leading-tight">
               100% Safe, Same-Day<br className="hidden sm:block" />
               <span className="sm:inline"> Pest Control in Mumbai</span>
             </h1>
