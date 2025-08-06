@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { Lexend } from "next/font/google";
+import Script from "next/script";
 import "./globals.css";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
@@ -51,18 +52,6 @@ export default function RootLayout({
   return (
     <html lang="en">
       <head>
-        {/* Google tag (gtag.js) */}
-        <script async src="https://www.googletagmanager.com/gtag/js?id=G-69K3FRS21R"></script>
-        <script
-          dangerouslySetInnerHTML={{
-            __html: `
-              window.dataLayer = window.dataLayer || [];
-              function gtag(){dataLayer.push(arguments);}
-              gtag('js', new Date());
-              gtag('config', 'G-69K3FRS21R');
-            `,
-          }}
-        />
         {/* Structured Data - LocalBusiness */}
         <script
           type="application/ld+json"
@@ -134,6 +123,20 @@ export default function RootLayout({
       <body
         className={`${lexend.variable} font-lexend antialiased min-h-screen flex flex-col`}
       >
+        {/* Google Analytics */}
+        <Script
+          src="https://www.googletagmanager.com/gtag/js?id=G-69K3FRS21R"
+          strategy="afterInteractive"
+        />
+        <Script id="google-analytics" strategy="afterInteractive">
+          {`
+            window.dataLayer = window.dataLayer || [];
+            function gtag(){dataLayer.push(arguments);}
+            gtag('js', new Date());
+            gtag('config', 'G-69K3FRS21R');
+          `}
+        </Script>
+        
         <Header />
         <main className="flex-grow pb-16 md:pb-0">
           {children}

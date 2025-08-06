@@ -8,7 +8,7 @@ export default function QuotePage() {
     address: '',
     propertyType: 'residential',
     propertySize: '',
-    pestTypes: [] as string[]
+    pestType: ''
   });
 
   const [formSubmitted, setFormSubmitted] = useState(false);
@@ -35,7 +35,7 @@ export default function QuotePage() {
           address: '',
           propertyType: 'residential',
           propertySize: '',
-          pestTypes: []
+          pestType: ''
         });
         // Scroll to top of page
         window.scrollTo(0, 0);
@@ -57,14 +57,7 @@ export default function QuotePage() {
     });
   };
 
-  const handlePestTypeChange = (pestType: string) => {
-    setFormData(prev => ({
-      ...prev,
-      pestTypes: prev.pestTypes.includes(pestType)
-        ? prev.pestTypes.filter(type => type !== pestType)
-        : [...prev.pestTypes, pestType]
-    }));
-  };
+
 
   return (
     <div className="py-16 bg-gray-50 min-h-screen">
@@ -175,78 +168,28 @@ export default function QuotePage() {
 
               {/* Pest Information */}
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-3">
-                  Type of Pest Issues (Select all that apply)
+                <label htmlFor="pestType" className="block text-sm font-medium text-gray-700 mb-2">
+                  Type of Pest Issue
                 </label>
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                  {[
-                    { value: 'ants', label: 'Ants' },
-                    { value: 'cockroaches', label: 'Cockroaches' },
-                    { value: 'termites', label: 'Termites' },
-                    { value: 'rodents', label: 'Rodents (Mice/Rats)' },
-                    { value: 'spiders', label: 'Spiders' },
-                    { value: 'wasps', label: 'Wasps/Bees' },
-                    { value: 'bedbugs', label: 'Bed Bugs' },
-                    { value: 'fleas', label: 'Fleas' },
-                    { value: 'other', label: 'Other' },
-                    { value: 'prevention', label: 'General Prevention' }
-                  ].map((pest) => (
-                    <label
-                      key={pest.value}
-                      className="flex items-center p-3 border border-gray-200 rounded-lg hover:bg-gray-50 cursor-pointer transition-colors"
-                    >
-                      <input
-                        type="checkbox"
-                        checked={formData.pestTypes.includes(pest.value)}
-                        onChange={() => handlePestTypeChange(pest.value)}
-                        className="h-4 w-4 text-green-600 focus:ring-green-500 border-gray-300 rounded"
-                      />
-                      <span className="ml-3 text-sm font-medium text-gray-700">
-                        {pest.label}
-                      </span>
-                    </label>
-                  ))}
-                </div>
-                {formData.pestTypes.length > 0 && (
-                  <div className="mt-3 p-3 bg-green-50 border border-green-200 rounded-lg">
-                    <p className="text-sm text-green-800 font-medium mb-2">Selected pest issues:</p>
-                    <div className="flex flex-wrap gap-2">
-                      {formData.pestTypes.map((pestType) => {
-                        const pestLabel = [
-                          { value: 'ants', label: 'Ants' },
-                          { value: 'cockroaches', label: 'Cockroaches' },
-                          { value: 'termites', label: 'Termites' },
-                          { value: 'rodents', label: 'Rodents (Mice/Rats)' },
-                          { value: 'spiders', label: 'Spiders' },
-                          { value: 'wasps', label: 'Wasps/Bees' },
-                          { value: 'bedbugs', label: 'Bed Bugs' },
-                          { value: 'fleas', label: 'Fleas' },
-                          { value: 'other', label: 'Other' },
-                          { value: 'prevention', label: 'General Prevention' }
-                        ].find(p => p.value === pestType)?.label || pestType;
-
-                        return (
-                          <span
-                            key={pestType}
-                            className="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-green-100 text-green-800"
-                          >
-                            {pestLabel}
-                            <button
-                              type="button"
-                              onClick={() => handlePestTypeChange(pestType)}
-                              className="ml-2 inline-flex items-center justify-center w-4 h-4 rounded-full text-green-400 hover:bg-green-200 hover:text-green-600 focus:outline-none focus:bg-green-200 focus:text-green-600"
-                            >
-                              <span className="sr-only">Remove {pestLabel}</span>
-                              <svg className="w-2 h-2" stroke="currentColor" fill="none" viewBox="0 0 8 8">
-                                <path strokeLinecap="round" strokeWidth="1.5" d="m1 1 6 6m0-6L1 7" />
-                              </svg>
-                            </button>
-                          </span>
-                        );
-                      })}
-                    </div>
-                  </div>
-                )}
+                <select
+                  id="pestType"
+                  name="pestType"
+                  value={formData.pestType}
+                  onChange={handleChange}
+                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent"
+                >
+                  <option value="">Select pest type</option>
+                  <option value="ants">Ants</option>
+                  <option value="cockroaches">Cockroaches</option>
+                  <option value="termites">Termites</option>
+                  <option value="rodents">Rodents (Mice/Rats)</option>
+                  <option value="spiders">Spiders</option>
+                  <option value="wasps">Wasps/Bees</option>
+                  <option value="bedbugs">Bed Bugs</option>
+                  <option value="fleas">Fleas</option>
+                  <option value="other">Other</option>
+                  <option value="prevention">General Prevention</option>
+                </select>
               </div>
 
 

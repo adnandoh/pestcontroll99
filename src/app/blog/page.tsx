@@ -79,6 +79,8 @@ export default function BlogPage() {
   const [posts, setPosts] = useState<BlogPost[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const [searchTerm, setSearchTerm] = useState('');
+  const [filteredPosts, setFilteredPosts] = useState<BlogPost[]>([]);
 
   const fetchBlogPosts = async () => {
     try {
@@ -119,6 +121,7 @@ export default function BlogPage() {
       }));
 
       setPosts(transformedPosts);
+      setFilteredPosts(transformedPosts);
     } catch (err) {
       console.error('Error fetching blog posts:', err);
       setError(err instanceof Error ? err.message : 'An unexpected error occurred');
@@ -131,30 +134,55 @@ export default function BlogPage() {
     fetchBlogPosts();
   }, []);
 
+  useEffect(() => {
+    if (searchTerm.trim() === '') {
+      setFilteredPosts(posts);
+    } else {
+      const filtered = posts.filter(post =>
+        post.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        post.excerpt.toLowerCase().includes(searchTerm.toLowerCase())
+      );
+      setFilteredPosts(filtered);
+    }
+  }, [searchTerm, posts]);
+
   const handleRetry = () => {
     fetchBlogPosts();
   };
   return (
     <div className="min-h-screen bg-gray-50">
       {/* Header Section */}
-      <section className="py-10 sm:py-16 bg-white">
+      <section className="py-12 sm:py-20 bg-gradient-to-br from-green-50 via-white to-blue-50">
         <div className="container mx-auto px-4">
-          <div className="text-center">
-            <h1 className="text-3xl sm:text-4xl md:text-5xl font-bold text-gray-800 mb-3 sm:mb-4">
-              PestControl99 Blog
+          <div className="text-center max-w-4xl mx-auto">
+            <h1 className="text-2xl sm:text-5xl md:text-6xl font-bold text-gray-900 mb-4 sm:mb-6">
+              Expert Pest Control
+              <span className="block text-green-600">Insights & Tips</span>
             </h1>
-            <p className="text-base sm:text-lg text-gray-600 max-w-2xl mx-auto">
-              Expert tips, insights, and latest news from PestControl99 professionals
-            </p>
-            <div className="w-16 sm:w-24 h-1 bg-green-500 mx-auto mt-4 sm:mt-6"></div>
+            
+            
+            {/* <div className="max-w-md mx-auto relative">
+              <div className="relative">
+                <input
+                  type="text"
+                  placeholder="Search articles..."
+                  value={searchTerm}
+                  onChange={(e) => setSearchTerm(e.target.value)}
+                  className="w-full px-4 py-3 pl-12 pr-4 text-gray-700 bg-white border border-gray-300 rounded-full shadow-sm focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent"
+                />
+                <svg className="absolute left-4 top-1/2 transform -translate-y-1/2 h-5 w-5 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+                </svg>
+              </div>
+            </div> */}
           </div>
         </div>
       </section>
 
       {/* Blog Content Section */}
-      <section className="py-10 sm:py-16">
+      <section className="py-12 sm:py-20">
         <div className="container mx-auto px-4">
-          <div className="max-w-6xl mx-auto">
+          <div className="max-w-7xl mx-auto">
             {/* Error State */}
             {error && <ErrorMessage message={error} onRetry={handleRetry} />}
             
@@ -167,11 +195,23 @@ export default function BlogPage() {
               </div>
             )}
 
+            {/* Search Results Info */}
+            {!loading && !error && searchTerm && (
+              <div className="mb-8">
+                <p className="text-gray-600">
+                  {filteredPosts.length === 0 
+                    ? `No articles found for "${searchTerm}"`
+                    : `Found ${filteredPosts.length} article${filteredPosts.length === 1 ? '' : 's'} for "${searchTerm}"`
+                  }
+                </p>
+              </div>
+            )}
+
             {/* Posts Grid */}
-            {!loading && !error && posts.length > 0 && (
+            {!loading && !error && filteredPosts.length > 0 && (
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-                {posts.map((post) => (
-                  <article key={post.id} className="bg-white rounded-lg overflow-hidden shadow-md hover:shadow-lg transition-all duration-300 hover:-translate-y-1">
+                {filteredPosts.map((post) => (
+                  <article key={post.id} className="group bg-white rounded-xl overflow-hidden shadow-md hover:shadow-xl transition-all duration-300 hover:-translate-y-2 border border-gray-100">
                     <Link href={post.slug} className="block">
                       <div className="relative h-48 w-full overflow-hidden">
                         <Image 
@@ -180,38 +220,43 @@ export default function BlogPage() {
                           fill
                           sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
                           style={{ objectFit: 'cover' }}
-                          className="transition-transform duration-300 hover:scale-105"
+                          className="transition-transform duration-500 group-hover:scale-110"
                           onError={(e) => {
                             const target = e.target as HTMLImageElement;
                             target.src = '/images/heroimage.png';
                           }}
                         />
+                        <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
                       </div>
                     </Link>
                     <div className="p-6">
-                      <div className="text-sm text-gray-500 mb-2 flex items-center">
-                        <svg className="h-4 w-4 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
-                        </svg>
-                        {post.date}
-                        <span className="mx-2">•</span>
-                        <svg className="h-4 w-4 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
-                        </svg>
-                        {post.author}
+                      <div className="text-sm text-gray-500 mb-3 flex items-center">
+                        <div className="flex items-center">
+                          <svg className="h-4 w-4 mr-1.5 text-green-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                          </svg>
+                          {post.date}
+                        </div>
+                        <span className="mx-2 text-gray-300">•</span>
+                        <div className="flex items-center">
+                          <svg className="h-4 w-4 mr-1.5 text-green-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+                          </svg>
+                          {post.author}
+                        </div>
                       </div>
                       <Link href={post.slug}>
-                        <h2 className="text-xl font-bold text-gray-800 mb-3 hover:text-green-600 transition-colors duration-300 line-clamp-2">
+                        <h2 className="text-xl font-bold text-gray-900 mb-3 group-hover:text-green-600 transition-colors duration-300 line-clamp-2 leading-tight">
                           {post.title}
                         </h2>
                       </Link>
-                      <p className="text-gray-600 mb-4 line-clamp-3">{post.excerpt}</p>
+                      <p className="text-gray-600 mb-5 line-clamp-3 leading-relaxed">{post.excerpt}</p>
                       <Link 
                         href={post.slug} 
-                        className="text-green-600 hover:text-green-700 font-medium inline-flex items-center transition-colors duration-300 group"
+                        className="inline-flex items-center text-green-600 hover:text-green-700 font-semibold transition-all duration-300 group-hover:gap-2 gap-1"
                       >
-                        Read More
-                        <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 ml-1 transition-transform group-hover:translate-x-1" viewBox="0 0 20 20" fill="currentColor">
+                        Read Full Article
+                        <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 transition-transform group-hover:translate-x-1" viewBox="0 0 20 20" fill="currentColor">
                           <path fillRule="evenodd" d="M10.293 5.293a1 1 0 011.414 0l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414-1.414L12.586 11H5a1 1 0 110-2h7.586l-2.293-2.293a1 1 0 010-1.414z" clipRule="evenodd" />
                         </svg>
                       </Link>
@@ -222,13 +267,31 @@ export default function BlogPage() {
             )}
             
             {/* Empty State */}
-            {!loading && !error && posts.length === 0 && (
-              <div className="text-center py-12">
-                <svg className="h-16 w-16 text-gray-400 mx-auto mb-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 20H5a2 2 0 01-2-2V6a2 2 0 012-2h10a2 2 0 012 2v1m2 13a2 2 0 01-2-2V7m2 13a2 2 0 002-2V9a2 2 0 00-2-2h-2m-4-3H9M7 16h6M7 8h6v4H7V8z" />
+            {!loading && !error && filteredPosts.length === 0 && posts.length > 0 && (
+              <div className="text-center py-16">
+                <svg className="h-20 w-20 text-gray-300 mx-auto mb-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
                 </svg>
-                <h3 className="text-lg font-medium text-gray-900 mb-2">No blog posts found</h3>
-                <p className="text-gray-600">
+                <h3 className="text-xl font-semibold text-gray-900 mb-3">No articles found</h3>
+                <p className="text-gray-600 mb-6 max-w-md mx-auto">
+                  We couldn't find any articles matching your search. Try different keywords or browse all articles.
+                </p>
+                <button
+                  onClick={() => setSearchTerm('')}
+                  className="bg-green-600 text-white px-6 py-3 rounded-full hover:bg-green-700 transition-colors font-medium"
+                >
+                  Clear Search
+                </button>
+              </div>
+            )}
+
+            {!loading && !error && posts.length === 0 && (
+              <div className="text-center py-16">
+                <svg className="h-20 w-20 text-gray-300 mx-auto mb-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M19 20H5a2 2 0 01-2-2V6a2 2 0 012-2h10a2 2 0 012 2v1m2 13a2 2 0 01-2-2V7m2 13a2 2 0 002-2V9a2 2 0 00-2-2h-2m-4-3H9M7 16h6M7 8h6v4H7V8z" />
+                </svg>
+                <h3 className="text-xl font-semibold text-gray-900 mb-3">No articles available</h3>
+                <p className="text-gray-600 max-w-md mx-auto">
                   Check back later for new content from our pest control experts.
                 </p>
               </div>

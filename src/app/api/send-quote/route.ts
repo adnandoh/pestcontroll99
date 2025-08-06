@@ -46,24 +46,22 @@ export async function POST(request: NextRequest) {
         
         <div style="background-color: #f9f9f9; padding: 20px; margin: 20px 0; border-radius: 8px;">
           <h3 style="color: #2d5a27; margin-top: 0;">Pest Information</h3>
-          <p><strong>Pest Types:</strong> ${
-            formData.pestTypes && formData.pestTypes.length > 0 
-              ? formData.pestTypes.map((type: string) => {
-                  const pestLabels: { [key: string]: string } = {
-                    'ants': 'Ants',
-                    'cockroaches': 'Cockroaches',
-                    'termites': 'Termites',
-                    'rodents': 'Rodents (Mice/Rats)',
-                    'spiders': 'Spiders',
-                    'wasps': 'Wasps/Bees',
-                    'bedbugs': 'Bed Bugs',
-                    'fleas': 'Fleas',
-                    'other': 'Other',
-                    'prevention': 'General Prevention'
-                  };
-                  return pestLabels[type] || type;
-                }).join(', ')
-              : 'Not specified'
+          <p><strong>Pest Type:</strong> ${
+            formData.pestType ? (() => {
+              const pestLabels: { [key: string]: string } = {
+                'ants': 'Ants',
+                'cockroaches': 'Cockroaches',
+                'termites': 'Termites',
+                'rodents': 'Rodents (Mice/Rats)',
+                'spiders': 'Spiders',
+                'wasps': 'Wasps/Bees',
+                'bedbugs': 'Bed Bugs',
+                'fleas': 'Fleas',
+                'other': 'Other',
+                'prevention': 'General Prevention'
+              };
+              return pestLabels[formData.pestType] || formData.pestType;
+            })() : 'Not specified'
           }</p>
         </div>
         

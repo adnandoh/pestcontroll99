@@ -23,7 +23,7 @@ export default function BlogPostNotFound() {
             Blog Post Not Found
           </h2>
           <p className="text-gray-600 mb-8 max-w-md mx-auto">
-            Sorry, we couldn't find the blog post you're looking for. It may have been moved, deleted, or the URL might be incorrect.
+            Sorry, we couldn&apos;t find the blog post you&apos;re looking for. It may have been moved, deleted, or the URL might be incorrect.
           </p>
         </div>
         

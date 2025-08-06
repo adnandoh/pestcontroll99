@@ -1,10 +1,13 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback, useRef } from 'react';
 import { useParams } from 'next/navigation';
 import Image from 'next/image';
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
+import RelatedPosts from '@/components/RelatedPosts';
+import ShareArticle from '@/components/ShareArticle';
+import NewsletterSignup from '@/components/NewsletterSignup';
 
 // WordPress API Response Types
 interface WordPressPost {
@@ -31,6 +34,12 @@ interface WordPressPost {
       alt_text: string;
     }>;
   };
+}
+
+interface TocItem {
+  id: string;
+  text: string;
+  level: number;
 }
 
 // Loading skeleton for blog post
@@ -74,6 +83,64 @@ const ErrorMessage = ({ message, onRetry }: { message: string; onRetry: () => vo
   </div>
 );
 
+// Reading Progress Component
+const ReadingProgress = () => {
+  const [progress, setProgress] = useState(0);
+
+  useEffect(() => {
+    const updateProgress = () => {
+      const scrollTop = window.scrollY;
+      const docHeight = document.documentElement.scrollHeight - window.innerHeight;
+      const progress = (scrollTop / docHeight) * 100;
+      setProgress(Math.min(100, Math.max(0, progress)));
+    };
+
+    window.addEventListener('scroll', updateProgress);
+    return () => window.removeEventListener('scroll', updateProgress);
+  }, []);
+
+  return (
+    <div className="fixed top-0 left-0 w-full h-1 bg-gray-200 z-50">
+      <div 
+        className="h-full bg-gradient-to-r from-green-500 to-green-600 transition-all duration-150 ease-out"
+        style={{ width: `${progress}%` }}
+      />
+    </div>
+  );
+};
+
+// Table of Contents Component
+const TableOfContents = ({ toc, activeId }: { toc: TocItem[]; activeId: string }) => {
+  if (toc.length === 0) return null;
+
+  return (
+    <div className="sticky top-8">
+      <div className="bg-white rounded-xl shadow-lg border border-gray-100 p-6">
+        <h3 className="text-lg font-bold text-gray-900 mb-4 flex items-center">
+          <svg className="h-5 w-5 mr-2 text-green-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 10h16M4 14h16M4 18h16" />
+          </svg>
+          Table of Contents
+        </h3>
+        <nav className="space-y-2">
+          {toc.map((item) => (
+            <a
+              key={item.id}
+              href={`#${item.id}`}
+              className={`block text-sm transition-colors duration-200 hover:text-green-600 ${
+                activeId === item.id ? 'text-green-600 font-medium' : 'text-gray-600'
+              }`}
+              style={{ paddingLeft: `${(item.level - 1) * 12}px` }}
+            >
+              {item.text}
+            </a>
+          ))}
+        </nav>
+      </div>
+    </div>
+  );
+};
+
 export default function BlogPostPage() {
   const params = useParams();
   const slug = params.slug as string;
@@ -81,8 +148,11 @@ export default function BlogPostPage() {
   const [post, setPost] = useState<WordPressPost | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const [toc, setToc] = useState<TocItem[]>([]);
+  const [activeId, setActiveId] = useState<string>('');
+  const contentRef = useRef<HTMLDivElement>(null);
 
-  const fetchBlogPost = async () => {
+  const fetchBlogPost = useCallback(async () => {
     try {
       setLoading(true);
       setError(null);
@@ -113,13 +183,68 @@ export default function BlogPostPage() {
     } finally {
       setLoading(false);
     }
-  };
+  }, [slug]);
+
+  // Generate table of contents from post content
+  const generateToc = useCallback((content: string) => {
+    const parser = new DOMParser();
+    const doc = parser.parseFromString(content, 'text/html');
+    const headings = doc.querySelectorAll('h1, h2, h3, h4, h5, h6');
+    
+    const tocItems: TocItem[] = [];
+    headings.forEach((heading, index) => {
+      const level = parseInt(heading.tagName.charAt(1));
+      const text = heading.textContent || '';
+      const id = `heading-${index}`;
+      
+      // Add ID to heading for linking
+      heading.id = id;
+      
+      tocItems.push({ id, text, level });
+    });
+    
+    return { tocItems, modifiedContent: doc.body.innerHTML };
+  }, []);
+
+  // Update TOC when post content changes
+  useEffect(() => {
+    if (post?.content.rendered) {
+      const { tocItems, modifiedContent } = generateToc(post.content.rendered);
+      setToc(tocItems);
+      
+      // Update post content with IDs
+      setPost(prev => prev ? {
+        ...prev,
+        content: { ...prev.content, rendered: modifiedContent }
+      } : null);
+    }
+  }, [post?.content.rendered, generateToc]);
+
+  // Handle scroll to update active TOC item
+  useEffect(() => {
+    const handleScroll = () => {
+      const headings = document.querySelectorAll('h1[id], h2[id], h3[id], h4[id], h5[id], h6[id]');
+      let currentActiveId = '';
+      
+      headings.forEach((heading) => {
+        const rect = heading.getBoundingClientRect();
+        if (rect.top <= 100) {
+          currentActiveId = heading.id;
+        }
+      });
+      
+      setActiveId(currentActiveId);
+    };
+
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, [post]);
 
   useEffect(() => {
     if (slug) {
       fetchBlogPost();
     }
-  }, [slug]);
+  }, [slug, fetchBlogPost]);
 
   const handleRetry = () => {
     fetchBlogPost();
@@ -131,24 +256,25 @@ export default function BlogPostPage() {
   }
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-gradient-to-br from-gray-50 to-gray-100">
+      <ReadingProgress />
       {/* Breadcrumb */}
-      <div className="bg-white border-b">
+      <div className="bg-white border-b border-gray-200 shadow-sm">
         <div className="container mx-auto px-4 py-4">
           <nav className="flex items-center space-x-2 text-sm text-gray-600">
-            <Link href="/" className="hover:text-green-600 transition-colors">
+            <Link href="/" className="hover:text-green-600 transition-colors font-medium">
               Home
             </Link>
-            <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <svg className="h-4 w-4 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
             </svg>
-            <Link href="/blog" className="hover:text-green-600 transition-colors">
+            <Link href="/blog" className="hover:text-green-600 transition-colors font-medium">
               Blog
             </Link>
-            <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <svg className="h-4 w-4 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
             </svg>
-            <span className="text-gray-900 font-medium">
+            <span className="text-gray-900 font-semibold truncate">
               {loading ? 'Loading...' : post?.title.rendered || 'Post'}
             </span>
           </nav>
@@ -156,80 +282,104 @@ export default function BlogPostPage() {
       </div>
 
       <div className="container mx-auto px-4 py-8">
-        <div className="max-w-4xl mx-auto">
-          {/* Error State */}
-          {error && error !== 'Post not found' && (
+        {/* Error State */}
+        {error && error !== 'Post not found' && (
+          <div className="max-w-4xl mx-auto">
             <ErrorMessage message={error} onRetry={handleRetry} />
-          )}
-          
-          {/* Loading State */}
-          {loading && !error && <BlogPostSkeleton />}
+          </div>
+        )}
+        
+        {/* Loading State */}
+        {loading && !error && (
+          <div className="max-w-4xl mx-auto">
+            <BlogPostSkeleton />
+          </div>
+        )}
 
-          {/* Blog Post Content */}
-          {!loading && !error && post && (
-            <article className="bg-white rounded-lg shadow-lg overflow-hidden">
-              {/* Featured Image */}
-              {post._embedded?.['wp:featuredmedia']?.[0]?.source_url && (
-                <div className="relative h-64 md:h-96 w-full">
-                  <Image
-                    src={post._embedded['wp:featuredmedia'][0].source_url}
-                    alt={post._embedded['wp:featuredmedia'][0].alt_text || post.title.rendered}
-                    fill
-                    style={{ objectFit: 'cover' }}
-                    className="w-full h-full"
-                    onError={(e) => {
-                      const target = e.target as HTMLImageElement;
-                      target.src = '/images/heroimage.png';
-                    }}
-                  />
-                </div>
-              )}
+        {/* Blog Post Content */}
+        {!loading && !error && post && (
+          <div className="max-w-7xl mx-auto">
+            <div className="grid grid-cols-1 lg:grid-cols-4 gap-8">
+              {/* Main Content */}
+              <div className="lg:col-span-3">
+                <article className="bg-white rounded-2xl shadow-xl overflow-hidden border border-gray-200">
+                  {/* Featured Image */}
+                  {post._embedded?.['wp:featuredmedia']?.[0]?.source_url && (
+                    <div className="relative h-64 md:h-96 w-full">
+                      <Image
+                        src={post._embedded['wp:featuredmedia'][0].source_url}
+                        alt={post._embedded['wp:featuredmedia'][0].alt_text || post.title.rendered}
+                        fill
+                        style={{ objectFit: 'cover' }}
+                        className="w-full h-full"
+                        onError={(e) => {
+                          const target = e.target as HTMLImageElement;
+                          target.src = '/images/heroimage.png';
+                        }}
+                      />
+                      <div className="absolute inset-0 bg-gradient-to-t from-black/30 to-transparent"></div>
+                    </div>
+                  )}
 
-              <div className="p-6 md:p-8">
-                {/* Post Meta */}
-                <div className="flex items-center text-sm text-gray-600 mb-6">
-                  <svg className="h-4 w-4 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
-                  </svg>
-                  {new Date(post.date).toLocaleDateString('en-US', {
-                    year: 'numeric',
-                    month: 'long',
-                    day: 'numeric'
-                  })}
-                  <span className="mx-3">•</span>
-                  <svg className="h-4 w-4 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
-                  </svg>
-                  {post._embedded?.author?.[0]?.name || 'PestControl99 Team'}
-                </div>
+                  <div className="p-6 md:p-10">
+                    {/* Post Meta */}
+                    <div className="flex flex-wrap items-center text-sm text-gray-600 mb-8 gap-4">
+                      <div className="flex items-center bg-gray-50 px-3 py-1.5 rounded-full">
+                        <svg className="h-4 w-4 mr-2 text-green-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                        </svg>
+                        {new Date(post.date).toLocaleDateString('en-US', {
+                          year: 'numeric',
+                          month: 'long',
+                          day: 'numeric'
+                        })}
+                      </div>
+                      <div className="flex items-center bg-gray-50 px-3 py-1.5 rounded-full">
+                        <svg className="h-4 w-4 mr-2 text-green-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+                        </svg>
+                        {post._embedded?.author?.[0]?.name || 'PestControl99 Team'}
+                      </div>
+                    </div>
 
-                {/* Post Title */}
-                <h1 className="text-3xl md:text-4xl font-bold text-gray-900 mb-6 leading-tight">
-                  {post.title.rendered}
-                </h1>
+                    {/* Post Title */}
+                    <h1 className="text-3xl md:text-5xl font-bold text-gray-900 mb-8 leading-tight">
+                      {post.title.rendered}
+                    </h1>
 
-                {/* Post Content */}
-                <div 
-                  className="prose prose-lg max-w-none prose-headings:text-gray-900 prose-p:text-gray-700 prose-a:text-green-600 prose-a:no-underline hover:prose-a:underline prose-strong:text-gray-900 prose-ul:text-gray-700 prose-ol:text-gray-700"
-                  dangerouslySetInnerHTML={{ __html: post.content.rendered }}
-                />
+                    {/* Post Content */}
+                    <div 
+                      ref={contentRef}
+                      className="prose prose-lg max-w-none prose-headings:text-gray-900 prose-headings:font-bold prose-p:text-gray-700 prose-p:leading-relaxed prose-a:text-green-600 prose-a:no-underline hover:prose-a:underline prose-strong:text-gray-900 prose-ul:text-gray-700 prose-ol:text-gray-700 prose-li:mb-2 prose-img:rounded-lg prose-img:shadow-md"
+                      dangerouslySetInnerHTML={{ __html: post.content.rendered }}
+                    />
 
-                {/* Back to Blog Button */}
-                <div className="mt-12 pt-8 border-t border-gray-200">
-                  <Link
-                    href="/blog"
-                    className="inline-flex items-center text-green-600 hover:text-green-700 font-medium transition-colors group"
-                  >
-                    <svg className="h-5 w-5 mr-2 transition-transform group-hover:-translate-x-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 19l-7-7m0 0l7-7m-7 7h18" />
-                    </svg>
-                    Back to Blog
-                  </Link>
-                </div>
+                    {/* Back to Blog Button */}
+                    <div className="mt-16 pt-8 border-t border-gray-200">
+                      <Link
+                        href="/blog"
+                        className="inline-flex items-center bg-green-600 text-white px-6 py-3 rounded-full hover:bg-green-700 font-semibold transition-all duration-300 group shadow-lg hover:shadow-xl"
+                      >
+                        <svg className="h-5 w-5 mr-2 transition-transform group-hover:-translate-x-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 19l-7-7m0 0l7-7m-7 7h18" />
+                        </svg>
+                        Back to All Articles
+                      </Link>
+                    </div>
+                  </div>
+                </article>
               </div>
-            </article>
-          )}
-        </div>
+
+              {/* Table of Contents Sidebar */}
+              <div className="lg:col-span-1 space-y-8">
+                <TableOfContents toc={toc} activeId={activeId} />
+                <ShareArticle title={post.title.rendered} url={`/blog/${slug}`} />
+                <NewsletterSignup />
+                <RelatedPosts currentPostId={post.id} limit={3} />
+              </div>
+            </div>
+          </div>
+        )}
       </div>
     </div>
   );
