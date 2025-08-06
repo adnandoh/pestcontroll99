@@ -22,9 +22,9 @@ export default function NewsletterSignup() {
     try {
       await new Promise(resolve => setTimeout(resolve, 1000));
       setStatus('success');
-      setMessage('Thank you for subscribing! You\'ll receive our latest pest control tips and updates.');
+      setMessage('Thank you for subscribing! You&apos;ll receive our latest pest control tips and updates.');
       setEmail('');
-    } catch (error) {
+    } catch {
       setStatus('error');
       setMessage('Something went wrong. Please try again.');
     }

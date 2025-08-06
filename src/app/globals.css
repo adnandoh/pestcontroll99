@@ -157,6 +157,10 @@ html {
   scroll-behavior: smooth;
 }
 
+html[data-scroll-behavior="smooth"] {
+  scroll-behavior: smooth;
+}
+
 /* Prose styles for blog content */
 .prose {
   color: #374151;

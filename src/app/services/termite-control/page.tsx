@@ -49,7 +49,7 @@ export default function TermiteControlPage() {
     },
     {
       question: "How long before I see results?",
-      answer: "You'll notice reduced termite activity within 24-48 hours. Complete elimination typically occurs within 1-2 weeks."
+      answer: "You&apos;ll notice reduced termite activity within 24-48 hours. Complete elimination typically occurs within 1-2 weeks."
     },
     {
       question: "Do you provide warranty?",

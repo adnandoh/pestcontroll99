@@ -274,7 +274,7 @@ export default function BlogPage() {
                 </svg>
                 <h3 className="text-xl font-semibold text-gray-900 mb-3">No articles found</h3>
                 <p className="text-gray-600 mb-6 max-w-md mx-auto">
-                  We couldn't find any articles matching your search. Try different keywords or browse all articles.
+                  We couldn&apos;t find any articles matching your search. Try different keywords or browse all articles.
                 </p>
                 <button
                   onClick={() => setSearchTerm('')}
