@@ -19,13 +19,12 @@ export default function Home() {
         {/* Content Container */}
         <div className="relative z-20 container mx-auto px-4 sm:px-6 h-full flex items-center">
           <div className="max-w-2xl text-left text-white py-12 md:py-20">
-            <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold mb-4 leading-tight">
+            <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl xl:text-8xl font-bold mb-6 leading-tight">
               100% Safe, Same-Day<br className="hidden sm:block" />
               <span className="sm:inline"> Pest Control in Mumbai</span>
             </h1>
             <p className="text-base sm:text-lg md:text-xl mb-6 max-w-lg opacity-90">
-              Police-verified, ISO 9001-certified experts with 3+ years&apos; experience.
-              Odour clears in 3 hrs—zero wall stains. Kid- and pet-safe herbal options.
+            Verified, Certified experts with 3 + years’ experience. Odour clears in 3 hrs—zero wall stains. Our pest control services are Kid- and pet-safe.
             </p>
 
             <div className="flex flex-col sm:flex-row gap-4">
@@ -59,7 +58,7 @@ export default function Home() {
         <div className="container mx-auto px-4 sm:px-6">
           <div className="text-center mb-8 sm:mb-12">
             <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-gray-900 mb-4">
-              Choose Your Pest & Property—Get Quotation by the same day
+              Choose Your Pest & Property-Get Quotation by the same day
             </h2>
           </div>
 
@@ -241,7 +240,7 @@ export default function Home() {
         <div className="container mx-auto px-4 sm:px-6">
           <div className="text-center mb-8 sm:mb-12 md:mb-16">
             <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold text-gray-900 mb-4 sm:mb-6">
-              Why Pests Explode During Mumbai&apos;s Monsoon—and How to Stop Them
+              Why Pests Explode During Mumbai&apos;s Monsoon-and How to Stop Them
             </h2>
             <p className="text-base sm:text-lg md:text-xl text-gray-700 max-w-3xl mx-auto leading-relaxed">
               Here&apos;s how to protect your home this monsoon with expert tips from our certified pest control specialists
@@ -358,7 +357,7 @@ export default function Home() {
       <section className="py-12 sm:py-16 md:py-20 bg-gradient-to-br from-green-400 to-green-500 text-white">
         <div className="container mx-auto px-4 sm:px-6 text-center">
           <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold mb-4 sm:mb-6">
-            Still Seeing Pests? Get a Same-Day Quote—Pay Only After They&apos;re Gone.
+            Still Seeing Pests? Get a Same-Day Quote-Pay Only After They&apos;re Gone.
           </h2>
           <p className="text-base sm:text-lg md:text-xl mb-6 sm:mb-8 max-w-3xl mx-auto opacity-90">
             Fill our 60-second form, lock a same-day slot, and relax under a 365-day no-return warranty.
@@ -384,9 +383,11 @@ export default function Home() {
             </a>
           </div>
 
-          <div className="text-xs sm:text-sm opacity-75 max-w-2xl mx-auto">
-            • No hidden fees • Police-verified technicians • Odour clears in 3 hrs, zero wall stains
+          <div className="text-white text-xs sm:text-sm opacity-75 max-w-2xl mx-auto">
+  
+          • No hidden fees • Verified, Certified experts with 3 + years’ experience. • Odour clears in 3 hrs, zero wall stains
           </div>
+
         </div>
       </section>
     </div>
