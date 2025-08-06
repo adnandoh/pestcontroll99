@@ -1,64 +1,53 @@
 'use client';
 
 import { useState } from 'react';
-import { Metadata } from 'next';
-
-export const metadata: Metadata = {
-  title: "Get Free Pest Control Quote | Instant Online Quote | PestControl99",
-  description: "Get your free pest control quote online. Instant pricing for termite, cockroach, rodent & all pest control services. Same-day service in Mumbai, Pune & Navi Mumbai.",
-  keywords: "free pest control quote, pest control pricing, online pest control quote, instant quote, pest control cost, Mumbai pest control quote, Pune pest control pricing",
-  openGraph: {
-    title: "Get Free Pest Control Quote | PestControl99",
-    description: "Get instant online quotes for all pest control services with transparent pricing and same-day service.",
-    type: "website",
-  },
-};
 
 export default function QuotePage() {
   const [formData, setFormData] = useState({
-    name: '',
-    email: '',
     phone: '',
     address: '',
-    city: '',
-    pincode: '',
     propertyType: 'residential',
     propertySize: '',
-    pestType: '',
-    severity: 'mild',
-    preferredDate: '',
-    preferredTime: '',
-    hearAboutUs: '',
-    message: ''
+    pestTypes: [] as string[]
   });
-  
-  const [formSubmitted, setFormSubmitted] = useState(false);
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const [formSubmitted, setFormSubmitted] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    // Handle form submission here
-    console.log('Form submitted:', formData);
-    // Instead of alert, set form submitted state to true
-    setFormSubmitted(true);
-    // Reset form after submission
-    setFormData({
-      name: '',
-      email: '',
-      phone: '',
-      address: '',
-      city: '',
-      pincode: '',
-      propertyType: 'residential',
-      propertySize: '',
-      pestType: '',
-      severity: 'mild',
-      preferredDate: '',
-      preferredTime: '',
-      hearAboutUs: '',
-      message: ''
-    });
-    // Scroll to top of page
-    window.scrollTo(0, 0);
+    setIsSubmitting(true);
+
+    try {
+      const response = await fetch('/api/send-quote', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(formData),
+      });
+
+      if (response.ok) {
+        setFormSubmitted(true);
+        // Reset form after successful submission
+        setFormData({
+          phone: '',
+          address: '',
+          propertyType: 'residential',
+          propertySize: '',
+          pestTypes: []
+        });
+        // Scroll to top of page
+        window.scrollTo(0, 0);
+      } else {
+        alert('Failed to send quote request. Please try again.');
+      }
+    } catch (error) {
+      console.error('Error submitting form:', error);
+      alert('Failed to send quote request. Please try again.');
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => {
@@ -66,6 +55,15 @@ export default function QuotePage() {
       ...formData,
       [e.target.name]: e.target.value
     });
+  };
+
+  const handlePestTypeChange = (pestType: string) => {
+    setFormData(prev => ({
+      ...prev,
+      pestTypes: prev.pestTypes.includes(pestType)
+        ? prev.pestTypes.filter(type => type !== pestType)
+        : [...prev.pestTypes, pestType]
+    }));
   };
 
   return (
@@ -76,11 +74,9 @@ export default function QuotePage() {
             <h1 className="text-4xl font-bold text-gray-900 mb-4">
               Get Your Free Quote
             </h1>
-            <p className="text-lg text-gray-600">
-              Fill out the form below and we&apos;ll provide you with a customized pest control solution
-            </p>
+
           </div>
-          
+
           {formSubmitted && (
             <div className="bg-green-50 border-l-4 border-green-500 p-4 mb-8 rounded-md">
               <div className="flex items-center">
@@ -104,38 +100,6 @@ export default function QuotePage() {
               {/* Personal Information */}
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <div>
-                  <label htmlFor="name" className="block text-sm font-medium text-gray-700 mb-2">
-                    Full Name *
-                  </label>
-                  <input
-                    type="text"
-                    id="name"
-                    name="name"
-                    required
-                    value={formData.name}
-                    onChange={handleChange}
-                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent"
-                  />
-                </div>
-                
-                <div>
-                  <label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-2">
-                    Email Address *
-                  </label>
-                  <input
-                    type="email"
-                    id="email"
-                    name="email"
-                    required
-                    value={formData.email}
-                    onChange={handleChange}
-                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent"
-                  />
-                </div>
-              </div>
-
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                <div>
                   <label htmlFor="phone" className="block text-sm font-medium text-gray-700 mb-2">
                     Phone Number *
                   </label>
@@ -150,7 +114,7 @@ export default function QuotePage() {
                     className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent"
                   />
                 </div>
-                
+
                 <div>
                   <label htmlFor="propertyType" className="block text-sm font-medium text-gray-700 mb-2">
                     Property Type *
@@ -169,7 +133,7 @@ export default function QuotePage() {
                   </select>
                 </div>
               </div>
-              
+
               <div>
                 <label htmlFor="propertySize" className="block text-sm font-medium text-gray-700 mb-2">
                   Property Size (in sq. ft.) *
@@ -208,169 +172,93 @@ export default function QuotePage() {
                   className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent"
                 />
               </div>
-              
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                <div>
-                  <label htmlFor="city" className="block text-sm font-medium text-gray-700 mb-2">
-                    City/Town *
-                  </label>
-                  <input
-                    type="text"
-                    id="city"
-                    name="city"
-                    required
-                    value={formData.city}
-                    onChange={handleChange}
-                    placeholder="Mumbai"
-                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent"
-                  />
-                </div>
-                
-                <div>
-                  <label htmlFor="pincode" className="block text-sm font-medium text-gray-700 mb-2">
-                    PIN Code *
-                  </label>
-                  <input
-                    type="text"
-                    id="pincode"
-                    name="pincode"
-                    required
-                    value={formData.pincode}
-                    onChange={handleChange}
-                    placeholder="400001"
-                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent"
-                  />
-                </div>
-              </div>
 
               {/* Pest Information */}
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                <div>
-                  <label htmlFor="pestType" className="block text-sm font-medium text-gray-700 mb-2">
-                    Type of Pest Issue
-                  </label>
-                  <select
-                    id="pestType"
-                    name="pestType"
-                    value={formData.pestType}
-                    onChange={handleChange}
-                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent"
-                  >
-                    <option value="">Select pest type</option>
-                    <option value="ants">Ants</option>
-                    <option value="cockroaches">Cockroaches</option>
-                    <option value="termites">Termites</option>
-                    <option value="rodents">Rodents (Mice/Rats)</option>
-                    <option value="spiders">Spiders</option>
-                    <option value="wasps">Wasps/Bees</option>
-                    <option value="bedbugs">Bed Bugs</option>
-                    <option value="fleas">Fleas</option>
-                    <option value="other">Other</option>
-                    <option value="prevention">General Prevention</option>
-                  </select>
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-3">
+                  Type of Pest Issues (Select all that apply)
+                </label>
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                  {[
+                    { value: 'ants', label: 'Ants' },
+                    { value: 'cockroaches', label: 'Cockroaches' },
+                    { value: 'termites', label: 'Termites' },
+                    { value: 'rodents', label: 'Rodents (Mice/Rats)' },
+                    { value: 'spiders', label: 'Spiders' },
+                    { value: 'wasps', label: 'Wasps/Bees' },
+                    { value: 'bedbugs', label: 'Bed Bugs' },
+                    { value: 'fleas', label: 'Fleas' },
+                    { value: 'other', label: 'Other' },
+                    { value: 'prevention', label: 'General Prevention' }
+                  ].map((pest) => (
+                    <label
+                      key={pest.value}
+                      className="flex items-center p-3 border border-gray-200 rounded-lg hover:bg-gray-50 cursor-pointer transition-colors"
+                    >
+                      <input
+                        type="checkbox"
+                        checked={formData.pestTypes.includes(pest.value)}
+                        onChange={() => handlePestTypeChange(pest.value)}
+                        className="h-4 w-4 text-green-600 focus:ring-green-500 border-gray-300 rounded"
+                      />
+                      <span className="ml-3 text-sm font-medium text-gray-700">
+                        {pest.label}
+                      </span>
+                    </label>
+                  ))}
                 </div>
-                
-                <div>
-                  <label htmlFor="severity" className="block text-sm font-medium text-gray-700 mb-2">
-                    Severity Level
-                  </label>
-                  <select
-                    id="severity"
-                    name="severity"
-                    value={formData.severity}
-                    onChange={handleChange}
-                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent"
-                  >
-                    <option value="mild">Mild - Occasional sightings</option>
-                    <option value="moderate">Moderate - Regular sightings</option>
-                    <option value="severe">Severe - Heavy infestation</option>
-                    <option value="emergency">Emergency - Immediate attention needed</option>
-                  </select>
-                </div>
+                {formData.pestTypes.length > 0 && (
+                  <div className="mt-3 p-3 bg-green-50 border border-green-200 rounded-lg">
+                    <p className="text-sm text-green-800 font-medium mb-2">Selected pest issues:</p>
+                    <div className="flex flex-wrap gap-2">
+                      {formData.pestTypes.map((pestType) => {
+                        const pestLabel = [
+                          { value: 'ants', label: 'Ants' },
+                          { value: 'cockroaches', label: 'Cockroaches' },
+                          { value: 'termites', label: 'Termites' },
+                          { value: 'rodents', label: 'Rodents (Mice/Rats)' },
+                          { value: 'spiders', label: 'Spiders' },
+                          { value: 'wasps', label: 'Wasps/Bees' },
+                          { value: 'bedbugs', label: 'Bed Bugs' },
+                          { value: 'fleas', label: 'Fleas' },
+                          { value: 'other', label: 'Other' },
+                          { value: 'prevention', label: 'General Prevention' }
+                        ].find(p => p.value === pestType)?.label || pestType;
+
+                        return (
+                          <span
+                            key={pestType}
+                            className="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-green-100 text-green-800"
+                          >
+                            {pestLabel}
+                            <button
+                              type="button"
+                              onClick={() => handlePestTypeChange(pestType)}
+                              className="ml-2 inline-flex items-center justify-center w-4 h-4 rounded-full text-green-400 hover:bg-green-200 hover:text-green-600 focus:outline-none focus:bg-green-200 focus:text-green-600"
+                            >
+                              <span className="sr-only">Remove {pestLabel}</span>
+                              <svg className="w-2 h-2" stroke="currentColor" fill="none" viewBox="0 0 8 8">
+                                <path strokeLinecap="round" strokeWidth="1.5" d="m1 1 6 6m0-6L1 7" />
+                              </svg>
+                            </button>
+                          </span>
+                        );
+                      })}
+                    </div>
+                  </div>
+                )}
               </div>
 
-              {/* Preferred Date and Time */}
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                <div>
-                  <label htmlFor="preferredDate" className="block text-sm font-medium text-gray-700 mb-2">
-                    Preferred Inspection Date *
-                  </label>
-                  <input
-                    type="date"
-                    id="preferredDate"
-                    name="preferredDate"
-                    required
-                    value={formData.preferredDate}
-                    onChange={handleChange}
-                    min={new Date().toISOString().split('T')[0]}
-                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent"
-                  />
-                </div>
-                
-                <div>
-                  <label htmlFor="preferredTime" className="block text-sm font-medium text-gray-700 mb-2">
-                    Preferred Time *
-                  </label>
-                  <select
-                    id="preferredTime"
-                    name="preferredTime"
-                    required
-                    value={formData.preferredTime}
-                    onChange={handleChange}
-                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent"
-                  >
-                    <option value="">Select preferred time</option>
-                    <option value="morning">Morning (8:00 AM - 12:00 PM)</option>
-                    <option value="afternoon">Afternoon (12:00 PM - 4:00 PM)</option>
-                    <option value="evening">Evening (4:00 PM - 8:00 PM)</option>
-                  </select>
-                </div>
-              </div>
-              
-              {/* How did you hear about us */}
-              <div>
-                <label htmlFor="hearAboutUs" className="block text-sm font-medium text-gray-700 mb-2">
-                  How did you hear about us?
-                </label>
-                <select
-                  id="hearAboutUs"
-                  name="hearAboutUs"
-                  value={formData.hearAboutUs}
-                  onChange={handleChange}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent"
-                >
-                  <option value="">Select an option</option>
-                  <option value="google">Google Search</option>
-                  <option value="social-media">Social Media</option>
-                  <option value="friend">Friend or Family</option>
-                  <option value="advertisement">Advertisement</option>
-                  <option value="other">Other</option>
-                </select>
-              </div>
 
-              {/* Additional Message */}
-              <div>
-                <label htmlFor="message" className="block text-sm font-medium text-gray-700 mb-2">
-                  Additional Details
-                </label>
-                <textarea
-                  id="message"
-                  name="message"
-                  rows={4}
-                  value={formData.message}
-                  onChange={handleChange}
-                  placeholder="Please describe your pest problem in detail, including locations where you've seen pests, any previous treatments, etc."
-                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent"
-                />
-              </div>
 
               {/* Submit Button */}
               <div className="text-center pt-4">
                 <button
                   type="submit"
-                  className="bg-green-500 text-white px-8 py-4 rounded-lg font-semibold hover:bg-green-600 transition-colors w-full md:w-auto text-lg shadow-lg"
+                  disabled={isSubmitting}
+                  className="bg-green-500 text-white px-8 py-4 rounded-lg font-semibold hover:bg-green-600 transition-colors w-full md:w-auto text-lg shadow-lg disabled:bg-gray-400 disabled:cursor-not-allowed"
                 >
-                  Get My Free Quote
+                  {isSubmitting ? 'Sending...' : 'Get My Free Quote'}
                 </button>
                 <p className="text-sm text-gray-500 mt-3">
                   * We respect your privacy. Your information will never be shared with third parties.
@@ -385,14 +273,14 @@ export default function QuotePage() {
               Need Immediate Assistance?
             </h3>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <a 
-                href="tel:5551234567" 
+              <a
+                href="tel:5551234567"
                 className="bg-primary-600 text- px-6 py-3 rounded-lg font-semibold hover:bg-primary-700 transition-colors"
               >
-                Call +91 98123 45678
+                Call +91 98949 66921
               </a>
-              <a 
-                href="mailto:info@pestcontrol99.com" 
+              <a
+                href="pestcontrol99official@gmail.com"
                 className="border-2 border-primary-600 text-primary-600 px-6 py-3 rounded-lg font-semibold hover:bg-primary-600 hover:text-white transition-colors"
               >
                 Email Us
