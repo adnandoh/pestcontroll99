@@ -16,8 +16,8 @@ export default function Header() {
               <Image 
                 src="/images/logo.svg" 
                 alt="PestControl99 Logo" 
-                width={150} 
-                height={50} 
+                width={120} 
+                height={40} 
                 className="h-auto" 
                 priority
               />
@@ -29,7 +29,7 @@ export default function Header() {
             <Link href="/" className="text-gray-700 font-medium hover:text-green-600 transition-colors py-2 px-3 rounded-md hover:bg-green-50">
               Home
             </Link>
-            <Link href="/about-us" className="text-gray-700 font-medium hover:text-green-600 transition-colors py-2 px-3 rounded-md hover:bg-green-50">
+            <Link href="/about" className="text-gray-700 font-medium hover:text-green-600 transition-colors py-2 px-3 rounded-md hover:bg-green-50">
               About Us
             </Link>
             <Link href="/services" className="text-gray-700 font-medium hover:text-green-600 transition-colors py-2 px-3 rounded-md hover:bg-green-50">
@@ -63,7 +63,7 @@ export default function Header() {
           <nav className="md:hidden pb-3 border-t border-gray-200 bg-white">
             <div className="flex flex-col space-y-1 pt-3">
               <Link href="/" className="text-gray-700 font-medium hover:text-green-600 py-2 px-2 rounded-md hover:bg-green-50 transition-colors">Home</Link>
-              <Link href="/about-us" className="text-gray-700 font-medium hover:text-green-600 py-2 px-2 rounded-md hover:bg-green-50 transition-colors">About Us</Link>
+              <Link href="/about" className="text-gray-700 font-medium hover:text-green-600 py-2 px-2 rounded-md hover:bg-green-50 transition-colors">About Us</Link>
               <Link href="/services" className="text-gray-700 font-medium hover:text-green-600 py-2 px-2 rounded-md hover:bg-green-50 transition-colors">Services</Link>
               <Link href="/blog" className="text-gray-700 font-medium hover:text-green-600 py-2 px-2 rounded-md hover:bg-green-50 transition-colors">Blog</Link>
               <Link href="/contact" className="bg-green-500 text-white font-medium px-4 py-2 rounded-full hover:bg-green-600 transition-colors mx-2 text-center text-sm">Contact Us</Link>

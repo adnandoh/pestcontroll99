@@ -60,12 +60,12 @@ export default function QuotePage() {
 
 
   return (
-    <div className="py-16 bg-gray-50 min-h-screen">
+    <div className="py-2 bg-gray-50 min-h-screen">
       <div className="container mx-auto px-4">
         <div className="max-w-3xl mx-auto">
-          <div className="text-center mb-12">
+          <div className="text-center mb-2">
             <h1 className="text-4xl font-bold text-gray-900 mb-4">
-              Get Your Free Quote
+
             </h1>
 
           </div>

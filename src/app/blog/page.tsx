@@ -86,7 +86,7 @@ export default function BlogPage() {
     try {
       setLoading(true);
       setError(null);
-      
+
       const response = await fetch(
         'https://pestcontrol99.in/wp-json/wp/v2/posts?_embed&per_page=12&orderby=date&order=desc',
         {
@@ -103,7 +103,7 @@ export default function BlogPage() {
       }
 
       const data: WordPressPost[] = await response.json();
-      
+
       // Transform WordPress data to our format
       const transformedPosts: BlogPost[] = data.map((post) => ({
         id: post.id,
@@ -152,15 +152,14 @@ export default function BlogPage() {
   return (
     <div className="min-h-screen bg-gray-50">
       {/* Header Section */}
-      <section className="py-12 sm:py-20 bg-gradient-to-br from-green-50 via-white to-blue-50">
-        <div className="container mx-auto px-4">
+      <section className="py-2 bg-gradient-to-br from-green-50 via-white to-blue-50">
+        <div className="container mx-auto px-2">
           <div className="text-center max-w-4xl mx-auto">
-            <h1 className="text-2xl sm:text-5xl md:text-6xl font-bold text-gray-900 mb-4 sm:mb-6">
-              Expert Pest Control
-              <span className="block text-green-600">Insights & Tips</span>
+            <h1 className="text-2xl sm:text-3xl md:text-4xl block text-green-600 font-bold text-gray-900 mb-2">
+              Pest Control Blog
             </h1>
-            
-            
+
+
             {/* <div className="max-w-md mx-auto relative">
               <div className="relative">
                 <input
@@ -180,12 +179,12 @@ export default function BlogPage() {
       </section>
 
       {/* Blog Content Section */}
-      <section className="py-12 sm:py-20">
+      <section className="py-4 sm:py-8">
         <div className="container mx-auto px-4">
           <div className="max-w-7xl mx-auto">
             {/* Error State */}
             {error && <ErrorMessage message={error} onRetry={handleRetry} />}
-            
+
             {/* Loading State */}
             {loading && !error && (
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
@@ -199,7 +198,7 @@ export default function BlogPage() {
             {!loading && !error && searchTerm && (
               <div className="mb-8">
                 <p className="text-gray-600">
-                  {filteredPosts.length === 0 
+                  {filteredPosts.length === 0
                     ? `No articles found for "${searchTerm}"`
                     : `Found ${filteredPosts.length} article${filteredPosts.length === 1 ? '' : 's'} for "${searchTerm}"`
                   }
@@ -214,8 +213,8 @@ export default function BlogPage() {
                   <article key={post.id} className="group bg-white rounded-xl overflow-hidden shadow-md hover:shadow-xl transition-all duration-300 hover:-translate-y-2 border border-gray-100">
                     <Link href={post.slug} className="block">
                       <div className="relative h-48 w-full overflow-hidden">
-                        <Image 
-                          src={post.image} 
+                        <Image
+                          src={post.image}
                           alt={post.imageAlt}
                           fill
                           sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
@@ -251,8 +250,8 @@ export default function BlogPage() {
                         </h2>
                       </Link>
                       <p className="text-gray-600 mb-5 line-clamp-3 leading-relaxed">{post.excerpt}</p>
-                      <Link 
-                        href={post.slug} 
+                      <Link
+                        href={post.slug}
                         className="inline-flex items-center text-green-600 hover:text-green-700 font-semibold transition-all duration-300 group-hover:gap-2 gap-1"
                       >
                         Read Full Article
@@ -265,7 +264,7 @@ export default function BlogPage() {
                 ))}
               </div>
             )}
-            
+
             {/* Empty State */}
             {!loading && !error && filteredPosts.length === 0 && posts.length > 0 && (
               <div className="text-center py-16">

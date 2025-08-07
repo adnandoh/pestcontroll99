@@ -14,11 +14,11 @@ const nextConfig: NextConfig = {
   async redirects() {
     return [
       // Redirect old about URL to new about-us URL
-      {
-        source: '/about/',
-        destination: '/about-us/',
-        permanent: true,
-      },
+      // {
+      //   source: '/about/',
+      //   destination: '/about-us/',
+      //   permanent: true,
+      // },
       // Redirect non-www to www (both http and https)
       {
         source: '/:path*',
