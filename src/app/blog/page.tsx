@@ -3,6 +3,7 @@
 import Link from 'next/link';
 import Image from 'next/image';
 import { useState, useEffect } from 'react';
+import { stripHtmlAndDecode, decodeHtmlEntities } from '@/utils/htmlUtils';
 
 // WordPress API Response Types
 interface WordPressPost {
@@ -107,16 +108,16 @@ export default function BlogPage() {
       // Transform WordPress data to our format
       const transformedPosts: BlogPost[] = data.map((post) => ({
         id: post.id,
-        title: post.title.rendered,
-        excerpt: post.excerpt.rendered.replace(/<[^>]*>/g, '').substring(0, 150) + '...',
+        title: decodeHtmlEntities(post.title.rendered),
+        excerpt: stripHtmlAndDecode(post.excerpt.rendered).substring(0, 150) + '...',
         date: new Date(post.date).toLocaleDateString('en-US', {
           year: 'numeric',
           month: 'long',
           day: 'numeric'
         }),
-        author: post._embedded?.author?.[0]?.name || 'PestControl99 Team',
+        author: decodeHtmlEntities(post._embedded?.author?.[0]?.name || 'PestControl99 Team'),
         image: post._embedded?.['wp:featuredmedia']?.[0]?.source_url || '/images/heroimage.png',
-        imageAlt: post._embedded?.['wp:featuredmedia']?.[0]?.alt_text || post.title.rendered,
+        imageAlt: decodeHtmlEntities(post._embedded?.['wp:featuredmedia']?.[0]?.alt_text || post.title.rendered),
         slug: `/blog/${post.slug}`
       }));
 
@@ -152,15 +153,17 @@ export default function BlogPage() {
   return (
     <div className="min-h-screen bg-gray-50">
       {/* Header Section */}
-      <section className="py-2 bg-gradient-to-br from-green-50 via-white to-blue-50">
-        <div className="container mx-auto px-2">
+      <section className="py-8 bg-gradient-to-br from-green-50 via-white to-blue-50">
+        <div className="container mx-auto px-4">
           <div className="text-center max-w-4xl mx-auto">
-            <h1 className="text-2xl sm:text-3xl md:text-4xl block text-green-600 font-bold text-gray-900 mb-2">
-              Pest Control Blog
+            <h1 className="text-3xl sm:text-4xl md:text-5xl font-bold text-gray-900 mb-4">
+              <span className="text-green-600">Pest Control</span> Blog
             </h1>
+            <p className="text-lg text-gray-600 mb-8 max-w-2xl mx-auto">
+              Expert tips, insights, and solutions from certified pest control professionals to keep your home and business pest-free.
+            </p>
 
-
-            {/* <div className="max-w-md mx-auto relative">
+            <div className="max-w-md mx-auto relative">
               <div className="relative">
                 <input
                   type="text"
@@ -173,7 +176,7 @@ export default function BlogPage() {
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
                 </svg>
               </div>
-            </div> */}
+            </div>
           </div>
         </div>
       </section>
@@ -209,7 +212,7 @@ export default function BlogPage() {
             {/* Posts Grid */}
             {!loading && !error && filteredPosts.length > 0 && (
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-                {filteredPosts.map((post) => (
+                {filteredPosts.map((post, index) => (
                   <article key={post.id} className="group bg-white rounded-xl overflow-hidden shadow-md hover:shadow-xl transition-all duration-300 hover:-translate-y-2 border border-gray-100">
                     <Link href={post.slug} className="block">
                       <div className="relative h-48 w-full overflow-hidden">
@@ -226,19 +229,23 @@ export default function BlogPage() {
                           }}
                         />
                         <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+                        {index === 0 && (
+                          <div className="absolute top-4 left-4 bg-green-600 text-white px-3 py-1 rounded-full text-xs font-semibold">
+                            Latest
+                          </div>
+                        )}
                       </div>
                     </Link>
                     <div className="p-6">
-                      <div className="text-sm text-gray-500 mb-3 flex items-center">
-                        <div className="flex items-center">
-                          <svg className="h-4 w-4 mr-1.5 text-green-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <div className="text-sm text-gray-500 mb-3 flex items-center flex-wrap gap-2">
+                        <div className="flex items-center bg-gray-50 px-2 py-1 rounded-full">
+                          <svg className="h-3 w-3 mr-1 text-green-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
                           </svg>
                           {post.date}
                         </div>
-                        <span className="mx-2 text-gray-300">•</span>
-                        <div className="flex items-center">
-                          <svg className="h-4 w-4 mr-1.5 text-green-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <div className="flex items-center bg-gray-50 px-2 py-1 rounded-full">
+                          <svg className="h-3 w-3 mr-1 text-green-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
                           </svg>
                           {post.author}

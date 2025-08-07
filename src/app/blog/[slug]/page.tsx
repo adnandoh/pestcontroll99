@@ -1,5 +1,6 @@
 import { Metadata } from 'next';
 import BlogPostClient from './BlogPostClient';
+import { decodeHtmlEntities, stripHtmlAndDecode } from '@/utils/htmlUtils';
 
 // WordPress API Response Types (for metadata generation)
 interface WordPressPost {
@@ -54,18 +55,20 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
     }
 
     const post = data[0];
-    const cleanExcerpt = post.excerpt.rendered.replace(/<[^>]*>/g, '').substring(0, 160);
+    const cleanTitle = decodeHtmlEntities(post.title.rendered);
+    const cleanExcerpt = stripHtmlAndDecode(post.excerpt.rendered).substring(0, 160);
+    const cleanAuthor = decodeHtmlEntities(post._embedded?.author?.[0]?.name || 'PestControl99 Team');
     
     return {
-      title: `${post.title.rendered} | PestControl99 Blog`,
+      title: `${cleanTitle} | PestControl99 Blog`,
       description: cleanExcerpt || 'Expert pest control advice and tips from certified professionals.',
       keywords: 'pest control tips, pest prevention, pest control advice, pest control blog',
       openGraph: {
-        title: post.title.rendered,
+        title: cleanTitle,
         description: cleanExcerpt,
         type: 'article',
         publishedTime: post.date,
-        authors: [post._embedded?.author?.[0]?.name || 'PestControl99 Team'],
+        authors: [cleanAuthor],
         images: post._embedded?.['wp:featuredmedia']?.[0]?.source_url ? [post._embedded['wp:featuredmedia'][0].source_url] : undefined,
       },
       alternates: {

@@ -7,6 +7,7 @@ import { notFound } from 'next/navigation';
 import RelatedPosts from '@/components/RelatedPosts';
 import ShareArticle from '@/components/ShareArticle';
 import NewsletterSignup from '@/components/NewsletterSignup';
+import { cleanHtmlContent, decodeHtmlEntities, stripHtmlAndDecode } from '@/utils/htmlUtils';
 
 // WordPress API Response Types
 interface WordPressPost {
@@ -183,8 +184,9 @@ export default function BlogPostClient({ slug }: { slug: string }) {
 
   // Generate table of contents from post content
   const generateToc = useCallback((content: string) => {
+    const cleanedContent = cleanHtmlContent(content);
     const parser = new DOMParser();
-    const doc = parser.parseFromString(content, 'text/html');
+    const doc = parser.parseFromString(cleanedContent, 'text/html');
     const headings = doc.querySelectorAll('h1, h2, h3, h4, h5, h6');
     
     const tocItems: TocItem[] = [];
@@ -271,7 +273,7 @@ export default function BlogPostClient({ slug }: { slug: string }) {
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
             </svg>
             <span className="text-gray-900 font-semibold truncate">
-              {loading ? 'Loading...' : post?.title.rendered || 'Post'}
+              {loading ? 'Loading...' : decodeHtmlEntities(post?.title.rendered || 'Post')}
             </span>
           </nav>
         </div>
@@ -334,13 +336,13 @@ export default function BlogPostClient({ slug }: { slug: string }) {
                         <svg className="h-4 w-4 mr-2 text-green-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
                         </svg>
-                        {post._embedded?.author?.[0]?.name || 'PestControl99 Team'}
+                        {decodeHtmlEntities(post._embedded?.author?.[0]?.name || 'PestControl99 Team')}
                       </div>
                     </div>
 
                     {/* Post Title */}
                     <h1 className="text-3xl md:text-5xl font-bold text-gray-900 mb-8 leading-tight">
-                      {post.title.rendered}
+                      {decodeHtmlEntities(post.title.rendered)}
                     </h1>
 
                     {/* Article Structured Data */}
@@ -350,12 +352,12 @@ export default function BlogPostClient({ slug }: { slug: string }) {
                         __html: JSON.stringify({
                           "@context": "https://schema.org",
                           "@type": "Article",
-                          "headline": post.title.rendered,
-                          "description": post.excerpt.rendered.replace(/<[^>]*>/g, '').substring(0, 160),
+                          "headline": decodeHtmlEntities(post.title.rendered),
+                          "description": stripHtmlAndDecode(post.excerpt.rendered).substring(0, 160),
                           "image": post._embedded?.['wp:featuredmedia']?.[0]?.source_url || '/images/heroimage.png',
                           "author": {
                             "@type": "Person",
-                            "name": post._embedded?.author?.[0]?.name || 'PestControl99 Team'
+                            "name": decodeHtmlEntities(post._embedded?.author?.[0]?.name || 'PestControl99 Team')
                           },
                           "publisher": {
                             "@type": "Organization",
@@ -401,7 +403,7 @@ export default function BlogPostClient({ slug }: { slug: string }) {
               {/* Table of Contents Sidebar */}
               <div className="lg:col-span-1 space-y-8">
                 <TableOfContents toc={toc} activeId={activeId} />
-                <ShareArticle title={post.title.rendered} url={`/blog/${slug}`} />
+                <ShareArticle title={decodeHtmlEntities(post.title.rendered)} url={`/blog/${slug}`} />
                 <NewsletterSignup />
                 <RelatedPosts currentPostId={post.id} limit={3} />
               </div>

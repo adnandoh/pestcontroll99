@@ -8,7 +8,7 @@ module.exports = {
   theme: {
     extend: {
       fontFamily: {
-        'lexend': ['var(--font-lexend)', 'sans-serif'],
+        'inter': ['var(--font-inter)', 'sans-serif'],
       },
       colors: {
         primary: {

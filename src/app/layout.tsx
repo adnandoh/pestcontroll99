@@ -1,14 +1,15 @@
 import type { Metadata } from "next";
-import { Lexend } from "next/font/google";
+import { Inter } from "next/font/google";
 import Script from "next/script";
 import "./globals.css";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import StickyMobileCTA from "@/components/StickyMobileCTA";
 
-const lexend = Lexend({
-  variable: "--font-lexend",
+const inter = Inter({
+  variable: "--font-inter",
   subsets: ["latin"],
+  display: 'swap',
 });
 
 export const metadata: Metadata = {
@@ -121,7 +122,7 @@ export default function RootLayout({
         />
       </head>
       <body
-        className={`${lexend.variable} font-lexend antialiased min-h-screen flex flex-col`}
+        className={`${inter.variable} font-inter antialiased min-h-screen flex flex-col`}
       >
         {/* Google Analytics */}
         <Script

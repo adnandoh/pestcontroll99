@@ -3,6 +3,7 @@
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
+import { decodeHtmlEntities, stripHtmlAndDecode } from '@/utils/htmlUtils';
 
 interface WordPressPost {
   id: number;
@@ -66,15 +67,15 @@ export default function RelatedPosts({ currentPostId, limit = 3 }: RelatedPostsP
           .slice(0, limit)
           .map((post) => ({
             id: post.id,
-            title: post.title.rendered,
-            excerpt: post.excerpt.rendered.replace(/<[^>]*>/g, '').substring(0, 100) + '...',
+            title: decodeHtmlEntities(post.title.rendered),
+            excerpt: stripHtmlAndDecode(post.excerpt.rendered).substring(0, 100) + '...',
             date: new Date(post.date).toLocaleDateString('en-US', {
               year: 'numeric',
               month: 'short',
               day: 'numeric'
             }),
             image: post._embedded?.['wp:featuredmedia']?.[0]?.source_url || '/images/heroimage.png',
-            imageAlt: post._embedded?.['wp:featuredmedia']?.[0]?.alt_text || post.title.rendered,
+            imageAlt: decodeHtmlEntities(post._embedded?.['wp:featuredmedia']?.[0]?.alt_text || post.title.rendered),
             slug: `/blog/${post.slug}`
           }));
 

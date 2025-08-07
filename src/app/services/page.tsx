@@ -23,31 +23,35 @@ interface ServiceCardProps {
 
 function ServiceCard({ title, description, image, href }: ServiceCardProps) {
   return (
-    <div className="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-lg transition-shadow duration-300">
-      <div className="relative h-40 sm:h-48 overflow-hidden">
+    <div className="bg-white rounded-xl shadow-md overflow-hidden hover:shadow-lg transition-all duration-300 hover:-translate-y-1 border border-gray-100">
+      <div className="relative h-48 overflow-hidden">
         <Image
           src={image}
           alt={title}
           width={400}
-          height={200}
-          className="w-full h-full object-cover"
+          height={250}
+          className="w-full h-full object-cover transition-transform duration-500 hover:scale-110"
         />
+        <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent"></div>
       </div>
-      <div className="p-4 sm:p-6">
-        <div className="flex items-center mb-2 sm:mb-3">
-          <div className="w-1 h-6 bg-green-500 mr-2 sm:mr-3"></div>
-          <h3 className="text-base sm:text-lg font-semibold text-gray-800 uppercase tracking-wide">
+      <div className="p-6">
+        <div className="flex items-center mb-3">
+          <div className="w-1 h-6 bg-green-500 mr-3"></div>
+          <h3 className="text-lg font-bold text-gray-800 uppercase tracking-wide">
             {title}
           </h3>
         </div>
-        <p className="text-gray-600 text-xs sm:text-sm mb-4 sm:mb-6 leading-relaxed">
+        <p className="text-gray-600 text-sm mb-6 leading-relaxed">
           {description}
         </p>
         <Link 
           href={href}
-          className="inline-block bg-blue-600 text-white px-4 sm:px-6 py-2 text-xs sm:text-sm font-semibold uppercase tracking-wide hover:bg-blue-700 transition-colors duration-300"
+          className="inline-flex items-center justify-center bg-green-600 text-white px-6 py-3 text-sm font-semibold rounded-full hover:bg-green-700 transition-all duration-300 shadow-md hover:shadow-lg group"
         >
-          CALL NOW
+          GET QUOTE NOW
+          <svg className="ml-2 h-4 w-4 transition-transform group-hover:translate-x-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+          </svg>
         </Link>
       </div>
     </div>
@@ -57,46 +61,16 @@ function ServiceCard({ title, description, image, href }: ServiceCardProps) {
 export default function ServicesPage() {
   const services = [
     {
-      title: "ANTI TERMITE PEST CONTROL",
-      description: "Protect your property from termites with our specialized termite control services.",
-      image: "/images/Termite.webp",
-      href: "/services/termite-control"
-    },
-    {
-      title: "BED BUGS PEST CONTROL",
-      description: "Effective solutions to eradicate bed bugs from your home or commercial space.",
-      image: "/images/BedBug.webp",
-      href: "/services/bed-bugs-control"
-    },
-    {
       title: "COCKROACH PEST CONTROL",
-      description: "Say goodbye to cockroaches with our reliable and long-lasting treatments.",
+      description: "Say goodbye to cockroaches with our reliable and long-lasting treatments. Odourless gel treatment with 365-day warranty.",
       image: "/images/Cockroach.webp",
-      href: "/services/cockroach-control"
+      href: "/services/cockroach-pest-control-mumbai"
     },
     {
       title: "MOSQUITO PEST CONTROL",
-      description: "Protect your family from mosquito-borne diseases with our effective control solutions.",
+      description: "Protect your family from mosquito-borne diseases with our effective control solutions. Low-odour mist plus larvae control.",
       image: "/images/Mosquito.webp",
-      href: "/services/mosquito-control"
-    },
-    {
-      title: "WOOD BORER PEST CONTROL",
-      description: "Prevent damage to wooden structures with our specialized wood borer treatments.",
-      image: "/images/Wood Borer.webp",
-      href: "/services/wood-borer-control"
-    },
-    {
-      title: "HONEY BEE REMOVAL",
-      description: "Safe and humane honey bee removal services for residential and commercial properties.",
-      image: "/images/Honey Bee.webp",
-      href: "/services/honey-bee-removal"
-    },
-    {
-      title: "HOUSE FLY CONTROL",
-      description: "Effective solutions to eliminate house flies and prevent infestations in your property.",
-      image: "/images/House Fly.webp",
-      href: "/services/house-fly-control"
+      href: "/services/mosquito-pest-control-mumbai"
     }
   ];
 
@@ -119,7 +93,7 @@ export default function ServicesPage() {
       <section className="py-8 sm:py-12 md:py-16">
         <div className="container mx-auto px-4">
           <div className="max-w-7xl mx-auto">
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6 md:gap-8">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-4xl mx-auto">
               {services.map((service, index) => (
                 <ServiceCard
                   key={index}
