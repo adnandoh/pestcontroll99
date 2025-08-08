@@ -77,7 +77,7 @@ export default function CockroachPestControlPage() {
             </h2>
             <div className="space-y-6 text-lg text-gray-700 leading-relaxed">
               <p>
-                We've all switched on the kitchen light at 2 a.m. and watched roaches scatter under the toaster. Besides the shudder factor, cockroaches carry salmonella and trigger asthma—especially in humid Mumbai flats.
+                We&apos;ve all switched on the kitchen light at 2 a.m. and watched roaches scatter under the toaster. Besides the shudder factor, cockroaches carry salmonella and trigger asthma—especially in humid Mumbai flats.
               </p>
               <p className="text-center font-semibold text-red-600 bg-red-50 p-4 rounded-lg">
                 One female can lay 300 eggs a month; if you see one, a colony is already thriving behind your tiles.
@@ -92,7 +92,7 @@ export default function CockroachPestControlPage() {
         <div className="container mx-auto px-4">
           <div className="max-w-4xl mx-auto">
             <h2 className="text-3xl lg:text-4xl font-bold text-gray-900 mb-12 text-center">
-              What's Really Happening Behind the Walls
+              What&apos;s Really Happening Behind the Walls
             </h2>
             
             <div className="space-y-6 text-lg text-gray-700">
@@ -127,7 +127,7 @@ export default function CockroachPestControlPage() {
             
             <div className="mt-12 bg-green-50 p-8 rounded-2xl border border-green-200 text-center">
               <p className="text-lg text-gray-700 font-medium">
-                Surface spray kills what you see; our science-backed domino gel wipes out the nest you don't.
+                Surface spray kills what you see; our science-backed domino gel wipes out the nest you don&apos;t.
               </p>
             </div>
           </div>
@@ -179,7 +179,7 @@ export default function CockroachPestControlPage() {
                 </div>
                 <h3 className="text-xl font-bold text-gray-900 mb-4">Treat</h3>
                 <p className="text-gray-700 leading-relaxed">
-                  We place tiny, odourless gel dots and bait inside those hidden gaps. There are no stains and no need to empty cupboards; it's safe for kids and pets.
+                  We place tiny, odourless gel dots and bait inside those hidden gaps. There are no stains and no need to empty cupboards; it&apos;s safe for kids and pets.
                 </p>
               </div>
               
@@ -283,7 +283,7 @@ export default function CockroachPestControlPage() {
                     {'★'.repeat(5)}
                   </div>
                 </div>
-                <p className="text-gray-700 mb-4">"They cleared my Bandra café's roaches in one visit."</p>
+                <p className="text-gray-700 mb-4">&ldquo;They cleared my Bandra café&apos;s roaches in one visit.&rdquo;</p>
                 <p className="text-sm text-gray-500">- Amit P., Bandra</p>
               </div>
               <div className="bg-white p-6 rounded-2xl shadow-lg border border-gray-100">
@@ -292,7 +292,7 @@ export default function CockroachPestControlPage() {
                     {'★'.repeat(5)}
                   </div>
                 </div>
-                <p className="text-gray-700 mb-4">"No fumes; kids slept fine the same night in Andheri."</p>
+                <p className="text-gray-700 mb-4">&ldquo;No fumes; kids slept fine the same night in Andheri.&rdquo;</p>
                 <p className="text-sm text-gray-500">- Sunita R., Andheri</p>
               </div>
               <div className="bg-white p-6 rounded-2xl shadow-lg border border-gray-100">
@@ -301,7 +301,7 @@ export default function CockroachPestControlPage() {
                     {'★'.repeat(5)}
                   </div>
                 </div>
-                <p className="text-gray-700 mb-4">"FSSAI audit passed thanks to their digital report."</p>
+                <p className="text-gray-700 mb-4">&ldquo;FSSAI audit passed thanks to their digital report.&rdquo;</p>
                 <p className="text-sm text-gray-500">- Vikram S., Thane</p>
               </div>
             </div>

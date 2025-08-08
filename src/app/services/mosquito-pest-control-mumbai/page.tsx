@@ -86,7 +86,7 @@ export default function MosquitoPestControlPage() {
         <div className="container mx-auto px-4">
           <div className="max-w-6xl mx-auto">
             <h2 className="text-3xl lg:text-4xl font-bold text-gray-900 mb-12 text-center">
-              What's Happening Around Your Home
+              What&apos;s Happening Around Your Home
             </h2>
             
             <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
@@ -292,7 +292,7 @@ export default function MosquitoPestControlPage() {
                     {'★'.repeat(5)}
                   </div>
                 </div>
-                <p className="text-gray-700 mb-4">"Excellent service! No more mosquito bites at night."</p>
+                <p className="text-gray-700 mb-4">&ldquo;Excellent service! No more mosquito bites at night.&rdquo;</p>
                 <p className="text-sm text-gray-500">- Priya S., Bandra</p>
               </div>
               <div className="bg-white p-6 rounded-2xl shadow-lg">
@@ -301,7 +301,7 @@ export default function MosquitoPestControlPage() {
                     {'★'.repeat(5)}
                   </div>
                 </div>
-                <p className="text-gray-700 mb-4">"Safe for kids and very effective treatment."</p>
+                <p className="text-gray-700 mb-4">&ldquo;Safe for kids and very effective treatment.&rdquo;</p>
                 <p className="text-sm text-gray-500">- Rahul M., Andheri</p>
               </div>
               <div className="bg-white p-6 rounded-2xl shadow-lg">
@@ -310,7 +310,7 @@ export default function MosquitoPestControlPage() {
                     {'★'.repeat(5)}
                   </div>
                 </div>
-                <p className="text-gray-700 mb-4">"Quick response and professional service."</p>
+                <p className="text-gray-700 mb-4">&ldquo;Quick response and professional service.&rdquo;</p>
                 <p className="text-sm text-gray-500">- Sneha K., Thane</p>
               </div>
             </div>

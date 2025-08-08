@@ -36,9 +36,9 @@ export default function AboutPage() {
       <section className="py-12 md:py-20 bg-white">
         <div className="container mx-auto px-4">
           <div className="max-w-6xl mx-auto">
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 md:gap-12 items-center">
-              {/* Left Side - Image */}
-              <div className="relative">
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 md:gap-12 lg:items-start">
+              {/* Left Side - Sticky Image */}
+              <div className="relative lg:sticky lg:top-24">
                 <div className="bg-gray-100 rounded-2xl overflow-hidden">
                   <Image
                     src="/images/heroimage.png"
@@ -50,8 +50,8 @@ export default function AboutPage() {
                 </div>
               </div>
 
-              {/* Right Side - Content */}
-              <div className="space-y-6">
+              {/* Right Side - Scrollable Content */}
+              <div className="space-y-6 lg:min-h-screen">
                 <div>
                   <div className="text-green-500 text-sm font-semibold uppercase tracking-wide mb-3">
                     WHO WE ARE
@@ -71,14 +71,7 @@ export default function AboutPage() {
 
                 {/* Features List */}
                 <div className="space-y-4 mt-8">
-                  <div className="flex items-center space-x-4">
-                    <div className="w-6 h-6 bg-green-100 rounded-full flex items-center justify-center flex-shrink-0">
-                      <svg className="w-4 h-4 text-green-500" fill="currentColor" viewBox="0 0 20 20">
-                        <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd"/>
-                      </svg>
-                    </div>
-                    <span className="text-gray-700 font-medium">ISO 9001 Certified & Police Verified Technicians</span>
-                  </div>
+
 
                   <div className="flex items-center space-x-4">
                     <div className="w-6 h-6 bg-green-100 rounded-full flex items-center justify-center flex-shrink-0">
