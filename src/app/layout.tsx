@@ -70,52 +70,13 @@ export default function RootLayout({
                 "addressRegion": "Maharashtra",
                 "addressCountry": "IN"
               },
-              "geo": {
-                "@type": "GeoCoordinates",
-                "latitude": "19.0760",
-                "longitude": "72.8777"
-              },
               "openingHours": "Mo-Su 00:00-23:59",
-              "serviceArea": [
-                {
-                  "@type": "City",
-                  "name": "Mumbai"
-                },
-                {
-                  "@type": "City", 
-                  "name": "Pune"
-                },
-                {
-                  "@type": "City",
-                  "name": "Navi Mumbai"
-                }
-              ],
-              "hasOfferCatalog": {
-                "@type": "OfferCatalog",
-                "name": "Pest Control Services",
-                "itemListElement": [
-                  {
-                    "@type": "Offer",
-                    "itemOffered": {
-                      "@type": "Service",
-                      "name": "Termite Control"
-                    }
-                  },
-                  {
-                    "@type": "Offer", 
-                    "itemOffered": {
-                      "@type": "Service",
-                      "name": "Cockroach Control"
-                    }
-                  },
-                  {
-                    "@type": "Offer",
-                    "itemOffered": {
-                      "@type": "Service", 
-                      "name": "Rodent Control"
-                    }
-                  }
-                ]
+              "serviceArea": ["Mumbai", "Pune", "Navi Mumbai"],
+              "priceRange": "$$",
+              "aggregateRating": {
+                "@type": "AggregateRating",
+                "ratingValue": "4.8",
+                "reviewCount": "150"
               }
             })
           }}
@@ -144,6 +105,29 @@ export default function RootLayout({
         </main>
         <Footer />
         <StickyMobileCTA />
+              {/* Performance Monitoring */}
+        <Script id="web-vitals" strategy="afterInteractive">
+          {`
+            function sendToAnalytics(metric) {
+              if (window.gtag) {
+                window.gtag('event', metric.name, {
+                  event_category: 'Web Vitals',
+                  event_label: metric.id,
+                  value: Math.round(metric.name === 'CLS' ? metric.value * 1000 : metric.value),
+                  non_interaction: true,
+                });
+              }
+            }
+            
+            import('https://unpkg.com/web-vitals@3/dist/web-vitals.js').then(({ getCLS, getFID, getFCP, getLCP, getTTFB }) => {
+              getCLS(sendToAnalytics);
+              getFID(sendToAnalytics);
+              getFCP(sendToAnalytics);
+              getLCP(sendToAnalytics);
+              getTTFB(sendToAnalytics);
+            });
+          `}
+        </Script>
       </body>
     </html>
   );

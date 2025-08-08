@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 
 interface ShareArticleProps {
   title: string;
@@ -10,9 +10,17 @@ interface ShareArticleProps {
 export default function ShareArticle({ title, url }: ShareArticleProps) {
   const [copied, setCopied] = useState(false);
 
+  const [currentUrl, setCurrentUrl] = useState(url);
+
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      setCurrentUrl(window.location.href);
+    }
+  }, []);
+
   const shareData = {
     title,
-    url: typeof window !== 'undefined' ? window.location.href : url,
+    url: currentUrl,
   };
 
   const handleCopyLink = async () => {

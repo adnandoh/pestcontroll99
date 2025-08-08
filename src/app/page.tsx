@@ -1,6 +1,7 @@
 import Link from 'next/link';
-import Image from 'next/image';
+
 import { Metadata } from 'next';
+import OptimizedImage from '@/components/OptimizedImage';
 
 export const metadata: Metadata = {
   title: "Same-Day Pest Control Services in Mumbai | 100% Safe & Certified | PestControl99",
@@ -19,10 +20,14 @@ export default function Home() {
     <div>
       {/* Hero Section - Completely Rebuilt */}
       <div className="hero-container relative w-full min-h-[80vh] md:min-h-[100vh] overflow-hidden">
-        {/* Hero Background Image - Direct HTML approach */}
+        {/* Hero Background Image - Optimized WebP */}
         <div
           className="absolute inset-0 w-full h-full bg-cover bg-center bg-no-repeat"
-          style={{ backgroundImage: 'url(/images/heroimage.png)' }}
+          style={{ 
+            backgroundImage: `url(/images/heroimage.webp), url(/images/heroimage.png)`,
+            backgroundSize: 'cover',
+            backgroundPosition: 'center'
+          }}
           aria-hidden="true"
         ></div>
 
@@ -76,7 +81,7 @@ export default function Home() {
           </div>
 
           <div className="max-w-4xl mx-auto bg-white rounded-2xl sm:rounded-3xl p-5 sm:p-8 shadow-lg sm:shadow-xl">
-            <form className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4 sm:gap-6" suppressHydrationWarning>
+            <form className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4 sm:gap-6">
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-2">Pest Type</label>
                 <select className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-green-500 text-sm sm:text-base">
@@ -136,12 +141,13 @@ export default function Home() {
             {/* Rodent Control Services */}
             <div className="text-center bg-white rounded-xl p-3 sm:p-4 hover:shadow-md transition-shadow duration-300">
               <div className="w-24 h-24 sm:w-28 sm:h-28 md:w-32 md:h-32 mx-auto mb-3 sm:mb-4 bg-gray-100 rounded-full overflow-hidden">
-                <Image
+                <OptimizedImage
                   src="/images/Rat.webp"
                   alt="Rodent Control Services"
                   width={128}
                   height={128}
                   className="w-full h-full object-cover"
+                  sizes="(max-width: 640px) 96px, (max-width: 768px) 112px, 128px"
                 />
               </div>
               <h3 className="text-sm sm:text-base md:text-lg font-semibold text-gray-900 mb-1 sm:mb-2">Rodent Control Services</h3>
@@ -150,13 +156,7 @@ export default function Home() {
             {/* Cockroach Control Services */}
             <div className="text-center bg-white rounded-xl p-3 sm:p-4 hover:shadow-md transition-shadow duration-300">
               <div className="w-24 h-24 sm:w-28 sm:h-28 md:w-32 md:h-32 mx-auto mb-3 sm:mb-4 bg-gray-100 rounded-full overflow-hidden">
-                <Image
-                  src="/images/Cockroach.webp"
-                  alt="Cockroach Control Services"
-                  width={128}
-                  height={128}
-                  className="w-full h-full object-cover"
-                />
+                <OptimizedImage src="/images/Cockroach.webp" alt="Cockroach Control Services" width={128} height={128} className="w-full h-full object-cover" sizes="(max-width: 640px) 96px, (max-width: 768px) 112px, 128px" />
               </div>
               <h3 className="text-sm sm:text-base md:text-lg font-semibold text-gray-900 mb-1 sm:mb-2">Cockroach Control Services</h3>
             </div>
@@ -164,13 +164,7 @@ export default function Home() {
             {/* BedBug Control Services */}
             <div className="text-center bg-white rounded-xl p-3 sm:p-4 hover:shadow-md transition-shadow duration-300">
               <div className="w-24 h-24 sm:w-28 sm:h-28 md:w-32 md:h-32 mx-auto mb-3 sm:mb-4 bg-gray-100 rounded-full overflow-hidden">
-                <Image
-                  src="/images/BedBug.webp"
-                  alt="BedBug Control Services"
-                  width={128}
-                  height={128}
-                  className="w-full h-full object-cover"
-                />
+                <OptimizedImage src="/images/BedBug.webp" alt="BedBug Control Services" width={128} height={128} className="w-full h-full object-cover" sizes="(max-width: 640px) 96px, (max-width: 768px) 112px, 128px" />
               </div>
               <h3 className="text-sm sm:text-base md:text-lg font-semibold text-gray-900 mb-1 sm:mb-2">BedBug Control Services</h3>
             </div>
@@ -178,13 +172,7 @@ export default function Home() {
             {/* Mosquito Control Services */}
             <div className="text-center bg-white rounded-xl p-3 sm:p-4 hover:shadow-md transition-shadow duration-300">
               <div className="w-24 h-24 sm:w-28 sm:h-28 md:w-32 md:h-32 mx-auto mb-3 sm:mb-4 bg-gray-100 rounded-full overflow-hidden">
-                <Image
-                  src="/images/Mosquito.webp"
-                  alt="Mosquito Control Services"
-                  width={128}
-                  height={128}
-                  className="w-full h-full object-cover"
-                />
+                <OptimizedImage src="/images/Mosquito.webp" alt="Mosquito Control Services" width={128} height={128} className="w-full h-full object-cover" sizes="(max-width: 640px) 96px, (max-width: 768px) 112px, 128px" />
               </div>
               <h3 className="text-sm sm:text-base md:text-lg font-semibold text-gray-900 mb-1 sm:mb-2">Mosquito Control Services</h3>
             </div>
@@ -192,13 +180,7 @@ export default function Home() {
             {/* House Fly Control Services */}
             <div className="text-center bg-white rounded-xl p-3 sm:p-4 hover:shadow-md transition-shadow duration-300">
               <div className="w-24 h-24 sm:w-28 sm:h-28 md:w-32 md:h-32 mx-auto mb-3 sm:mb-4 bg-gray-100 rounded-full overflow-hidden">
-                <Image
-                  src="/images/House Fly.webp"
-                  alt="House Fly Control Services"
-                  width={128}
-                  height={128}
-                  className="w-full h-full object-cover"
-                />
+                <OptimizedImage src="/images/House Fly.webp" alt="House Fly Control Services" width={128} height={128} className="w-full h-full object-cover" sizes="(max-width: 640px) 96px, (max-width: 768px) 112px, 128px" />
               </div>
               <h3 className="text-sm sm:text-base md:text-lg font-semibold text-gray-900 mb-1 sm:mb-2">HouseFly Control Services</h3>
             </div>
@@ -206,13 +188,7 @@ export default function Home() {
             {/* Termite Control Services */}
             <div className="text-center bg-white rounded-xl p-3 sm:p-4 hover:shadow-md transition-shadow duration-300">
               <div className="w-24 h-24 sm:w-28 sm:h-28 md:w-32 md:h-32 mx-auto mb-3 sm:mb-4 bg-gray-100 rounded-full overflow-hidden">
-                <Image
-                  src="/images/Termite.webp"
-                  alt="Termite Control Services"
-                  width={128}
-                  height={128}
-                  className="w-full h-full object-cover"
-                />
+                <OptimizedImage src="/images/Termite.webp" alt="Termite Control Services" width={128} height={128} className="w-full h-full object-cover" sizes="(max-width: 640px) 96px, (max-width: 768px) 112px, 128px" />
               </div>
               <h3 className="text-sm sm:text-base md:text-lg font-semibold text-gray-900 mb-1 sm:mb-2">Termite Control Services</h3>
             </div>
@@ -220,13 +196,7 @@ export default function Home() {
             {/* Wood Borer Services */}
             <div className="text-center bg-white rounded-xl p-3 sm:p-4 hover:shadow-md transition-shadow duration-300">
               <div className="w-24 h-24 sm:w-28 sm:h-28 md:w-32 md:h-32 mx-auto mb-3 sm:mb-4 bg-gray-100 rounded-full overflow-hidden">
-                <Image
-                  src="/images/Wood Borer.webp"
-                  alt="Wood Borer Services"
-                  width={128}
-                  height={128}
-                  className="w-full h-full object-cover"
-                />
+                <OptimizedImage src="/images/Wood Borer.webp" alt="Wood Borer Services" width={128} height={128} className="w-full h-full object-cover" sizes="(max-width: 640px) 96px, (max-width: 768px) 112px, 128px" />
               </div>
               <h3 className="text-sm sm:text-base md:text-lg font-semibold text-gray-900 mb-1 sm:mb-2">Wood Borer Services</h3>
             </div>
@@ -234,13 +204,7 @@ export default function Home() {
             {/* Honey Bee Removal */}
             <div className="text-center bg-white rounded-xl p-3 sm:p-4 hover:shadow-md transition-shadow duration-300">
               <div className="w-24 h-24 sm:w-28 sm:h-28 md:w-32 md:h-32 mx-auto mb-3 sm:mb-4 bg-gray-100 rounded-full overflow-hidden">
-                <Image
-                  src="/images/Honey Bee.webp"
-                  alt="Honey Bee Removal"
-                  width={128}
-                  height={128}
-                  className="w-full h-full object-cover"
-                />
+                <OptimizedImage src="/images/Honey Bee.webp" alt="Honey Bee Removal" width={128} height={128} className="w-full h-full object-cover" sizes="(max-width: 640px) 96px, (max-width: 768px) 112px, 128px" />
               </div>
               <h3 className="text-sm sm:text-base md:text-lg font-semibold text-gray-900 mb-1 sm:mb-2">Honey Bee Removal</h3>
             </div>
