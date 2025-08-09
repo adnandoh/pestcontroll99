@@ -20,7 +20,7 @@ export default function QuotePage() {
     setIsSubmitting(true);
 
     try {
-      const response = await fetch('/api/send-quote', {
+      const response = await fetch('/api/send-quote/', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
