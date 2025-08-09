@@ -199,7 +199,7 @@ function QuoteForm() {
                 Get Your Personalized Quote
               </h1>
               <p className="text-lg text-gray-600">
-                Fill out the details below and we'll provide you with a customized quote within 24 hours
+                Fill out the details below and we&apos;ll provide you with a customized quote within 24 hours
               </p>
             </div>
 

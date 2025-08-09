@@ -74,7 +74,7 @@ export default function HomeQuoteForm() {
     }
   };
 
-  const handleChange = (field: keyof HomeFormData, value: any) => {
+  const handleChange = (field: keyof HomeFormData, value: string | string[]) => {
     setFormData(prev => ({
       ...prev,
       [field]: value
@@ -97,7 +97,7 @@ export default function HomeQuoteForm() {
             Choose Your Pest & Property – Get Quotation the Same Day
           </h2>
           <p className="text-lg text-gray-600 max-w-2xl mx-auto">
-            Fill out this quick form and we'll redirect you to get your detailed quote instantly
+            Fill out this quick form and we&apos;ll redirect you to get your detailed quote instantly
           </p>
         </div>
 

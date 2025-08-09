@@ -4,11 +4,11 @@ import Breadcrumb from '@/components/Breadcrumb';
 import { Metadata } from 'next';
 
 export const metadata: Metadata = {
-  title: "About pestcontrol99 | Mumbai's Trusted Pest Experts",
+  title: "About pestcontrol99 | Mumbai&apos;s Trusted Pest Experts",
   description: "Same-day, low-odour pest control in Mumbai. Clear prices, written assurance, trained local technicians, and GST invoice provided. Learn more about PestControl99.",
   keywords: "about pestcontrol99, Mumbai pest control, same day pest control, low odour pest control, trained technicians, written warranty",
   openGraph: {
-    title: "About pestcontrol99 | Mumbai's Trusted Pest Experts",
+    title: "About pestcontrol99 | Mumbai&apos;s Trusted Pest Experts",
     description: "Same-day, low-odour pest control in Mumbai. Clear prices, written assurance, trained local technicians, and GST invoice provided.",
     type: "website",
   },
@@ -28,14 +28,14 @@ export default function AboutPage() {
               {/* Left Content */}
               <div className="order-2 lg:order-1">
                 <h1 className="text-xl md:text-2xl lg:text-3xl font-bold text-gray-900 mb-3 leading-tight">
-                  Mumbai's local pest experts.
+                  Mumbai&apos;s local pest experts.
                 </h1>
                 <p className="text-base md:text-lg text-gray-700 mb-3 font-medium">
                   Clear talk. Clean work. Real results.
                 </p>
                 <p className="text-sm text-gray-600 leading-relaxed mb-4">
                   We started pestcontrol99 for one reason: most pest websites talk in circles. You just want a safe home,
-                  a quiet night's sleep, and a team that shows up when they say they will. We keep it simple—same-day help,
+                  a quiet night&apos;s sleep, and a team that shows up when they say they will. We keep it simple—same-day help,
                   clear prices, low-odour treatments, and service notes you can actually understand.
                 </p>
 
@@ -141,7 +141,7 @@ export default function AboutPage() {
                 </div>
                 <h3 className="text-xl font-bold text-gray-900 mb-4">Clarity over jargon</h3>
                 <p className="text-gray-600 leading-relaxed">
-                  We show what we'll do, why it works, and when you can use each room again—step by step.
+                  We show what we&apos;ll do, why it works, and when you can use each room again—step by step.
                 </p>
               </div>
 
@@ -351,7 +351,7 @@ export default function AboutPage() {
               </h2>
               <p className="text-lg text-gray-600 leading-relaxed mb-8 max-w-4xl mx-auto">
                 Mumbai, Thane, and Navi Mumbai—from Chembur to Andheri, Bandra to Borivali, Powai to Panvel.
-                If you're nearby, we'll likely cover you; ask on WhatsApp for the next slot.
+                If you&apos;re nearby, we&apos;ll likely cover you; ask on WhatsApp for the next slot.
               </p>
             </div>
 
@@ -822,9 +822,9 @@ export default function AboutPage() {
 
             {/* Contact for Other Areas */}
             <div className="text-center bg-gray-50 rounded-2xl p-8">
-              <h4 className="text-xl font-bold text-gray-900 mb-4">Don't see your area?</h4>
+              <h4 className="text-xl font-bold text-gray-900 mb-4">Don&apos;t see your area?</h4>
               <p className="text-gray-600 mb-6">
-                We're expanding our coverage daily. Contact us to check if we serve your location.
+                We&apos;re expanding our coverage daily. Contact us to check if we serve your location.
               </p>
               <a
                 href="https://wa.me/9894966921?text=Hi%20PestControl99!%20I%20want%20to%20check%20if%20you%20serve%20my%20area."
