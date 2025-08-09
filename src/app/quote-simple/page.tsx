@@ -1,15 +1,10 @@
 'use client';
 
-import { useState, useEffect, Suspense } from 'react';
-import { useSearchParams } from 'next/navigation';
-import { decodeFormDataFromURL, getFormData, clearFormData } from '@/utils/formStorage';
+import { useState } from 'react';
 import MultiSelectPest from '@/components/MultiSelectPest';
 import SuccessModal from '@/components/SuccessModal';
-import Breadcrumb from '@/components/Breadcrumb';
 
-function QuoteForm() {
-  const searchParams = useSearchParams();
-  
+export default function SimpleQuotePage() {
   const [formData, setFormData] = useState({
     phone: '',
     email: '',
@@ -23,41 +18,6 @@ function QuoteForm() {
   const [showSuccessModal, setShowSuccessModal] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [errors, setErrors] = useState<Record<string, string>>({});
-  const [isDataLoaded, setIsDataLoaded] = useState(false);
-
-  // Load pre-filled data on component mount
-  useEffect(() => {
-    // First try to get data from URL parameters
-    const urlData = decodeFormDataFromURL(searchParams);
-    
-    // Then try to get data from localStorage
-    const storageData = getFormData();
-    
-    // Only update if we have data to load
-    if (Object.keys(urlData).length > 0 || storageData) {
-      // Merge data with URL taking precedence
-      const prefilledData = {
-        phone: '',
-        email: '',
-        address: '',
-        propertyType: '1bhk',
-        propertySize: '',
-        pestTypes: [] as string[],
-        additionalDetails: '',
-        ...storageData,
-        ...urlData
-      };
-
-      setFormData(prefilledData);
-    }
-    
-    // Clear localStorage after loading
-    if (storageData) {
-      clearFormData();
-    }
-    
-    setIsDataLoaded(true);
-  }, [searchParams]);
 
   const validateForm = (): boolean => {
     const newErrors: Record<string, string> = {};
@@ -98,33 +58,20 @@ function QuoteForm() {
     setIsSubmitting(true);
 
     try {
-      const response = await fetch('/api/send-quote/', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          ...formData,
-          pestType: formData.pestTypes.join(', ') // Convert array to string for API compatibility
-        }),
+      // Simulate API call
+      await new Promise(resolve => setTimeout(resolve, 1000));
+      setShowSuccessModal(true);
+      
+      // Reset form after successful submission
+      setFormData({
+        phone: '',
+        email: '',
+        address: '',
+        propertyType: '1bhk',
+        propertySize: '',
+        pestTypes: [],
+        additionalDetails: ''
       });
-
-      if (response.ok) {
-        setShowSuccessModal(true);
-        // Reset form after successful submission
-        setFormData({
-          phone: '',
-          email: '',
-          address: '',
-          propertyType: 'residential',
-          propertySize: '',
-          pestTypes: [],
-          additionalDetails: ''
-        });
-      } else {
-        const errorData = await response.json();
-        alert(`Failed to send quote request: ${errorData.error || 'Please try again.'}`);
-      }
     } catch (error) {
       console.error('Error submitting form:', error);
       alert('Failed to send quote request. Please try again.');
@@ -156,50 +103,17 @@ function QuoteForm() {
     }));
   };
 
-
-
-  // Show loading state until data is loaded to prevent hydration mismatch
-  if (!isDataLoaded) {
-    return (
+  return (
+    <>
       <div className="py-8 bg-gray-50 min-h-screen">
         <div className="container mx-auto px-4">
           <div className="max-w-3xl mx-auto">
             <div className="text-center mb-8">
               <h1 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
-                Get Your Personalized Quote
-              </h1>
-              <div className="animate-pulse">
-                <div className="h-4 bg-gray-300 rounded w-3/4 mx-auto"></div>
-              </div>
-            </div>
-            <div className="bg-white rounded-lg shadow-lg p-6 md:p-8">
-              <div className="animate-pulse space-y-6">
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                  <div className="h-12 bg-gray-300 rounded"></div>
-                  <div className="h-12 bg-gray-300 rounded"></div>
-                </div>
-                <div className="h-12 bg-gray-300 rounded"></div>
-                <div className="h-32 bg-gray-300 rounded"></div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    );
-  }
-
-  return (
-    <>
-      <Breadcrumb items={[{ label: 'Get Quote' }]} />
-      <div className="py-6 bg-gray-50 min-h-screen">
-        <div className="container mx-auto px-4">
-          <div className="max-w-3xl mx-auto">
-            <div className="text-center mb-8">
-              <h1 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
-                Get Your Personalized Quote
+                Test Quote Form
               </h1>
               <p className="text-lg text-gray-600">
-                Fill out the details below and we'll provide you with a customized quote within 24 hours
+                Simple version without localStorage for testing
               </p>
             </div>
 
@@ -369,35 +283,11 @@ function QuoteForm() {
                         Sending Request...
                       </>
                     ) : (
-                      'Get My Free Quote'
+                      'Test Submit'
                     )}
                   </button>
-                  <p className="text-sm text-gray-500 mt-3">
-                    * We respect your privacy. Your information will never be shared with third parties.
-                  </p>
                 </div>
               </form>
-            </div>
-
-            {/* Contact Information */}
-            <div className="mt-12 text-center">
-              <h3 className="text-2xl font-semibold text-gray-900 mb-4">
-                Need Immediate Assistance?
-              </h3>
-              <div className="flex flex-col sm:flex-row gap-4 justify-center">
-                <a
-                  href="tel:+919894966921"
-                  className="bg-green-600 text-white px-6 py-3 rounded-lg font-semibold hover:bg-green-700 transition-colors"
-                >
-                  Call +91 98949 66921
-                </a>
-                <a
-                  href="mailto:info@pestcontrol99.com"
-                  className="border-2 border-green-600 text-green-600 px-6 py-3 rounded-lg font-semibold hover:bg-green-600 hover:text-white transition-colors"
-                >
-                  Email Us
-                </a>
-              </div>
             </div>
           </div>
         </div>
@@ -407,40 +297,9 @@ function QuoteForm() {
       <SuccessModal
         isOpen={showSuccessModal}
         onClose={() => setShowSuccessModal(false)}
+        title="Test Successful!"
+        message="The form components are working correctly without hydration issues."
       />
     </>
-  );
-}
-export 
-default function QuotePage() {
-  return (
-    <Suspense fallback={
-      <div className="py-8 bg-gray-50 min-h-screen">
-        <div className="container mx-auto px-4">
-          <div className="max-w-3xl mx-auto">
-            <div className="text-center mb-8">
-              <h1 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
-                Get Your Personalized Quote
-              </h1>
-              <div className="animate-pulse">
-                <div className="h-4 bg-gray-300 rounded w-3/4 mx-auto"></div>
-              </div>
-            </div>
-            <div className="bg-white rounded-lg shadow-lg p-6 md:p-8">
-              <div className="animate-pulse space-y-6">
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                  <div className="h-12 bg-gray-300 rounded"></div>
-                  <div className="h-12 bg-gray-300 rounded"></div>
-                </div>
-                <div className="h-12 bg-gray-300 rounded"></div>
-                <div className="h-32 bg-gray-300 rounded"></div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    }>
-      <QuoteForm />
-    </Suspense>
   );
 }

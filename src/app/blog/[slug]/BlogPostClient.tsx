@@ -7,6 +7,7 @@ import { notFound } from 'next/navigation';
 import RelatedPosts from '@/components/RelatedPosts';
 import ShareArticle from '@/components/ShareArticle';
 import NewsletterSignup from '@/components/NewsletterSignup';
+import Breadcrumb from '@/components/Breadcrumb';
 import { cleanHtmlContent, decodeHtmlEntities, stripHtmlAndDecode } from '@/utils/htmlUtils';
 
 // WordPress API Response Types
@@ -257,27 +258,12 @@ export default function BlogPostClient({ slug }: { slug: string }) {
     <div className="min-h-screen bg-gradient-to-br from-gray-50 to-gray-100">
       <ReadingProgress />
       {/* Breadcrumb */}
-      <div className="bg-white border-b border-gray-200 shadow-sm">
-        <div className="container mx-auto px-4 py-4">
-          <nav className="flex items-center space-x-2 text-sm text-gray-600">
-            <Link href="/" className="hover:text-green-600 transition-colors font-medium">
-              Home
-            </Link>
-            <svg className="h-4 w-4 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-            </svg>
-            <Link href="/blog" className="hover:text-green-600 transition-colors font-medium">
-              Blog
-            </Link>
-            <svg className="h-4 w-4 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-            </svg>
-            <span className="text-gray-900 font-semibold truncate">
-              {loading ? 'Loading...' : decodeHtmlEntities(post?.title.rendered || 'Post')}
-            </span>
-          </nav>
-        </div>
-      </div>
+      <Breadcrumb 
+        items={[
+          { label: 'Blog', href: '/blog' },
+          { label: loading ? 'Loading...' : decodeHtmlEntities(post?.title.rendered || 'Post') }
+        ]} 
+      />
 
       <div className="container mx-auto px-4 py-8">
         {/* Error State */}

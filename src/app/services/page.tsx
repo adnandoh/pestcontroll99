@@ -76,15 +76,17 @@ export default function ServicesPage() {
 
   return (
     <div className="min-h-screen bg-gray-50">
+      {/* Breadcrumb */}
+      <Breadcrumb items={[{ label: 'Services' }]} />
+      
       {/* Header Section */}
-      <section className="py-10 sm:py-16 bg-white">
+      <section className="py-6 sm:py-8 bg-white">
         <div className="container mx-auto px-4">
-          <Breadcrumb items={[{ label: 'Services' }]} />
           <div className="text-center">
-            <h1 className="text-3xl sm:text-4xl md:text-5xl font-bold text-gray-800 mb-3 sm:mb-4">
+            <h1 className="text-2xl sm:text-3xl md:text-4xl font-bold text-gray-800 mb-3 sm:mb-4">
               Our Services
             </h1>
-            <div className="w-16 sm:w-24 h-1 bg-gray-300 mx-auto"></div>
+            <div className="w-16 sm:w-20 h-1 bg-gray-300 mx-auto"></div>
           </div>
         </div>
       </section>

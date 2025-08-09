@@ -4,6 +4,7 @@ import Link from 'next/link';
 import Image from 'next/image';
 import { useState, useEffect } from 'react';
 import { stripHtmlAndDecode, decodeHtmlEntities } from '@/utils/htmlUtils';
+import Breadcrumb from '@/components/Breadcrumb';
 
 // WordPress API Response Types
 interface WordPressPost {
@@ -152,8 +153,11 @@ export default function BlogPage() {
   };
   return (
     <div className="min-h-screen bg-gray-50">
+      {/* Breadcrumb */}
+      <Breadcrumb items={[{ label: 'Blog' }]} />
+      
       {/* Header Section */}
-      <section className="py-8 bg-gradient-to-br from-green-50 via-white to-blue-50">
+      <section className="py-6 bg-gradient-to-br from-green-50 via-white to-blue-50">
         <div className="container mx-auto px-4">
           <div className="text-center max-w-4xl mx-auto">
             <h1 className="text-3xl sm:text-4xl md:text-5xl font-bold text-gray-900 mb-4">

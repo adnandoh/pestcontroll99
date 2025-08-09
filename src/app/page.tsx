@@ -2,6 +2,8 @@ import Link from 'next/link';
 
 import { Metadata } from 'next';
 import OptimizedImage from '@/components/OptimizedImage';
+import HomeQuoteForm from '@/components/HomeQuoteForm';
+import ClientOnly from '@/components/ClientOnly';
 
 export const metadata: Metadata = {
   title: "Same-Day Pest Control Services in Mumbai | 100% Safe & Certified | PestControl99",
@@ -72,56 +74,32 @@ export default function Home() {
       </div>
 
       {/* Service Selector Wizard */}
-      <section className="py-12 sm:py-16 md:py-20 bg-gradient-to-br from-gray-50 to-gray-100">
-        <div className="container mx-auto px-4 sm:px-6">
-          <div className="text-center mb-8 sm:mb-12">
-            <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-gray-900 mb-4">
-              Choose Your Pest & Property-Get Quotation by the same day
-            </h2>
+      <ClientOnly fallback={
+        <section className="py-12 sm:py-16 md:py-20 bg-gradient-to-br from-gray-50 to-gray-100">
+          <div className="container mx-auto px-4 sm:px-6">
+            <div className="text-center mb-8 sm:mb-12">
+              <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-gray-900 mb-4">
+                Choose Your Pest & Property – Get Quotation the Same Day
+              </h2>
+              <div className="animate-pulse">
+                <div className="h-4 bg-gray-300 rounded w-3/4 mx-auto"></div>
+              </div>
+            </div>
+            <div className="max-w-4xl mx-auto bg-white rounded-2xl sm:rounded-3xl p-6 sm:p-8 shadow-lg sm:shadow-xl">
+              <div className="animate-pulse space-y-6">
+                <div className="h-12 bg-gray-300 rounded"></div>
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
+                  <div className="h-12 bg-gray-300 rounded"></div>
+                  <div className="h-12 bg-gray-300 rounded"></div>
+                </div>
+                <div className="h-12 bg-gray-300 rounded"></div>
+              </div>
+            </div>
           </div>
-
-          <div className="max-w-4xl mx-auto bg-white rounded-2xl sm:rounded-3xl p-5 sm:p-8 shadow-lg sm:shadow-xl">
-            <form className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4 sm:gap-6">
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">Pest Type</label>
-                <select className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-green-500 text-sm sm:text-base">
-                  <option value="cockroaches">Cockroaches</option>
-                  <option value="rats">Rats</option>
-                  <option value="termites">Termites</option>
-                  <option value="mosquitoes">Mosquitoes</option>
-                </select>
-              </div>
-
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">Property Type</label>
-                <select className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-green-500 text-sm sm:text-base">
-                  <option value="1bhk">1BHK</option>
-                  <option value="3bhk">3BHK</option>
-                  <option value="restaurant">Restaurant</option>
-                </select>
-              </div>
-
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">Size</label>
-                <select className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-green-500 text-sm sm:text-base">
-                  <option value="500">500 sq.ft</option>
-                  <option value="1000">1000 sq.ft</option>
-                  <option value="2000">2000+ sq.ft</option>
-                </select>
-              </div>
-
-              <div className="flex items-end">
-                <button
-                  type="submit"
-                  className="w-full bg-green-500 text-white py-3 px-6 rounded-lg font-semibold hover:bg-green-600 transition-colors shadow-md hover:shadow-lg text-sm sm:text-base"
-                >
-                  Get Quote
-                </button>
-              </div>
-            </form>
-          </div>
-        </div>
-      </section>
+        </section>
+      }>
+        <HomeQuoteForm />
+      </ClientOnly>
 
 
 

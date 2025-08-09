@@ -70,12 +70,15 @@ export async function POST(request: NextRequest) {
                 'wasps': 'Wasps/Bees',
                 'bedbugs': 'Bed Bugs',
                 'fleas': 'Fleas',
+                'mosquitoes': 'Mosquitoes',
+                'flies': 'House Flies',
                 'other': 'Other',
                 'prevention': 'General Prevention'
               };
               return pestLabels[formData.pestType] || formData.pestType;
             })() : 'Not specified'
           }</p>
+          ${formData.additionalDetails ? `<p><strong>Additional Details:</strong> ${formData.additionalDetails}</p>` : ''}
         </div>
         
         <div style="text-align: center; margin-top: 30px; padding: 20px; background-color: #e8f5e8; border-radius: 8px;">
@@ -108,6 +111,7 @@ export async function POST(request: NextRequest) {
               <p><strong>Property Type:</strong> ${formData.propertyType}</p>
               <p><strong>Property Size:</strong> ${formData.propertySize}</p>
               ${formData.pestType ? `<p><strong>Pest Type:</strong> ${formData.pestType}</p>` : ''}
+              ${formData.additionalDetails ? `<p><strong>Additional Details:</strong> ${formData.additionalDetails}</p>` : ''}
             </div>
             <p>Best regards,<br>PestControl99 Team</p>
             <p style="color: #666; font-size: 12px;">Contact us: +91 98949 66921 | info@pestcontrol99.com</p>
