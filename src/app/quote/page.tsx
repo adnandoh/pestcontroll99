@@ -5,6 +5,7 @@ import { useState } from 'react';
 export default function QuotePage() {
   const [formData, setFormData] = useState({
     phone: '',
+    email: '',
     address: '',
     propertyType: 'residential',
     propertySize: '',
@@ -32,6 +33,7 @@ export default function QuotePage() {
         // Reset form after successful submission
         setFormData({
           phone: '',
+          email: '',
           address: '',
           propertyType: 'residential',
           propertySize: '',
@@ -109,22 +111,37 @@ export default function QuotePage() {
                 </div>
 
                 <div>
-                  <label htmlFor="propertyType" className="block text-sm font-medium text-gray-700 mb-2">
-                    Property Type *
+                  <label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-2">
+                    Email Address
                   </label>
-                  <select
-                    id="propertyType"
-                    name="propertyType"
-                    required
-                    value={formData.propertyType}
+                  <input
+                    type="email"
+                    id="email"
+                    name="email"
+                    value={formData.email}
                     onChange={handleChange}
+                    placeholder="your.email@example.com (optional)"
                     className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent"
-                  >
-                    <option value="residential">Residential</option>
-                    <option value="commercial">Commercial</option>
-                    <option value="industrial">Industrial</option>
-                  </select>
+                  />
                 </div>
+              </div>
+
+              <div>
+                <label htmlFor="propertyType" className="block text-sm font-medium text-gray-700 mb-2">
+                  Property Type *
+                </label>
+                <select
+                  id="propertyType"
+                  name="propertyType"
+                  required
+                  value={formData.propertyType}
+                  onChange={handleChange}
+                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent"
+                >
+                  <option value="residential">Residential</option>
+                  <option value="commercial">Commercial</option>
+                  <option value="industrial">Industrial</option>
+                </select>
               </div>
 
               <div>
@@ -223,7 +240,7 @@ export default function QuotePage() {
                 Call +91 98949 66921
               </a>
               <a
-                href="pestcontrol99official@gmail.com"
+                href="mailto:info@pestcontrol99.com"
                 className="border-2 border-primary-600 text-primary-600 px-6 py-3 rounded-lg font-semibold hover:bg-primary-600 hover:text-white transition-colors"
               >
                 Email Us

@@ -5,6 +5,14 @@ export async function POST(request: NextRequest) {
   try {
     const formData = await request.json();
 
+    // Validate required fields
+    if (!formData.phone || !formData.address || !formData.propertyType || !formData.propertySize) {
+      return NextResponse.json(
+        { success: false, error: 'Missing required fields' },
+        { status: 400 }
+      );
+    }
+
     // Check if email credentials are configured
     if (!process.env.EMAIL_USER || !process.env.EMAIL_PASS) {
       console.log('Email credentials not configured. Form data:', formData);
@@ -16,13 +24,18 @@ export async function POST(request: NextRequest) {
       });
     }
 
-    // Create transporter with better Gmail configuration
+    // Create transporter with flexible email configuration
     const transporter = nodemailer.createTransport({
-      service: 'gmail',
+      host: 'smtp.gmail.com',
+      port: 587,
+      secure: false, // true for 465, false for other ports
       auth: {
         user: process.env.EMAIL_USER,
         pass: process.env.EMAIL_PASS,
       },
+      tls: {
+        rejectUnauthorized: false
+      }
     });
 
     // Format the email content
@@ -73,12 +86,41 @@ export async function POST(request: NextRequest) {
 
     // Try to send email
     try {
+      // Send notification email to business
       await transporter.sendMail({
         from: process.env.EMAIL_USER,
-        to: 'martech@driveronhire.com',
+        to: process.env.EMAIL_USER, // Send to your own email
         subject: `New Quote Request - ${formData.phone}`,
         html: htmlContent,
       });
+
+      // Send confirmation email to customer (if they provided email)
+      if (formData.email) {
+        const customerConfirmation = `
+          <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
+            <h2 style="color: #2d5a27;">Thank You for Your Quote Request!</h2>
+            <p>Dear Customer,</p>
+            <p>We have received your pest control quote request and our team will contact you within 24 hours.</p>
+            <div style="background-color: #f9f9f9; padding: 20px; margin: 20px 0; border-radius: 8px;">
+              <h3>Your Request Details:</h3>
+              <p><strong>Phone:</strong> ${formData.phone}</p>
+              <p><strong>Address:</strong> ${formData.address}</p>
+              <p><strong>Property Type:</strong> ${formData.propertyType}</p>
+              <p><strong>Property Size:</strong> ${formData.propertySize}</p>
+              ${formData.pestType ? `<p><strong>Pest Type:</strong> ${formData.pestType}</p>` : ''}
+            </div>
+            <p>Best regards,<br>PestControl99 Team</p>
+            <p style="color: #666; font-size: 12px;">Contact us: +91 98949 66921 | info@pestcontrol99.com</p>
+          </div>
+        `;
+
+        await transporter.sendMail({
+          from: process.env.EMAIL_USER,
+          to: formData.email,
+          subject: 'Quote Request Confirmation - PestControl99',
+          html: customerConfirmation,
+        });
+      }
 
       return NextResponse.json({ success: true, message: 'Email sent successfully' });
     } catch (emailError) {
