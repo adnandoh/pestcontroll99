@@ -18,7 +18,7 @@ export default function StickyMobileCTA() {
     <div className="fixed bottom-0 left-0 right-0 z-50 md:hidden bg-white border-t border-gray-200 shadow-lg">
       <div className="flex">
         <a 
-          href="tel:+919894966921"
+          href="tel:+919594966921"
           className="flex-1 bg-green-600 text-white py-2 px-3 text-center font-medium hover:bg-green-700 transition-colors flex items-center justify-center text-sm"
         >
           <svg className="w-4 h-4 mr-1" fill="currentColor" viewBox="0 0 20 20">

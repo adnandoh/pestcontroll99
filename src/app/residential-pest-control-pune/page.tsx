@@ -21,10 +21,10 @@ export default function ResidentialPestControlPune() {
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <a 
-                href="tel:+919812345678" 
+                href="tel:+919594966921" 
                 className="bg-white text-green-600 px-8 py-4 rounded-full font-semibold hover:bg-gray-100 transition-colors"
               >
-                Call Now: +91 98123 45678
+                Call Now: +91 95949 66921
               </a>
               <a 
                 href="/quote" 

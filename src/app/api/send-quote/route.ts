@@ -114,7 +114,7 @@ export async function POST(request: NextRequest) {
               ${formData.additionalDetails ? `<p><strong>Additional Details:</strong> ${formData.additionalDetails}</p>` : ''}
             </div>
             <p>Best regards,<br>PestControl99 Team</p>
-            <p style="color: #666; font-size: 12px;">Contact us: +91 98949 66921 | info@pestcontrol99.com</p>
+            <p style="color: #666; font-size: 12px;">Contact us: +91 95949 66921 | info@pestcontrol99.com</p>
           </div>
         `;
 

@@ -411,10 +411,10 @@ export default function TermiteControlPage() {
               Book Termite Treatment
             </Link>
             <a 
-              href="tel:+919812345678" 
+              href="tel:+919594966921" 
               className="border-2 border-white text-white px-8 py-4 rounded-full font-semibold hover:bg-white hover:text-green-600 transition-colors text-lg"
             >
-              Call: +91 98123 45678
+              Call: +91 95949 66921
             </a>
           </div>
         </div>

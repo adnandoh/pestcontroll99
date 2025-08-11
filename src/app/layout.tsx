@@ -63,11 +63,13 @@ export default function RootLayout({
               "name": "PestControl99",
               "description": "Professional pest control services in Mumbai, Pune & Navi Mumbai",
               "url": "https://www.pestcontrol99.com",
-              "telephone": "+91-9894966921",
+              "telephone": "+91-9594966921",
               "address": {
                 "@type": "PostalAddress",
-                "addressLocality": "Mumbai",
-                "addressRegion": "Maharashtra",
+                "streetAddress": "9/B Arasa shopping center, S.V road, Next to Paneri Shop",
+                "addressLocality": "Andheri West",
+                "addressRegion": "Mumbai, Maharashtra",
+                "postalCode": "400058",
                 "addressCountry": "IN"
               },
               "openingHours": "Mo-Su 00:00-23:59",

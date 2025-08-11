@@ -386,10 +386,10 @@ function QuoteForm() {
               </h3>
               <div className="flex flex-col sm:flex-row gap-4 justify-center">
                 <a
-                  href="tel:+919894966921"
+                  href="tel:+919594966921"
                   className="bg-green-600 text-white px-6 py-3 rounded-lg font-semibold hover:bg-green-700 transition-colors"
                 >
-                  Call +91 98949 66921
+                  Call +91 95949 66921
                 </a>
                 <a
                   href="mailto:info@pestcontrol99.com"

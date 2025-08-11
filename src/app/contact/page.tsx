@@ -120,7 +120,7 @@ export default function Contact() {
                       onChange={handleChange}
                       required
                       className="w-full p-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent text-sm"
-                      placeholder="+91 98123 45678"
+                      placeholder="+91 95949 66921"
                     />
                   </div>
                   <div>
@@ -173,7 +173,7 @@ export default function Contact() {
                     </div>
                     <div>
                       <h3 className="text-base font-semibold text-gray-900 mb-1">Phone</h3>
-                      <p className="text-gray-600 text-sm">+91 98123 45678</p>
+                      <p className="text-gray-600 text-sm">+91 95949 66921</p>
                       <p className="text-xs text-gray-500">Available 24/7 for emergencies</p>
                     </div>
                   </div>
@@ -200,7 +200,7 @@ export default function Contact() {
                     </div>
                     <div>
                       <h3 className="text-base font-semibold text-gray-900 mb-1">Address</h3>
-                      <p className="text-gray-600 text-sm">123 Main St, City, State 12345</p>
+                      <p className="text-gray-600 text-sm">9/B Arasa shopping center, S.V road, Next to Paneri Shop, Andheri West, Mumbai - 400058</p>
                       <p className="text-xs text-gray-500">Visit us during business hours</p>
                     </div>
                   </div>
