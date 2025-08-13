@@ -58,7 +58,7 @@ export default function Home() {
                 </svg>
               </Link>
               <a
-                href="https://wa.me/9594966921?text=Hi%20PestControl99!%20I%20need%20help%20with%20pest%20control%20services.%20Can%20you%20please%20provide%20me%20with%20more%20information%20and%20a%20quote?"
+                href="https://wa.me/9594966921?text=Hello%20PestControl99,%20can%20you%20share%20details%20and%20pricing%20for%20your%20pest%20control%20services?"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="inline-flex items-center justify-center border-2 border-white text-white hover:bg-white hover:text-gray-900 font-semibold px-6 sm:px-8 py-3 sm:py-4 rounded-lg transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 shadow-lg hover:shadow-xl text-sm sm:text-base"
@@ -326,7 +326,7 @@ export default function Home() {
               Get My 60-Second Quote →
             </Link>
             <a
-              href="https://wa.me/9594966921?text=Hello%20PestControl99!%20I%20saw%20your%20website%20and%20I%27m%20interested%20in%20your%20pest%20control%20services.%20Could%20you%20please%20help%20me%20with%20a%20quote%20and%20more%20details?"
+              href="https://wa.me/9594966921?text=Hello%20PestControl99,%20can%20you%20share%20details%20and%20pricing%20for%20your%20pest%20control%20services?"
               target="_blank"
               rel="noopener noreferrer"
               className="border border-white text-white px-5 sm:px-6 py-2 sm:py-3 rounded-full font-medium text-sm hover:bg-white hover:text-green-600 transition-all duration-300 shadow-md flex items-center justify-center gap-2"

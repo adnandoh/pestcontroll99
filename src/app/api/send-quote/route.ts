@@ -6,7 +6,7 @@ export async function POST(request: NextRequest) {
     const formData = await request.json();
 
     // Validate required fields
-    if (!formData.phone || !formData.address || !formData.propertyType || !formData.propertySize) {
+    if (!formData.name || !formData.phone || !formData.address) {
       return NextResponse.json(
         { success: false, error: 'Missing required fields' },
         { status: 400 }
@@ -38,6 +38,34 @@ export async function POST(request: NextRequest) {
       }
     });
 
+    // Format pest types for display
+    const formatPestTypes = (pestTypes: string[] | string) => {
+      if (Array.isArray(pestTypes)) {
+        return pestTypes.join(', ');
+      }
+      if (typeof pestTypes === 'string') {
+        const pestLabels: { [key: string]: string } = {
+          'ants': 'Ants',
+          'cockroaches': 'Cockroaches',
+          'termites': 'Termites',
+          'rodents': 'Rodents (Mice/Rats)',
+          'spiders': 'Spiders',
+          'wasps': 'Wasps/Bees',
+          'bedbugs': 'Bed Bugs',
+          'fleas': 'Fleas',
+          'mosquitoes': 'Mosquitoes',
+          'flies': 'House Flies',
+          'other': 'Other',
+          'prevention': 'General Prevention'
+        };
+        return pestLabels[pestTypes] || pestTypes;
+      }
+      return 'Not specified';
+    };
+
+    const pestTypesDisplay = formData.pestTypes ? formatPestTypes(formData.pestTypes) : 
+                            formData.pestType ? formatPestTypes(formData.pestType) : 'Not specified';
+
     // Format the email content
     const htmlContent = `
       <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
@@ -45,44 +73,20 @@ export async function POST(request: NextRequest) {
           New Pest Control Quote Request
         </h2>
         
-        <div style="background-color: #f9f9f9; padding: 20px; margin: 20px 0; border-radius: 8px;">
-          <h3 style="color: #2d5a27; margin-top: 0;">Contact Information</h3>
-          <p><strong>Phone:</strong> ${formData.phone}</p>
+        <div style="background-color: #e8f5e8; padding: 20px; margin: 20px 0; border-radius: 8px; border-left: 4px solid #2d5a27;">
+          <h3 style="color: #2d5a27; margin-top: 0; margin-bottom: 15px;">🔥 Priority Information</h3>
+          ${formData.name ? `<p style="margin: 8px 0; font-size: 16px;"><strong>Name:</strong> ${formData.name}</p>` : '<p style="margin: 8px 0; font-size: 16px;"><strong>Name:</strong> <span style="color: #666;">Not provided</span></p>'}
+          <p style="margin: 8px 0; font-size: 16px;"><strong>Phone:</strong> <span style="color: #2d5a27; font-weight: bold;">${formData.phone}</span></p>
+          <p style="margin: 8px 0; font-size: 16px;"><strong>Service Type:</strong> <span style="color: #2d5a27; font-weight: bold;">${pestTypesDisplay}</span></p>
         </div>
         
         <div style="background-color: #f9f9f9; padding: 20px; margin: 20px 0; border-radius: 8px;">
-          <h3 style="color: #2d5a27; margin-top: 0;">Property Details</h3>
-          <p><strong>Address:</strong> ${formData.address}</p>
-          <p><strong>Property Type:</strong> ${formData.propertyType}</p>
-          <p><strong>Property Size:</strong> ${formData.propertySize}</p>
-        </div>
-        
-        <div style="background-color: #f9f9f9; padding: 20px; margin: 20px 0; border-radius: 8px;">
-          <h3 style="color: #2d5a27; margin-top: 0;">Pest Information</h3>
-          <p><strong>Pest Type:</strong> ${
-            formData.pestType ? (() => {
-              const pestLabels: { [key: string]: string } = {
-                'ants': 'Ants',
-                'cockroaches': 'Cockroaches',
-                'termites': 'Termites',
-                'rodents': 'Rodents (Mice/Rats)',
-                'spiders': 'Spiders',
-                'wasps': 'Wasps/Bees',
-                'bedbugs': 'Bed Bugs',
-                'fleas': 'Fleas',
-                'mosquitoes': 'Mosquitoes',
-                'flies': 'House Flies',
-                'other': 'Other',
-                'prevention': 'General Prevention'
-              };
-              return pestLabels[formData.pestType] || formData.pestType;
-            })() : 'Not specified'
-          }</p>
-          ${formData.additionalDetails ? `<p><strong>Additional Details:</strong> ${formData.additionalDetails}</p>` : ''}
+          <h3 style="color: #2d5a27; margin-top: 0;">📍 Property Details</h3>
+          <p><strong>Address:</strong> ${formData.address || formData.streetAddress || 'Not provided'}</p>
         </div>
         
         <div style="text-align: center; margin-top: 30px; padding: 20px; background-color: #e8f5e8; border-radius: 8px;">
-          <p style="margin: 0; color: #666;">Submitted on: ${new Date().toLocaleString()}</p>
+          <p style="margin: 0; color: #666;">Submitted on: ${new Date().toLocaleString('en-IN', { timeZone: 'Asia/Kolkata' })}</p>
         </div>
       </div>
     `;
@@ -93,38 +97,11 @@ export async function POST(request: NextRequest) {
       await transporter.sendMail({
         from: process.env.EMAIL_USER,
         to: process.env.EMAIL_USER, // Send to your own email
-        subject: `New Quote Request - ${formData.phone}`,
+        subject: `🔥 URGENT: New Quote Request - ${formData.name || 'Customer'} - ${formData.phone} - ${pestTypesDisplay}`,
         html: htmlContent,
       });
 
-      // Send confirmation email to customer (if they provided email)
-      if (formData.email) {
-        const customerConfirmation = `
-          <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
-            <h2 style="color: #2d5a27;">Thank You for Your Quote Request!</h2>
-            <p>Dear Customer,</p>
-            <p>We have received your pest control quote request and our team will contact you within 24 hours.</p>
-            <div style="background-color: #f9f9f9; padding: 20px; margin: 20px 0; border-radius: 8px;">
-              <h3>Your Request Details:</h3>
-              <p><strong>Phone:</strong> ${formData.phone}</p>
-              <p><strong>Address:</strong> ${formData.address}</p>
-              <p><strong>Property Type:</strong> ${formData.propertyType}</p>
-              <p><strong>Property Size:</strong> ${formData.propertySize}</p>
-              ${formData.pestType ? `<p><strong>Pest Type:</strong> ${formData.pestType}</p>` : ''}
-              ${formData.additionalDetails ? `<p><strong>Additional Details:</strong> ${formData.additionalDetails}</p>` : ''}
-            </div>
-            <p>Best regards,<br>PestControl99 Team</p>
-            <p style="color: #666; font-size: 12px;">Contact us: +91 95949 66921 | info@pestcontrol99.com</p>
-          </div>
-        `;
-
-        await transporter.sendMail({
-          from: process.env.EMAIL_USER,
-          to: formData.email,
-          subject: 'Quote Request Confirmation - PestControl99',
-          html: customerConfirmation,
-        });
-      }
+      // Note: Customer confirmation email removed since email field is no longer collected
 
       return NextResponse.json({ success: true, message: 'Email sent successfully' });
     } catch (emailError) {

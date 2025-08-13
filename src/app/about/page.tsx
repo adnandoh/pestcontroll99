@@ -75,7 +75,7 @@ export default function AboutPage() {
                     </svg>
                   </Link>
                   <a
-                    href="https://wa.me/9594966921?text=Hi%20PestControl99!%20I%20want%20to%20know%20more%20about%20your%20services."
+                    href="https://wa.me/9594966921?text=Hello%20PestControl99,%20can%20you%20share%20details%20and%20pricing%20for%20your%20pest%20control%20services?"
                     target="_blank"
                     rel="noopener noreferrer"
                     className="group inline-flex items-center justify-center bg-white border-2 border-green-500 text-green-600 px-5 py-2.5 rounded-lg font-semibold hover:bg-green-500 hover:text-white transition-all duration-300 shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 text-sm"
@@ -184,8 +184,6 @@ export default function AboutPage() {
             <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4 text-center">
               How we work
             </h2>
-            <p className="text-lg text-gray-600 mb-12 text-center">(start to finish)</p>
-
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
               {/* Step 1: Inspect */}
               <div className="relative">
@@ -827,7 +825,7 @@ export default function AboutPage() {
                 We&apos;re expanding our coverage daily. Contact us to check if we serve your location.
               </p>
               <a
-                href="https://wa.me/9594966921?text=Hi%20PestControl99!%20I%20want%20to%20check%20if%20you%20serve%20my%20area."
+                href="https://wa.me/9594966921?text=Hello%20PestControl99,%20can%20you%20share%20details%20and%20pricing%20for%20your%20pest%20control%20services?"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="inline-flex items-center bg-green-500 text-white px-6 py-3 rounded-lg font-semibold hover:bg-green-600 transition-colors shadow-lg gap-2"
@@ -864,7 +862,7 @@ export default function AboutPage() {
                 Get Your Quote
               </Link>
               <a
-                href="https://wa.me/9594966921?text=Hi%20PestControl99!%20I%20want%20to%20know%20more%20about%20your%20services."
+                href="https://wa.me/9594966921?text=Hello%20PestControl99,%20can%20you%20share%20details%20and%20pric20services."
                 target="_blank"
                 rel="noopener noreferrer"
                 className="border-2 border-white text-white px-8 py-4 rounded-lg font-semibold hover:bg-white hover:text-gray-900 transition-colors shadow-lg text-lg flex items-center justify-center gap-2"

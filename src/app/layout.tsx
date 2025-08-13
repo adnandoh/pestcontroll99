@@ -5,6 +5,7 @@ import "./globals.css";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import StickyMobileCTA from "@/components/StickyMobileCTA";
+import WebVitals from "@/components/WebVitals";
 
 // const inter = Inter({
 //   variable: "--font-inter",
@@ -108,29 +109,7 @@ export default function RootLayout({
         </main>
         <Footer />
         <StickyMobileCTA />
-              {/* Performance Monitoring */}
-        <Script id="web-vitals" strategy="afterInteractive">
-          {`
-            function sendToAnalytics(metric) {
-              if (window.gtag) {
-                window.gtag('event', metric.name, {
-                  event_category: 'Web Vitals',
-                  event_label: metric.id,
-                  value: Math.round(metric.name === 'CLS' ? metric.value * 1000 : metric.value),
-                  non_interaction: true,
-                });
-              }
-            }
-            
-            import('https://unpkg.com/web-vitals@3/dist/web-vitals.js').then(({ getCLS, getFID, getFCP, getLCP, getTTFB }) => {
-              getCLS(sendToAnalytics);
-              getFID(sendToAnalytics);
-              getFCP(sendToAnalytics);
-              getLCP(sendToAnalytics);
-              getTTFB(sendToAnalytics);
-            });
-          `}
-        </Script>
+        <WebVitals />
       </body>
     </html>
   );

@@ -70,7 +70,7 @@ export default function MultiSelectPest({ selectedPests, onChange, className = '
   return (
     <div className={`relative ${className}`} ref={dropdownRef}>
       <label className="block text-sm font-medium text-gray-700 mb-2">
-        Type of Pest Issues *
+        Type of Pest Problem *
       </label>
       
       {/* Dropdown Trigger */}

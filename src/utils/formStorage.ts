@@ -2,21 +2,18 @@
 
 export interface HomeFormData {
   pestTypes: string[];
-  propertyType: string;
-  propertySize: string;
-  name?: string;
-  phone?: string;
-  email?: string;
+  phone: string;
+  address?: string;
+  streetAddress: string;
+  name: string;
 }
 
 export interface QuoteFormData {
+  name?: string;
   phone: string;
-  email: string;
   address: string;
-  propertyType: string;
-  propertySize: string;
+  streetAddress?: string;
   pestTypes: string[];
-  additionalDetails?: string;
 }
 
 const STORAGE_KEY = 'pestcontrol_form_data';
@@ -57,56 +54,54 @@ export const clearFormData = (): void => {
 // URL parameter utilities for passing data between pages
 export const encodeFormDataToURL = (data: HomeFormData): string => {
   const params = new URLSearchParams();
-  
+
   if (data.pestTypes.length > 0) {
     params.set('pests', data.pestTypes.join(','));
-  }
-  if (data.propertyType) {
-    params.set('propertyType', data.propertyType);
-  }
-  if (data.propertySize) {
-    params.set('propertySize', data.propertySize);
-  }
-  if (data.name) {
-    params.set('name', data.name);
   }
   if (data.phone) {
     params.set('phone', data.phone);
   }
-  if (data.email) {
-    params.set('email', data.email);
+  if (data.address) {
+    params.set('address', data.address);
   }
-  
+  if (data.streetAddress) {
+    params.set('streetAddress', data.streetAddress);
+  }
+  if (data.name) {
+    params.set('name', data.name);
+  }
+
   return params.toString();
 };
 
 export const decodeFormDataFromURL = (searchParams: URLSearchParams): Partial<QuoteFormData> => {
   const data: Partial<QuoteFormData> = {};
-  
+
   const pests = searchParams.get('pests');
   if (pests) {
     data.pestTypes = pests.split(',').filter(Boolean);
   }
-  
-  const propertyType = searchParams.get('propertyType');
-  if (propertyType) {
-    data.propertyType = propertyType;
-  }
-  
-  const propertySize = searchParams.get('propertySize');
-  if (propertySize) {
-    data.propertySize = propertySize;
-  }
-  
+
   const phone = searchParams.get('phone');
   if (phone) {
     data.phone = phone;
   }
-  
-  const email = searchParams.get('email');
-  if (email) {
-    data.email = email;
+
+  const address = searchParams.get('address');
+  if (address) {
+    data.address = address;
   }
-  
+
+  const streetAddress = searchParams.get('streetAddress');
+  if (streetAddress) {
+    data.streetAddress = streetAddress; // Keep streetAddress separate for quote form
+    data.address = streetAddress; // Also map to address for backward compatibility
+  }
+
+  const name = searchParams.get('name');
+  if (name) {
+    data.name = name;
+  }
+
   return data;
 };
