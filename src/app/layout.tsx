@@ -103,6 +103,12 @@ export default function RootLayout({
           `}
         </Script>
         
+        {/* Google Maps API */}
+        <Script
+          src={`https://maps.googleapis.com/maps/api/js?key=${process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY}&libraries=places&callback=Function.prototype`}
+          strategy="afterInteractive"
+        />
+        
         <Header />
         <main className="flex-grow pb-16 md:pb-0">
           {children}

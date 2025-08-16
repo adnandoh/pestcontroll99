@@ -3,6 +3,7 @@
 import { useState } from 'react';
 import { saveFormData, HomeFormData } from '@/utils/formStorage';
 import MultiSelectPest from './MultiSelectPest';
+import { AddressInput } from './GoogleMaps';
 
 export default function HomeQuoteForm() {
   const [formData, setFormData] = useState<HomeFormData>({
@@ -203,20 +204,12 @@ export default function HomeQuoteForm() {
 
             {/* 4. Street Address */}
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
-                Street Address *
-              </label>
-              <input
-                type="text"
+              <AddressInput
                 value={formData.streetAddress}
-                onChange={(e) => handleChange('streetAddress', e.target.value)}
-                placeholder="Enter your street address"
-                className={`w-full p-3 border rounded-lg focus:ring-2 focus:ring-green-500 focus:border-green-500 text-sm sm:text-base ${errors.streetAddress ? 'border-red-300' : 'border-gray-300'
-                  }`}
+                onChange={(value) => handleChange('streetAddress', value)}
+                error={errors.streetAddress}
+                required
               />
-              {errors.streetAddress && (
-                <p className="mt-1 text-sm text-red-600">{errors.streetAddress}</p>
-              )}
             </div>
 
 

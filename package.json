@@ -14,12 +14,14 @@
     "lighthouse": "lighthouse http://localhost:3000 --output=html --output-path=./lighthouse-report.html"
   },
   "dependencies": {
+    "@react-google-maps/api": "^2.20.7",
     "@types/nodemailer": "^6.4.17",
     "next": "15.4.5",
     "nodemailer": "^7.0.5",
     "react": "19.1.0",
     "react-dom": "19.1.0",
-    "sharp": "^0.34.3"
+    "sharp": "^0.34.3",
+    "use-places-autocomplete": "^4.0.1"
   },
   "devDependencies": {
     "@eslint/eslintrc": "^3",

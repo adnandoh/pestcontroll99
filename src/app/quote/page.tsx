@@ -4,6 +4,7 @@ import { useState, useEffect, Suspense } from 'react';
 import { useSearchParams } from 'next/navigation';
 import { decodeFormDataFromURL, getFormData, clearFormData } from '@/utils/formStorage';
 import MultiSelectPest from '@/components/MultiSelectPest';
+import { AddressInput } from '@/components/GoogleMaps';
 
 import Breadcrumb from '@/components/Breadcrumb';
 
@@ -279,24 +280,15 @@ function QuoteForm() {
 
                 {/* 4. Street Address */}
                 <div>
-                  <label htmlFor="streetAddress" className="block text-sm font-medium text-gray-700 mb-2">
-                    Street Address *
-                  </label>
-                  <input
-                    type="text"
-                    id="streetAddress"
-                    name="streetAddress"
-                    required
+                  <AddressInput
                     value={formData.streetAddress}
-                    onChange={handleChange}
-                    placeholder="Enter your street address"
-                    className={`w-full px-3 py-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent ${
-                      errors.streetAddress ? 'border-red-300' : 'border-gray-300'
-                    }`}
+                    onChange={(value) => {
+                      const e = { target: { name: 'streetAddress', value } };
+                      handleChange(e as any);
+                    }}
+                    error={errors.streetAddress}
+                    required
                   />
-                  {errors.streetAddress && (
-                    <p className="mt-1 text-sm text-red-600">{errors.streetAddress}</p>
-                  )}
                 </div>
 
 
