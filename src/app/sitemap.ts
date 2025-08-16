@@ -18,19 +18,13 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       priority: 0.9,
     },
     {
-      url: `${baseUrl}/services/termite-control/`,
+      url: `${baseUrl}/services/mosquito-pest-control/`,
       lastModified: new Date(),
       changeFrequency: 'monthly',
       priority: 0.8,
     },
     {
-      url: `${baseUrl}/services/mosquito-pest-control-mumbai/`,
-      lastModified: new Date(),
-      changeFrequency: 'monthly',
-      priority: 0.8,
-    },
-    {
-      url: `${baseUrl}/services/cockroach-pest-control-mumbai/`,
+      url: `${baseUrl}/services/cockroach-pest-control/`,
       lastModified: new Date(),
       changeFrequency: 'monthly',
       priority: 0.8,

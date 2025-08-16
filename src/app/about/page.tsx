@@ -78,7 +78,7 @@ export default function AboutPage() {
                     </svg>
                   </Link>
                   <a
-                    href="https://wa.me/9594966921?text=Hello%20PestControl99,%20can%20you%20share%20details%20and%20pricing%20for%20your%20pest%20control%20services?"
+                    href="https://wa.me/7710032627?text=Hello%20PestControl99,%20can%20you%20share%20details%20and%20pricing%20for%20your%20pest%20control%20services?"
                     target="_blank"
                     rel="noopener noreferrer"
                     className="group inline-flex items-center justify-center bg-white border-2 border-green-500 text-green-600 px-5 py-2.5 rounded-lg font-semibold hover:bg-green-500 hover:text-white transition-all duration-300 shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 text-sm"
@@ -828,7 +828,7 @@ export default function AboutPage() {
                 We&apos;re expanding our coverage daily. Contact us to check if we serve your location.
               </p>
               <a
-                href="https://wa.me/9594966921?text=Hello%20PestControl99,%20can%20you%20share%20details%20and%20pricing%20for%20your%20pest%20control%20services?"
+                href="https://wa.me/7710032627?text=Hello%20PestControl99,%20can%20you%20share%20details%20and%20pricing%20for%20your%20pest%20control%20services?"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="inline-flex items-center bg-green-500 text-white px-6 py-3 rounded-lg font-semibold hover:bg-green-600 transition-colors shadow-lg gap-2"
@@ -865,7 +865,7 @@ export default function AboutPage() {
                 Get Your Quote
               </Link>
               <a
-                href="https://wa.me/9594966921?text=Hello%20PestControl99,%20can%20you%20share%20details%20and%20pric20services."
+                href="https://wa.me/7710032627?text=Hello%20PestControl99,%20can%20you%20share%20details%20and%20pric20services."
                 target="_blank"
                 rel="noopener noreferrer"
                 className="border-2 border-white text-white px-8 py-4 rounded-lg font-semibold hover:bg-white hover:text-gray-900 transition-colors shadow-lg text-lg flex items-center justify-center gap-2"

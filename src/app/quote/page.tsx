@@ -326,10 +326,10 @@ function QuoteForm() {
               </h3>
               <div className="flex flex-col sm:flex-row gap-4 justify-center">
                 <a
-                  href="tel:+919594966921"
+                  href="tel:+917710032627"
                   className="bg-green-600 text-white px-6 py-3 rounded-lg font-semibold hover:bg-green-700 transition-colors"
                 >
-                  Call +91 95949 66921
+                  Call +91 77100 32627
                 </a>
                 <a
                  
@@ -378,7 +378,7 @@ function QuoteForm() {
               <div className="flex gap-3">
                 {/* WhatsApp Button */}
                 <a
-                  href="https://wa.me/919594966921?text=Hi%2C%20I%20just%20submitted%20a%20quote%20request%20on%20your%20website.%20Can%20you%20please%20provide%20me%20with%20a%20detailed%20quote%3F"
+                  href="https://wa.me/917710032627?text=Hi%2C%20I%20just%20submitted%20a%20quote%20request%20on%20your%20website.%20Can%20you%20please%20provide%20me%20with%20a%20detailed%20quote%3F"
                   target="_blank"
                   rel="noopener noreferrer"
                   className="flex-1 bg-green-500 text-white py-3 px-4 rounded-lg font-semibold hover:bg-green-600 transition-colors flex items-center justify-center gap-2"
@@ -391,7 +391,7 @@ function QuoteForm() {
 
                 {/* Call Button */}
                 <a
-                  href="tel:+919594966921"
+                  href="tel:+917710032627"
                   className="flex-1 bg-blue-500 text-white py-3 px-4 rounded-lg font-semibold hover:bg-blue-600 transition-colors flex items-center justify-center gap-2"
                 >
                   <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">

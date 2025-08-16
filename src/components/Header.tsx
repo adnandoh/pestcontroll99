@@ -14,10 +14,8 @@ export default function Header() {
   // Services data
   const services = [
     { name: 'All Services', href: '/services' },
-    { name: 'Cockroach Pest Control', href: '/services/cockroach-pest-control-mumbai' },
-    { name: 'Mosquito Pest Control', href: '/services/mosquito-pest-control-mumbai' },
-    { name: 'Termite Control', href: '/services/termite-control' },
-    { name: 'Insects Pest Control', href: '/services/insects-pest-control-mumbai' },
+    { name: 'Cockroach Pest Control', href: '/services/cockroach-pest-control' },
+    { name: 'Mosquito Pest Control', href: '/services/mosquito-pest-control' },
   ];
 
   // Function to close mobile menu when link is clicked

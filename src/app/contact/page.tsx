@@ -120,7 +120,7 @@ export default function Contact() {
                       onChange={handleChange}
                       required
                       className="w-full p-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent text-sm"
-                      placeholder="+91 95949 66921"
+                      placeholder="+91 77100 32627"
                     />
                   </div>
                   <div>
@@ -173,7 +173,7 @@ export default function Contact() {
                     </div>
                     <div>
                       <h3 className="text-base font-semibold text-gray-900 mb-1">Phone</h3>
-                      <p className="text-gray-600 text-sm">+91 95949 66921</p>
+                      <p className="text-gray-600 text-sm">+91 77100 32627</p>
                       <p className="text-xs text-gray-500">Available 24/7 for emergencies</p>
                     </div>
                   </div>

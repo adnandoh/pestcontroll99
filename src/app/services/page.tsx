@@ -67,13 +67,13 @@ export default function ServicesPage() {
       title: "COCKROACH PEST CONTROL",
       description: "Say goodbye to cockroaches with our reliable and long-lasting treatments. Odourless gel treatment with 365-day warranty.",
       image: "/images/Cockroach.webp",
-      href: "/services/cockroach-pest-control-mumbai"
+      href: "/services/cockroach-pest-control"
     },
     {
       title: "MOSQUITO PEST CONTROL",
       description: "Protect your family from mosquito-borne diseases with our effective control solutions. Low-odour mist plus larvae control.",
       image: "/images/Mosquito.webp",
-      href: "/services/mosquito-pest-control-mumbai"
+      href: "/services/mosquito-pest-control"
     }
   ];
 
@@ -132,10 +132,10 @@ export default function ServicesPage() {
               Get Free Quote
             </Link>
             <a 
-              href="tel:+919594966921" 
+              href="tel:+917710032627" 
               className="border-2 border-white text-white px-6 sm:px-8 py-3 sm:py-4 rounded font-semibold hover:bg-white hover:text-slate-800 transition-colors text-base sm:text-lg"
             >
-              Call Now: +91 95949 66921
+              Call Now: +91 77100 32627
             </a>
           </div>
         </div>
