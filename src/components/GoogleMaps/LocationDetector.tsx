@@ -1,7 +1,7 @@
 'use client';
 
 import { useState } from 'react';
-import { getGeocode, getLatLng } from 'use-places-autocomplete';
+import { getGeocode } from 'use-places-autocomplete';
 
 interface LocationDetectorProps {
   onLocationDetected: (address: string) => void;

@@ -4,6 +4,7 @@ import { useState, useEffect, useRef, KeyboardEvent } from 'react';
 import usePlacesAutocomplete, {
   getGeocode,
   getLatLng,
+  Suggestion,
 } from 'use-places-autocomplete';
 
 interface AddressAutocompleteProps {
@@ -120,7 +121,7 @@ export default function AddressAutocomplete({
     }
   };
 
-  const handleSelect = (suggestion: any) => () => {
+  const handleSelect = (suggestion: Suggestion) => () => {
     setValue(suggestion.description, false);
     onChange(suggestion.description);
     clearSuggestions();
@@ -168,7 +169,7 @@ export default function AddressAutocomplete({
           {data.map((suggestion, index) => (
             <div
               key={suggestion.place_id}
-              ref={el => suggestionsRef.current[index] = el}
+              ref={(el: HTMLDivElement | null) => { suggestionsRef.current[index] = el; }}
               onClick={handleSelect(suggestion)}
               className={`px-4 py-2 cursor-pointer text-gray-700 text-sm flex items-center ${selectedIndex === index ? 'bg-gray-100' : 'hover:bg-gray-50'}`}
             >

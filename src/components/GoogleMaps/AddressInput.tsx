@@ -23,11 +23,9 @@ export default function AddressInput({
   label = 'Street Address',
   required = false,
 }: AddressInputProps) {
-  const [coordinates, setCoordinates] = useState<{ lat: number; lng: number } | null>(null);
-
   const handleAddressSelect = (address: string, lat: number, lng: number) => {
     onChange(address);
-    setCoordinates({ lat, lng });
+    // Coordinates are received but not used in this component
   };
 
   const handleLocationDetected = (address: string) => {
