@@ -1,7 +1,6 @@
 'use client';
 
 import { useState } from 'react';
-import LocationInput from './LocationInput';
 
 interface QuoteFormProps {
   service?: string;
@@ -134,12 +133,18 @@ export default function QuoteForm({ service, className = '' }: QuoteFormProps) {
       </div>
       
       <div className="mt-6">
-        <LocationInput
+        <label htmlFor="address" className="block text-sm font-medium text-gray-700 mb-2">
+          Property Address *
+        </label>
+        <input
+          type="text"
+          id="address"
+          name="address"
+          required
           value={formData.address}
-          onChange={(value) => setFormData({ ...formData, address: value })}
-          placeholder="Enter your property address or use location"
-          label="Property Address"
-          required={true}
+          onChange={handleChange}
+          className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent"
+          placeholder="Enter your property address"
         />
       </div>
       
