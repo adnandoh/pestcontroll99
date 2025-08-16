@@ -12,6 +12,9 @@ export const metadata: Metadata = {
     description: "Comprehensive pest control services with same-day response. ISO-certified experts for all pest problems.",
     type: "website",
   },
+  alternates: {
+    canonical: "https://www.pestcontrol99.com/services",
+  },
 };
 
 interface ServiceCardProps {

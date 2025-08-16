@@ -12,6 +12,9 @@ export const metadata: Metadata = {
     description: "Expert termite control with 100% safe, odorless treatment and comprehensive warranty.",
     type: "website",
   },
+  alternates: {
+    canonical: "https://www.pestcontrol99.com/services/termite-control",
+  },
 };
 
 export default function TermiteControlPage() {

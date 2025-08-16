@@ -4,6 +4,9 @@ export const metadata: Metadata = {
   title: "Residential Pest Control in Pune | Same-Day Service | PestControl99",
   description: "Professional residential pest control services in Pune. Safe, eco-friendly treatment for homes. ISO-certified experts with 24/7 emergency service. Get instant quote.",
   keywords: "residential pest control pune, home pest control pune, cockroach control pune, termite control pune, safe pest control pune",
+  alternates: {
+    canonical: "https://www.pestcontrol99.com/residential-pest-control-pune",
+  },
 };
 
 export default function ResidentialPestControlPune() {

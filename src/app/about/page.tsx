@@ -12,6 +12,9 @@ export const metadata: Metadata = {
     description: "Same-day, low-odour pest control in Mumbai. Clear prices, written assurance, trained local technicians, and GST invoice provided.",
     type: "website",
   },
+  alternates: {
+    canonical: "https://www.pestcontrol99.com/about",
+  },
 };
 
 export default function AboutPage() {

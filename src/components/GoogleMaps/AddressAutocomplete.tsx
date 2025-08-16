@@ -138,29 +138,83 @@ export default function AddressAutocomplete({
 
   if (!ready) {
     return (
-      <input
-        type="text"
-        value={value}
-        onChange={(e) => onChange(e.target.value)}
-        placeholder={placeholder}
-        className={className}
-        disabled
-      />
+      <div className="relative">
+        <input
+          type="text"
+          value={value}
+          onChange={(e) => onChange(e.target.value)}
+          placeholder={placeholder}
+          className={`${className} pr-10`}
+          disabled
+        />
+        {value && (
+          <button
+            type="button"
+            onClick={() => onChange("")}
+            className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600 z-10"
+            aria-label="Clear input"
+          >
+            <svg
+              className="w-4 h-4"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth="2"
+                d="M6 18L18 6M6 6l12 12"
+              />
+            </svg>
+          </button>
+        )}
+      </div>
     );
   }
 
   return (
     <div className="relative" ref={dropdownRef}>
-      <input
-        type="text"
-        value={inputValue}
-        onChange={handleInput}
-        onKeyDown={handleKeyDown}
-        onFocus={() => setIsFocused(true)}
-        placeholder={placeholder}
-        className={className}
-        disabled={!ready}
-      />
+      <div className="relative">
+        <input
+          type="text"
+          value={inputValue}
+          onChange={handleInput}
+          onKeyDown={handleKeyDown}
+          onFocus={() => setIsFocused(true)}
+          placeholder={placeholder}
+          className={`${className} pr-10`}
+          disabled={!ready}
+        />
+        {inputValue && (
+          <button
+            type="button"
+            onClick={() => {
+              setValue("", false);
+              onChange("");
+              clearSuggestions();
+            }}
+            className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600 z-10"
+            aria-label="Clear input"
+          >
+            <svg
+              className="w-4 h-4"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth="2"
+                d="M6 18L18 6M6 6l12 12"
+              />
+            </svg>
+          </button>
+        )}
+      </div>
       {error && <p className="mt-1 text-sm text-red-600">{error}</p>}
       
       {/* Suggestions dropdown */}

@@ -15,6 +15,9 @@ export const metadata: Metadata = {
     type: "website",
     url: "https://www.pestcontrol99.com",
   },
+  alternates: {
+    canonical: "https://www.pestcontrol99.com",
+  },
 };
 
 export default function Home() {

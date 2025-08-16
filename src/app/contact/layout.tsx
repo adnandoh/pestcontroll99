@@ -9,6 +9,9 @@ export const metadata: Metadata = {
     description: "Contact us for professional pest control services with same-day response and 24/7 emergency service.",
     type: "website",
   },
+  alternates: {
+    canonical: "https://www.pestcontrol99.com/contact",
+  },
 };
 
 export default function ContactLayout({
