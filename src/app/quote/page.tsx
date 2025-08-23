@@ -327,7 +327,7 @@ function QuoteForm() {
                     value={formData.streetAddress}
                     onChange={(value) => {
                       const e = { target: { name: 'streetAddress', value } };
-                      handleChange(e as any);
+                      handleChange(e as React.ChangeEvent<HTMLInputElement>);
                     }}
                     error={errors.streetAddress}
                     required

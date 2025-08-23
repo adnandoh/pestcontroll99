@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+
 import AddressAutocomplete from './AddressAutocomplete';
 import LocationDetector from './LocationDetector';
 
@@ -23,7 +23,7 @@ export default function AddressInput({
   label = 'Street Address',
   required = false,
 }: AddressInputProps) {
-  const handleAddressSelect = (address: string, lat: number, lng: number) => {
+  const handleAddressSelect = (address: string, _lat: number, _lng: number) => {
     onChange(address);
     // Coordinates are received but not used in this component
   };

@@ -14,7 +14,7 @@ export default function Footer() {
                 alt="PestControl99 Logo"
                 width={140}
                 height={50}
-                className="h-auto"
+                className="h-auto w-auto"
               />
             </div>
             <p className="text-gray-600 mb-4 text-sm leading-relaxed">

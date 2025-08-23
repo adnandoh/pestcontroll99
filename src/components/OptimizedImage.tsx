@@ -42,7 +42,7 @@ export default function OptimizedImage({
         height={height}
         priority={priority}
         sizes={sizes}
-        className={`transition-opacity duration-300 ${
+        className={`transition-opacity duration-300 w-auto h-auto ${
           isLoading ? 'opacity-0' : 'opacity-100'
         } ${hasError ? 'hidden' : ''}`}
         onLoad={() => setIsLoading(false)}
@@ -63,7 +63,7 @@ export default function OptimizedImage({
           height={height}
           priority={priority}
           sizes={sizes}
-          className="transition-opacity duration-300"
+          className="transition-opacity duration-300 w-auto h-auto"
           onLoad={() => setIsLoading(false)}
           quality={85}
         />

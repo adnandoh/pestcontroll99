@@ -1,5 +1,10 @@
 'use client';
 
+// Note: Google Maps Places API AutocompleteService is deprecated as of March 2025
+// The use-places-autocomplete library still uses the deprecated API
+// This will continue to work but should be updated when the library supports the new API
+// See: https://developers.google.com/maps/documentation/javascript/places-migration-overview
+
 import { useState, useEffect, useRef, KeyboardEvent } from 'react';
 import usePlacesAutocomplete, {
   getGeocode,
@@ -270,7 +275,7 @@ export default function AddressAutocomplete(props: AddressAutocompleteProps) {
     const onReady = () => setMapsReady(true);
 
     // If already available, mark ready immediately
-    if (typeof window !== 'undefined' && (window as any).google?.maps?.places) {
+    if (typeof window !== 'undefined' && (window as Window & { google?: { maps?: { places?: unknown } } }).google?.maps?.places) {
       setMapsReady(true);
     } else {
       // Listen for our global ready event if provided
@@ -281,7 +286,7 @@ export default function AddressAutocomplete(props: AddressAutocompleteProps) {
       let isActive = true;
       const poll = () => {
         if (!isActive) return;
-        if (typeof window !== 'undefined' && (window as any).google?.maps?.places) {
+        if (typeof window !== 'undefined' && (window as Window & { google?: { maps?: { places?: unknown } } }).google?.maps?.places) {
           setMapsReady(true);
         } else {
           setTimeout(poll, 100);

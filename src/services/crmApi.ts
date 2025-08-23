@@ -41,7 +41,7 @@ class CRMApiService {
             // If environment variable is set, use it (highest priority)
             this.baseUrl = envUrl;
         } else if (process.env.NODE_ENV === 'development') {
-            // In development, use local backend
+            // In development, try local backend first, fallback to production
             this.baseUrl = 'http://localhost:8000';
         } else {
             // In production, use Railway backend
@@ -75,7 +75,7 @@ class CRMApiService {
             });
 
             // Try to parse JSON; if HTML is returned (e.g., error page), handle gracefully
-            let result: any = null;
+            let result: unknown = null;
             const contentType = response.headers.get('content-type') || '';
             if (contentType.includes('application/json')) {
                 result = await response.json();
@@ -91,17 +91,42 @@ class CRMApiService {
             if (response.ok) {
                 return {
                     success: true,
-                    data: result,
+                    data: result as InquiryResponse,
                 };
             } else {
+                const errorResult = result as { message?: string; detail?: string; errors?: Record<string, string[]> };
                 return {
                     success: false,
-                    error: result.message || result.detail || 'Failed to submit inquiry',
-                    errors: result.errors || result,
+                    error: errorResult.message || errorResult.detail || 'Failed to submit inquiry',
+                    errors: errorResult.errors,
                 };
             }
         } catch (error) {
             console.error('CRM API Error:', error);
+            
+            // If we're in development and local backend failed, try production as fallback
+            if (process.env.NODE_ENV === 'development' && this.baseUrl === 'http://localhost:8000') {
+                console.log('🔄 Local backend unavailable, trying production fallback...');
+                try {
+                    const fallbackResponse = await fetch('https://pestcontrol-backend-production.up.railway.app/api/inquiries/', {
+                        method: 'POST',
+                        headers: this.getAuthHeaders(),
+                        body: JSON.stringify(inquiryData),
+                    });
+
+                    if (fallbackResponse.ok) {
+                        const fallbackResult = await fallbackResponse.json();
+                        console.log('✅ Fallback to production backend successful');
+                        return {
+                            success: true,
+                            data: fallbackResult as InquiryResponse,
+                        };
+                    }
+                } catch (fallbackError) {
+                    console.error('❌ Fallback to production backend also failed:', fallbackError);
+                }
+            }
+            
             return {
                 success: false,
                 error: 'Network error occurred. Please check your connection and try again.',
@@ -154,7 +179,7 @@ class CRMApiService {
     /**
      * Map form data to CRM inquiry format
      */
-    mapFormDataToInquiry(formData: any, formType: 'home' | 'quote'): InquiryData {
+    mapFormDataToInquiry(formData: { name?: string; phone?: string; email?: string; streetAddress?: string; address?: string; pestTypes?: string[] }, formType: 'home' | 'quote'): InquiryData {
         if (formType === 'home') {
             // Map HomeQuoteForm data
             return {
@@ -252,7 +277,7 @@ class CRMApiService {
     /**
      * Generate message for home form
      */
-    private generateMessage(formData: any, formType: 'home' | 'quote'): string {
+    private generateMessage(formData: { name?: string; phone?: string; email?: string; streetAddress?: string; address?: string; pestTypes?: string[] }, formType: 'home' | 'quote'): string {
         const parts = [] as string[];
 
         parts.push(`Quote request from website ${formType === 'home' ? 'home page' : 'quote page'}.`);
