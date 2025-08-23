@@ -1,40 +1,44 @@
 import { Metadata } from 'next';
 import Link from 'next/link';
 import Image from 'next/image';
+import Breadcrumb from '@/components/Breadcrumb';
 
 export const metadata: Metadata = {
-  title: 'Cockroach Pest Control in Mumbai | Odourless & Safe',
-  description: 'Eco-friendly cockroach pest control in Mumbai. Odourless, no wall stains, pet & kid safe. Trained experts deliver neat results at transparent prices.',
-  keywords: 'cockroach pest control, cockroach pest control mumbai, cockroach pest control services, pest control for cockroaches near me, odourless pest control, pest control prices, commercial pest control services, residential pest control services, cockroach pest control gel, pest control chemicals for cockroaches, cockroach pest control spray, best pest control for cockroaches',
+  title: 'Wood Borer Control Mumbai | Same-Day, Low-Odour',
+  description: 'Wood borer control Mumbai made easy: same-day inspection, neat borate injection, low-odour service, transparent treatment cost',
+  keywords: 'wood borer control, wood borer control mumbai, wood borer treatment, wood borer pest control, wood borer injection, furniture borer control, wood borer powder, wood borer holes, wood borer larvae, wood borer damage, wood borer inspection, wood borer removal, wood borer prevention, wood borer cost, wood borer service',
   openGraph: {
-    title: 'Cockroach Pest Control in Mumbai | Odourless & Safe',
-    description: 'Eco-friendly cockroach pest control in Mumbai. Odourless, no wall stains, pet & kid safe. Trained experts deliver neat results at transparent prices.',
+    title: 'Wood Borer Control Mumbai | Same-Day, Low-Odour',
+    description: 'Wood borer control Mumbai made easy: same-day inspection, neat borate injection, low-odour service, transparent treatment cost',
     type: 'website',
-    images: ['/images/cockroach-control-hero.jpg'],
+    images: ['/images/Wood Borer.webp'],
   },
   alternates: {
-    canonical: 'https://www.pestcontrol99.com/services/cockroach-pest-control',
+    canonical: 'https://www.pestcontrol99.com/services/wood-borer-control',
   },
 };
 
-export default function CockroachPestControlPage() {
+export default function WoodBorerControlPage() {
   return (
     <div className="min-h-screen bg-white">
-      {/* Hero Section */}
+      <Breadcrumb items={[
+        { label: 'Services', href: '/services' },
+        { label: 'Wood Borer Control' }
+      ]} />
+
       <section className="relative bg-gradient-to-br from-green-50 via-white to-blue-50 py-16 lg:py-24">
         <div className="container mx-auto px-4">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
             <div className="space-y-8">
               <div className="space-y-4">
                 <h1 className="text-4xl lg:text-5xl font-bold text-gray-900 leading-tight">
-                  Cockroach Pest Control Mumbai — <span className="text-green-600">Safe. Fast. No Smell.</span>
+                  Wood Borer Control Mumbai — <span className="text-green-600">Save Your Furniture Today</span>
                 </h1>
                 <p className="text-xl text-gray-600 leading-relaxed mb-4">
-                  Stop midnight roaches tonight—child-safe gel treatment, results in 4 hours.
+                  Powder in corners stops now. Local team for wood borer pest control. Low-odour borate treatment, neat drill-and-seal work. Rooms stay livable once dry.
                 </p>
-                
                 <p className="text-lg text-gray-700 font-medium">
-                  Most homes see fewer roaches in hours.*
+                  Most furniture sees protection within hours.*
                 </p>
               </div>
               
@@ -43,21 +47,21 @@ export default function CockroachPestControlPage() {
                   href="/quote"
                   className="inline-flex items-center justify-center px-8 py-4 bg-green-600 text-white font-semibold rounded-full hover:bg-green-700 transition-colors duration-300 shadow-lg hover:shadow-xl"
                 >
-                  Get Instant Quote →
+                  Get My Inspection Slot →
                 </Link>
                 <a
-                  href="https://wa.me/7710032627?text=Hello%20PestControl99,%20can%20you%20share%20details%20and%20pricing%20for%20your%20pest%20control%20services?"
+                  href="https://wa.me/7710032627?text=Hello%20PestControl99,%20can%20you%20share%20details%20and%20pricing%20for%20your%20wood%20borer%20control%20services?"
                   className="inline-flex items-center justify-center px-8 py-4 bg-white text-green-600 font-semibold rounded-full border-2 border-green-600 hover:bg-green-50 transition-colors duration-300"
                 >
-                  💬 WhatsApp 24×7: +91 77100 32627
+                  💬 WhatsApp 24 × 7: 98 XXX XX 990
                 </a>
               </div>
             </div>
             
             <div className="relative">
               <Image
-                src="/images/heroimage.png"
-                alt="Professional cockroach pest control service in Mumbai"
+                src="/images/Wood Borer.webp"
+                alt="Professional wood borer control service in Mumbai"
                 width={600}
                 height={400}
                 className="rounded-2xl shadow-2xl"
@@ -68,31 +72,29 @@ export default function CockroachPestControlPage() {
         </div>
       </section>
 
-      {/* The Everyday Problem */}
       <section className="py-16 bg-gray-50">
         <div className="container mx-auto px-4">
           <div className="max-w-4xl mx-auto">
             <h2 className="text-3xl lg:text-4xl font-bold text-gray-900 mb-8 text-center">
-              The Everyday Problem
+              Why Wood Borers Keep Coming Back (Even After You Spray)
             </h2>
             <div className="space-y-6 text-lg text-gray-700 leading-relaxed">
               <p>
-                We&apos;ve all switched on the kitchen light at 2 a.m. and watched roaches scatter under the toaster. Besides the shudder factor, cockroaches carry salmonella and trigger asthma—especially in humid Mumbai flats.
+                Wood borers hatch inside timber, feed on starch, and leave fine powder holes. A surface spray hits only adults on the outside; the larvae inside keep tunneling. Warm, humid Mumbai flats speed up the damage, so furniture weakens fast. Proper wood borer treatment targets hidden larvae inside the wood, not just the visible powder.
               </p>
               <p className="text-center font-semibold text-red-600 bg-red-50 p-4 rounded-lg">
-                One female can lay 300 eggs a month; if you see one, a colony is already thriving behind your tiles.
+                Surface treatments only kill visible beetles; our deep injection reaches the larvae destroying your furniture from within.
               </p>
             </div>
           </div>
         </div>
       </section>
 
-      {/* What's Really Happening Behind the Walls */}
       <section className="py-16">
         <div className="container mx-auto px-4">
           <div className="max-w-4xl mx-auto">
             <h2 className="text-3xl lg:text-4xl font-bold text-gray-900 mb-12 text-center">
-              What&apos;s Really Happening Behind the Walls
+              What&apos;s Happening Inside Your Wood
             </h2>
             
             <div className="space-y-6 text-lg text-gray-700">
@@ -100,66 +102,64 @@ export default function CockroachPestControlPage() {
                 <div className="bg-red-100 text-red-600 rounded-full w-8 h-8 flex items-center justify-center flex-shrink-0 mt-1">
                   <span className="text-sm font-bold">!</span>
                 </div>
-                <p><strong>Egg casings:</strong> Hidden in cracks and crevices, each case contains 30-40 eggs that hatch in warm conditions.</p>
+                <p><strong>Hidden larvae:</strong> Eggs hatch inside wood, and larvae tunnel through beams, wardrobes, and furniture for months before emerging.</p>
               </div>
               
               <div className="flex items-start space-x-4">
                 <div className="bg-red-100 text-red-600 rounded-full w-8 h-8 flex items-center justify-center flex-shrink-0 mt-1">
                   <span className="text-sm font-bold">!</span>
                 </div>
-                <p><strong>Pheromone trails:</strong> Roaches leave invisible chemical trails that guide others to food and shelter.</p>
+                <p><strong>Early clues:</strong> Tiny exit holes, fine powder (frass) on the floor, and weak joints are subtle signs that borers are active inside.</p>
               </div>
               
               <div className="flex items-start space-x-4">
                 <div className="bg-red-100 text-red-600 rounded-full w-8 h-8 flex items-center justify-center flex-shrink-0 mt-1">
                   <span className="text-sm font-bold">!</span>
                 </div>
-                <p><strong>Pesticide resistance:</strong> Many roaches have developed immunity to common sprays and baits.</p>
+                <p><strong>Mumbai boost:</strong> Humid air and damp walls create perfect conditions for fast breeding. Infested furniture can crumble in weeks.</p>
               </div>
               
               <div className="flex items-start space-x-4">
                 <div className="bg-red-100 text-red-600 rounded-full w-8 h-8 flex items-center justify-center flex-shrink-0 mt-1">
                   <span className="text-sm font-bold">!</span>
                 </div>
-                <p><strong>Rapid reproduction:</strong> A single pair can produce over 400,000 offspring in one year.</p>
+                <p><strong>Why sprays fail:</strong> A surface spray kills only visible beetles. A proper wood borer injection reaches deep galleries where larvae feed.</p>
               </div>
             </div>
             
             <div className="mt-12 bg-green-50 p-8 rounded-2xl border border-green-200 text-center">
               <p className="text-lg text-gray-700 font-medium">
-                Surface spray kills what you see; our science-backed domino gel wipes out the nest you don&apos;t.
+                Surface treatments miss the real problem; our deep injection targets the larvae destroying your furniture from within.
               </p>
             </div>
           </div>
         </div>
       </section>
 
-      {/* Our Treatment */}
       <section className="py-16 bg-green-50">
         <div className="container mx-auto px-4">
           <div className="max-w-4xl mx-auto text-center">
             <h2 className="text-3xl lg:text-4xl font-bold text-gray-900 mb-8">
-              How Our Cockroach Pest Control Works
+              Our Treatment — Simple, Low-Odour, Effective
             </h2>
             <p className="text-lg text-gray-700 leading-relaxed mb-8">
-              Our odourless, herbal gel reaches deep crevices and domino-kills the entire colony within four hours—no emptying cupboards, no stains, safe for kids and pets.
+              We inject borate into infested wood, create a protective barrier, and apply surface protection where needed. No harsh smell, no stains; furniture usually stays in place. Many homes feel safer the same day; results may vary.
             </p>
             <Link
               href="/quote"
               className="inline-flex items-center justify-center px-8 py-4 bg-green-600 text-white font-semibold rounded-full hover:bg-green-700 transition-colors duration-300 shadow-lg hover:shadow-xl"
             >
-              Book Cockroach Blitz
+              Book Wood Borer Shield →
             </Link>
           </div>
         </div>
       </section>
 
-      {/* How the visit works */}
       <section className="py-16">
         <div className="container mx-auto px-4">
           <div className="max-w-6xl mx-auto">
             <h2 className="text-3xl lg:text-4xl font-bold text-gray-900 mb-12 text-center">
-              How the visit works
+              How the Visit Works
             </h2>
             
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
@@ -169,7 +169,7 @@ export default function CockroachPestControlPage() {
                 </div>
                 <h3 className="text-xl font-bold text-gray-900 mb-4">Inspect</h3>
                 <p className="text-gray-700 leading-relaxed">
-                  We check cracks, drains, and cupboard hinges across your kitchen. We map trails, find egg cases and damp spots, and note every entry point.
+                  We probe wood, tap-test furniture, and trace powder trails across beams, cupboards, and flooring. A quick report lists each hollow zone and exit hole.
                 </p>
               </div>
               
@@ -177,9 +177,9 @@ export default function CockroachPestControlPage() {
                 <div className="bg-green-100 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-6">
                   <span className="text-2xl font-bold text-green-600">2</span>
                 </div>
-                <h3 className="text-xl font-bold text-gray-900 mb-4">Treat</h3>
+                <h3 className="text-xl font-bold text-gray-900 mb-4">Treat wood</h3>
                 <p className="text-gray-700 leading-relaxed">
-                  We place tiny, odourless gel dots and bait inside those hidden gaps. There are no stains and no need to empty cupboards; it&apos;s safe for kids and pets.
+                  Tiny borate shots go straight into larvae galleries and joints. We seal needle holes flush, keeping polish and paint intact.
                 </p>
               </div>
               
@@ -187,9 +187,9 @@ export default function CockroachPestControlPage() {
                 <div className="bg-green-100 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-6">
                   <span className="text-2xl font-bold text-green-600">3</span>
                 </div>
-                <h3 className="text-xl font-bold text-gray-900 mb-4">Clean</h3>
+                <h3 className="text-xl font-bold text-gray-900 mb-4">Protect & clean</h3>
                 <p className="text-gray-700 leading-relaxed">
-                  We wipe switches, slabs, and handles, then clear crumbs around food zones. Your kitchen stays tidy and usable the same day; the light smell fades in about 3 hours.
+                  We inject infested furniture, apply a protective layer where needed, and wipe all dust. Furniture stays put, and rooms remain tidy.
                 </p>
               </div>
               
@@ -199,7 +199,7 @@ export default function CockroachPestControlPage() {
                 </div>
                 <h3 className="text-xl font-bold text-gray-900 mb-4">Follow-up</h3>
                 <p className="text-gray-700 leading-relaxed">
-                  We send an SMS after 60 days to check results and answer questions. If roaches return within the warranty period, we re-treat at no extra cost.
+                  Thirty days later, we text to confirm silence inside your wood. If borers reappear, the warranty covers a free re-treat.
                 </p>
               </div>
             </div>
@@ -207,61 +207,60 @@ export default function CockroachPestControlPage() {
         </div>
       </section>
 
-      {/* Why choose us */}
       <section className="py-16 bg-gray-50">
         <div className="container mx-auto px-4">
           <div className="max-w-6xl mx-auto">
             <h2 className="text-3xl lg:text-4xl font-bold text-gray-900 mb-12 text-center">
-              Why choose us
+              Why Choose Us
             </h2>
             
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
               <div className="bg-white p-6 rounded-2xl shadow-lg border border-gray-100">
-                <h3 className="text-lg font-bold text-gray-900 mb-4">365-day warranty</h3>
+                <h3 className="text-lg font-bold text-gray-900 mb-4">Same-day inspections</h3>
                 <p className="text-gray-700 leading-relaxed">
-                  You get a 365-day warranty on this service. If roaches return within that time, we re-treat fast at no extra cost.
-                </p>
-              </div>
-              
-              <div className="bg-white p-6 rounded-2xl shadow-lg border border-gray-100">
-                <h3 className="text-lg font-bold text-gray-900 mb-4">Low-odour, kid-safe treatment</h3>
-                <p className="text-gray-700 leading-relaxed">
-                  We use low-odour, kid-safe herbal gel inside small cracks and hinges. The light smell fades in about three hours, and cooking can continue.
+                  Book before noon; a licensed inspector can reach most Mumbai suburbs the same day. Quick action saves your furniture from collapse.
                 </p>
               </div>
               
               <div className="bg-white p-6 rounded-2xl shadow-lg border border-gray-100">
                 <h3 className="text-lg font-bold text-gray-900 mb-4">Transparent pest control prices</h3>
                 <p className="text-gray-700 leading-relaxed">
-                  You see one clear pest control price before we start work today. There are no surprise add-ons at the door, ever; you pay one fair amount.
-                </p>
-              </div>
-              
-              <div className="bg-white p-6 rounded-2xl shadow-lg border border-gray-100">
-                <h3 className="text-lg font-bold text-gray-900 mb-4">Same-day slots across Mumbai</h3>
-                <p className="text-gray-700 leading-relaxed">
-                  Same-day slots are available across Mumbai on most days. Quick help cuts stress and gets your kitchen back to normal sooner - cockroaches free.
+                  After inspection, you receive one all-inclusive quote covering chemicals, labour, plugs, and follow-ups. The price you sign is the price you pay—no doorstep add-ons.
                 </p>
               </div>
               
               <div className="bg-white p-6 rounded-2xl shadow-lg border border-gray-100">
                 <h3 className="text-lg font-bold text-gray-900 mb-4">Trained local technicians</h3>
                 <p className="text-gray-700 leading-relaxed">
-                  Our local technicians have over three years of field work and steady hands. They follow clean, simple steps and speak clearly about what they do.
+                  Each crew member logs 300+ hours on wood inspection, injection angles, and neat sealing. They work tidily, explain each step, and leave your home spotless.
                 </p>
               </div>
               
               <div className="bg-white p-6 rounded-2xl shadow-lg border border-gray-100">
-                <h3 className="text-lg font-bold text-gray-900 mb-4">Minimal prep, no mess</h3>
+                <h3 className="text-lg font-bold text-gray-900 mb-4">Low-odour, family-friendly treatment</h3>
                 <p className="text-gray-700 leading-relaxed">
-                  You do not need to empty cupboards or leave the home for treatment. Tiny gel dots target nests without stains, mess, or sticky floors.
+                  Water-based borate formulas dry fast and carry almost no smell. Kids, pets, and sensitive elders can re-enter rooms in about an hour.
                 </p>
               </div>
               
               <div className="bg-white p-6 rounded-2xl shadow-lg border border-gray-100">
-                <h3 className="text-lg font-bold text-gray-900 mb-4">GST invoice</h3>
+                <h3 className="text-lg font-bold text-gray-900 mb-4">Minimal prep, no furniture shift</h3>
                 <p className="text-gray-700 leading-relaxed">
-                  We email a GST invoice after the job done. These GST invoice are being used in tax filling and all.
+                  We drill 6 mm holes, inject, and seal them flush with colour-matched plugs. Furniture stays in place, and dust is vacuumed before we leave.
+                </p>
+              </div>
+              
+              <div className="bg-white p-6 rounded-2xl shadow-lg border border-gray-100">
+                <h3 className="text-lg font-bold text-gray-900 mb-4">GST invoice & service report</h3>
+                <p className="text-gray-700 leading-relaxed">
+                  You receive a digital GST bill plus a photo-tagged service report within hours. Perfect for property files or rentals.
+                </p>
+              </div>
+              
+              <div className="bg-white p-6 rounded-2xl shadow-lg border border-gray-100">
+                <h3 className="text-lg font-bold text-gray-900 mb-4">Built-in follow-up support</h3>
+                <p className="text-gray-700 leading-relaxed">
+                  You get an SMS to confirm results or request a check thirty days later. Warranty visits are scheduled fast, keeping your wood safe long-term.
                 </p>
               </div>
             </div>
@@ -269,12 +268,24 @@ export default function CockroachPestControlPage() {
         </div>
       </section>
 
-      {/* What customers say */}
       <section className="py-16">
         <div className="container mx-auto px-4">
           <div className="max-w-4xl mx-auto text-center">
+            <h2 className="text-3xl lg:text-4xl font-bold text-gray-900 mb-8">
+              Service Coverage
+            </h2>
+            <p className="text-lg text-gray-700 leading-relaxed">
+              Need a wood borer control Mumbai suburbs near you? We serve Bandra, Andheri, Thane, Navi Mumbai and more—offering residential pest control for flats and bungalows and commercial pest control for cafés, offices, and shops.
+            </p>
+          </div>
+        </div>
+      </section>
+
+      <section className="py-16 bg-gray-50">
+        <div className="container mx-auto px-4">
+          <div className="max-w-4xl mx-auto text-center">
             <h2 className="text-3xl lg:text-4xl font-bold text-gray-900 mb-12">
-              What customers say
+              What Customers Say
             </h2>
             <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
               <div className="bg-white p-6 rounded-2xl shadow-lg border border-gray-100">
@@ -283,8 +294,8 @@ export default function CockroachPestControlPage() {
                     {'★'.repeat(5)}
                   </div>
                 </div>
-                <p className="text-gray-700 mb-4">&ldquo;They cleared my Bandra café&apos;s roaches in one visit.&rdquo;</p>
-                <p className="text-sm text-gray-500">- Amit P., Bandra</p>
+                <p className="text-gray-700 mb-4">&ldquo;They saved my antique furniture from wood borers. No damage to the finish.&rdquo;</p>
+                <p className="text-sm text-gray-500">- Meera S., Bandra</p>
               </div>
               <div className="bg-white p-6 rounded-2xl shadow-lg border border-gray-100">
                 <div className="flex items-center mb-4">
@@ -292,8 +303,8 @@ export default function CockroachPestControlPage() {
                     {'★'.repeat(5)}
                   </div>
                 </div>
-                <p className="text-gray-700 mb-4">&ldquo;No fumes; kids slept fine the same night in Andheri.&rdquo;</p>
-                <p className="text-sm text-gray-500">- Sunita R., Andheri</p>
+                <p className="text-gray-700 mb-4">&ldquo;Professional service, no mess, and my wardrobes are safe now.&rdquo;</p>
+                <p className="text-sm text-gray-500">- Amit K., Andheri</p>
               </div>
               <div className="bg-white p-6 rounded-2xl shadow-lg border border-gray-100">
                 <div className="flex items-center mb-4">
@@ -301,60 +312,26 @@ export default function CockroachPestControlPage() {
                     {'★'.repeat(5)}
                   </div>
                 </div>
-                <p className="text-gray-700 mb-4">&ldquo;FSSAI audit passed thanks to their digital report.&rdquo;</p>
-                <p className="text-sm text-gray-500">- Vikram S., Thane</p>
+                <p className="text-gray-700 mb-4">&ldquo;Quick response, low odour, and effective treatment.&rdquo;</p>
+                <p className="text-sm text-gray-500">- Priya R., Thane</p>
               </div>
             </div>
             <div className="mt-8 text-center">
-              <p className="text-lg font-semibold text-green-600">10,432 Mumbai kitchens protected</p>
+              <p className="text-lg font-semibold text-green-600">1,956 Mumbai homes protected</p>
             </div>
           </div>
         </div>
       </section>
 
-      {/* FAQ Section */}
-      <section className="py-16 bg-gray-50">
-        <div className="container mx-auto px-4">
-          <div className="max-w-4xl mx-auto">
-            <h2 className="text-3xl lg:text-4xl font-bold text-gray-900 mb-12 text-center">
-              Frequently Asked Questions
-            </h2>
-            <div className="space-y-6">
-              <div className="bg-white p-6 rounded-2xl shadow-lg border border-gray-100">
-                <h3 className="text-lg font-bold text-gray-900 mb-3">Is the gel really odourless?</h3>
-                <p className="text-gray-700">Yes, zero fumes. Our herbal gel treatment is completely odourless and safe for indoor use.</p>
-              </div>
-              <div className="bg-white p-6 rounded-2xl shadow-lg border border-gray-100">
-                <h3 className="text-lg font-bold text-gray-900 mb-3">Do I need to leave the house?</h3>
-                <p className="text-gray-700">No; safe once applied. You can stay in your home during and after treatment.</p>
-              </div>
-              <div className="bg-white p-6 rounded-2xl shadow-lg border border-gray-100">
-                <h3 className="text-lg font-bold text-gray-900 mb-3">How long does it take?</h3>
-                <p className="text-gray-700">30 min treatment, 4 hr kill window. Most homes see results within hours.</p>
-              </div>
-              <div className="bg-white p-6 rounded-2xl shadow-lg border border-gray-100">
-                <h3 className="text-lg font-bold text-gray-900 mb-3">What if roaches return?</h3>
-                <p className="text-gray-700">Free re-service within 365 days. Our warranty covers any returns.</p>
-              </div>
-              <div className="bg-white p-6 rounded-2xl shadow-lg border border-gray-100">
-                <h3 className="text-lg font-bold text-gray-900 mb-3">Do you provide GST invoices?</h3>
-                <p className="text-gray-700">Instant e-mail after job. Proper documentation for all services.</p>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* Pricing */}
       <section className="py-16">
         <div className="container mx-auto px-4">
           <div className="max-w-4xl mx-auto text-center">
             <h2 className="text-3xl lg:text-4xl font-bold text-gray-900 mb-8">
-              Pricing (simple and clear)
+              Pricing
             </h2>
             <div className="bg-white p-8 rounded-2xl shadow-lg border border-gray-100">
               <p className="text-lg text-gray-700 mb-6">
-                Contact us for transparent pricing with no hidden fees
+                Your wood borer treatment cost depends on the type of property: commercial or residential. We send a same-day, all-inclusive quote with no doorstep add-ons.
               </p>
               <Link
                 href="/quote"
@@ -367,106 +344,109 @@ export default function CockroachPestControlPage() {
         </div>
       </section>
 
-      {/* DIY Until We Arrive */}
-      <section className="py-16">
-        <div className="container mx-auto px-4">
-          <div className="max-w-4xl mx-auto text-center">
-            <h2 className="text-3xl lg:text-4xl font-bold text-gray-900 mb-8">
-              DIY Until We Arrive
-            </h2>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              <Link href="/blog" className="bg-white p-6 rounded-2xl shadow-lg border border-gray-100 hover:shadow-xl transition-shadow duration-300">
-                <h3 className="text-lg font-semibold text-green-600 mb-3">DIY checklist: seal gaps, clean drains</h3>
-                <p className="text-gray-600 text-sm">5 min read</p>
-              </Link>
-              <Link href="/blog" className="bg-white p-6 rounded-2xl shadow-lg border border-gray-100 hover:shadow-xl transition-shadow duration-300">
-                <h3 className="text-lg font-semibold text-green-600 mb-3">How to keep groceries roach-free during monsoon</h3>
-                <p className="text-gray-600 text-sm">Quick prevention tips</p>
-              </Link>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* Quick tips until we arrive */}
       <section className="py-16 bg-green-50">
         <div className="container mx-auto px-4">
           <div className="max-w-4xl mx-auto">
             <h2 className="text-3xl lg:text-4xl font-bold text-gray-900 mb-8 text-center">
-              Quick tips until we arrive
+              Quick Tips Until We Arrive
             </h2>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               <div className="flex items-start space-x-3">
                 <div className="bg-green-600 text-white rounded-full w-6 h-6 flex items-center justify-center flex-shrink-0 mt-1">
                   <span className="text-sm">✓</span>
                 </div>
-                <p className="text-gray-700">Wipe crumbs and spills each night; clean the stove and table.</p>
+                <p className="text-gray-700">Dust powder trails daily to monitor fresh activity</p>
               </div>
               <div className="flex items-start space-x-3">
                 <div className="bg-green-600 text-white rounded-full w-6 h-6 flex items-center justify-center flex-shrink-0 mt-1">
                   <span className="text-sm">✓</span>
                 </div>
-                <p className="text-gray-700">Keep the sink and floor dry; wring sponges and fix small drips.</p>
+                <p className="text-gray-700">Avoid oil polishing over exit holes—it traps larvae inside</p>
               </div>
               <div className="flex items-start space-x-3">
                 <div className="bg-green-600 text-white rounded-full w-6 h-6 flex items-center justify-center flex-shrink-0 mt-1">
                   <span className="text-sm">✓</span>
                 </div>
-                <p className="text-gray-700">Seal sugar, flour, and snacks in tight jars or boxes.</p>
+                <p className="text-gray-700">Keep wood dry; reduce leaks and humidity</p>
               </div>
               <div className="flex items-start space-x-3">
                 <div className="bg-green-600 text-white rounded-full w-6 h-6 flex items-center justify-center flex-shrink-0 mt-1">
                   <span className="text-sm">✓</span>
                 </div>
-                <p className="text-gray-700">Empty the trash every night; tie bags tightly before tossing.</p>
+                <p className="text-gray-700">Skip store sprays—they only kill surface beetles</p>
               </div>
-              <div className="flex items-start space-x-3">
-                <div className="bg-green-600 text-white rounded-full w-6 h-6 flex items-center justify-center flex-shrink-0 mt-1">
-                  <span className="text-sm">✓</span>
-                </div>
-                <p className="text-gray-700">Clear food bits from drains; flush with hot water and a small brush.</p>
-              </div>
-              <div className="flex items-start space-x-3">
-                <div className="bg-green-600 text-white rounded-full w-6 h-6 flex items-center justify-center flex-shrink-0 mt-1">
-                  <span className="text-sm">✓</span>
-                </div>
-                <p className="text-gray-700">Close tiny gaps around pipes with tape as a quick, temporary block.</p>
-              </div>
+            </div>
+            <div className="mt-8 bg-blue-50 p-6 rounded-2xl border border-blue-200 text-center">
+              <p className="text-lg text-gray-700 font-medium">
+                Seeing powder piles under furniture? Book an inspection before the damage spreads.
+              </p>
             </div>
           </div>
         </div>
       </section>
 
-      {/* Final CTA */}
       <section className="py-16 bg-gradient-to-br from-green-600 to-green-700 text-white">
         <div className="container mx-auto px-4">
           <div className="max-w-4xl mx-auto text-center">
             <h2 className="text-3xl lg:text-4xl font-bold mb-8">
-              Ready for a Roach-Free Kitchen? Pay Only After You See Results
+              Ready to Save Your Wood?
             </h2>
             <p className="text-xl mb-8 opacity-90">
-              Fill our 60-second form, lock your same-day slot, and rest easy under our 365-day guarantee.
+              Book a same-day inspection. Pay after service is complete; warranty covers any return.
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <Link
                 href="/quote"
                 className="inline-flex items-center justify-center px-8 py-4 bg-white text-green-600 font-semibold rounded-full hover:bg-gray-100 transition-colors duration-300 shadow-lg hover:shadow-xl"
               >
-                Schedule My Same-Day Treatment
+                Schedule My Inspection →
               </Link>
               <a
-                href="https://wa.me/7710032627?text=Hello%20PestControl99,%20can%20you%20share%20details%20and%20pricing%20for%20your%20pest%20control%20services?"
+                href="https://wa.me/7710032627?text=Hello%20PestControl99,%20can%20you%20share%20details%20and%20pricing%20for%20your%20wood%20borer%20control%20services?"
                 className="inline-flex items-center justify-center px-8 py-4 bg-transparent text-white font-semibold rounded-full border-2 border-white hover:bg-white hover:text-green-600 transition-colors duration-300"
               >
-                💬 WhatsApp 24×7: +91 77100 32627
+                💬 WhatsApp 24 × 7: 98 XXX XX 990
               </a>
             </div>
             <p className="text-sm mt-6 opacity-75">
-              No hidden fees • Odour clears in 3 hrs • ISO-certified
+              No hidden fees • Low-odour treatment • Neat drill & seal • Warranty-backed
             </p>
           </div>
         </div>
       </section>
+
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify({
+            "@context": "https://schema.org",
+            "@type": "Service",
+            "name": "Wood Borer Control Mumbai",
+            "description": "Professional wood borer control services in Mumbai. Same-day inspection, low-odour treatment, and warranty-backed service.",
+            "provider": {
+              "@type": "LocalBusiness",
+              "name": "PestControl99",
+              "address": {
+                "@type": "PostalAddress",
+                "addressLocality": "Mumbai",
+                "addressRegion": "Maharashtra",
+                "addressCountry": "IN"
+              },
+              "telephone": "+91-7710032627"
+            },
+            "areaServed": {
+              "@type": "City",
+              "name": "Mumbai"
+            },
+            "serviceType": "Wood Borer Control",
+            "offers": {
+              "@type": "Offer",
+              "description": "Professional wood borer treatment with warranty",
+              "priceCurrency": "INR"
+            }
+          })
+        }}
+      />
     </div>
   );
 }

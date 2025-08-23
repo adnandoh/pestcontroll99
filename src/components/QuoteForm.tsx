@@ -31,12 +31,53 @@ export default function QuoteForm({ service, className = '' }: QuoteFormProps) {
     setIsSubmitting(true);
 
     try {
-      // Here you would typically send the data to your backend
-      // For now, we'll simulate a successful submission
-      await new Promise(resolve => setTimeout(resolve, 1000));
-      setIsSubmitted(true);
+      // Submit to both CRM and existing email system
+      const [crmResponse, emailResponse] = await Promise.allSettled([
+        // Submit to CRM
+        (async () => {
+          const { crmApi } = await import('@/services/crmApi');
+          const inquiryData = crmApi.mapFormDataToInquiry(formData, 'quote');
+          return crmApi.submitInquiry(inquiryData);
+        })(),
+        // Submit to existing email system (if available)
+        fetch('/api/send-quote', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(formData),
+        }).then(res => res.json()).catch(() => ({ success: false }))
+      ]);
+
+      // Check CRM submission result
+      let crmSuccess = false;
+      if (crmResponse.status === 'fulfilled' && crmResponse.value.success) {
+        crmSuccess = true;
+        console.log('✅ CRM submission successful:', crmResponse.value.data);
+      } else {
+        console.error('❌ CRM submission failed:', crmResponse.status === 'fulfilled' ? crmResponse.value.error : crmResponse.reason);
+      }
+
+      // Check email submission result
+      let emailSuccess = false;
+      if (emailResponse.status === 'fulfilled' && emailResponse.value.success !== false) {
+        emailSuccess = true;
+        console.log('✅ Email submission successful');
+      } else {
+        console.error('❌ Email submission failed:', emailResponse.status === 'rejected' ? emailResponse.reason : 'Unknown error');
+      }
+
+      // Show success if at least one submission succeeded
+      if (crmSuccess || emailSuccess) {
+        setIsSubmitted(true);
+      } else {
+        // Both submissions failed
+        throw new Error('Failed to submit quote request');
+      }
     } catch (error) {
       console.error('Error submitting form:', error);
+      // You might want to show an error state here instead of just logging
+      alert('Failed to submit quote request. Please try again or contact us directly.');
     } finally {
       setIsSubmitting(false);
     }

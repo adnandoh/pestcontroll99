@@ -84,24 +84,65 @@ function QuoteForm() {
     }
 
     setIsSubmitting(true);
+    setShowSuccessPopup(false);
+    setSubmitMessage('');
 
     try {
-      const response = await fetch('/api/send-quote/', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          ...formData,
-          address: formData.streetAddress, // Use streetAddress as primary address
-          pestType: formData.pestTypes.join(', ') // Convert array to string for API compatibility
-        }),
-      });
+      // Submit to both CRM and existing email system
+      const [crmResponse, emailResponse] = await Promise.allSettled([
+        // Submit to CRM (no auth required)
+        (async () => {
+          const { crmApi } = await import('@/services/crmApi');
+          const inquiryData = crmApi.mapFormDataToInquiry(formData, 'quote');
+          return crmApi.submitInquiry(inquiryData);
+        })(),
+        // Submit to existing email system
+        fetch('/api/send-quote/', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            ...formData,
+            address: formData.streetAddress,
+            pestType: formData.pestTypes.join(', ')
+          }),
+        }).then(res => res.json())
+      ]);
 
-      if (response.ok) {
+      // Check CRM submission result
+      let crmSuccess = false;
+      if (crmResponse.status === 'fulfilled' && crmResponse.value.success) {
+        crmSuccess = true;
+        console.log('✅ CRM submission successful:', crmResponse.value.data);
+      } else {
+        console.error('❌ CRM submission failed:', crmResponse.status === 'fulfilled' ? crmResponse.value.error : crmResponse.reason);
+      }
+
+      // Check email submission result
+      let emailSuccess = false;
+      if (emailResponse.status === 'fulfilled') {
+        emailSuccess = true;
+        console.log('✅ Email submission successful');
+      } else {
+        console.error('❌ Email submission failed:', emailResponse.reason);
+      }
+
+      // Show success if at least one submission succeeded
+      if (crmSuccess || emailSuccess) {
         setShowSuccessPopup(true);
-        setSubmitMessage('Quote request submitted successfully! We will contact you soon.');
+        let successMessage = 'Quote request submitted successfully! We will contact you soon.';
         
+        if (crmSuccess && emailSuccess) {
+          successMessage += ' Your inquiry has been recorded in our system.';
+        } else if (crmSuccess) {
+          successMessage += ' Your inquiry has been recorded in our CRM system.';
+        } else {
+          successMessage += ' Your inquiry has been sent via email.';
+        }
+        
+        setSubmitMessage(successMessage);
+
         // Reset form after successful submission
         setFormData({
           name: '',
@@ -110,11 +151,13 @@ function QuoteForm() {
           pestTypes: []
         });
       } else {
-        const errorData = await response.json();
-        setSubmitMessage(`Failed to send quote request: ${errorData.error || 'Please try again.'}`);
+        // Both submissions failed
+        setShowSuccessPopup(false);
+        setSubmitMessage('Failed to submit quote request. Please try again or contact us directly.');
       }
     } catch (error) {
       console.error('Error submitting form:', error);
+      setShowSuccessPopup(false);
       setSubmitMessage('Network error. Please check your connection and try again.');
     } finally {
       setIsSubmitting(false);
@@ -283,8 +326,8 @@ function QuoteForm() {
                   <AddressInput
                     value={formData.streetAddress}
                     onChange={(value) => {
-                      const e = { target: { name: 'streetAddress', value } } as React.ChangeEvent<HTMLInputElement>;
-                      handleChange(e);
+                      const e = { target: { name: 'streetAddress', value } };
+                      handleChange(e as any);
                     }}
                     error={errors.streetAddress}
                     required
@@ -326,10 +369,10 @@ function QuoteForm() {
               </h3>
               <div className="flex flex-col sm:flex-row gap-4 justify-center">
                 <a
-                  href="tel:+917710032627"
+                  href="tel:+919594966921"
                   className="bg-green-600 text-white px-6 py-3 rounded-lg font-semibold hover:bg-green-700 transition-colors"
                 >
-                  Call +91 77100 32627
+                  Call +91 95949 66921
                 </a>
                 <a
                  
@@ -378,7 +421,7 @@ function QuoteForm() {
               <div className="flex gap-3">
                 {/* WhatsApp Button */}
                 <a
-                  href="https://wa.me/917710032627?text=Hi%2C%20I%20just%20submitted%20a%20quote%20request%20on%20your%20website.%20Can%20you%20please%20provide%20me%20with%20a%20detailed%20quote%3F"
+                  href="https://wa.me/919594966921?text=Hi%2C%20I%20just%20submitted%20a%20quote%20request%20on%20your%20website.%20Can%20you%20please%20provide%20me%20with%20a%20detailed%20quote%3F"
                   target="_blank"
                   rel="noopener noreferrer"
                   className="flex-1 bg-green-500 text-white py-3 px-4 rounded-lg font-semibold hover:bg-green-600 transition-colors flex items-center justify-center gap-2"
@@ -391,7 +434,7 @@ function QuoteForm() {
 
                 {/* Call Button */}
                 <a
-                  href="tel:+917710032627"
+                  href="tel:+919594966921"
                   className="flex-1 bg-blue-500 text-white py-3 px-4 rounded-lg font-semibold hover:bg-blue-600 transition-colors flex items-center justify-center gap-2"
                 >
                   <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">

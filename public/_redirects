@@ -6,9 +6,3 @@ http://www.pestcontrol99.com/* https://www.pestcontrol99.com/:splat 301!
 
 # Add trailing slashes
 https://www.pestcontrol99.com/* https://www.pestcontrol99.com/:splat/ 301!
-
-# Redirect old service URLs to new ones
-/services/cockroach-pest-control-mumbai /services/cockroach-pest-control 301!
-/services/mosquito-pest-control-mumbai /services/mosquito-pest-control 301!
-/services/termite-control /services 301!
-/services/insects-pest-control-mumbai /services 301!

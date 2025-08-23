@@ -9,9 +9,6 @@ export const metadata: Metadata = {
     description: "Get instant online quotes for all pest control services with transparent pricing and same-day service.",
     type: "website",
   },
-  alternates: {
-    canonical: "https://www.pestcontrol99.com/quote",
-  },
 };
 
 export default function QuoteLayout({

@@ -74,6 +74,30 @@ export default function ServicesPage() {
       description: "Protect your family from mosquito-borne diseases with our effective control solutions. Low-odour mist plus larvae control.",
       image: "/images/Mosquito.webp",
       href: "/services/mosquito-pest-control"
+    },
+    {
+      title: "TERMITE PEST CONTROL",
+      description: "Protect your wood with our comprehensive termite control services. Low-odour borate treatment with up to 5-year warranty.",
+      image: "/images/Termite.webp",
+      href: "/services/termite-pest-control"
+    },
+    {
+      title: "RODENT PEST CONTROL",
+      description: "Stop night noises with our humane rodent control services. Entry-point sealing, smart traps, pet-safe methods with 90-day warranty.",
+      image: "/images/Rat.webp",
+      href: "/services/rodent-pest-control"
+    },
+    {
+      title: "HONEY BEE PEST CONTROL",
+      description: "Safe and eco-friendly honey bee removal services. Same-day hive removal, professional technicians, warranty-backed service.",
+      image: "/images/Honey Bee.webp",
+      href: "/services/honey-bee-pest-control"
+    },
+    {
+      title: "WOOD BORER CONTROL",
+      description: "Professional wood borer control services. Same-day inspection, low-odour treatment, neat drill & seal, warranty-backed service.",
+      image: "/images/Wood Borer.webp",
+      href: "/services/wood-borer-control"
     }
   ];
 
@@ -98,7 +122,7 @@ export default function ServicesPage() {
       <section className="py-8 sm:py-12 md:py-16">
         <div className="container mx-auto px-4">
           <div className="max-w-7xl mx-auto">
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-4xl mx-auto">
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-6 gap-8 max-w-9xl mx-auto">
               {services.map((service, index) => (
                 <ServiceCard
                   key={index}
@@ -132,10 +156,10 @@ export default function ServicesPage() {
               Get Free Quote
             </Link>
             <a 
-              href="tel:+917710032627" 
+              href="tel:+919594966921" 
               className="border-2 border-white text-white px-6 sm:px-8 py-3 sm:py-4 rounded font-semibold hover:bg-white hover:text-slate-800 transition-colors text-base sm:text-lg"
             >
-              Call Now: +91 77100 32627
+              Call Now: +91 95949 66921
             </a>
           </div>
         </div>

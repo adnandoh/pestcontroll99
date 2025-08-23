@@ -3,12 +3,12 @@ import Link from 'next/link';
 import Image from 'next/image';
 
 export const metadata: Metadata = {
-  title: 'Mosquito Pest Control Mumbai — Safe. Same-Day Relief | PestControl99',
-  description: 'Professional mosquito pest control services in Mumbai. Low-odour mist plus larvae control. Kid & pet-safe. Same-day appointments available. Get instant quote.',
+  title: 'Mosquito Pest Control in Mumbai | Safe & Same-Day Service',
+  description: 'Professional mosquito pest control in Mumbai. Kid- & pet-safe, eco-friendly treatments. Same-day inspection & service, 24×7 booking available',
   keywords: 'mosquito pest control, mosquito pest control mumbai, mosquito pest control near me, mosquito control during monsoon, pest control prices, residential pest control services, commercial pest control services, mosquito pest control cost, mosquito pest control spray, mosquito pest control services',
   openGraph: {
-    title: 'Mosquito Pest Control Mumbai — Safe. Same-Day Relief',
-    description: 'Professional mosquito pest control services in Mumbai. Low-odour mist plus larvae control. Kid & pet-safe.',
+    title: 'Mosquito Pest Control in Mumbai | Safe & Same-Day Service',
+    description: 'Professional mosquito pest control in Mumbai. Kid- & pet-safe, eco-friendly treatments. Same-day inspection & service, 24×7 booking available',
     type: 'website',
     images: ['/images/mosquito-control-hero.jpg'],
   },

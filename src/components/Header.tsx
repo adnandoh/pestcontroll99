@@ -16,6 +16,10 @@ export default function Header() {
     { name: 'All Services', href: '/services' },
     { name: 'Cockroach Pest Control', href: '/services/cockroach-pest-control' },
     { name: 'Mosquito Pest Control', href: '/services/mosquito-pest-control' },
+    { name: 'Termite Pest Control', href: '/services/termite-pest-control' },
+    { name: 'Rodent Pest Control', href: '/services/rodent-pest-control' },
+    { name: 'Honey Bee Pest Control', href: '/services/honey-bee-pest-control' },
+    { name: 'Wood Borer Control', href: '/services/wood-borer-control' },
   ];
 
   // Function to close mobile menu when link is clicked
@@ -45,19 +49,26 @@ export default function Header() {
   }, [isMenuOpen, isServicesDropdownOpen]);
 
   return (
-    <header className="bg-white shadow-md sticky top-0 z-50 border-b border-gray-200" ref={menuRef}>
+    <header
+      className="bg-white/95 backdrop-blur supports-[backdrop-filter]:bg-white/75 shadow-sm sticky top-0 z-50 border-b border-gray-100"
+      ref={menuRef}
+      role="navigation"
+      aria-label="Main"
+    >
       <div className="container mx-auto px-4">
         <div className="flex justify-between items-center py-2 md:py-3">
           <Link href="/" className="flex items-center" onClick={closeMobileMenu}>
             <div className="flex items-center space-x-3">
-              <Image
-                src="/images/logo.svg"
-                alt="PestControl99 Logo"
-                width={120}
-                height={40}
-                className="h-auto"
-                priority
-              />
+              <div className="flex items-center" style={{height: 48}}>
+                <Image
+                  src="/images/logo.svg"
+                  alt="PestControl99 Logo"
+                  width={140}
+                  height={40}
+                  className="h-full w-auto"
+                  priority
+                />
+              </div>
             </div>
           </Link>
 
@@ -122,6 +133,8 @@ export default function Header() {
             className="md:hidden text-gray-700 p-2 rounded-md hover:bg-gray-100 transition-colors duration-200"
             onClick={() => setIsMenuOpen(!isMenuOpen)}
             aria-label="Toggle mobile menu"
+            aria-expanded={isMenuOpen}
+            aria-controls="primary-mobile-menu"
           >
             <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               {isMenuOpen ? (
@@ -151,6 +164,8 @@ export default function Header() {
             ? 'max-h-96 opacity-100 pb-3'
             : 'max-h-0 opacity-0 pb-0'
             }`}
+          id="primary-mobile-menu"
+          aria-hidden={!isMenuOpen}
         >
           <div className="flex flex-col space-y-1 pt-3">
             <Link

@@ -16,7 +16,7 @@ interface AddressAutocompleteProps {
   error?: string;
 }
 
-export default function AddressAutocomplete({
+function InnerAutocomplete({
   value,
   onChange,
   onSelect,
@@ -259,4 +259,59 @@ export default function AddressAutocomplete({
       )}
     </div>
   );
+}
+
+export default function AddressAutocomplete(props: AddressAutocompleteProps) {
+  const { value, onChange, placeholder = 'Enter your address', className = '', error } = props;
+
+  const [mapsReady, setMapsReady] = useState(false);
+
+  useEffect(() => {
+    const onReady = () => setMapsReady(true);
+
+    // If already available, mark ready immediately
+    if (typeof window !== 'undefined' && (window as any).google?.maps?.places) {
+      setMapsReady(true);
+    } else {
+      // Listen for our global ready event if provided
+      if (typeof window !== 'undefined') {
+        window.addEventListener('gmaps:ready', onReady);
+      }
+      // Poll as a fallback in case the event is missed
+      let isActive = true;
+      const poll = () => {
+        if (!isActive) return;
+        if (typeof window !== 'undefined' && (window as any).google?.maps?.places) {
+          setMapsReady(true);
+        } else {
+          setTimeout(poll, 100);
+        }
+      };
+      poll();
+      return () => {
+        isActive = false;
+        if (typeof window !== 'undefined') {
+          window.removeEventListener('gmaps:ready', onReady);
+        }
+      };
+    }
+  }, []);
+
+  if (!mapsReady) {
+    return (
+      <div className="relative">
+        <input
+          type="text"
+          value={value}
+          onChange={(e) => onChange(e.target.value)}
+          placeholder={placeholder}
+          className={`${className} pr-10`}
+          disabled
+        />
+        {error && <p className="mt-1 text-sm text-red-600">{error}</p>}
+      </div>
+    );
+  }
+
+  return <InnerAutocomplete {...props} />;
 }

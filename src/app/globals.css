@@ -15,13 +15,10 @@ body {
   background: var(--background);
   color: var(--foreground);
   font-family: var(--font-inter), system-ui, -apple-system, sans-serif;
-  transition: all 0.3s ease;
+  transition: background-color 0.3s ease, color 0.3s ease;
 }
 
-/* Global smooth transitions */
-* {
-  transition: transform 0.2s ease, opacity 0.2s ease, box-shadow 0.2s ease;
-}
+/* Note: Avoid global transitions on all elements to prevent layout jank */
 
 /* Smooth page transitions */
 .page-transition {

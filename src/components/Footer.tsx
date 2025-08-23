@@ -53,11 +53,11 @@ export default function Footer() {
             <h4 className="text-lg font-semibold mb-4 text-gray-900">Our Services</h4>
             <ul className="space-y-2 text-gray-600 text-sm">
               <li><Link href="/services/cockroach-pest-control" className="hover:text-green-600 transition-colors">Cockroach Control</Link></li>
-              <li><Link href="/services" className="hover:text-green-600 transition-colors">Rodent Control</Link></li>
+              <li><Link href="/services/rodent-pest-control" className="hover:text-green-600 transition-colors">Rodent Control</Link></li>
               <li><Link href="/services/mosquito-pest-control" className="hover:text-green-600 transition-colors">Mosquito Control</Link></li>
-              <li><Link href="/services" className="hover:text-green-600 transition-colors">Bed Bug Control</Link></li>
-              <li><Link href="/services" className="hover:text-green-600 transition-colors">Wood Borer Control</Link></li>
-              <li><Link href="/services" className="hover:text-green-600 transition-colors">Honey Bee Removal</Link></li>
+              <li><Link href="/services/termite-pest-control" className="hover:text-green-600 transition-colors">Termite Control</Link></li>
+              <li><Link href="/services/wood-borer-control" className="hover:text-green-600 transition-colors">Wood Borer Control</Link></li>
+              <li><Link href="/services/honey-bee-pest-control" className="hover:text-green-600 transition-colors">Honey Bee Removal</Link></li>
             </ul>
           </div>
 
@@ -111,9 +111,8 @@ export default function Footer() {
         <div className="border-t border-gray-300 mt-8 pt-8">
           <div className="flex justify-center">
             <div className="flex space-x-6 text-sm text-gray-600">
-              <Link href="/privacy-policy" className="hover:text-green-600 transition-colors">Privacy Policy</Link>
-              <Link href="/terms-of-service" className="hover:text-green-600 transition-colors">Terms of Service</Link>
-              <Link href="/sitemap" className="hover:text-green-600 transition-colors">Sitemap</Link>
+              <Link href="/legal" className="hover:text-green-600 transition-colors">Terms & Privacy</Link>
+              <a href="https://www.pestcontrol99.com/sitemap.xml" className="hover:text-green-600 transition-colors" target="_blank" rel="noopener noreferrer">Sitemap</a>
             </div>
           </div>
         </div>

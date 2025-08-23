@@ -30,7 +30,6 @@ export const metadata: Metadata = {
     ],
   },
   manifest: '/site.webmanifest',
-  themeColor: '#0C9500',
   other: {
     'msapplication-TileColor': '#0C9500',
   },
@@ -46,120 +45,75 @@ export const metadata: Metadata = {
   },
 };
 
+export const viewport = {
+  themeColor: '#0C9500',
+};
+
 export default function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const googleMapsApiKey = process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY;
   return (
     <html lang="en" data-scroll-behavior="smooth">
       <head>
-        {/* Structured Data - Organization & Services */}
+        {/* Structured Data - LocalBusiness */}
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{
             __html: JSON.stringify({
               "@context": "https://schema.org",
-              "@graph": [
-                {
-                  "@type": "Organization",
-                  "@id": "https://www.pestcontrol99.com/#org",
-                  "name": "PestControl99",
-                  "url": "https://www.pestcontrol99.com/",
-                  "logo": "https://www.pestcontrol99.com/images/logo.svg",
-                  "description": "Same-day, kid- and pet-safe pest control services in Mumbai. Treatments for cockroaches, termites, rodents, mosquitoes, bed bugs, wood borers, and honey bees.",
-                  "contactPoint": [
-                    {
-                      "@type": "ContactPoint",
-                      "telephone": "+91 95949 66921",
-                      "contactType": "customer service",
-                      "areaServed": ["Mumbai", "Thane", "Navi Mumbai", "Pune", "IN"],
-                      "availableLanguage": ["en", "hi", "ur", "mr"]
-                    }
-                  ],
-                  "sameAs": [
-                    "https://www.facebook.com/profile.php?id=61579196252758&mibextid=ZbWKwL",
-                    "https://www.instagram.com/pestcontrol_99"
-                  ]
-                },
-                {
-                  "@type": "PestControlService",
-                  "@id": "https://www.pestcontrol99.com/#localbusiness",
-                  "name": "PestControl99",
-                  "image": "https://www.pestcontrol99.com/images/logo.svg",
-                  "url": "https://www.pestcontrol99.com/",
-                  "telephone": "+91 95949 66921",
-                  "description": "Professional pest control services with same-day response. Low-odour, stain-free treatments for homes and businesses.",
-                  "address": {
-                    "@type": "PostalAddress",
-                    "streetAddress": "9/B Arasa shopping center, S.V Road, Next to Paneri Shop, Andheri West",
-                    "addressLocality": "Mumbai",
-                    "addressRegion": "Maharashtra",
-                    "postalCode": "400058",
-                    "addressCountry": "IN"
-                  },
-                  "email": "info@pestcontrol99.com",
-                  "priceRange": "₹₹",
-                  "areaServed": ["Mumbai", "Thane", "Navi Mumbai", "Pune", "IN"],
-                  "openingHoursSpecification": [
-                    {
-                      "@type": "OpeningHoursSpecification",
-                      "dayOfWeek": ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"],
-                      "opens": "00:00",
-                      "closes": "23:59"
-                    }
-                  ],
-                  "geo": {
-                    "@type": "GeoCoordinates",
-                    "latitude": 19.120886,
-                    "longitude": 72.845466
-                  },
-                  "hasMap": "https://www.google.com/maps/search/?api=1&query=19.120886,72.845466",
-                  "sameAs": [
-                    "https://www.facebook.com/profile.php?id=61579196252758&mibextid=ZbWKwL",
-                    "https://www.instagram.com/pestcontrol_99"
-                  ]
-                },
-                {
-                  "@type": "Service",
-                  "@id": "https://www.pestcontrol99.com/#services",
-                  "name": "Pest control services",
-                  "provider": { "@id": "https://www.pestcontrol99.com/#localbusiness" },
-                  "areaServed": ["Mumbai", "Thane", "Navi Mumbai", "Pune", "IN"],
-                  "hasOfferCatalog": {
-                    "@type": "OfferCatalog",
-                    "name": "PestControl99 Services",
-                    "itemListElement": [
-                      {
-                        "@type": "Offer",
-                        "itemOffered": {
-                          "@type": "Service",
-                          "name": "Cockroach Pest Control",
-                          "url": "https://www.pestcontrol99.com/services/cockroach-pest-control-mumbai/"
-                        }
-                      },
-                      {
-                        "@type": "Offer",
-                        "itemOffered": {
-                          "@type": "Service",
-                          "name": "Mosquito Control",
-                          "url": "https://www.pestcontrol99.com/services/mosquito-pest-control-mumbai/"
-                        }
-                      }
-                    ]
-                  }
-                },
-                {
-                  "@type": "WebSite",
-                  "@id": "https://www.pestcontrol99.com/#website",
-                  "url": "https://www.pestcontrol99.com/",
-                  "name": "PestControl99",
-                  "inLanguage": "en"
-                }
-              ]
+              "@type": "LocalBusiness",
+              "name": "PestControl99",
+              "description": "Professional pest control services in Mumbai, Pune & Navi Mumbai",
+              "url": "https://www.pestcontrol99.com",
+              "telephone": "+91-9594966921",
+              "address": {
+                "@type": "PostalAddress",
+                "streetAddress": "9/B Arasa shopping center, S.V road, Next to Paneri Shop",
+                "addressLocality": "Andheri West",
+                "addressRegion": "Mumbai, Maharashtra",
+                "postalCode": "400058",
+                "addressCountry": "IN"
+              },
+              "openingHours": "Mo-Su 00:00-23:59",
+              "serviceArea": ["Mumbai", "Pune", "Navi Mumbai"],
+              "priceRange": "$$",
+              "aggregateRating": {
+                "@type": "AggregateRating",
+                "ratingValue": "4.8",
+                "reviewCount": "150"
+              }
             })
           }}
         />
+        {/* Google Maps JavaScript API (Places library) */}
+        {googleMapsApiKey && (
+          <>
+            <Script
+              id="google-maps"
+              src={`https://maps.googleapis.com/maps/api/js?key=${googleMapsApiKey}&libraries=places&loading=async`}
+              strategy="beforeInteractive"
+            />
+            <Script id="gmaps-ready-poll" strategy="afterInteractive">{
+              `
+                (function(){
+                  var tries = 0;
+                  var maxTries = 300; // ~30s
+                  var timer = setInterval(function(){
+                    if (window.google && window.google.maps && window.google.maps.places) {
+                      window.dispatchEvent(new Event('gmaps:ready'));
+                      clearInterval(timer);
+                    } else if (++tries >= maxTries) {
+                      clearInterval(timer);
+                    }
+                  }, 100);
+                })();
+              `
+            }</Script>
+          </>
+        )}
       </head>
       <body
         className="font-sans antialiased min-h-screen flex flex-col"
@@ -178,12 +132,6 @@ export default function RootLayout({
             gtag('config', 'G-69K3FRS21R');
           `}
         </Script>
-        
-        {/* Google Maps API */}
-        <Script
-          src={`https://maps.googleapis.com/maps/api/js?key=${process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY}&libraries=places&callback=Function.prototype`}
-          strategy="afterInteractive"
-        />
         
         <Header />
         <main className="flex-grow pb-16 md:pb-0">
