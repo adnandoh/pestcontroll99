@@ -80,7 +80,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
               "name": "PestControl99",
               "description": "Professional pest control services in Mumbai, Pune & Navi Mumbai",
               "url": "https://www.pestcontrol99.com",
-              "telephone": "+91-9594966921",
+              "telephone": "+91-7710032627",
               "address": {
                 "@type": "PostalAddress",
                 "streetAddress": "9/B Arasa shopping center, S.V road, Next to Paneri Shop",

@@ -156,10 +156,10 @@ export default function ServicesPage() {
               Get Free Quote
             </Link>
             <a 
-              href="tel:+919594966921" 
+              href="tel:+917710032627" 
               className="border-2 border-white text-white px-6 sm:px-8 py-3 sm:py-4 rounded font-semibold hover:bg-white hover:text-slate-800 transition-colors text-base sm:text-lg"
             >
-              Call Now: +91 95949 66921
+              Call Now: +91 77100 32627
             </a>
           </div>
         </div>
