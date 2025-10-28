@@ -31,7 +31,7 @@ Create a `.env.local` file with the following variables:
 NEXT_PUBLIC_GOOGLE_MAPS_API_KEY=your_google_maps_api_key
 
 # Email (Gmail SMTP)
-EMAIL_USER=your_gmail@gmail.com
+EMAIL_USER=info@pestcontrol99.com
 EMAIL_PASS=your_app_password
 
 # CRM System (Optional - Auto-detected based on environment)
