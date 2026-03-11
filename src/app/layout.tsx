@@ -4,7 +4,7 @@ import Script from "next/script";
 import "./globals.css";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
-import StickyMobileCTA from "@/components/StickyMobileCTA";
+import FloatingWidgets from "@/components/FloatingWidgets";
 import WebVitals from "@/components/WebVitals";
 
 // const inter = Inter({
@@ -147,11 +147,11 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 
         
         <Header />
-        <main className="flex-grow pb-16 md:pb-0">
+        <main className="flex-grow">
           {children}
         </main>
         <Footer />
-        <StickyMobileCTA />
+        <FloatingWidgets />
         <WebVitals />
       </body>
     </html>
