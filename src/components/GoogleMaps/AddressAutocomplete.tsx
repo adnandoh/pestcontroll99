@@ -77,7 +77,7 @@ function InnerAutocomplete({
     onChange(value);
     setIsFocused(true); // Ensure dropdown stays open while typing
     setSelectedIndex(-1); // Reset selected index when typing
-    
+
     // If the input is empty, clear suggestions
     if (!value.trim()) {
       clearSuggestions();
@@ -100,7 +100,7 @@ function InnerAutocomplete({
         return newIndex;
       });
     }
-    
+
     // Handle arrow up (select previous suggestion)
     else if (e.key === 'ArrowUp') {
       e.preventDefault();
@@ -113,13 +113,13 @@ function InnerAutocomplete({
         return newIndex;
       });
     }
-    
+
     // Handle Enter key (select the currently highlighted suggestion)
     else if (e.key === 'Enter' && selectedIndex >= 0) {
       e.preventDefault();
       handleSelect(data[selectedIndex])();
     }
-    
+
     // Handle Escape key (close suggestions)
     else if (e.key === 'Escape') {
       setIsFocused(false);
@@ -221,35 +221,35 @@ function InnerAutocomplete({
         )}
       </div>
       {error && <p className="mt-1 text-sm text-red-600">{error}</p>}
-      
+
       {/* Suggestions dropdown */}
       {isFocused && inputValue && status === 'OK' && (
-        <div className="absolute z-40 mt-1 w-full bg-white shadow-lg rounded-md border border-gray-200 max-h-60 overflow-y-auto">
+        <div className="absolute z-40 mt-2 w-full bg-white shadow-2xl rounded-xl border border-gray-100 max-h-60 overflow-y-auto animate-in fade-in slide-in-from-top-2">
           {data.map((suggestion, index) => (
             <div
               key={suggestion.place_id}
               ref={(el: HTMLDivElement | null) => { suggestionsRef.current[index] = el; }}
               onClick={handleSelect(suggestion)}
-              className={`px-4 py-2 cursor-pointer text-gray-700 text-sm flex items-center ${selectedIndex === index ? 'bg-gray-100' : 'hover:bg-gray-50'}`}
+              className={`px-4 py-3 cursor-pointer text-gray-700 text-sm flex items-center transition-colors duration-150 ${selectedIndex === index ? 'bg-green-50 text-green-900' : 'hover:bg-gray-50'}`}
             >
-              <svg 
-                className="w-4 h-4 mr-2 text-gray-500 flex-shrink-0" 
-                fill="none" 
-                stroke="currentColor" 
-                viewBox="0 0 24 24" 
+              <svg
+                className="w-4 h-4 mr-2 text-gray-500 flex-shrink-0"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
                 xmlns="http://www.w3.org/2000/svg"
               >
-                <path 
-                  strokeLinecap="round" 
-                  strokeLinejoin="round" 
-                  strokeWidth="2" 
-                  d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" 
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth="2"
+                  d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"
                 />
-                <path 
-                  strokeLinecap="round" 
-                  strokeLinejoin="round" 
-                  strokeWidth="2" 
-                  d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" 
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth="2"
+                  d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"
                 />
               </svg>
               <span>{suggestion.description}</span>

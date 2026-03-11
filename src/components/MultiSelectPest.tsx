@@ -72,29 +72,36 @@ export default function MultiSelectPest({ selectedPests, onChange, className = '
       <label className="block text-sm font-medium text-gray-700 mb-2">
         Type of Pest Problem *
       </label>
-      
+
       {/* Dropdown Trigger */}
       <button
         type="button"
         onClick={() => setIsOpen(!isOpen)}
-        className={`w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent text-left flex items-center justify-between ${
-          selectedPests.length > 0 ? 'border-green-300 bg-green-50' : 'border-gray-300 bg-white'
-        }`}
+        className={`w-full pl-4 pr-4 py-3 border rounded-xl focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent text-left flex items-center justify-between transition-all duration-200 ${selectedPests.length > 0
+            ? 'border-green-300 bg-green-50/50 text-green-900'
+            : 'border-gray-200 bg-gray-50 hover:border-green-300 focus:bg-white'
+          }`}
       >
-        <div className="flex items-center gap-2">
+        <div className="flex items-center gap-2 overflow-hidden">
           {/* Show selected pest icons */}
-          {getSelectedIcons().map((icon, index) => (
-            <span key={index} className="text-lg">{icon}</span>
-          ))}
-          <span className={selectedPests.length > 0 ? 'text-green-700 font-medium' : 'text-gray-500'}>
+          {selectedPests.length > 0 && (
+            <div className="flex -space-x-2 mr-2">
+              {getSelectedIcons().map((icon, index) => (
+                <span key={index} className="w-8 h-8 rounded-full bg-white border border-green-100 flex items-center justify-center text-sm shadow-sm relative z-10">
+                  {icon}
+                </span>
+              ))}
+            </div>
+          )}
+          <span className={`truncate ${selectedPests.length > 0 ? 'font-medium' : 'text-gray-500'}`}>
             {getDisplayText()}
           </span>
         </div>
-        
-        <svg 
-          className={`w-5 h-5 text-gray-400 transition-transform duration-200 ${isOpen ? 'rotate-180' : ''}`} 
-          fill="none" 
-          stroke="currentColor" 
+
+        <svg
+          className={`w-5 h-5 text-gray-400 transition-transform duration-200 flex-shrink-0 ${isOpen ? 'rotate-180 text-green-500' : ''}`}
+          fill="none"
+          stroke="currentColor"
           viewBox="0 0 24 24"
         >
           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
@@ -103,53 +110,61 @@ export default function MultiSelectPest({ selectedPests, onChange, className = '
 
       {/* Dropdown Menu */}
       {isOpen && (
-        <div className="absolute z-10 w-full mt-1 bg-white border border-gray-300 rounded-lg shadow-lg max-h-64 overflow-y-auto">
-          <div className="p-2">
-            <div className="text-xs text-gray-500 mb-2 px-2">Select all that apply:</div>
+        <div className="absolute z-20 w-full mt-2 bg-white border border-gray-100 rounded-xl shadow-2xl max-h-80 overflow-y-auto animate-in fade-in slide-in-from-top-2">
+          <div className="p-2 sticky top-0 bg-white z-10 border-b border-gray-100">
+            <div className="flex justify-between items-center px-2 py-1">
+              <span className="text-xs font-semibold text-gray-500 uppercase tracking-wider">Select Pests</span>
+              <div className="flex gap-3">
+                <button
+                  type="button"
+                  onClick={() => onChange(pestOptions.map(p => p.value))}
+                  className="text-xs text-green-600 hover:text-green-700 font-medium hover:underline"
+                >
+                  All
+                </button>
+                <button
+                  type="button"
+                  onClick={() => onChange([])}
+                  className="text-xs text-red-500 hover:text-red-600 font-medium hover:underline"
+                >
+                  Clear
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <div className="p-2 grid grid-cols-1 sm:grid-cols-2 gap-1">
             {pestOptions.map((pest) => (
               <label
                 key={pest.value}
-                className="flex items-center p-2 hover:bg-gray-50 rounded cursor-pointer transition-colors duration-150"
+                className={`flex items-center p-3 rounded-lg cursor-pointer transition-all duration-200 group ${selectedPests.includes(pest.value)
+                    ? 'bg-green-50 border border-green-100'
+                    : 'hover:bg-gray-50 border border-transparent'
+                  }`}
               >
-                <input
-                  type="checkbox"
-                  checked={selectedPests.includes(pest.value)}
-                  onChange={() => handleTogglePest(pest.value)}
-                  className="w-4 h-4 text-green-600 border-gray-300 rounded focus:ring-green-500 focus:ring-2"
-                />
-                <span className="ml-3 text-lg">{pest.icon}</span>
-                <span className="ml-2 text-sm text-gray-700">{pest.label}</span>
+                <div className={`w-5 h-5 rounded border flex items-center justify-center mr-3 transition-colors ${selectedPests.includes(pest.value)
+                    ? 'bg-green-500 border-green-500 text-white'
+                    : 'border-gray-300 group-hover:border-green-400 bg-white'
+                  }`}>
+                  {selectedPests.includes(pest.value) && (
+                    <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M5 13l4 4L19 7" />
+                    </svg>
+                  )}
+                  <input
+                    type="checkbox"
+                    className="hidden"
+                    checked={selectedPests.includes(pest.value)}
+                    onChange={() => handleTogglePest(pest.value)}
+                  />
+                </div>
+                <span className="text-xl mr-2 group-hover:scale-110 transition-transform">{pest.icon}</span>
+                <span className={`text-sm ${selectedPests.includes(pest.value) ? 'text-green-900 font-medium' : 'text-gray-700'}`}>
+                  {pest.label}
+                </span>
               </label>
             ))}
           </div>
-          
-          {/* Quick Actions */}
-          <div className="border-t border-gray-200 p-2 bg-gray-50">
-            <div className="flex gap-2">
-              <button
-                type="button"
-                onClick={() => onChange(pestOptions.map(p => p.value))}
-                className="text-xs text-green-600 hover:text-green-700 font-medium"
-              >
-                Select All
-              </button>
-              <span className="text-xs text-gray-300">|</span>
-              <button
-                type="button"
-                onClick={() => onChange([])}
-                className="text-xs text-gray-500 hover:text-gray-700 font-medium"
-              >
-                Clear All
-              </button>
-            </div>
-          </div>
-        </div>
-      )}
-
-      {/* Selected Count Badge */}
-      {selectedPests.length > 0 && (
-        <div className="absolute -top-2 -right-2 bg-green-500 text-white text-xs rounded-full w-6 h-6 flex items-center justify-center font-bold">
-          {selectedPests.length}
         </div>
       )}
     </div>

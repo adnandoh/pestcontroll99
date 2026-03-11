@@ -23,7 +23,7 @@ export default function AddressInput({
   label = 'Street Address',
   required = false,
 }: AddressInputProps) {
-  const handleAddressSelect = (address: string, _lat: number, _lng: number) => {
+  const handleAddressSelect = (address: string) => {
     onChange(address);
     // Coordinates are received but not used in this component
   };
@@ -45,9 +45,8 @@ export default function AddressInput({
           onChange={onChange}
           onSelect={handleAddressSelect}
           placeholder={placeholder}
-          className={`w-full px-3 py-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent ${
-            error ? 'border-red-300' : 'border-gray-300'
-          } ${className}`}
+          className={`w-full px-4 py-3 border rounded-xl focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent transition-all duration-200 ${error ? 'border-red-300 focus:ring-red-200' : 'border-gray-200 hover:border-green-300'
+            } ${className}`}
           error={error}
         />
         <div className="flex justify-end">
