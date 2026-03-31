@@ -212,7 +212,7 @@ export default function LegalPage() {
                   <div className="mt-3 p-4 bg-gray-50 rounded-lg">
                     <p><strong>Email:</strong> info@pestcontrol99.com</p>
                     <p><strong>Phone:</strong> +91 77100 32627</p>
-                    <p><strong>Address:</strong> 9/B Arasa shopping center, S.V road, Next to Paneri Shop, Andheri West, Mumbai - 400058</p>
+                    <p><strong>Address:</strong> 1st Floor, Atlantic Tower B Wing, Aqsa Palace, 101, Gaothan Rd, next to Paneri Showroom, Andheri West, Mumbai, Maharashtra 400058</p>
                   </div>
                 </div>
               </div>

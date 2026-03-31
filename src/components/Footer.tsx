@@ -95,7 +95,7 @@ export default function Footer() {
                 <svg className="w-4 h-4 mr-3 mt-1 text-green-600 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
                   <path fillRule="evenodd" d="M5.05 4.05a7 7 0 119.9 9.9L10 18.9l-4.95-4.95a7 7 0 010-9.9zM10 11a2 2 0 100-4 2 2 0 000 4z" clipRule="evenodd" />
                 </svg>
-                <span>9/B Arasa shopping center, S.V road, Next to Paneri Shop, Andheri West, Mumbai - 400058</span>
+                <span>1st Floor, Atlantic Tower B Wing, Aqsa Palace, 101, Gaothan Rd, next to Paneri Showroom, Andheri West, Mumbai, Maharashtra 400058</span>
               </div>
               <div className="flex items-center">
                 <svg className="w-4 h-4 mr-3 text-green-600 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">

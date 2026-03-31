@@ -206,7 +206,7 @@ export default function ContactForm() {
                     </div>
                     <div>
                       <h3 className="font-semibold text-gray-900">Office Address</h3>
-                      <p className="text-gray-600">9/B Arasa shopping center, S.V road, Next to Paneri Shop, Andheri West, Mumbai - 400058</p>
+                      <p className="text-gray-600">1st Floor, Atlantic Tower B Wing, Aqsa Palace, 101, Gaothan Rd, next to Paneri Showroom, Andheri West, Mumbai, Maharashtra 400058</p>
                     </div>
                   </div>
 

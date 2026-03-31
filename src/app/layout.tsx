@@ -85,7 +85,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
               "telephone": "+91-7710032627",
               "address": {
                 "@type": "PostalAddress",
-                "streetAddress": "9/B Arasa shopping center, S.V road, Next to Paneri Shop",
+                "streetAddress": "1st Floor, Atlantic Tower B Wing, Aqsa Palace, 101, Gaothan Rd, next to Paneri Showroom",
                 "addressLocality": "Andheri West",
                 "addressRegion": "Mumbai, Maharashtra",
                 "postalCode": "400058",
