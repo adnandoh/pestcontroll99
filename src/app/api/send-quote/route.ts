@@ -24,11 +24,11 @@ export async function POST(request: NextRequest) {
       });
     }
 
-    // Create transporter with flexible email configuration
+    // Create transporter with Zoho Mail SMTP configuration
     const transporter = nodemailer.createTransport({
-      host: 'smtp.gmail.com',
-      port: 587,
-      secure: false, // true for 465, false for other ports
+      host: process.env.EMAIL_HOST || 'smtp.zoho.com',
+      port: Number(process.env.EMAIL_PORT) || 587,
+      secure: process.env.EMAIL_SECURE === 'true', // false for port 587 (STARTTLS)
       auth: {
         user: process.env.EMAIL_USER,
         pass: process.env.EMAIL_PASS,
