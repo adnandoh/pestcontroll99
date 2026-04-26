@@ -112,7 +112,7 @@ console.log('✓ Updated package.json with optimization scripts');
 // 5. Create .env.example for environment variables
 console.log('\n5. Creating .env.example...');
 const envExample = `# Email Configuration
-EMAIL_USER=info@pestcontrol99.com
+EMAIL_USER=accounts@pestcontrol99.com
 EMAIL_PASS=your-app-password
 
 # Analytics

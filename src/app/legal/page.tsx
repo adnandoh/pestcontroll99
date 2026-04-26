@@ -210,7 +210,7 @@ export default function LegalPage() {
                     If you have any questions about this Privacy Policy or our data practices, please contact us at:
                   </p>
                   <div className="mt-3 p-4 bg-gray-50 rounded-lg">
-                    <p><strong>Email:</strong> info@pestcontrol99.com</p>
+                    <p><strong>Email:</strong> accounts@pestcontrol99.com</p>
                     <p><strong>Phone:</strong> +91 77100 32627</p>
                     <p><strong>Address:</strong> 1st Floor, Atlantic Tower B Wing, Aqsa Palace, 101, Gaothan Rd, next to Paneri Showroom, Andheri West, Mumbai, Maharashtra 400058</p>
                   </div>
