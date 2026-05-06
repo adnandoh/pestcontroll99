@@ -1,0 +1,107 @@
+import { Metadata } from 'next';
+import Breadcrumb from '@/components/Breadcrumb';
+
+export const metadata: Metadata = {
+  title: 'Data Deletion Instructions | PestControl99',
+  description: 'Instructions on how to request the deletion of your personal data from PestControl99.',
+  keywords: 'data deletion, delete account, privacy, data protection, PestControl99',
+  alternates: {
+    canonical: 'https://www.pestcontrol99.com/data-deletion',
+  },
+};
+
+export default function DataDeletionPage() {
+  return (
+    <div className="min-h-screen bg-gray-50">
+      <Breadcrumb items={[
+        { label: 'Data Deletion', href: '/data-deletion' }
+      ]} />
+
+      <div className="container mx-auto px-4 py-12">
+        <div className="max-w-4xl mx-auto">
+          <div className="bg-white rounded-2xl shadow-xl overflow-hidden border border-gray-100">
+            {/* Header */}
+            <div className="bg-red-600 px-8 py-10 text-white text-center">
+              <h1 className="text-3xl md:text-4xl font-extrabold mb-2">Data Deletion Instructions</h1>
+              <p className="text-red-100 opacity-90">Manage your personal data and privacy</p>
+            </div>
+
+            <div className="p-8 md:p-12 space-y-12">
+              {/* Intro */}
+              <div className="text-center">
+                <p className="text-xl text-gray-700 leading-relaxed max-w-2xl mx-auto">
+                  Users may request deletion of their personal data collected by Pest Control 99. We respect your right to privacy and control over your personal information.
+                </p>
+              </div>
+
+              {/* Step by Step */}
+              <section>
+                <h2 className="text-2xl font-bold text-gray-900 mb-8 text-center">How to Request Data Deletion</h2>
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+                  <div className="relative group">
+                    <div className="bg-red-50 rounded-2xl p-8 h-full border border-red-100 transition-all hover:shadow-lg">
+                      <div className="absolute -top-4 left-1/2 transform -translate-x-1/2 bg-red-600 text-white w-10 h-10 rounded-full flex items-center justify-center font-bold text-lg shadow-lg">1</div>
+                      <div className="pt-4 text-center">
+                        <h3 className="font-bold text-gray-900 mb-3">Compose Email</h3>
+                        <p className="text-sm text-gray-600">Send an email to: <span className="text-red-600 font-medium">info@pestcontrol99.com</span></p>
+                      </div>
+                    </div>
+                  </div>
+                  <div className="relative group">
+                    <div className="bg-red-50 rounded-2xl p-8 h-full border border-red-100 transition-all hover:shadow-lg">
+                      <div className="absolute -top-4 left-1/2 transform -translate-x-1/2 bg-red-600 text-white w-10 h-10 rounded-full flex items-center justify-center font-bold text-lg shadow-lg">2</div>
+                      <div className="pt-4 text-center">
+                        <h3 className="font-bold text-gray-900 mb-3">Subject Line</h3>
+                        <p className="text-sm text-gray-600">Use the subject line: <br /><span className="text-red-600 font-medium">"Data Deletion Request"</span></p>
+                      </div>
+                    </div>
+                  </div>
+                  <div className="relative group">
+                    <div className="bg-red-50 rounded-2xl p-8 h-full border border-red-100 transition-all hover:shadow-lg">
+                      <div className="absolute -top-4 left-1/2 transform -translate-x-1/2 bg-red-600 text-white w-10 h-10 rounded-full flex items-center justify-center font-bold text-lg shadow-lg">3</div>
+                      <div className="pt-4 text-center">
+                        <h3 className="font-bold text-gray-900 mb-3">Include Details</h3>
+                        <p className="text-sm text-gray-600">Include your registered phone number or email address.</p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </section>
+
+              {/* Processing Time */}
+              <section className="bg-gray-900 text-white rounded-2xl p-8 md:p-12 relative overflow-hidden">
+                <div className="relative z-10 flex flex-col md:flex-row items-center justify-between gap-8">
+                  <div className="max-w-md">
+                    <h2 className="text-2xl font-bold mb-4">Processing Time</h2>
+                    <p className="text-gray-400 leading-relaxed">
+                      Your privacy is our priority. Data deletion requests are generally processed within <span className="text-red-500 font-bold">7 to 15 business days</span>. You will receive a confirmation once your data has been successfully removed from our records.
+                    </p>
+                  </div>
+                  <div className="bg-white/10 p-6 rounded-full backdrop-blur-sm">
+                    <svg className="w-16 h-16 text-red-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                    </svg>
+                  </div>
+                </div>
+                {/* Decorative circle */}
+                <div className="absolute top-0 right-0 w-64 h-64 bg-red-600/10 rounded-full -mr-32 -mt-32"></div>
+              </section>
+
+              {/* Contact */}
+              <section className="pt-8 text-center">
+                <h2 className="text-2xl font-bold text-gray-900 mb-6">Contact</h2>
+                <div className="inline-block bg-gray-50 rounded-2xl p-8 border border-gray-100 min-w-[300px]">
+                  <p className="text-xl font-bold text-gray-900 mb-2">Pest Control 99</p>
+                  <div className="space-y-2 mt-4">
+                    <a href="https://pestcontrol99.com" className="block text-red-600 hover:underline font-medium">pestcontrol99.com</a>
+                    <a href="mailto:info@pestcontrol99.com" className="block text-red-600 hover:underline font-medium">info@pestcontrol99.com</a>
+                  </div>
+                </div>
+              </section>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}

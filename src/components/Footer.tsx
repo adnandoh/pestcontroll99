@@ -123,10 +123,12 @@ export default function Footer() {
               <span className="font-bold text-lg tracking-wider text-white">Multi pest care LLP</span>
             </div>
 
-            <div className="flex items-center space-x-4 text-sm text-gray-400">
-              <Link href="/legal" className="hover:text-white transition-colors">Terms & Conditions</Link>
+            <div className="flex flex-wrap items-center justify-center md:justify-end space-x-4 text-sm text-gray-400">
+              <Link href="/terms-and-conditions" className="hover:text-white transition-colors">Terms & Conditions</Link>
               <span className="text-gray-800">|</span>
-              <Link href="/legal" className="hover:text-white transition-colors">Privacy Policy</Link>
+              <Link href="/privacy-policy" className="hover:text-white transition-colors">Privacy Policy</Link>
+              <span className="text-gray-800">|</span>
+              <Link href="/data-deletion" className="hover:text-white transition-colors">Data Deletion</Link>
             </div>
           </div>
         </div>
