@@ -1,6 +1,7 @@
 'use client';
 
 import { useState } from 'react';
+import { useRouter } from 'next/navigation';
 
 interface QuoteFormProps {
   service?: string;
@@ -8,6 +9,7 @@ interface QuoteFormProps {
 }
 
 export default function QuoteForm({ service, className = '' }: QuoteFormProps) {
+  const router = useRouter();
   const [formData, setFormData] = useState({
     name: '',
     phone: '',
@@ -70,6 +72,7 @@ export default function QuoteForm({ service, className = '' }: QuoteFormProps) {
       // Show success if at least one submission succeeded
       if (crmSuccess || emailSuccess) {
         setIsSubmitted(true);
+        router.push('/thank-you');
       } else {
         // Both submissions failed
         throw new Error('Failed to submit quote request');

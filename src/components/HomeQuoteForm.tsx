@@ -1,11 +1,13 @@
 'use client';
 
 import { useState } from 'react';
+import { useRouter } from 'next/navigation';
 import { saveFormData, HomeFormData } from '@/utils/formStorage';
 import MultiSelectPest from './MultiSelectPest';
 import { AddressInput } from './GoogleMaps';
 
 export default function HomeQuoteForm() {
+  const router = useRouter();
   const [formData, setFormData] = useState<HomeFormData>({
     pestTypes: [],
     phone: '',
@@ -121,6 +123,9 @@ export default function HomeQuoteForm() {
 
         // Save to localStorage for backup
         saveFormData(formData);
+
+        // Redirect to Thank You page
+        router.push('/thank-you');
       } else {
         // Both submissions failed
         setShowSuccessPopup(false);

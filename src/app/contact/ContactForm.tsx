@@ -1,9 +1,11 @@
 'use client';
 
 import { useState } from 'react';
+import { useRouter } from 'next/navigation';
 import Breadcrumb from '@/components/Breadcrumb';
 
 export default function ContactForm() {
+  const router = useRouter();
   const [formData, setFormData] = useState({
     name: '',
     email: '',
@@ -44,6 +46,7 @@ export default function ContactForm() {
           service: '',
           message: ''
         });
+        router.push('/thank-you');
       } else {
         setSubmitStatus('error');
       }

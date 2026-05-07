@@ -1,10 +1,12 @@
 'use client';
 
 import { useState } from 'react';
+import { useRouter } from 'next/navigation';
 import MultiSelectPest from '@/components/MultiSelectPest';
 import SuccessModal from '@/components/SuccessModal';
 
 export default function SimpleQuotePage() {
+  const router = useRouter();
   const [formData, setFormData] = useState({
     phone: '',
     email: '',
@@ -72,6 +74,7 @@ export default function SimpleQuotePage() {
         pestTypes: [],
         additionalDetails: ''
       });
+      router.push('/thank-you');
     } catch (error) {
       console.error('Error submitting form:', error);
       alert('Failed to send quote request. Please try again.');

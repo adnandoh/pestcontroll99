@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, useEffect, Suspense } from 'react';
-import { useSearchParams } from 'next/navigation';
+import { useSearchParams, useRouter } from 'next/navigation';
 import { decodeFormDataFromURL, getFormData, clearFormData } from '@/utils/formStorage';
 import MultiSelectPest from '@/components/MultiSelectPest';
 import { AddressInput } from '@/components/GoogleMaps';
@@ -10,6 +10,7 @@ import Breadcrumb from '@/components/Breadcrumb';
 
 function QuoteForm() {
   const searchParams = useSearchParams();
+  const router = useRouter();
   
   const [formData, setFormData] = useState({
     name: '',
@@ -150,6 +151,9 @@ function QuoteForm() {
           streetAddress: '',
           pestTypes: []
         });
+
+        // Redirect to Thank You page
+        router.push('/thank-you');
       } else {
         // Both submissions failed
         setShowSuccessPopup(false);
