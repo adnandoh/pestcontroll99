@@ -106,10 +106,6 @@ export default function Footer() {
             {/* Center: Company & Verified Label */}
             <div className="flex flex-col items-center gap-2 order-1 md:order-2">
               <span className="text-sm sm:text-base font-black tracking-widest text-gray-200 uppercase">Multi pest care LLP</span>
-              <div className="flex items-center gap-1.5 px-3 py-1 bg-green-500/10 border border-green-500/20 rounded-full">
-                <div className="w-1.5 h-1.5 bg-green-500 rounded-full animate-pulse"></div>
-                <span className="text-[9px] sm:text-[10px] font-black text-green-500 uppercase tracking-[0.15em]">Verified WhatsApp API</span>
-              </div>
             </div>
 
             {/* Right: Links */}

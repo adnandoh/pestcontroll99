@@ -44,8 +44,8 @@ class CRMApiService {
             // In development, try local backend first, fallback to production
             this.baseUrl = 'http://localhost:8000';
         } else {
-            // In production, use Railway backend
-            this.baseUrl = 'https://pestcontrol-backend-production.up.railway.app';
+            // In production, use the new backend domain
+            this.baseUrl = 'https://api.vacationbna.site';
         }
         
         console.log(`🔗 CRM API configured for ${process.env.NODE_ENV}: ${this.baseUrl}`);
@@ -108,7 +108,7 @@ class CRMApiService {
             if (process.env.NODE_ENV === 'development' && this.baseUrl === 'http://localhost:8000') {
                 console.log('🔄 Local backend unavailable, trying production fallback...');
                 try {
-                    const fallbackResponse = await fetch('https://pestcontrol-backend-production.up.railway.app/api/inquiries/', {
+                    const fallbackResponse = await fetch('https://api.vacationbna.site/api/inquiries/', {
                         method: 'POST',
                         headers: this.getAuthHeaders(),
                         body: JSON.stringify(inquiryData),

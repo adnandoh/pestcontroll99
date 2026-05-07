@@ -13,8 +13,8 @@ export async function GET() {
       backendUrl = 'http://localhost:8000';
       backendName = 'Local Development Backend';
     } else {
-      backendUrl = 'https://pestcontrol-backend-production.up.railway.app';
-      backendName = 'Railway Production Backend';
+      backendUrl = 'https://api.vacationbna.site';
+      backendName = 'Production Backend';
     }
     
     console.log(`🚀 Testing ${backendName} connection: ${backendUrl}`);

@@ -35,7 +35,9 @@ export default function FeedbackPage() {
 
   const API_BASE = process.env.NEXT_PUBLIC_API_URL 
     ? `${process.env.NEXT_PUBLIC_API_URL}/feedbacks/`
-    : 'http://localhost:8000/api/v1/feedbacks/';
+    : process.env.NODE_ENV === 'production'
+      ? 'https://api.vacationbna.site/api/v1/feedbacks/'
+      : 'http://localhost:8000/api/v1/feedbacks/';
 
   useEffect(() => {
     if (!id) return;
