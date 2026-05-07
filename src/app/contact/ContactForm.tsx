@@ -196,7 +196,7 @@ export default function ContactForm() {
                     <div>
                       <h3 className="font-semibold text-gray-900">Email</h3>
                       <p className="text-gray-600">accounts@pestcontrol99.com</p>
-                      <p className="text-sm text-gray-500">We&apos;ll respond within 2 hours</p>
+                      <p className="text-sm text-gray-500">We respond fast to all inquiries</p>
                     </div>
                   </div>
 

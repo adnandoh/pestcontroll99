@@ -55,7 +55,7 @@ PROPERTY DETAILS:
 
 SUBMISSION TIME: ${new Date().toLocaleString('en-IN', { timeZone: 'Asia/Kolkata' })}
 
-⚡ ACTION REQUIRED: Contact customer within 2 hours for quote.
+⚡ ACTION REQUIRED: Contact customer for quote.
     `.trim();
 
     console.log('📧 Email content prepared:', emailContent);

@@ -96,7 +96,7 @@ export default function QuoteForm({ service, className = '' }: QuoteFormProps) {
         </div>
         <h3 className="text-xl font-bold text-green-800 mb-2">Thank You!</h3>
         <p className="text-green-700">
-          We&apos;ve received your request. Our team will contact you within 2 hours with your personalized quote.
+          We&apos;ve received your request. Our team will contact you shortly with your personalized quote.
         </p>
       </div>
     );
@@ -216,7 +216,7 @@ export default function QuoteForm({ service, className = '' }: QuoteFormProps) {
       </button>
       
       <p className="text-xs text-gray-500 text-center mt-4">
-        * Required fields. We&apos;ll contact you within 2 hours during business hours.
+        * Required fields. Our team will contact you shortly during business hours.
       </p>
     </form>
   );

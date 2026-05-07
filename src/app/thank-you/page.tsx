@@ -28,8 +28,7 @@ export default function ThankYouPage() {
         </h1>
         
         <p className="text-xl text-gray-600 mb-10 leading-relaxed max-w-xl mx-auto">
-          We&apos;ve received your inquiry and our pest control experts are already reviewing it. 
-          You can expect a call or message from us within <span className="font-bold text-gray-900">2 hours</span>.
+          Our team will contact you shortly to provide your personalized quote and discuss the next steps.
         </p>
 
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-12">
