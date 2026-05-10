@@ -8,6 +8,13 @@ export interface InquiryData {
     city: string;
     service_interest: string;
     message: string;
+    // New fields for website quote form
+    premise_type?: string;
+    premise_size?: string;
+    pest_problems?: string;
+    estimated_price?: number;
+    is_inspection_required?: boolean;
+    service_frequency?: string;
 }
 
 export interface InquiryResponse {
@@ -179,28 +186,22 @@ class CRMApiService {
     /**
      * Map form data to CRM inquiry format
      */
-    mapFormDataToInquiry(formData: { name?: string; phone?: string; email?: string; streetAddress?: string; address?: string; pestTypes?: string[] }, formType: 'home' | 'quote'): InquiryData {
-        if (formType === 'home') {
-            // Map HomeQuoteForm data
-            return {
-                name: formData.name || '',
-                mobile: formData.phone || '',
-                email: formData.email || '',
-                city: this.extractCityFromAddress(formData.streetAddress || formData.address || ''),
-                service_interest: this.formatPestTypes(formData.pestTypes || []),
-                message: this.generateMessage(formData, 'home'),
-            };
-        } else {
-            // Map QuoteForm data (same structure as home form in our UI)
-            return {
-                name: formData.name || '',
-                mobile: formData.phone || '',
-                email: formData.email || '',
-                city: this.extractCityFromAddress(formData.streetAddress || formData.address || ''),
-                service_interest: this.formatPestTypes(formData.pestTypes || []),
-                message: this.generateMessage(formData, 'quote'),
-            };
-        }
+    mapFormDataToInquiry(formData: any, formType: 'home' | 'quote'): InquiryData {
+        return {
+            name: formData.name || '',
+            mobile: formData.phone || formData.mobile || '',
+            email: formData.email || '',
+            city: this.extractCityFromAddress(formData.streetAddress || formData.address || ''),
+            service_interest: this.formatPestTypes(formData.pestTypes || []),
+            message: this.generateMessage(formData, formType),
+            // Map new fields
+            premise_type: formData.premiseType || 'residential',
+            premise_size: formData.premiseSize || '',
+            pest_problems: (formData.pestTypes || []).join(', '),
+            estimated_price: formData.estimatedPrice || 0,
+            is_inspection_required: formData.isInspectionRequired || (formData.premiseType === 'commercial'),
+            service_frequency: formData.serviceFrequency || 'one-time',
+        };
     }
 
     /**

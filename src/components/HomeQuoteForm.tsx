@@ -13,13 +13,54 @@ export default function HomeQuoteForm() {
     phone: '',
     address: '',
     streetAddress: '',
-    name: ''
+    name: '',
+    premiseType: 'residential',
+    premiseSize: '1bhk',
+    serviceType: 'one-time',
+    estimatedPrice: 0
   });
 
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [errors, setErrors] = useState<Record<string, string>>({});
   const [showSuccessPopup, setShowSuccessPopup] = useState(false);
   const [submitMessage, setSubmitMessage] = useState('');
+
+  // Rate card data
+  const RATES: any = {
+    'cockroach-ants': {
+      'amc': { '1rk': 1800, '1bhk': 2200, '2bhk': 2500, '3bhk': 3000, '4bhk': 3500 },
+      'one-time': { '1rk': 1000, '1bhk': 1200, '2bhk': 1500, '3bhk': 1800, '4bhk': 2000 }
+    },
+    'bedbugs': { '1rk': 2000, '1bhk': 2500, '2bhk': 3000, '3bhk': 3500, '4bhk': 4000 },
+    'termite': { '1rk': 2000, '1bhk': 2500, '2bhk': 3000, '3bhk': 3500, '4bhk': 4000 },
+    'rodent': { 'fixed': 1000 },
+    'mosquito': { '1rk': 800, '1bhk': 1000, '2bhk': 1500, '3bhk': 1800, '4bhk': 2000 }
+  };
+
+  const calculatePrice = (data: HomeFormData) => {
+    if (data.premiseType === 'commercial' || data.pestTypes.includes('hotel-commercial')) {
+      return 0; // Inspection required
+    }
+
+    if (data.pestTypes.length === 0) return 0;
+
+    let totalPrice = 0;
+    data.pestTypes.forEach(pest => {
+      const rate = RATES[pest];
+      if (!rate) return;
+
+      if (pest === 'cockroach-ants') {
+        const typeRate = rate[data.serviceType || 'one-time'];
+        totalPrice += typeRate[data.premiseSize || '1bhk'] || 0;
+      } else if (pest === 'rodent') {
+        totalPrice += rate.fixed;
+      } else if (rate[data.premiseSize || '1bhk']) {
+        totalPrice += rate[data.premiseSize || '1bhk'];
+      }
+    });
+
+    return totalPrice;
+  };
 
   const validateForm = (): boolean => {
     const newErrors: Record<string, string> = {};
@@ -115,7 +156,11 @@ export default function HomeQuoteForm() {
           phone: '',
           address: '',
           streetAddress: '',
-          name: ''
+          name: '',
+          premiseType: 'residential',
+          premiseSize: '1bhk',
+          serviceType: 'one-time',
+          estimatedPrice: 0
         });
 
         // Clear any existing errors
@@ -140,11 +185,18 @@ export default function HomeQuoteForm() {
     }
   };
 
-  const handleChange = (field: keyof HomeFormData, value: string | string[]) => {
-    setFormData(prev => ({
-      ...prev,
-      [field]: value
-    }));
+  const handleChange = (field: keyof HomeFormData, value: any) => {
+    setFormData(prev => {
+      const nextData = {
+        ...prev,
+        [field]: value
+      };
+      
+      // Re-calculate price on any relevant change
+      nextData.estimatedPrice = calculatePrice(nextData);
+      
+      return nextData;
+    });
 
     // Clear error when user starts typing
     if (errors[field]) {
@@ -199,8 +251,43 @@ export default function HomeQuoteForm() {
               </div>
             )}
 
-            <form onSubmit={handleSubmit} className="space-y-6">
-              {/* 1. Type of Pest Problem */}
+            <form onSubmit={handleSubmit} className="space-y-5">
+              {/* 1. Premise Type Toggle - HiCare Style */}
+              <div>
+                <label className="block text-[15px] font-bold text-[#1a1a1a] mb-2.5">
+                  Premise Type *
+                </label>
+                <div className="flex border border-[#00C950] rounded-xl overflow-hidden shadow-sm">
+                  <button
+                    type="button"
+                    onClick={() => handleChange('premiseType', 'residential')}
+                    className={`flex-1 flex items-center justify-center gap-2 py-3 px-4 transition-all duration-200 ${formData.premiseType === 'residential'
+                        ? 'bg-[#00C950] text-white'
+                        : 'bg-white text-[#00C950]'
+                      }`}
+                  >
+                    <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
+                      <path d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" />
+                    </svg>
+                    <span className="font-bold text-[15px]">Residential</span>
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => handleChange('premiseType', 'commercial')}
+                    className={`flex-1 flex items-center justify-center gap-2 py-3 px-4 transition-all duration-200 ${formData.premiseType === 'commercial'
+                        ? 'bg-[#00C950] text-white'
+                        : 'bg-white text-[#00C950]'
+                      }`}
+                  >
+                    <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
+                      <path d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" />
+                    </svg>
+                    <span className="font-bold text-[15px]">Commercial</span>
+                  </button>
+                </div>
+              </div>
+
+              {/* 2. Type of Pest Problem */}
               <div className="relative">
                 <MultiSelectPest
                   selectedPests={formData.pestTypes}
@@ -214,46 +301,75 @@ export default function HomeQuoteForm() {
                 )}
               </div>
 
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                {/* 2. Your Name */}
+              {/* 3. Price Display - High Fidelity Design */}
+              <div className="bg-[#fcfdfd] rounded-2xl p-6 border border-gray-100 shadow-sm">
+                <div className="flex flex-col gap-1">
+                  <span className="text-[13px] font-bold text-gray-400 uppercase tracking-wide">Estimated Price</span>
+                  {formData.premiseType === 'commercial' || formData.pestTypes.includes('hotel-commercial') ? (
+                    <div className="mt-1">
+                      <span className="text-3xl font-bold text-[#111827]">Inspection Required</span>
+                      <p className="text-[11px] text-[#00C950] font-bold mt-1 uppercase tracking-widest">Free Consultation & Site Visit</p>
+                    </div>
+                  ) : (
+                    <div className="flex items-baseline gap-2 mt-1">
+                      <span className="text-5xl font-extrabold text-[#111827] tracking-tight">₹ {formData.estimatedPrice?.toLocaleString()}</span>
+                      <span className="text-gray-400 text-xs font-bold uppercase tracking-wider">Starting Price</span>
+                    </div>
+                  )}
+                </div>
+              </div>
+
+              {/* 4. Residential Specific Options */}
+              {formData.premiseType === 'residential' && formData.pestTypes.length > 0 && !formData.pestTypes.includes('hotel-commercial') && (
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-5 animate-in fade-in slide-in-from-top-2 duration-300">
+                  <div>
+                    <label className="block text-[15px] font-bold text-[#1a1a1a] mb-2">
+                      Premise Size *
+                    </label>
+                    <select
+                      value={formData.premiseSize}
+                      onChange={(e) => handleChange('premiseSize', e.target.value)}
+                      className="w-full px-4 py-3 border border-[#e5e7eb] rounded-xl focus:border-[#00C950] focus:ring-0 outline-none bg-white font-bold text-gray-700 transition-all cursor-pointer appearance-none shadow-sm"
+                      style={{ backgroundImage: 'url("data:image/svg+xml,%3Csvg xmlns=\'http://www.w3.org/2000/svg\' fill=\'none\' viewBox=\'0 0 24 24\' stroke=\'%2300C950\'%3E%3Cpath stroke-linecap=\'round\' stroke-linejoin=\'round\' stroke-width=\'2.5\' d=\'M19 9l-7 7-7-7\' /%3E%3C/svg%3E")', backgroundRepeat: 'no-repeat', backgroundPosition: 'right 1rem center', backgroundSize: '1.2rem' }}
+                    >
+                      <option value="1rk">1 RK</option>
+                      <option value="1bhk">1 BHK</option>
+                      <option value="2bhk">2 BHK</option>
+                      <option value="3bhk">3 BHK</option>
+                      <option value="4bhk">4 BHK</option>
+                    </select>
+                  </div>
+
+                </div>
+              )}
+
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
+                {/* 5. Your Name */}
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                  <label className="block text-[15px] font-bold text-[#1a1a1a] mb-2">
                     Your Name *
                   </label>
-                  <div className="relative">
-                    <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                      <svg className="h-5 w-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
-                      </svg>
-                    </div>
+                  <div className="relative group">
                     <input
                       type="text"
                       value={formData.name}
                       onChange={(e) => handleChange('name', e.target.value)}
                       placeholder="Enter your full name"
-                      className={`w-full pl-10 pr-4 py-3 border rounded-xl focus:ring-2 focus:ring-green-500 focus:border-transparent transition-all duration-200 bg-gray-50 focus:bg-white ${errors.name ? 'border-red-300 focus:ring-red-200' : 'border-gray-200 hover:border-green-300'
+                      className={`w-full px-4 py-3 border rounded-xl focus:border-[#00C950] focus:ring-0 outline-none transition-all duration-200 bg-white font-medium shadow-sm ${errors.name ? 'border-red-300' : 'border-[#e5e7eb] hover:border-[#00C950]'
                         }`}
                     />
                   </div>
                   {errors.name && (
-                    <p className="mt-1 text-sm text-red-600 flex items-center">
-                      <svg className="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
-                      {errors.name}
-                    </p>
+                    <p className="mt-1 text-xs text-red-600 font-bold">{errors.name}</p>
                   )}
                 </div>
 
-                {/* 3. Phone Number */}
+                {/* 6. Phone Number */}
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                  <label className="block text-[15px] font-bold text-[#1a1a1a] mb-2">
                     Phone Number *
                   </label>
-                  <div className="relative">
-                    <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                      <svg className="h-5 w-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z" />
-                      </svg>
-                    </div>
+                  <div className="relative group">
                     <input
                       type="tel"
                       value={formData.phone}
@@ -263,27 +379,27 @@ export default function HomeQuoteForm() {
                       }}
                       placeholder="10-digit mobile number"
                       maxLength={10}
-                      className={`w-full pl-10 pr-4 py-3 border rounded-xl focus:ring-2 focus:ring-green-500 focus:border-transparent transition-all duration-200 bg-gray-50 focus:bg-white ${errors.phone ? 'border-red-300 focus:ring-red-200' : 'border-gray-200 hover:border-green-300'
+                      className={`w-full px-4 py-3 border rounded-xl focus:border-[#00C950] focus:ring-0 outline-none transition-all duration-200 bg-white font-medium shadow-sm ${errors.phone ? 'border-red-300' : 'border-[#e5e7eb] hover:border-[#00C950]'
                         }`}
                     />
                   </div>
                   {errors.phone && (
-                    <p className="mt-1 text-sm text-red-600 flex items-center">
-                      <svg className="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
-                      {errors.phone}
-                    </p>
+                    <p className="mt-1 text-xs text-red-600 font-bold">{errors.phone}</p>
                   )}
                 </div>
               </div>
 
-              {/* 4. Street Address */}
+              {/* 7. Street Address */}
               <div>
+                <label className="block text-[15px] font-bold text-[#1a1a1a] mb-2">
+                  Street Address *
+                </label>
                 <AddressInput
                   value={formData.streetAddress}
                   onChange={(value) => handleChange('streetAddress', value)}
                   error={errors.streetAddress}
                   required
-                  className="bg-gray-50 focus:bg-white border-gray-200 hover:border-green-300 rounded-xl transition-all duration-200"
+                  className="w-full px-4 py-3 border border-[#e5e7eb] rounded-xl focus:border-[#00C950] focus:ring-0 outline-none transition-all duration-200 shadow-sm"
                 />
               </div>
 
@@ -292,7 +408,7 @@ export default function HomeQuoteForm() {
                 <button
                   type="submit"
                   disabled={isSubmitting}
-                  className="w-full bg-gradient-to-r from-green-500 to-emerald-600 text-white py-4 px-8 rounded-xl font-bold hover:from-green-600 hover:to-emerald-700 transition-all duration-300 shadow-lg hover:shadow-green-200 hover:-translate-y-0.5 disabled:opacity-70 disabled:cursor-not-allowed disabled:transform-none flex items-center justify-center group"
+                  className="w-full bg-gradient-to-r from-green-600 to-emerald-600 text-white py-4 px-8 rounded-xl font-bold hover:from-green-700 hover:to-emerald-800 transition-all duration-300 shadow-lg hover:shadow-green-200 hover:-translate-y-0.5 disabled:opacity-70 disabled:cursor-not-allowed disabled:transform-none flex items-center justify-center group"
                 >
                   {isSubmitting ? (
                     <>
@@ -304,35 +420,13 @@ export default function HomeQuoteForm() {
                     </>
                   ) : (
                     <>
-                      Get My Free Quote
+                      {formData.premiseType === 'commercial' || formData.pestTypes.includes('hotel-commercial') ? 'Request Free Inspection' : 'Get My Free Quote'}
                       <svg className="w-5 h-5 ml-2 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
                       </svg>
                     </>
                   )}
                 </button>
-              </div>
-
-              {/* Trust Badges */}
-              <div className="flex flex-wrap justify-center gap-4 sm:gap-8 pt-4 border-t border-gray-100">
-                <div className="flex items-center text-gray-500 text-sm">
-                  <svg className="w-4 h-4 mr-1.5 text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
-                  </svg>
-                  No Spam Promise
-                </div>
-                <div className="flex items-center text-gray-500 text-sm">
-                  <svg className="w-4 h-4 mr-1.5 text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
-                  </svg>
-                  Secure & Confidential
-                </div>
-                <div className="flex items-center text-gray-500 text-sm">
-                  <svg className="w-4 h-4 mr-1.5 text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
-                  </svg>
-                  Fast Response
-                </div>
               </div>
             </form>
           </div>

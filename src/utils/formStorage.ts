@@ -6,6 +6,10 @@ export interface HomeFormData {
   address?: string;
   streetAddress: string;
   name: string;
+  premiseType: 'residential' | 'commercial';
+  premiseSize?: string;
+  serviceType?: 'amc' | 'one-time';
+  estimatedPrice?: number;
 }
 
 export interface QuoteFormData {
