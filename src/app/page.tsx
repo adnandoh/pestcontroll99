@@ -1,6 +1,7 @@
 import Link from 'next/link';
 
 import { Metadata } from 'next';
+import { Suspense } from 'react';
 import OptimizedImage from '@/components/OptimizedImage';
 import HomeQuoteForm from '@/components/HomeQuoteForm';
 import ClientOnly from '@/components/ClientOnly';
@@ -87,7 +88,9 @@ export default function Home() {
           </div>
         </section>
       }>
-        <HomeQuoteForm />
+        <Suspense fallback={null}>
+          <HomeQuoteForm />
+        </Suspense>
       </ClientOnly>
 
 
