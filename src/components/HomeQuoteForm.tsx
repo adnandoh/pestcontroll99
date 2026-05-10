@@ -301,8 +301,8 @@ export default function HomeQuoteForm() {
                 )}
               </div>
 
-              {/* 3. Price Display - High Fidelity Design */}
-              <div className="bg-[#fcfdfd] rounded-2xl p-6 border border-gray-100 shadow-sm">
+              {/* 3. Price Display - Fixed Layout */}
+              <div className="bg-[#fcfdfd] rounded-2xl p-6 border border-[#00C950] shadow-sm">
                 <div className="flex flex-col gap-1">
                   <span className="text-[13px] font-bold text-gray-400 uppercase tracking-wide">Estimated Price</span>
                   {formData.premiseType === 'commercial' || formData.pestTypes.includes('hotel-commercial') ? (
@@ -311,9 +311,8 @@ export default function HomeQuoteForm() {
                       <p className="text-[11px] text-[#00C950] font-bold mt-1 uppercase tracking-widest">Free Consultation & Site Visit</p>
                     </div>
                   ) : (
-                    <div className="flex items-baseline gap-2 mt-1">
-                      <span className="text-5xl font-extrabold text-[#111827] tracking-tight">₹ {formData.estimatedPrice?.toLocaleString()}</span>
-                      <span className="text-gray-400 text-xs font-bold uppercase tracking-wider">Starting Price</span>
+                    <div className="mt-1">
+                      <span className="text-5xl font-bold text-[#111827] tracking-tight whitespace-nowrap">₹ {formData.estimatedPrice?.toLocaleString()}</span>
                     </div>
                   )}
                 </div>
@@ -329,7 +328,7 @@ export default function HomeQuoteForm() {
                     <select
                       value={formData.premiseSize}
                       onChange={(e) => handleChange('premiseSize', e.target.value)}
-                      className="w-full px-4 py-3 border border-[#e5e7eb] rounded-xl focus:border-[#00C950] focus:ring-0 outline-none bg-white font-bold text-gray-700 transition-all cursor-pointer appearance-none shadow-sm"
+                      className="w-full px-4 py-3 border border-[#00C950] rounded-xl focus:border-[#00C950] focus:ring-0 outline-none bg-white font-bold text-gray-700 transition-all cursor-pointer appearance-none shadow-sm"
                       style={{ backgroundImage: 'url("data:image/svg+xml,%3Csvg xmlns=\'http://www.w3.org/2000/svg\' fill=\'none\' viewBox=\'0 0 24 24\' stroke=\'%2300C950\'%3E%3Cpath stroke-linecap=\'round\' stroke-linejoin=\'round\' stroke-width=\'2.5\' d=\'M19 9l-7 7-7-7\' /%3E%3C/svg%3E")', backgroundRepeat: 'no-repeat', backgroundPosition: 'right 1rem center', backgroundSize: '1.2rem' }}
                     >
                       <option value="1rk">1 RK</option>
@@ -355,7 +354,7 @@ export default function HomeQuoteForm() {
                       value={formData.name}
                       onChange={(e) => handleChange('name', e.target.value)}
                       placeholder="Enter your full name"
-                      className={`w-full px-4 py-3 border rounded-xl focus:border-[#00C950] focus:ring-0 outline-none transition-all duration-200 bg-white font-medium shadow-sm ${errors.name ? 'border-red-300' : 'border-[#e5e7eb] hover:border-[#00C950]'
+                      className={`w-full px-4 py-3 border rounded-xl focus:border-[#00C950] focus:ring-0 outline-none transition-all duration-200 bg-white font-medium shadow-sm ${errors.name ? 'border-red-300' : 'border-[#00C950] hover:border-[#00C950]'
                         }`}
                     />
                   </div>
@@ -379,7 +378,7 @@ export default function HomeQuoteForm() {
                       }}
                       placeholder="10-digit mobile number"
                       maxLength={10}
-                      className={`w-full px-4 py-3 border rounded-xl focus:border-[#00C950] focus:ring-0 outline-none transition-all duration-200 bg-white font-medium shadow-sm ${errors.phone ? 'border-red-300' : 'border-[#e5e7eb] hover:border-[#00C950]'
+                      className={`w-full px-4 py-3 border rounded-xl focus:border-[#00C950] focus:ring-0 outline-none transition-all duration-200 bg-white font-medium shadow-sm ${errors.phone ? 'border-red-300' : 'border-[#00C950] hover:border-[#00C950]'
                         }`}
                     />
                   </div>
@@ -399,7 +398,7 @@ export default function HomeQuoteForm() {
                   onChange={(value) => handleChange('streetAddress', value)}
                   error={errors.streetAddress}
                   required
-                  className="w-full px-4 py-3 border border-[#e5e7eb] rounded-xl focus:border-[#00C950] focus:ring-0 outline-none transition-all duration-200 shadow-sm"
+                  className="w-full px-4 py-3 border border-[#00C950] rounded-xl focus:border-[#00C950] focus:ring-0 outline-none transition-all duration-200 shadow-sm"
                 />
               </div>
 

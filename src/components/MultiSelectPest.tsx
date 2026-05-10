@@ -68,7 +68,7 @@ export default function MultiSelectPest({ selectedPests, onChange, className = '
         onClick={() => setIsOpen(!isOpen)}
         className={`w-full px-4 py-3 border rounded-xl focus:outline-none transition-all duration-200 text-left flex items-center justify-between group shadow-sm ${isOpen 
             ? 'border-[#00C950] ring-0' 
-            : 'border-[#e5e7eb] hover:border-[#00C950]'
+            : 'border-[#00C950] hover:border-[#00C950]'
           } bg-white text-gray-900`}
       >
         <span className={`truncate text-base ${selectedPests.length > 0 ? 'font-bold' : 'text-gray-400'}`}>
