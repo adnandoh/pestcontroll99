@@ -307,12 +307,12 @@ export default function HomeQuoteForm() {
                   <span className="text-[13px] font-bold text-gray-400 uppercase tracking-wide">Estimated Price</span>
                   {formData.premiseType === 'commercial' || formData.pestTypes.includes('hotel-commercial') ? (
                     <div className="mt-1">
-                      <span className="text-3xl font-bold text-[#111827]">Inspection Required</span>
+                      <span className="text-xl font-semibold text-[#111827]">Inspection Required</span>
                       <p className="text-[11px] text-[#00C950] font-bold mt-1 uppercase tracking-widest">Free Consultation & Site Visit</p>
                     </div>
                   ) : (
                     <div className="mt-1">
-                      <span className="text-5xl font-bold text-[#111827] tracking-tight whitespace-nowrap">₹ {formData.estimatedPrice?.toLocaleString()}</span>
+                      <span className="text-2xl font-semibold text-[#111827] tracking-tight whitespace-nowrap">₹ {formData.estimatedPrice?.toLocaleString()}</span>
                     </div>
                   )}
                 </div>
