@@ -1,13 +1,14 @@
 'use client';
 
-import { useState } from 'react';
-import { useRouter } from 'next/navigation';
-import { saveFormData, HomeFormData } from '@/utils/formStorage';
+import { useState, useEffect } from 'react';
+import { useRouter, useSearchParams } from 'next/navigation';
+import { saveFormData, HomeFormData, decodeFormDataFromURL, getFormData, clearFormData } from '@/utils/formStorage';
 import MultiSelectPest from './MultiSelectPest';
 import { AddressInput } from './GoogleMaps';
 
 export default function HomeQuoteForm() {
   const router = useRouter();
+  const searchParams = useSearchParams();
   const [formData, setFormData] = useState<HomeFormData>({
     pestTypes: [],
     phone: '',
@@ -19,6 +20,29 @@ export default function HomeQuoteForm() {
     serviceType: 'one-time',
     estimatedPrice: 0
   });
+
+  // Load pre-filled data on component mount
+  useEffect(() => {
+    const urlData = decodeFormDataFromURL(searchParams);
+    const storageData = getFormData();
+    
+    if (Object.keys(urlData).length > 0 || storageData) {
+      setFormData(prev => {
+        const nextData = {
+          ...prev,
+          ...storageData,
+          ...urlData
+        };
+        // Re-calculate price for pre-filled data
+        nextData.estimatedPrice = calculatePrice(nextData);
+        return nextData;
+      });
+    }
+    
+    if (storageData) {
+      clearFormData();
+    }
+  }, [searchParams]);
 
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [errors, setErrors] = useState<Record<string, string>>({});
@@ -214,7 +238,7 @@ export default function HomeQuoteForm() {
   };
 
   return (
-    <section className="py-12 sm:py-16 md:py-20 bg-white relative overflow-hidden">
+    <section className="pt-6 pb-12 sm:pt-8 sm:pb-16 md:pt-10 md:pb-20 bg-white relative overflow-hidden">
       {/* Background Decorative Elements */}
       <div className="absolute top-0 left-0 w-full h-full overflow-hidden pointer-events-none">
         <div className="absolute -top-[20%] -right-[10%] w-[50%] h-[50%] bg-green-50 rounded-full blur-3xl opacity-60"></div>
@@ -222,10 +246,7 @@ export default function HomeQuoteForm() {
       </div>
 
       <div className="container mx-auto px-4 sm:px-6 relative z-10">
-        <div className="text-center mb-10 sm:mb-12">
-          <span className="inline-block py-1 px-3 rounded-full bg-green-100 text-green-700 text-sm font-semibold mb-4">
-            Same-Day Service Available
-          </span>
+        <div className="text-center mb-6 sm:mb-8">
           <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold text-gray-900 mb-4 leading-tight">
             Get Your <span className="text-transparent bg-clip-text bg-gradient-to-r from-green-600 to-emerald-500">Free Quote</span> Today
           </h2>
