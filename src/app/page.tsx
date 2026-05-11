@@ -22,7 +22,7 @@ export default function Home() {
   return (
     <div>
       {/* Hero Section - Completely Rebuilt */}
-      <div className="hero-container relative w-full min-h-[80vh] md:min-h-[100vh] overflow-hidden">
+      <div className="hero-container relative w-full min-h-[70vh] md:min-h-[85vh] overflow-hidden">
         {/* Hero Background Image - Optimized WebP */}
         <div
           className="absolute inset-0 w-full h-full bg-cover bg-center bg-no-repeat"
@@ -38,8 +38,8 @@ export default function Home() {
         <div className="absolute inset-0 bg-black opacity-10 z-10"></div>
 
         {/* Content Container */}
-        <div className="relative z-20 container mx-auto px-4 sm:px-6 h-full flex items-center">
-          <div className="max-w-2xl text-left text-white py-12 md:py-20">
+        <div className="relative z-20 container mx-auto px-4 sm:px-6 h-full flex items-start pt-8 md:pt-16">
+          <div className="max-w-2xl text-left text-white py-4 md:py-8">
             <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold mb-4 leading-tight">
               100% Safe, Same-Day<br className="hidden sm:block" />
               <span className="sm:inline"> Pest Control in Mumbai</span>
@@ -89,7 +89,9 @@ export default function Home() {
         </section>
       }>
         <Suspense fallback={null}>
-          <HomeQuoteForm />
+          <div className="-mt-4 md:-mt-8 relative z-30">
+            <HomeQuoteForm />
+          </div>
         </Suspense>
       </ClientOnly>
 

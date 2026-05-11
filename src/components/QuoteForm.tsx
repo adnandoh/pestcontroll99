@@ -16,15 +16,36 @@ export default function QuoteForm({ service, className = '' }: QuoteFormProps) {
     email: '',
     address: '',
     service: service || '',
+    serviceType: 'one-time',
     message: ''
   });
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isSubmitted, setIsSubmitted] = useState(false);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
-    setFormData({
-      ...formData,
-      [e.target.name]: e.target.value
+    const { name, value } = e.target;
+    
+    setFormData(prev => {
+      const nextData = {
+        ...prev,
+        [name]: value
+      };
+
+      // Check if the selected service restricts the service type to One-Time
+      // Matching CRM rules: Only Cockroach/Ants and General Pest Control support AMC
+      const oneTimeOnlyServices = [
+        'Mosquito Control', 
+        'Termite Control', 
+        'Bed Bug Control', 
+        'Rodent Control',
+        'Other'
+      ];
+      
+      if (name === 'service' && oneTimeOnlyServices.includes(value)) {
+        nextData.serviceType = 'one-time';
+      }
+
+      return nextData;
     });
   };
 
@@ -166,13 +187,37 @@ export default function QuoteForm({ service, className = '' }: QuoteFormProps) {
             className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent"
           >
             <option value="">Select a service</option>
-            <option value="mosquito-control">Mosquito Pest Control</option>
-            <option value="cockroach-control">Cockroach Pest Control</option>
-            <option value="termite-control">Termite Control</option>
-            <option value="bed-bug-control">Bed Bug Control</option>
-            <option value="general-pest-control">General Pest Control</option>
-            <option value="other">Other</option>
+            <option value="Cockroach / Ants">Cockroach / Ants Control</option>
+            <option value="Bed Bug Control">Bed Bug Control</option>
+            <option value="Termite Control">Termite Control</option>
+            <option value="Rodent Control">Rodent Control</option>
+            <option value="Mosquito Control">Mosquito Control</option>
+            <option value="General Pest Control">General Pest Control</option>
+            <option value="Other">Other</option>
           </select>
+        </div>
+
+        <div>
+          <label htmlFor="serviceType" className="block text-sm font-medium text-gray-700 mb-2">
+            Select Type *
+          </label>
+          <select
+            id="serviceType"
+            name="serviceType"
+            required
+            value={formData.serviceType}
+            onChange={handleChange}
+            className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent outline-none cursor-pointer"
+          >
+            <option value="" disabled>Select Type</option>
+            <option value="one-time">One Time Service</option>
+            {!['Mosquito Control', 'Termite Control', 'Bed Bug Control', 'Rodent Control', 'Other'].includes(formData.service) && (
+              <option value="amc">AMC 3 Services</option>
+            )}
+          </select>
+          {['Mosquito Control', 'Termite Control', 'Bed Bug Control', 'Rodent Control', 'Other'].includes(formData.service) && (
+            <p className="mt-1 text-[10px] text-orange-600 font-bold italic">* Selected service available only as One-Time treatment</p>
+          )}
         </div>
       </div>
       

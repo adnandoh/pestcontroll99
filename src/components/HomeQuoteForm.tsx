@@ -107,6 +107,10 @@ export default function HomeQuoteForm() {
       newErrors.name = 'Name is required';
     }
 
+    if (formData.premiseType === 'residential' && !formData.serviceType) {
+      newErrors.serviceType = 'Please select a service type';
+    }
+
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
   };
@@ -215,6 +219,23 @@ export default function HomeQuoteForm() {
         ...prev,
         [field]: value
       };
+
+      // Check if any selected pest restricts the service to One-Time
+      // Only 'cockroach-ants' currently supports AMC in the CRM pricing
+      const hasAmcSupport = nextData.pestTypes.length > 0 && 
+                           nextData.pestTypes.every(p => p === 'cockroach-ants');
+      
+      if (!hasAmcSupport && nextData.serviceType === 'amc') {
+        nextData.serviceType = 'one-time';
+      }
+
+      // If specific pests are selected that are known to be One-Time only
+      const oneTimeOnlyPests = ['rodent', 'bedbugs', 'termite', 'mosquito'];
+      const isForcedOneTime = nextData.pestTypes.some(p => oneTimeOnlyPests.includes(p));
+      
+      if (isForcedOneTime) {
+        nextData.serviceType = 'one-time';
+      }
       
       // Re-calculate price on any relevant change
       nextData.estimatedPrice = calculatePrice(nextData);
@@ -238,7 +259,7 @@ export default function HomeQuoteForm() {
   };
 
   return (
-    <section className="pt-6 pb-12 sm:pt-8 sm:pb-16 md:pt-10 md:pb-20 bg-white relative overflow-hidden">
+    <section className="pt-0 pb-12 sm:pb-16 md:pb-20 bg-transparent relative overflow-hidden">
       {/* Background Decorative Elements */}
       <div className="absolute top-0 left-0 w-full h-full overflow-hidden pointer-events-none">
         <div className="absolute -top-[20%] -right-[10%] w-[50%] h-[50%] bg-green-50 rounded-full blur-3xl opacity-60"></div>
@@ -246,17 +267,18 @@ export default function HomeQuoteForm() {
       </div>
 
       <div className="container mx-auto px-4 sm:px-6 relative z-10">
-        <div className="text-center mb-6 sm:mb-8">
-          <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold text-gray-900 mb-4 leading-tight">
-            Get Your <span className="text-transparent bg-clip-text bg-gradient-to-r from-green-600 to-emerald-500">Free Quote</span> Today
-          </h2>
-          <p className="text-lg text-gray-600 max-w-2xl mx-auto">
-            Tell us about your pest problem, and we&apos;ll provide a fast, accurate solution.
-          </p>
-        </div>
-
         <div className="max-w-3xl mx-auto">
           <div className="bg-white rounded-2xl shadow-xl border border-gray-100 p-6 sm:p-10 relative overflow-hidden">
+            {/* Header moved inside the card for better readability when overlapping hero */}
+            <div className="text-center mb-6 sm:mb-8">
+              <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-gray-900 mb-3 leading-tight">
+                Get Your <span className="text-transparent bg-clip-text bg-gradient-to-r from-green-600 to-emerald-500">Free Quote</span> Today
+              </h2>
+              <p className="text-sm sm:text-base text-gray-600 max-w-xl mx-auto">
+                Tell us about your pest problem, and we&apos;ll provide a fast, accurate solution.
+              </p>
+            </div>
+
             {/* Top Gradient Line */}
             <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-green-400 via-emerald-500 to-teal-500"></div>
 
@@ -339,15 +361,16 @@ export default function HomeQuoteForm() {
                 </div>
               </div>
 
-              {/* 4. Residential Specific Options */}
+              {/* 4. Residential Specific Options (Size & Type) */}
               {formData.premiseType === 'residential' && formData.pestTypes.length > 0 && !formData.pestTypes.includes('hotel-commercial') && (
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-5 animate-in fade-in slide-in-from-top-2 duration-300">
-                  <div>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-5 py-2 animate-in fade-in slide-in-from-top-2">
+                  {/* Premise Size Section */}
+                  <div className="flex flex-col">
                     <label className="block text-[15px] font-bold text-[#1a1a1a] mb-2">
                       Premise Size *
                     </label>
                     <select
-                      value={formData.premiseSize}
+                      value={formData.premiseSize || '1bhk'}
                       onChange={(e) => handleChange('premiseSize', e.target.value)}
                       className="w-full px-4 py-3 border border-[#00C950] rounded-xl focus:border-[#00C950] focus:ring-0 outline-none bg-white font-bold text-gray-700 transition-all cursor-pointer appearance-none shadow-sm"
                       style={{ backgroundImage: 'url("data:image/svg+xml,%3Csvg xmlns=\'http://www.w3.org/2000/svg\' fill=\'none\' viewBox=\'0 0 24 24\' stroke=\'%2300C950\'%3E%3Cpath stroke-linecap=\'round\' stroke-linejoin=\'round\' stroke-width=\'2.5\' d=\'M19 9l-7 7-7-7\' /%3E%3C/svg%3E")', backgroundRepeat: 'no-repeat', backgroundPosition: 'right 1rem center', backgroundSize: '1.2rem' }}
@@ -360,6 +383,30 @@ export default function HomeQuoteForm() {
                     </select>
                   </div>
 
+                  {/* Select Type Section (One-Time / AMC) */}
+                  <div className="flex flex-col">
+                    <label className="block text-[15px] font-bold text-[#1a1a1a] mb-2">
+                      Select Type *
+                    </label>
+                    <select
+                      value={formData.serviceType || ''}
+                      onChange={(e) => handleChange('serviceType', e.target.value)}
+                      className={`w-full px-4 py-3 border rounded-xl focus:border-[#00C950] focus:ring-0 outline-none bg-white font-bold text-gray-700 transition-all cursor-pointer appearance-none shadow-sm ${errors.serviceType ? 'border-red-500' : 'border-[#00C950]'}`}
+                      style={{ backgroundImage: 'url("data:image/svg+xml,%3Csvg xmlns=\'http://www.w3.org/2000/svg\' fill=\'none\' viewBox=\'0 0 24 24\' stroke=\'%2300C950\'%3E%3Cpath stroke-linecap=\'round\' stroke-linejoin=\'round\' stroke-width=\'2.5\' d=\'M19 9l-7 7-7-7\' /%3E%3C/svg%3E")', backgroundRepeat: 'no-repeat', backgroundPosition: 'right 1rem center', backgroundSize: '1.2rem' }}
+                    >
+                      <option value="" disabled>Select Type</option>
+                      <option value="one-time">One Time Service</option>
+                      {formData.pestTypes.length > 0 && formData.pestTypes.every(p => p === 'cockroach-ants') && (
+                        <option value="amc">AMC 3 Services</option>
+                      )}
+                    </select>
+                    {formData.pestTypes.some(p => ['rodent', 'bedbugs', 'termite', 'mosquito'].includes(p)) && (
+                      <p className="mt-1 text-[10px] text-orange-600 font-bold italic">* Selected service(s) available only as One-Time treatment</p>
+                    )}
+                    {errors.serviceType && (
+                      <p className="mt-1 text-xs text-red-600 font-bold">{errors.serviceType}</p>
+                    )}
+                  </div>
                 </div>
               )}
 
