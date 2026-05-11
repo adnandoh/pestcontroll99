@@ -26,6 +26,12 @@ export interface InquiryResponse {
     service_interest: string;
     message: string;
     status: string;
+    premise_type?: string;
+    premise_size?: string;
+    pest_problems?: string;
+    estimated_price?: number;
+    is_inspection_required?: boolean;
+    service_frequency?: string;
     created_at: string;
     updated_at: string;
 }
@@ -187,20 +193,27 @@ class CRMApiService {
      * Map form data to CRM inquiry format
      */
     mapFormDataToInquiry(formData: any, formType: 'home' | 'quote'): InquiryData {
+        // Determine service_frequency: certain pest types are always one-time
+        const oneTimeOnlyPests = ['rodent', 'bedbugs', 'termite', 'mosquito'];
+        const oneTimeOnlyServices = ['Rodent Control', 'Bed Bug Control', 'Termite Control', 'Mosquito Control', 'Other'];
+        const forcedOneTime =
+            (formData.pestTypes?.some((p: string) => oneTimeOnlyPests.includes(p))) ||
+            oneTimeOnlyServices.includes(formData.service);
+        const serviceFrequency = forcedOneTime ? 'one-time' : (formData.serviceType || 'one-time');
+
         return {
             name: formData.name || '',
             mobile: formData.phone || formData.mobile || '',
             email: formData.email || '',
             city: this.extractCityFromAddress(formData.streetAddress || formData.address || ''),
-            service_interest: this.formatPestTypes(formData.pestTypes || []),
-            message: this.generateMessage(formData, formType),
-            // Map new fields
+            service_interest: formType === 'quote' && formData.service ? this.formatServiceType(formData.service) : this.formatPestTypes(formData.pestTypes || []),
+            message: this.generateMessage(formData, formType, serviceFrequency),
             premise_type: formData.premiseType || 'residential',
             premise_size: formData.premiseSize || '',
             pest_problems: (formData.pestTypes || []).join(', '),
             estimated_price: formData.estimatedPrice || 0,
             is_inspection_required: formData.isInspectionRequired || (formData.premiseType === 'commercial'),
-            service_frequency: formData.serviceFrequency || 'one-time',
+            service_frequency: serviceFrequency,
         };
     }
 
@@ -276,20 +289,39 @@ class CRMApiService {
     }
 
     /**
-     * Generate message for home form
+     * Generate message for home/quote form
      */
-    private generateMessage(formData: { name?: string; phone?: string; email?: string; streetAddress?: string; address?: string; pestTypes?: string[] }, formType: 'home' | 'quote'): string {
+    private generateMessage(
+        formData: { name?: string; phone?: string; email?: string; streetAddress?: string; address?: string; pestTypes?: string[]; service?: string; premiseType?: string; premiseSize?: string; estimatedPrice?: number },
+        formType: 'home' | 'quote',
+        serviceFrequency?: string
+    ): string {
         const parts = [] as string[];
 
         parts.push(`Quote request from website ${formType === 'home' ? 'home page' : 'quote page'}.`);
 
         if (formData.pestTypes && formData.pestTypes.length > 0) {
-            parts.push(`Pest problems: ${formData.pestTypes.join(', ')}`);
+            parts.push(`Pest problems: ${formData.pestTypes.join(', ')}.`);
+        } else if (formData.service) {
+            parts.push(`Service: ${formData.service}.`);
+        }
+
+        if (serviceFrequency) {
+            const label = serviceFrequency === 'amc' ? 'AMC 3 Services' : 'One-Time Service';
+            parts.push(`Service type: ${label}.`);
+        }
+
+        if (formData.premiseType) {
+            parts.push(`Premise: ${formData.premiseType}${formData.premiseSize ? ` (${formData.premiseSize.toUpperCase()})` : ''}.`);
+        }
+
+        if (formData.estimatedPrice && formData.estimatedPrice > 0) {
+            parts.push(`Estimated price: ₹${formData.estimatedPrice}.`);
         }
 
         const address = formData.streetAddress || formData.address;
         if (address) {
-            parts.push(`Property address: ${address}`);
+            parts.push(`Property address: ${address}.`);
         }
 
         parts.push('Customer requested same-day quotation.');

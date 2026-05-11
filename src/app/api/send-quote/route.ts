@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import nodemailer from 'nodemailer';
+import { crmApi } from '@/services/crmApi';
 
 export async function POST(request: NextRequest) {
   try {
@@ -11,6 +12,27 @@ export async function POST(request: NextRequest) {
         { success: false, error: 'Missing required fields' },
         { status: 400 }
       );
+    }
+
+    // Resolve service_frequency
+    const oneTimeOnlyServices = ['Rodent Control', 'Bed Bug Control', 'Termite Control', 'Mosquito Control', 'Other'];
+    const serviceFrequency: string = oneTimeOnlyServices.includes(formData.service) ? 'one-time' : (formData.serviceType || 'one-time');
+    const serviceFrequencyLabel = serviceFrequency === 'amc' ? 'AMC 3 SERVICES' : 'ONE-TIME SERVICE';
+
+    // --- CRM API INTEGRATION ---
+    try {
+      console.log('📤 Submitting quote form to CRM API...');
+      const inquiryData = crmApi.mapFormDataToInquiry({ ...formData, serviceType: serviceFrequency }, 'quote');
+      console.log('📋 CRM payload service_frequency:', inquiryData.service_frequency);
+      const crmResult = await crmApi.submitInquiry(inquiryData);
+      if (crmResult.success) {
+        console.log('✅ CRM submission successful, ID:', crmResult.data?.id, '| service_frequency:', inquiryData.service_frequency);
+      } else {
+        console.warn('⚠️ CRM submission failed (will continue with email):', crmResult.error);
+      }
+    } catch (crmError) {
+      console.error('❌ CRM API Critical Error:', crmError);
+      // Continue — email is the fallback
     }
 
     // Check if email credentials are configured
@@ -77,7 +99,9 @@ export async function POST(request: NextRequest) {
           <h3 style="color: #2d5a27; margin-top: 0; margin-bottom: 15px;">🔥 Priority Information</h3>
           ${formData.name ? `<p style="margin: 8px 0; font-size: 16px;"><strong>Name:</strong> ${formData.name}</p>` : '<p style="margin: 8px 0; font-size: 16px;"><strong>Name:</strong> <span style="color: #666;">Not provided</span></p>'}
           <p style="margin: 8px 0; font-size: 16px;"><strong>Phone:</strong> <span style="color: #2d5a27; font-weight: bold;">${formData.phone}</span></p>
-          <p style="margin: 8px 0; font-size: 16px;"><strong>Service Type:</strong> <span style="color: #2d5a27; font-weight: bold;">${pestTypesDisplay}</span></p>
+          <p style="margin: 8px 0; font-size: 16px;"><strong>Pest Type:</strong> <span style="color: #2d5a27; font-weight: bold;">${pestTypesDisplay}</span></p>
+          ${formData.service ? `<p style="margin: 8px 0; font-size: 16px;"><strong>Service:</strong> <span style="color: #2d5a27; font-weight: bold;">${formData.service}</span></p>` : ''}
+          <p style="margin: 8px 0; font-size: 16px;"><strong>Service Frequency:</strong> <span style="color: #2d5a27; font-weight: bold;">${serviceFrequencyLabel}</span></p>
         </div>
         
         <div style="background-color: #f9f9f9; padding: 20px; margin: 20px 0; border-radius: 8px;">

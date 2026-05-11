@@ -10,7 +10,13 @@ export async function POST(request: NextRequest) {
     console.log('📝 Raw request body:', body);
     
     const formData = JSON.parse(body);
-    const { pestTypes, phone, streetAddress, name, premiseType, premiseSize, estimatedPrice } = formData;
+    const { pestTypes, phone, streetAddress, name, premiseType, premiseSize, serviceType, estimatedPrice } = formData;
+
+    // Resolve service_frequency the same way crmApi does
+    const oneTimeOnlyPests = ['rodent', 'bedbugs', 'termite', 'mosquito'];
+    const forcedOneTime = pestTypes?.some((p: string) => oneTimeOnlyPests.includes(p));
+    const serviceFrequency: string = forcedOneTime ? 'one-time' : (serviceType || 'one-time');
+    const serviceFrequencyLabel = serviceFrequency === 'amc' ? 'AMC 3 SERVICES' : 'ONE-TIME SERVICE';
     
     console.log('📧 Home quote form submission received:', { 
       pestTypes, 
@@ -19,6 +25,8 @@ export async function POST(request: NextRequest) {
       name,
       premiseType,
       premiseSize,
+      serviceType,
+      serviceFrequency,
       estimatedPrice
     });
 
@@ -45,10 +53,11 @@ export async function POST(request: NextRequest) {
     try {
       console.log('📤 Submitting to CRM API...');
       const inquiryData = crmApi.mapFormDataToInquiry(formData, 'home');
+      console.log('📋 CRM payload service_frequency:', inquiryData.service_frequency);
       const crmResult = await crmApi.submitInquiry(inquiryData);
       
       if (crmResult.success) {
-        console.log('✅ CRM submission successful:', crmResult.data?.id);
+        console.log('✅ CRM submission successful, ID:', crmResult.data?.id, '| service_frequency:', inquiryData.service_frequency);
       } else {
         console.warn('⚠️ CRM submission failed (will continue with email):', crmResult.error);
       }
@@ -78,6 +87,7 @@ export async function POST(request: NextRequest) {
           <h3 style="color: #4b5563; margin-top: 0;">🏠 Property & Quote Info</h3>
           <p><strong>Premise Type:</strong> <span style="text-transform: uppercase; font-weight: bold;">${premiseType || 'Residential'}</span></p>
           <p><strong>Premise Size:</strong> <span style="text-transform: uppercase; font-weight: bold;">${premiseSize || 'N/A'}</span></p>
+          <p><strong>Service Frequency:</strong> <span style="text-transform: uppercase; font-weight: bold; color: #00C950;">${serviceFrequencyLabel}</span></p>
           <p><strong>Street Address:</strong> ${streetAddress}</p>
           <div style="margin-top: 15px; padding: 10px; background-color: #fff; border-radius: 8px; border: 1px dashed #00C950;">
             <p style="margin: 0; font-size: 18px;"><strong>Estimated Price:</strong> <span style="color: #00C950; font-weight: 800;">${estimatedPrice > 0 ? `₹${estimatedPrice}` : 'INSPECTION REQUIRED'}</span></p>
