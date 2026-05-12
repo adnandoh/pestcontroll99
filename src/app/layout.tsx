@@ -99,10 +99,10 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
               "telephone": "+91-7710032627",
               "address": {
                 "@type": "PostalAddress",
-                "streetAddress": "1st Floor, Atlantic Tower B Wing, Aqsa Palace, 101, Gaothan Rd, next to Paneri Showroom",
-                "addressLocality": "Andheri West",
-                "addressRegion": "Mumbai, Maharashtra",
-                "postalCode": "400058",
+                "streetAddress": "503 Sai Rushabh CHS Ltd, Geeta Nagar Phase 1, Mira Road",
+                "addressLocality": "Thane",
+                "addressRegion": "Maharashtra",
+                "postalCode": "401107",
                 "addressCountry": "IN"
               },
               "openingHours": "Mo-Su 00:00-23:59",

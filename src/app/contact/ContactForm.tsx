@@ -209,7 +209,7 @@ export default function ContactForm() {
                     </div>
                     <div>
                       <h3 className="font-semibold text-gray-900">Office Address</h3>
-                      <p className="text-gray-600">1st Floor, Atlantic Tower B Wing, Aqsa Palace, 101, Gaothan Rd, next to Paneri Showroom, Andheri West, Mumbai, Maharashtra 400058</p>
+                      <p className="text-gray-600">503 Sai Rushabh CHS Ltd, Geeta Nagar Phase 1, Mira Road, Thane, Maharashtra 401107</p>
                     </div>
                   </div>
 
@@ -232,7 +232,7 @@ export default function ContactForm() {
                   <h3 className="font-semibold text-gray-900 mb-2">Need Immediate Help?</h3>
                   <p className="text-gray-600 mb-4">Get instant support via WhatsApp</p>
                   <a
-                    href="https://wa.me/7710032627?text=Hello%20PestControl99,%20I%20need%20help%20with%20pest%20control%20services."
+                    href="https://wa.me/7710032627?text=Hello%20Multi%20pest%20care%20LLP,%20I%20need%20help%20with%20pest%20control%20services."
                     target="_blank"
                     rel="noopener noreferrer"
                     className="inline-flex items-center bg-green-600 text-white px-6 py-3 rounded-lg font-semibold hover:bg-green-700 transition-colors"

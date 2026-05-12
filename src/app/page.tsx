@@ -296,7 +296,7 @@ export default function Home() {
               Get My 60-Second Quote →
             </Link>
             <a
-              href="https://wa.me/7710032627?text=Hello%20PestControl99,%20can%20you%20share%20details%20and%20pricing%20for%20your%20pest%20control%20services?"
+              href="https://wa.me/7710032627?text=Hello%20Multi%20pest%20care%20LLP,%20can%20you%20share%20details%20and%20pricing%20for%20your%20pest%20control%20services?"
               target="_blank"
               rel="noopener noreferrer"
               className="border border-white text-white px-5 sm:px-6 py-2 sm:py-3 rounded-full font-medium text-sm hover:bg-white hover:text-green-600 transition-all duration-300 shadow-md flex items-center justify-center gap-2"

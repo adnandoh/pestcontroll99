@@ -25,11 +25,6 @@ const nextConfig: NextConfig = {
   // Force trailing slashes
   trailingSlash: true,
 
-  // Optimize build output
-  experimental: {
-    optimizePackageImports: ['react', 'react-dom'],
-  },
-
   // Redirect all non-www and non-https to https://www
   async redirects() {
     return [

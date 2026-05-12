@@ -75,7 +75,7 @@ export default function Footer() {
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
                   </svg>
-                  <span className="leading-relaxed">1st Floor, Atlantic Tower B Wing, Aqsa Palace, 101, Gaothan Rd, next to Paneri Showroom, Andheri West, Mumbai 400058</span>
+                  <span className="leading-relaxed">503 Sai Rushabh CHS Ltd, Geeta Nagar Phase 1, Mira Road, Thane, Maharashtra 401107</span>
                 </div>
                 <div className="flex items-center">
                   <svg className="w-5 h-5 mr-3 text-green-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -95,26 +95,22 @@ export default function Footer() {
         </div>
       </div>
 
-      <div className="bg-black text-white py-6 border-t border-gray-800">
+      <div className="bg-black text-white py-8 border-t border-gray-800">
         <div className="container mx-auto px-4">
-          <div className="flex flex-col md:flex-row justify-between items-center gap-6 md:gap-0">
-            {/* Left: Copyright */}
-            <div className="text-gray-500 text-xs sm:text-sm font-medium order-3 md:order-1 text-center md:text-left">
-              © {new Date().getFullYear()} All Rights Reserved By
-            </div>
-            
-            {/* Center: Company & Verified Label */}
-            <div className="flex flex-col items-center gap-2 order-1 md:order-2">
-              <span className="text-sm sm:text-base font-black tracking-widest text-gray-200 uppercase">Multi pest care LLP</span>
+          <div className="flex flex-col items-center gap-8">
+            {/* Copyright Box - Styled like the requested image */}
+            <div className="border border-gray-800 rounded-xl px-8 py-4 bg-gray-900/20 backdrop-blur-sm">
+              <p className="text-gray-400 text-xs sm:text-sm md:text-base font-medium text-center tracking-widest uppercase">
+                COPYRIGHT © <span className="text-white font-black">MULTI PEST CARE LLP</span>. ALL RIGHTS RESERVED
+              </p>
             </div>
 
-            {/* Right: Links */}
-            <div className="flex flex-wrap items-center justify-center gap-x-4 gap-y-2 text-[10px] sm:text-xs text-gray-500 order-2 md:order-3 font-bold uppercase tracking-wider">
-              <Link href="/terms-and-conditions" className="hover:text-white transition-colors">Terms & Conditions</Link>
+            <div className="flex flex-wrap items-center justify-center gap-x-4 sm:gap-x-6 gap-y-2 text-[10px] sm:text-xs text-gray-500 font-bold uppercase tracking-widest">
+              <Link href="/terms-and-conditions" className="hover:text-green-500 transition-colors">Terms & Conditions</Link>
               <span className="hidden sm:inline text-gray-800">|</span>
-              <Link href="/privacy-policy" className="hover:text-white transition-colors">Privacy Policy</Link>
+              <Link href="/privacy-policy" className="hover:text-green-500 transition-colors">Privacy Policy</Link>
               <span className="hidden sm:inline text-gray-800">|</span>
-              <Link href="/data-deletion" className="hover:text-white transition-colors">Data Deletion</Link>
+              <Link href="/data-deletion" className="hover:text-green-500 transition-colors">Data Deletion</Link>
             </div>
           </div>
         </div>

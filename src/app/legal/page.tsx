@@ -39,14 +39,14 @@ export default function LegalPage() {
                 <div>
                   <h3 className="text-lg font-semibold text-gray-900 mb-3">1. Acceptance of Terms</h3>
                   <p>
-                    By accessing and using PestControl99 services, you accept and agree to be bound by the terms and provision of this agreement. If you do not agree to abide by the above, please do not use this service.
+                    By accessing and using PestControl99 services, provided by <span className="font-bold">Multi pest care LLP</span>, you accept and agree to be bound by the terms and provision of this agreement. If you do not agree to abide by the above, please do not use this service.
                   </p>
                 </div>
 
                 <div>
                   <h3 className="text-lg font-semibold text-gray-900 mb-3">2. Service Description</h3>
                   <p>
-                    PestControl99 provides professional pest control services including but not limited to cockroach control, termite treatment, rodent control, mosquito control, wood borer control, and honey bee removal services in Mumbai and surrounding areas.
+                    <span className="font-bold">Multi pest care LLP</span> (PestControl99) provides professional pest control services including but not limited to cockroach control, termite treatment, rodent control, mosquito control, wood borer control, and honey bee removal services in Mumbai and surrounding areas.
                   </p>
                 </div>
 
@@ -97,14 +97,14 @@ export default function LegalPage() {
                 <div>
                   <h3 className="text-lg font-semibold text-gray-900 mb-3">7. Liability</h3>
                   <p>
-                    PestControl99 shall not be liable for any indirect, incidental, special, consequential, or punitive damages, including without limitation, loss of profits, data, use, goodwill, or other intangible losses, resulting from your use of our services.
+                    <span className="font-bold">Multi pest care LLP</span> (PestControl99) shall not be liable for any indirect, incidental, special, consequential, or punitive damages, including without limitation, loss of profits, data, use, goodwill, or other intangible losses, resulting from your use of our services.
                   </p>
                 </div>
 
                 <div>
                   <h3 className="text-lg font-semibold text-gray-900 mb-3">8. Force Majeure</h3>
                   <p>
-                    PestControl99 shall not be liable for any failure to perform its obligations where such failure is a result of Acts of Nature, government actions, war, civil disturbance, or other causes beyond our reasonable control.
+                    <span className="font-bold">Multi pest care LLP</span> shall not be liable for any failure to perform its obligations where such failure is a result of Acts of Nature, government actions, war, civil disturbance, or other causes beyond our reasonable control.
                   </p>
                 </div>
               </div>
@@ -212,7 +212,7 @@ export default function LegalPage() {
                   <div className="mt-3 p-4 bg-gray-50 rounded-lg">
                     <p><strong>Email:</strong> accounts@pestcontrol99.com</p>
                     <p><strong>Phone:</strong> +91 77100 32627</p>
-                    <p><strong>Address:</strong> 1st Floor, Atlantic Tower B Wing, Aqsa Palace, 101, Gaothan Rd, next to Paneri Showroom, Andheri West, Mumbai, Maharashtra 400058</p>
+                    <p><strong>Address:</strong> 503 Sai Rushabh CHS Ltd, Geeta Nagar Phase 1, Mira Road, Thane, Maharashtra 401107</p>
                   </div>
                 </div>
               </div>
@@ -277,7 +277,7 @@ export default function LegalPage() {
 
             <div className="text-center text-sm text-gray-500 pt-6 border-t border-gray-200">
               <p>Last Updated: August 2024</p>
-              <p>© 2024 PestControl99. All rights reserved.</p>
+              <p>© 2024 Multi pest care LLP. All rights reserved.</p>
             </div>
           </div>
         </div>

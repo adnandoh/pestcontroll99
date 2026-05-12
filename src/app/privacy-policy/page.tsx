@@ -29,7 +29,7 @@ export default function PrivacyPolicyPage() {
             <div className="p-8 md:p-12 space-y-10">
               {/* Intro */}
               <p className="text-lg text-gray-700 leading-relaxed italic border-l-4 border-green-500 pl-6">
-                Welcome to PestControl99.com. Your privacy is important to us. This Privacy Policy explains how we collect, use, and protect your information when you use our website and services.
+                Welcome to PestControl99.com. Your privacy is important to us. These services are provided by <span className="font-bold">Multi pest care LLP</span>. This Privacy Policy explains how we collect, use, and protect your information when you use our website and services.
               </p>
 
               {/* Section 1 */}
@@ -157,7 +157,7 @@ export default function PrivacyPolicyPage() {
               <section className="pt-8 border-t border-gray-100">
                 <h2 className="text-2xl font-bold text-gray-900 mb-6 text-center">8. Contact Us</h2>
                 <div className="max-w-md mx-auto bg-gray-50 rounded-2xl p-8 border border-gray-100 text-center">
-                  <p className="text-xl font-bold text-gray-900 mb-2">Pest Control 99</p>
+                  <p className="text-xl font-bold text-gray-900 mb-2">Multi pest care LLP</p>
                   <p className="text-gray-600 mb-4">If you have questions regarding this Privacy Policy, contact us:</p>
                   <div className="space-y-3">
                     <a href="https://pestcontrol99.com" className="block text-green-600 hover:underline font-medium">pestcontrol99.com</a>

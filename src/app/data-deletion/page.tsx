@@ -30,7 +30,7 @@ export default function DataDeletionPage() {
               {/* Intro */}
               <div className="text-center">
                 <p className="text-xl text-gray-700 leading-relaxed max-w-2xl mx-auto">
-                  Users may request deletion of their personal data collected by Pest Control 99. We respect your right to privacy and control over your personal information.
+                  Users may request deletion of their personal data collected by <span className="font-bold">Multi pest care LLP</span>. We respect your right to privacy and control over your personal information.
                 </p>
               </div>
 
@@ -91,7 +91,7 @@ export default function DataDeletionPage() {
               <section className="pt-8 text-center">
                 <h2 className="text-2xl font-bold text-gray-900 mb-6">Contact</h2>
                 <div className="inline-block bg-gray-50 rounded-2xl p-8 border border-gray-100 min-w-[300px]">
-                  <p className="text-xl font-bold text-gray-900 mb-2">Pest Control 99</p>
+                  <p className="text-xl font-bold text-gray-900 mb-2">Multi pest care LLP</p>
                   <div className="space-y-2 mt-4">
                     <a href="https://pestcontrol99.com" className="block text-red-600 hover:underline font-medium">pestcontrol99.com</a>
                     <a href="mailto:info@pestcontrol99.com" className="block text-red-600 hover:underline font-medium">info@pestcontrol99.com</a>

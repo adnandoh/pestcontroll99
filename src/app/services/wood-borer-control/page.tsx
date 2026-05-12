@@ -50,7 +50,7 @@ export default function WoodBorerControlPage() {
                   Get My Inspection Slot →
                 </Link>
                 <a
-                  href="https://wa.me/7710032627?text=Hello%20PestControl99,%20can%20you%20share%20details%20and%20pricing%20for%20your%20wood%20borer%20control%20services?"
+                  href="https://wa.me/7710032627?text=Hello%20Multi%20pest%20care%20LLP,%20can%20you%20share%20details%20and%20pricing%20for%20your%20wood%20borer%20control%20services?"
                   className="inline-flex items-center justify-center px-8 py-4 bg-white text-green-600 font-semibold rounded-full border-2 border-green-600 hover:bg-green-50 transition-colors duration-300"
                 >
                   💬 WhatsApp 24 × 7: 98 XXX XX 990
@@ -402,7 +402,7 @@ export default function WoodBorerControlPage() {
                 Schedule My Inspection →
               </Link>
               <a
-                href="https://wa.me/7710032627?text=Hello%20PestControl99,%20can%20you%20share%20details%20and%20pricing%20for%20your%20wood%20borer%20control%20services?"
+                href="https://wa.me/7710032627?text=Hello%20Multi%20pest%20care%20LLP,%20can%20you%20share%20details%20and%20pricing%20for%20your%20wood%20borer%20control%20services?"
                 className="inline-flex items-center justify-center px-8 py-4 bg-transparent text-white font-semibold rounded-full border-2 border-white hover:bg-white hover:text-green-600 transition-colors duration-300"
               >
                 💬 WhatsApp 24 × 7: 98 XXX XX 990

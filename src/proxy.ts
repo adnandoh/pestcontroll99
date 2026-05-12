@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 
-export function middleware(request: NextRequest) {
+export function proxy(request: NextRequest) {
   const host = request.headers.get('host');
   const url = request.nextUrl.clone();
 
@@ -9,24 +9,8 @@ export function middleware(request: NextRequest) {
     // Redirect to www version
     url.host = 'www.pestcontrol99.com';
     url.protocol = 'https:';
-    
-    return NextResponse.redirect(url, 301);
-  }
 
-  // Handle trailing slash for www domain
-  if (host === 'www.pestcontrol99.com' || host?.includes('localhost')) {
-    const pathname = url.pathname;
-    
-    // Skip processing for sitemap.xml and robots.txt
-    if (pathname === '/sitemap.xml' || pathname === '/robots.txt') {
-      return NextResponse.next();
-    }
-    
-    // Add trailing slash if it doesn't exist and it's not a file
-    if (!pathname.endsWith('/') && !pathname.includes('.')) {
-      url.pathname = pathname + '/';
-      return NextResponse.redirect(url, 301);
-    }
+    return NextResponse.redirect(url, 301);
   }
 
   // Continue with the request if it's already www or localhost

@@ -64,7 +64,7 @@ export default function AboutPage() {
                   </svg>
                 </Link>
                 <a
-                  href="https://wa.me/7710032627?text=Hello%20PestControl99,%20can%20you%20share%20details%20and%20pricing%20for%20your%20pest%20control%20services?"
+                  href="https://wa.me/7710032627?text=Hello%20Multi%20pest%20care%20LLP,%20can%20you%20share%20details%20and%20pricing%20for%20your%20pest%20control%20services?"
                   target="_blank"
                   rel="noopener noreferrer"
                   className="group inline-flex items-center justify-center px-8 py-4 text-base font-semibold text-gray-700 transition-all duration-300 bg-white border border-gray-200 rounded-xl hover:bg-gray-50 hover:text-green-600 hover:border-green-200 hover:shadow-lg hover:-translate-y-1"
