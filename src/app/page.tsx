@@ -1,4 +1,5 @@
 import Link from 'next/link';
+import Image from 'next/image';
 
 import { Metadata } from 'next';
 import { Suspense } from 'react';
@@ -21,46 +22,21 @@ export const metadata: Metadata = {
 export default function Home() {
   return (
     <div>
-      {/* Hero Section - Completely Rebuilt */}
-      <div className="hero-container relative w-full min-h-[70vh] md:min-h-[85vh] overflow-hidden">
-        {/* Hero Background Image - Optimized WebP */}
-        <div
-          className="absolute inset-0 w-full h-full bg-cover bg-center bg-no-repeat"
-          style={{ 
-            backgroundImage: `url(/images/heroimage.webp), url(/images/heroimage.png)`,
-            backgroundSize: 'cover',
-            backgroundPosition: 'center'
-          }}
-          aria-hidden="true"
-        ></div>
-
-        {/* Dark overlay for better text readability */}
-        <div className="absolute inset-0 bg-black opacity-10 z-10"></div>
-
-        {/* Content Container */}
-        <div className="relative z-20 container mx-auto px-4 sm:px-6 h-full flex items-start pt-8 md:pt-16">
-          <div className="max-w-2xl text-left text-white py-4 md:py-8">
-            <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold mb-4 leading-tight">
-              100% Safe, Same-Day<br className="hidden sm:block" />
-              <span className="sm:inline"> Pest Control in Mumbai</span>
-            </h1>
-            <p className="text-base sm:text-lg md:text-xl mb-6 max-w-lg opacity-90">
-            Verified, Certified experts with 3 + years’ experience. Odour clears in 3 hrs—zero wall stains. Our pest control services are Kid- and pet-safe.
-            </p>
-
-            <div className="flex flex-col sm:flex-row gap-4">
-              <Link
-                href="/quote"
-                className="inline-flex items-center justify-center bg-green-500 hover:bg-green-600 text-white font-semibold px-6 sm:px-8 py-3 sm:py-4 rounded-lg transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2 shadow-lg hover:shadow-xl text-sm sm:text-base"
-              >
-                Get Instant Quote
-                <svg className="ml-2 w-4 h-4 sm:w-5 sm:h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-                </svg>
-              </Link>
-            </div>
-          </div>
+      {/* Hero: explicit height in layout (avoids collapsed strip on mobile when children are position:absolute) */}
+      <div className="hero-container relative w-full shrink-0 overflow-hidden pb-3 sm:pb-4 md:pb-6">
+        <div className="relative z-0 w-full min-h-[196px] h-[30dvh] sm:min-h-[238px] sm:h-[34dvh] md:min-h-[294px] md:h-[min(60vh,630px)]">
+          <Image
+            src="/images/hero-home.png"
+            alt="PestControl99 technician providing safe, professional pest control in a Mumbai home"
+            fill
+            priority
+            sizes="100vw"
+            className="object-cover object-center"
+          />
         </div>
+        <h1 className="sr-only">
+          100% Safe, Same-Day Pest Control in Mumbai
+        </h1>
       </div>
 
       {/* Service Selector Wizard */}
@@ -89,8 +65,8 @@ export default function Home() {
         </section>
       }>
         <Suspense fallback={null}>
-          <div className="-mt-4 md:-mt-8 relative z-30">
-            <HomeQuoteForm />
+          <div className="relative z-30 mt-4 sm:mt-6 scroll-mt-20 md:-mt-8 lg:-mt-10 xl:-mt-12">
+            <HomeQuoteForm compact />
           </div>
         </Suspense>
       </ClientOnly>

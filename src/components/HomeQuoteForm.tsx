@@ -6,7 +6,12 @@ import { saveFormData, HomeFormData, decodeFormDataFromURL, getFormData, clearFo
 import MultiSelectPest from './MultiSelectPest';
 import { AddressInput } from './GoogleMaps';
 
-export default function HomeQuoteForm() {
+type HomeQuoteFormProps = {
+  /** Tighter layout (~30% less vertical footprint) for home hero pairing */
+  compact?: boolean;
+};
+
+export default function HomeQuoteForm({ compact = false }: HomeQuoteFormProps) {
   const router = useRouter();
   const searchParams = useSearchParams();
   const [formData, setFormData] = useState<HomeFormData>({
@@ -259,7 +264,9 @@ export default function HomeQuoteForm() {
   };
 
   return (
-    <section className="pt-0 pb-12 sm:pb-16 md:pb-20 bg-transparent relative overflow-hidden">
+    <section
+      className={`pt-0 bg-transparent relative overflow-hidden ${compact ? 'pb-8 sm:pb-10 md:pb-12' : 'pb-12 sm:pb-16 md:pb-20'}`}
+    >
       {/* Background Decorative Elements */}
       <div className="absolute top-0 left-0 w-full h-full overflow-hidden pointer-events-none">
         <div className="absolute -top-[20%] -right-[10%] w-[50%] h-[50%] bg-green-50 rounded-full blur-3xl opacity-60"></div>
@@ -267,14 +274,18 @@ export default function HomeQuoteForm() {
       </div>
 
       <div className="container mx-auto px-4 sm:px-6 relative z-10">
-        <div className="max-w-3xl mx-auto">
-          <div className="bg-white rounded-2xl shadow-xl border border-gray-100 p-6 sm:p-10 relative overflow-hidden">
+        <div className={`mx-auto ${compact ? 'max-w-2xl' : 'max-w-3xl'}`}>
+          <div
+            className={`bg-white shadow-xl border border-gray-100 relative overflow-hidden ${compact ? 'p-4 sm:p-6 rounded-xl' : 'p-6 sm:p-10 rounded-2xl'}`}
+          >
             {/* Header moved inside the card for better readability when overlapping hero */}
-            <div className="text-center mb-6 sm:mb-8">
-              <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-gray-900 mb-3 leading-tight">
+            <div className={`text-center ${compact ? 'mb-4 sm:mb-5' : 'mb-6 sm:mb-8'}`}>
+              <h2
+                className={`font-bold text-gray-900 mb-2 sm:mb-3 leading-tight ${compact ? 'text-xl sm:text-2xl md:text-3xl' : 'text-2xl sm:text-3xl md:text-4xl'}`}
+              >
                 Get Your <span className="text-transparent bg-clip-text bg-gradient-to-r from-green-600 to-emerald-500">Free Quote</span> Today
               </h2>
-              <p className="text-sm sm:text-base text-gray-600 max-w-xl mx-auto">
+              <p className={`text-gray-600 max-w-xl mx-auto ${compact ? 'text-xs sm:text-sm' : 'text-sm sm:text-base'}`}>
                 Tell us about your pest problem, and we&apos;ll provide a fast, accurate solution.
               </p>
             </div>
@@ -294,38 +305,38 @@ export default function HomeQuoteForm() {
               </div>
             )}
 
-            <form onSubmit={handleSubmit} className="space-y-5">
+            <form onSubmit={handleSubmit} className={compact ? 'space-y-3.5' : 'space-y-5'}>
               {/* 1. Premise Type Toggle - HiCare Style */}
               <div>
-                <label className="block text-[15px] font-bold text-[#1a1a1a] mb-2.5">
+                <label className={`block font-bold text-[#1a1a1a] ${compact ? 'text-[13px] mb-2' : 'text-[15px] mb-2.5'}`}>
                   Premise Type *
                 </label>
                 <div className="flex border border-[#00C950] rounded-xl overflow-hidden shadow-sm">
                   <button
                     type="button"
                     onClick={() => handleChange('premiseType', 'residential')}
-                    className={`flex-1 flex items-center justify-center gap-2 py-3 px-4 transition-all duration-200 ${formData.premiseType === 'residential'
+                    className={`flex-1 flex items-center justify-center gap-1.5 transition-all duration-200 ${compact ? 'py-2 px-3' : 'py-3 px-4'} ${formData.premiseType === 'residential'
                         ? 'bg-[#00C950] text-white'
                         : 'bg-white text-[#00C950]'
                       }`}
                   >
-                    <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
+                    <svg className={compact ? 'w-4 h-4' : 'w-5 h-5'} fill="currentColor" viewBox="0 0 24 24">
                       <path d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" />
                     </svg>
-                    <span className="font-bold text-[15px]">Residential</span>
+                    <span className={`font-bold ${compact ? 'text-sm' : 'text-[15px]'}`}>Residential</span>
                   </button>
                   <button
                     type="button"
                     onClick={() => handleChange('premiseType', 'commercial')}
-                    className={`flex-1 flex items-center justify-center gap-2 py-3 px-4 transition-all duration-200 ${formData.premiseType === 'commercial'
+                    className={`flex-1 flex items-center justify-center gap-1.5 transition-all duration-200 ${compact ? 'py-2 px-3' : 'py-3 px-4'} ${formData.premiseType === 'commercial'
                         ? 'bg-[#00C950] text-white'
                         : 'bg-white text-[#00C950]'
                       }`}
                   >
-                    <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
+                    <svg className={compact ? 'w-4 h-4' : 'w-5 h-5'} fill="currentColor" viewBox="0 0 24 24">
                       <path d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" />
                     </svg>
-                    <span className="font-bold text-[15px]">Commercial</span>
+                    <span className={`font-bold ${compact ? 'text-sm' : 'text-[15px]'}`}>Commercial</span>
                   </button>
                 </div>
               </div>
@@ -345,17 +356,17 @@ export default function HomeQuoteForm() {
               </div>
 
               {/* 3. Price Display - Fixed Layout */}
-              <div className="bg-[#fcfdfd] rounded-2xl p-6 border border-[#00C950] shadow-sm">
+              <div className={`bg-[#fcfdfd] rounded-2xl border border-[#00C950] shadow-sm ${compact ? 'p-4 rounded-xl' : 'p-6'}`}>
                 <div className="flex flex-col gap-1">
-                  <span className="text-[13px] font-bold text-gray-400 uppercase tracking-wide">Estimated Price</span>
+                  <span className={`font-bold text-gray-400 uppercase tracking-wide ${compact ? 'text-[11px]' : 'text-[13px]'}`}>Estimated Price</span>
                   {formData.premiseType === 'commercial' || formData.pestTypes.includes('hotel-commercial') ? (
                     <div className="mt-1">
-                      <span className="text-xl font-semibold text-[#111827]">Inspection Required</span>
+                      <span className={`font-semibold text-[#111827] ${compact ? 'text-lg' : 'text-xl'}`}>Inspection Required</span>
                       <p className="text-[11px] text-[#00C950] font-bold mt-1 uppercase tracking-widest">Free Consultation & Site Visit</p>
                     </div>
                   ) : (
                     <div className="mt-1">
-                      <span className="text-2xl font-semibold text-[#111827] tracking-tight whitespace-nowrap">₹ {formData.estimatedPrice?.toLocaleString()}</span>
+                      <span className={`font-semibold text-[#111827] tracking-tight whitespace-nowrap ${compact ? 'text-xl' : 'text-2xl'}`}>₹ {formData.estimatedPrice?.toLocaleString()}</span>
                     </div>
                   )}
                 </div>
@@ -363,16 +374,16 @@ export default function HomeQuoteForm() {
 
               {/* 4. Residential Specific Options (Size & Type) */}
               {formData.premiseType === 'residential' && formData.pestTypes.length > 0 && !formData.pestTypes.includes('hotel-commercial') && (
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-5 py-2 animate-in fade-in slide-in-from-top-2">
+                <div className={`grid grid-cols-1 md:grid-cols-2 py-2 animate-in fade-in slide-in-from-top-2 ${compact ? 'gap-3.5' : 'gap-5'}`}>
                   {/* Premise Size Section */}
                   <div className="flex flex-col">
-                    <label className="block text-[15px] font-bold text-[#1a1a1a] mb-2">
+                    <label className={`block font-bold text-[#1a1a1a] mb-2 ${compact ? 'text-[13px]' : 'text-[15px]'}`}>
                       Premise Size *
                     </label>
                     <select
                       value={formData.premiseSize || '1bhk'}
                       onChange={(e) => handleChange('premiseSize', e.target.value)}
-                      className="w-full px-4 py-3 border border-[#00C950] rounded-xl focus:border-[#00C950] focus:ring-0 outline-none bg-white font-bold text-gray-700 transition-all cursor-pointer appearance-none shadow-sm"
+                      className={`w-full px-4 border border-[#00C950] rounded-xl focus:border-[#00C950] focus:ring-0 outline-none bg-white font-bold text-gray-700 transition-all cursor-pointer appearance-none shadow-sm ${compact ? 'py-2.5 text-sm' : 'py-3'}`}
                       style={{ backgroundImage: 'url("data:image/svg+xml,%3Csvg xmlns=\'http://www.w3.org/2000/svg\' fill=\'none\' viewBox=\'0 0 24 24\' stroke=\'%2300C950\'%3E%3Cpath stroke-linecap=\'round\' stroke-linejoin=\'round\' stroke-width=\'2.5\' d=\'M19 9l-7 7-7-7\' /%3E%3C/svg%3E")', backgroundRepeat: 'no-repeat', backgroundPosition: 'right 1rem center', backgroundSize: '1.2rem' }}
                     >
                       <option value="1rk">1 RK</option>
@@ -385,13 +396,13 @@ export default function HomeQuoteForm() {
 
                   {/* Select Type Section (One-Time / AMC) */}
                   <div className="flex flex-col">
-                    <label className="block text-[15px] font-bold text-[#1a1a1a] mb-2">
+                    <label className={`block font-bold text-[#1a1a1a] mb-2 ${compact ? 'text-[13px]' : 'text-[15px]'}`}>
                       Select Type *
                     </label>
                     <select
                       value={formData.serviceType || ''}
                       onChange={(e) => handleChange('serviceType', e.target.value)}
-                      className={`w-full px-4 py-3 border rounded-xl focus:border-[#00C950] focus:ring-0 outline-none bg-white font-bold text-gray-700 transition-all cursor-pointer appearance-none shadow-sm ${errors.serviceType ? 'border-red-500' : 'border-[#00C950]'}`}
+                      className={`w-full px-4 border rounded-xl focus:border-[#00C950] focus:ring-0 outline-none bg-white font-bold text-gray-700 transition-all cursor-pointer appearance-none shadow-sm ${compact ? 'py-2.5 text-sm' : 'py-3'} ${errors.serviceType ? 'border-red-500' : 'border-[#00C950]'}`}
                       style={{ backgroundImage: 'url("data:image/svg+xml,%3Csvg xmlns=\'http://www.w3.org/2000/svg\' fill=\'none\' viewBox=\'0 0 24 24\' stroke=\'%2300C950\'%3E%3Cpath stroke-linecap=\'round\' stroke-linejoin=\'round\' stroke-width=\'2.5\' d=\'M19 9l-7 7-7-7\' /%3E%3C/svg%3E")', backgroundRepeat: 'no-repeat', backgroundPosition: 'right 1rem center', backgroundSize: '1.2rem' }}
                     >
                       <option value="" disabled>Select Type</option>
@@ -410,10 +421,10 @@ export default function HomeQuoteForm() {
                 </div>
               )}
 
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
+              <div className={`grid grid-cols-1 md:grid-cols-2 ${compact ? 'gap-3.5' : 'gap-5'}`}>
                 {/* 5. Your Name */}
                 <div>
-                  <label className="block text-[15px] font-bold text-[#1a1a1a] mb-2">
+                  <label className={`block font-bold text-[#1a1a1a] mb-2 ${compact ? 'text-[13px]' : 'text-[15px]'}`}>
                     Your Name *
                   </label>
                   <div className="relative group">
@@ -422,7 +433,7 @@ export default function HomeQuoteForm() {
                       value={formData.name}
                       onChange={(e) => handleChange('name', e.target.value)}
                       placeholder="Enter your full name"
-                      className={`w-full px-4 py-3 border rounded-xl focus:border-[#00C950] focus:ring-0 outline-none transition-all duration-200 bg-white font-medium shadow-sm ${errors.name ? 'border-red-300' : 'border-[#00C950] hover:border-[#00C950]'
+                      className={`w-full px-4 border rounded-xl focus:border-[#00C950] focus:ring-0 outline-none transition-all duration-200 bg-white font-medium shadow-sm ${compact ? 'py-2.5 text-sm' : 'py-3'} ${errors.name ? 'border-red-300' : 'border-[#00C950] hover:border-[#00C950]'
                         }`}
                     />
                   </div>
@@ -433,7 +444,7 @@ export default function HomeQuoteForm() {
 
                 {/* 6. Phone Number */}
                 <div>
-                  <label className="block text-[15px] font-bold text-[#1a1a1a] mb-2">
+                  <label className={`block font-bold text-[#1a1a1a] mb-2 ${compact ? 'text-[13px]' : 'text-[15px]'}`}>
                     Phone Number *
                   </label>
                   <div className="relative group">
@@ -446,7 +457,7 @@ export default function HomeQuoteForm() {
                       }}
                       placeholder="10-digit mobile number"
                       maxLength={10}
-                      className={`w-full px-4 py-3 border rounded-xl focus:border-[#00C950] focus:ring-0 outline-none transition-all duration-200 bg-white font-medium shadow-sm ${errors.phone ? 'border-red-300' : 'border-[#00C950] hover:border-[#00C950]'
+                      className={`w-full px-4 border rounded-xl focus:border-[#00C950] focus:ring-0 outline-none transition-all duration-200 bg-white font-medium shadow-sm ${compact ? 'py-2.5 text-sm' : 'py-3'} ${errors.phone ? 'border-red-300' : 'border-[#00C950] hover:border-[#00C950]'
                         }`}
                     />
                   </div>
@@ -458,7 +469,7 @@ export default function HomeQuoteForm() {
 
               {/* 7. Street Address */}
               <div>
-                <label className="block text-[15px] font-bold text-[#1a1a1a] mb-2">
+                <label className={`block font-bold text-[#1a1a1a] mb-2 ${compact ? 'text-[13px]' : 'text-[15px]'}`}>
                   Street Address *
                 </label>
                 <AddressInput
@@ -466,16 +477,16 @@ export default function HomeQuoteForm() {
                   onChange={(value) => handleChange('streetAddress', value)}
                   error={errors.streetAddress}
                   required
-                  className="w-full px-4 py-3 border border-[#00C950] rounded-xl focus:border-[#00C950] focus:ring-0 outline-none transition-all duration-200 shadow-sm"
+                  className={`w-full px-4 border border-[#00C950] rounded-xl focus:border-[#00C950] focus:ring-0 outline-none transition-all duration-200 shadow-sm ${compact ? 'py-2.5 text-sm' : 'py-3'}`}
                 />
               </div>
 
               {/* Submit Button */}
-              <div className="pt-4">
+              <div className={compact ? 'pt-2' : 'pt-4'}>
                 <button
                   type="submit"
                   disabled={isSubmitting}
-                  className="w-full bg-gradient-to-r from-green-600 to-emerald-600 text-white py-4 px-8 rounded-xl font-bold hover:from-green-700 hover:to-emerald-800 transition-all duration-300 shadow-lg hover:shadow-green-200 hover:-translate-y-0.5 disabled:opacity-70 disabled:cursor-not-allowed disabled:transform-none flex items-center justify-center group"
+                  className={`w-full bg-gradient-to-r from-green-600 to-emerald-600 text-white rounded-xl font-bold hover:from-green-700 hover:to-emerald-800 transition-all duration-300 shadow-lg hover:shadow-green-200 hover:-translate-y-0.5 disabled:opacity-70 disabled:cursor-not-allowed disabled:transform-none flex items-center justify-center group ${compact ? 'py-3 px-5 text-sm' : 'py-4 px-8'}`}
                 >
                   {isSubmitting ? (
                     <>
