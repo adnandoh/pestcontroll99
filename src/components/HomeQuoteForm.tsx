@@ -132,56 +132,20 @@ export default function HomeQuoteForm({ compact = false }: HomeQuoteFormProps) {
     setSubmitMessage('');
 
     try {
-      // Submit to both CRM and existing email system
-      const [crmResponse, emailResponse] = await Promise.allSettled([
-        // Submit to CRM
-        (async () => {
-          const { crmApi } = await import('@/services/crmApi');
-          const inquiryData = crmApi.mapFormDataToInquiry(formData, 'home');
-          return crmApi.submitInquiry(inquiryData);
-        })(),
-        // Submit to existing email system
-        fetch('/api/home-quote', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify(formData),
-        }).then(res => res.json())
-      ]);
+      // Submit to the backend API which handles both CRM and Email
+      const response = await fetch('/api/home-quote', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(formData),
+      });
 
-      // Check CRM submission result
-      let crmSuccess = false;
-      if (crmResponse.status === 'fulfilled' && crmResponse.value.success) {
-        crmSuccess = true;
-        console.log('✅ CRM submission successful:', crmResponse.value.data);
-      } else {
-        console.error('❌ CRM submission failed:', crmResponse.status === 'fulfilled' ? crmResponse.value.error : crmResponse.reason);
-      }
+      const result = await response.json();
 
-      // Check email submission result
-      let emailSuccess = false;
-      if (emailResponse.status === 'fulfilled') {
-        emailSuccess = true;
-        console.log('✅ Email submission successful');
-      } else {
-        console.error('❌ Email submission failed:', emailResponse.reason);
-      }
-
-      // Show success if at least one submission succeeded
-      if (crmSuccess || emailSuccess) {
+      if (response.ok) {
         setShowSuccessPopup(true);
-        let successMessage = 'Quote request submitted successfully! We will contact you soon.';
-
-        if (crmSuccess && emailSuccess) {
-          successMessage += ' Your inquiry has been recorded in our system.';
-        } else if (crmSuccess) {
-          successMessage += ' Your inquiry has been recorded in our CRM system.';
-        } else {
-          successMessage += ' Your inquiry has been sent via email.';
-        }
-
-        setSubmitMessage(successMessage);
+        setSubmitMessage(result.message || 'Quote request submitted successfully! We will contact you soon.');
 
         // Clear form after successful submission
         setFormData({
@@ -205,9 +169,9 @@ export default function HomeQuoteForm({ compact = false }: HomeQuoteFormProps) {
         // Redirect to Thank You page
         router.push('/thank-you');
       } else {
-        // Both submissions failed
+        // Submission failed
         setShowSuccessPopup(false);
-        setSubmitMessage('Failed to submit quote request. Please try again or contact us directly.');
+        setSubmitMessage(result.error || 'Failed to submit quote request. Please try again or contact us directly.');
       }
     } catch (error) {
       console.error('Error submitting form:', error);
