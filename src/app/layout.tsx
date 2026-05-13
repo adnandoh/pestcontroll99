@@ -30,6 +30,9 @@ export const metadata: Metadata = {
     ],
   },
   manifest: '/site.webmanifest',
+  verification: {
+    google: "google519d773b7c35ae3d",
+  },
   other: {
     'msapplication-TileColor': '#0C9500',
   },

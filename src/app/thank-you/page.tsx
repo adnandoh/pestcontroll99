@@ -7,6 +7,15 @@ export default function ThankYouPage() {
   useEffect(() => {
     // Scroll to top on mount
     window.scrollTo(0, 0);
+
+    // Google Ads Conversion Tracking
+    if (typeof window !== 'undefined' && (window as any).gtag) {
+      (window as any).gtag('event', 'conversion', {
+        'send_to': 'AW-17687478045/submit_lead',
+        'value': 1.0,
+        'currency': 'INR'
+      });
+    }
   }, []);
 
   return (
