@@ -95,21 +95,25 @@ export default function Footer() {
         </div>
       </div>
 
-      <div className="bg-black text-white py-8 border-t border-gray-800">
-        <div className="container mx-auto px-4">
-          <div className="flex flex-col items-center gap-8">
-            {/* Copyright Box - Styled like the requested image */}
-            <div className="border border-gray-800 rounded-xl px-8 py-4 bg-gray-900/20 backdrop-blur-sm">
-              <p className="text-gray-400 text-xs sm:text-sm md:text-base font-medium text-center tracking-widest uppercase">
-                COPYRIGHT © <span className="text-white font-black">MULTI PEST CARE LLP</span>. ALL RIGHTS RESERVED
-              </p>
+      <div className="bg-black text-white py-5 border-t border-white/5">
+        <div className="container mx-auto px-6 sm:px-4">
+          <div className="flex flex-col md:flex-row justify-between items-center gap-4 text-[10px] sm:text-xs tracking-wider">
+            {/* Left side: Copyright */}
+            <div className="text-gray-500 text-center md:text-left md:flex-1">
+              © {new Date().getFullYear()} All Rights Reserved By
             </div>
 
-            <div className="flex flex-wrap items-center justify-center gap-x-4 sm:gap-x-6 gap-y-2 text-[10px] sm:text-xs text-gray-500 font-bold uppercase tracking-widest">
+            {/* Center side: Company Name */}
+            <div className="text-white font-black uppercase text-center md:flex-1">
+              MULTI PEST CARE LLP
+            </div>
+
+            {/* Right side: Policy Links */}
+            <div className="flex flex-wrap items-center justify-center md:justify-end gap-x-3 sm:gap-x-4 text-gray-500 md:flex-1">
               <Link href="/terms-and-conditions" className="hover:text-green-500 transition-colors">Terms & Conditions</Link>
-              <span className="hidden sm:inline text-gray-800">|</span>
+              <span className="text-white/10">|</span>
               <Link href="/privacy-policy" className="hover:text-green-500 transition-colors">Privacy Policy</Link>
-              <span className="hidden sm:inline text-gray-800">|</span>
+              <span className="text-white/10">|</span>
               <Link href="/data-deletion" className="hover:text-green-500 transition-colors">Data Deletion</Link>
             </div>
           </div>
