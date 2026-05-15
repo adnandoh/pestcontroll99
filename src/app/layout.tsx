@@ -14,9 +14,9 @@ import WebVitals from "@/components/WebVitals";
 // });
 
 export const metadata: Metadata = {
-  title: "Same-Day Pest Control Services in Mumbai, Pune & Navi Mumbai | Eco-Safe & Certified",
-  description: "Professional pest control for homes and offices. Safe, odourless treatment with ISO-certified experts. Get a same-day quote now — satisfaction guaranteed.",
-  keywords: "pest control mumbai, pest control pune, pest control navi mumbai, termite control, cockroach control, residential pest control, commercial pest control, same day service, eco-friendly pest control",
+  title: "Pest Control in Mumbai | Safe, Same-Day & Certified Services",
+  description: "Trusted pest control services in Mumbai, Thane, & Navi Mumbai. 100% safe, herbal treatments for homes & offices. Get a same-day quote & 365-day warranty. Book now!",
+  keywords: "pest control mumbai, professional pest control services, same-day pest control, residential pest control, commercial pest control, termite control, cockroach control, rodent control",
   icons: {
     icon: [
       { url: '/favicon-16x16.png', sizes: '16x16', type: 'image/png' },
@@ -37,8 +37,8 @@ export const metadata: Metadata = {
     'msapplication-TileColor': '#0C9500',
   },
   openGraph: {
-    title: "Same-Day Pest Control Services in Mumbai, Pune & Navi Mumbai",
-    description: "Professional pest control for homes and offices. Safe, odourless treatment with ISO-certified experts.",
+    title: "Pest Control in Mumbai | Safe, Same-Day & Certified Services",
+    description: "Trusted pest control services in Mumbai, Thane, & Navi Mumbai. 100% safe, herbal treatments for homes & offices. Get a same-day quote & 365-day warranty.",
     type: "website",
     url: "https://www.pestcontrol99.com",
     siteName: "PestControl99",
@@ -70,7 +70,7 @@ export default function RootLayout({
 new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
 j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
-})(window,document,'script','dataLayer','GTM-W4MX9PKB');`
+})(window,document,'script','dataLayer','GTM-MWPXXQJH');`
           }}
         />
         {/* End Google Tag Manager */}
@@ -96,25 +96,59 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
             __html: JSON.stringify({
               "@context": "https://schema.org",
               "@type": "LocalBusiness",
+              "@id": "https://www.pestcontrol99.com/#localbusiness",
               "name": "PestControl99",
-              "description": "Professional pest control services in Mumbai, Pune & Navi Mumbai",
+              "alternateName": "Multi Pest Care LLP",
+              "description": "Professional pest control services in Mumbai, Thane & Navi Mumbai. Licensed experts offering cockroach, termite, rodent, and mosquito control with same-day service and 365-day warranty.",
               "url": "https://www.pestcontrol99.com",
               "telephone": "+91-7710032627",
+              "email": "info@pestcontrol99.com",
+              "image": "https://www.pestcontrol99.com/images/heroimage.webp",
+              "logo": "https://www.pestcontrol99.com/android-chrome-512x512.png",
               "address": {
                 "@type": "PostalAddress",
-                "streetAddress": "503 Sai Rushabh CHS Ltd, Geeta Nagar Phase 1, Mira Road",
-                "addressLocality": "Thane",
+                "streetAddress": "Andheri West",
+                "addressLocality": "Mumbai",
                 "addressRegion": "Maharashtra",
-                "postalCode": "401107",
+                "postalCode": "400058",
                 "addressCountry": "IN"
               },
-              "openingHours": "Mo-Su 00:00-23:59",
-              "serviceArea": ["Mumbai", "Pune", "Navi Mumbai"],
+              "geo": {
+                "@type": "GeoCoordinates",
+                "latitude": "19.1136",
+                "longitude": "72.8697"
+              },
+              "openingHoursSpecification": {
+                "@type": "OpeningHoursSpecification",
+                "dayOfWeek": ["Monday","Tuesday","Wednesday","Thursday","Friday","Saturday","Sunday"],
+                "opens": "00:00",
+                "closes": "23:59"
+              },
+              "areaServed": [
+                { "@type": "City", "name": "Mumbai" },
+                { "@type": "City", "name": "Thane" },
+                { "@type": "City", "name": "Navi Mumbai" }
+              ],
+              "serviceType": [
+                "Cockroach Pest Control",
+                "Termite Treatment",
+                "Rodent Control",
+                "Mosquito Control",
+                "Honey Bee Removal",
+                "Wood Borer Control"
+              ],
               "priceRange": "$$",
+              "hasMap": "https://maps.google.com/?q=Andheri+West+Mumbai",
+              "sameAs": [
+                "https://www.facebook.com/pestcontrol99",
+                "https://www.instagram.com/pestcontrol99"
+              ],
               "aggregateRating": {
                 "@type": "AggregateRating",
                 "ratingValue": "4.8",
-                "reviewCount": "150"
+                "reviewCount": "150",
+                "bestRating": "5",
+                "worstRating": "1"
               }
             })
           }}
@@ -153,7 +187,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
         {/* Google Tag Manager (noscript) */}
         <noscript>
           <iframe 
-            src="https://www.googletagmanager.com/ns.html?id=GTM-W4MX9PKB"
+            src="https://www.googletagmanager.com/ns.html?id=GTM-MWPXXQJH"
             height="0" 
             width="0" 
             style={{display: 'none', visibility: 'hidden'}}

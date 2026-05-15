@@ -4,17 +4,18 @@ import Image from 'next/image';
 import Breadcrumb from '@/components/Breadcrumb';
 
 export const metadata: Metadata = {
-  title: 'Termite Pest Control Mumbai | Same-Day, Low-Odour',
-  description: 'Termite pest control Mumbai made simple: same-day inspection, low-odour borate injection, neat drill-and-seal, transparent treatment cost, warranty, and GST report.',
-  keywords: 'termite pest control mumbai, anti-termite treatment, termite control mumbai, anti termite treatment price, termite treatment for house, termite injection, deemak on walls, termite control services, termite treatment cost',
+  title: 'Termite Control Mumbai | 5-Year Warranty | Anti-Termite Treatment',
+  description: 'Stop termite damage today. Professional anti-termite treatment in Mumbai with 5-year warranty. Low-odour, drill-and-seal method. Book a free inspection today!',
+  keywords: 'termite treatment mumbai, deemak control, anti-termite treatment, termite control mumbai, termite pest control, anti termite treatment price, termite treatment for house',
   openGraph: {
-    title: 'Termite Pest Control Mumbai | Same-Day, Low-Odour',
-    description: 'Termite pest control Mumbai made simple: same-day inspection, low-odour borate injection, neat drill-and-seal, transparent treatment cost, warranty, and GST report.',
+    title: 'Termite Control Mumbai | 5-Year Warranty | Anti-Termite Treatment',
+    description: 'Stop termite damage today. Professional anti-termite treatment in Mumbai with 5-year warranty. Low-odour, drill-and-seal method. Book a free inspection today!',
     type: 'website',
     images: ['/images/termite-control-hero.jpg'],
+    url: 'https://www.pestcontrol99.com/services/termite-pest-control/',
   },
   alternates: {
-    canonical: 'https://www.pestcontrol99.com/services/termite-pest-control',
+    canonical: 'https://www.pestcontrol99.com/services/termite-pest-control/',
   },
 };
 
@@ -66,7 +67,7 @@ export default function TermitePestControlPage() {
             <div className="space-y-8">
               <div className="space-y-4">
                 <h1 className="text-4xl lg:text-5xl font-bold text-gray-900 leading-tight">
-                  Termite Pest Control Mumbai — <span className="text-green-600">Safe. Same-Day Wood Protection</span>
+                  Termite Control Mumbai — <span className="text-green-600">5-Year Warranty | Anti-Termite Treatment</span>
                 </h1>
                 <p className="text-xl text-gray-600 leading-relaxed mb-4">
                   Silent damage stops today. Local team for termite pest control. Low-odour borate treatment, neat drill-and-seal work. Rooms stay livable once dry.
@@ -107,7 +108,7 @@ export default function TermitePestControlPage() {
             <div className="relative">
               <Image
                 src="/images/Termite Control.webp"
-                alt="Professional termite pest control service in Mumbai"
+                alt="Professional anti-termite treatment in Mumbai — drill and seal method with 5-year warranty"
                 width={600}
                 height={400}
                 className="rounded-2xl shadow-2xl"

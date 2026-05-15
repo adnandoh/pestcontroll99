@@ -4,16 +4,17 @@ import Breadcrumb from '@/components/Breadcrumb';
 import { Metadata } from 'next';
 
 export const metadata: Metadata = {
-  title: "About pestcontrol99 | Mumbai's Trusted Pest Experts",
-  description: "Same-day, low-odour pest control in Mumbai. Clear prices, written assurance, trained local technicians, and GST invoice provided. Learn more about PestControl99.",
-  keywords: "about pestcontrol99, Mumbai pest control, same day pest control, low odour pest control, trained technicians, written warranty",
+  title: "About PestControl99 | Mumbai's Trusted Local Pest Experts",
+  description: "Learn why PestControl99 is Mumbai's top choice for pest management. Licensed experts with 3+ years of experience providing transparent, effective, and safe solutions.",
+  keywords: "pest control experts mumbai, multi pest care llp, licensed pest control, about pestcontrol99, pest control mumbai experts",
   openGraph: {
-    title: "About pestcontrol99 | Mumbai's Trusted Pest Experts",
-    description: "Same-day, low-odour pest control in Mumbai. Clear prices, written assurance, trained local technicians, and GST invoice provided.",
+    title: "About PestControl99 | Mumbai's Trusted Local Pest Experts",
+    description: "Learn why PestControl99 is Mumbai's top choice for pest management. Licensed experts with 3+ years of experience providing transparent, effective, and safe solutions.",
     type: "website",
+    url: "https://www.pestcontrol99.com/about/",
   },
   alternates: {
-    canonical: "https://www.pestcontrol99.com/about",
+    canonical: "https://www.pestcontrol99.com/about/",
   },
 };
 
@@ -45,8 +46,8 @@ export default function AboutPage() {
               </div>
 
               <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold tracking-tight text-gray-900 mb-6 leading-[1.15]">
-                Mumbai&apos;s Local <br className="hidden lg:block" />
-                <span className="text-transparent bg-clip-text bg-gradient-to-r from-green-600 to-emerald-500">Pest Experts</span>.
+                Mumbai&apos;s Trusted <br className="hidden lg:block" />
+                <span className="text-transparent bg-clip-text bg-gradient-to-r from-green-600 to-emerald-500">Local Pest Experts</span>.
               </h1>
 
               <p className="text-xl text-gray-600 mb-8 leading-relaxed max-w-lg">
@@ -82,7 +83,7 @@ export default function AboutPage() {
               <div className="relative rounded-[2rem] overflow-hidden shadow-2xl border-8 border-white/50 backdrop-blur-sm">
                 <OptimizedImage
                   src="/images/heroimage.webp"
-                  alt="Professional pest control expert treating a Mumbai home"
+                  alt="Licensed PestControl99 expert providing professional pest control service in a Mumbai home"
                   width={800}
                   height={600}
                   className="w-full h-full object-cover transform hover:scale-105 transition-transform duration-700"

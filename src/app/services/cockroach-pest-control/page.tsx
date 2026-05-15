@@ -3,17 +3,18 @@ import Link from 'next/link';
 import Image from 'next/image';
 
 export const metadata: Metadata = {
-  title: 'Cockroach Pest Control in Mumbai | Odourless & Safe',
-  description: 'Eco-friendly cockroach pest control in Mumbai. Odourless, no wall stains, pet & kid safe. Trained experts deliver neat results at transparent prices.',
-  keywords: 'cockroach pest control, cockroach pest control mumbai, cockroach pest control services, pest control for cockroaches near me, odourless pest control, pest control prices, commercial pest control services, residential pest control services, cockroach pest control gel, pest control chemicals for cockroaches, cockroach pest control spray, best pest control for cockroaches',
+  title: 'Cockroach Control Mumbai | Odourless Gel Treatment | 1-Year Warranty',
+  description: 'Get rid of cockroaches instantly with our herbal, odourless gel treatment. 100% safe for kitchens, kids, and pets. 365-day warranty included. Get a free quote.',
+  keywords: 'cockroach pest control mumbai, gel treatment for cockroaches, cockroach control mumbai, odourless cockroach treatment, herbal cockroach gel treatment, cockroach control services',
   openGraph: {
-    title: 'Cockroach Pest Control in Mumbai | Odourless & Safe',
-    description: 'Eco-friendly cockroach pest control in Mumbai. Odourless, no wall stains, pet & kid safe. Trained experts deliver neat results at transparent prices.',
+    title: 'Cockroach Control Mumbai | Odourless Gel Treatment | 1-Year Warranty',
+    description: 'Get rid of cockroaches instantly with our herbal, odourless gel treatment. 100% safe for kitchens, kids, and pets. 365-day warranty included. Get a free quote.',
     type: 'website',
     images: ['/images/cockroach-control-hero.jpg'],
+    url: 'https://www.pestcontrol99.com/services/cockroach-pest-control/',
   },
   alternates: {
-    canonical: 'https://www.pestcontrol99.com/services/cockroach-pest-control',
+    canonical: 'https://www.pestcontrol99.com/services/cockroach-pest-control/',
   },
 };
 
@@ -27,7 +28,7 @@ export default function CockroachPestControlPage() {
             <div className="space-y-8">
               <div className="space-y-4">
                 <h1 className="text-4xl lg:text-5xl font-bold text-gray-900 leading-tight">
-                  Cockroach Pest Control Mumbai — <span className="text-green-600">Safe. Fast. No Smell.</span>
+                  Cockroach Control Mumbai — <span className="text-green-600">Odourless Gel Treatment | 365-Day Warranty</span>
                 </h1>
                 <p className="text-xl text-gray-600 leading-relaxed mb-4">
                   Stop midnight roaches tonight—child-safe gel treatment, results in 4 hours.
@@ -57,7 +58,7 @@ export default function CockroachPestControlPage() {
             <div className="relative">
               <Image
                 src="/images/heroimage.png"
-                alt="Professional cockroach pest control service in Mumbai"
+                alt="Herbal cockroach gel treatment Mumbai — odourless, safe for kids and pets"
                 width={600}
                 height={400}
                 className="rounded-2xl shadow-2xl"

@@ -4,16 +4,17 @@ import { Metadata } from 'next';
 import Breadcrumb from '@/components/Breadcrumb';
 
 export const metadata: Metadata = {
-  title: "Professional Pest Control Services | Termite, Cockroach, Rodent Control | PestControl99",
-  description: "Comprehensive pest control services in Mumbai, Pune & Navi Mumbai. Expert termite, cockroach, bed bug, mosquito & rodent control. ISO-certified, same-day service.",
-  keywords: "pest control services, termite control, cockroach control, bed bug control, mosquito control, rodent control, professional pest control, Mumbai pest control, Pune pest control",
+  title: "Professional Pest Control Services Mumbai | Residential & Commercial",
+  description: "Comprehensive pest management solutions including cockroach, termite, rodent, and mosquito control. Low-odour treatments with guaranteed results. View our services.",
+  keywords: "pest control services, residential pest control, commercial pest control, pest control mumbai, termite control, cockroach control, rodent control, mosquito control",
   openGraph: {
-    title: "Professional Pest Control Services | PestControl99",
-    description: "Comprehensive pest control services with same-day response. ISO-certified experts for all pest problems.",
+    title: "Professional Pest Control Services Mumbai | Residential & Commercial",
+    description: "Comprehensive pest management solutions including cockroach, termite, rodent, and mosquito control. Low-odour treatments with guaranteed results.",
     type: "website",
+    url: "https://www.pestcontrol99.com/services/",
   },
   alternates: {
-    canonical: "https://www.pestcontrol99.com/services",
+    canonical: "https://www.pestcontrol99.com/services/",
   },
 };
 
@@ -21,16 +22,17 @@ interface ServiceCardProps {
   title: string;
   description: string;
   image: string;
+  alt: string;
   href: string;
 }
 
-function ServiceCard({ title, description, image, href }: ServiceCardProps) {
+function ServiceCard({ title, description, image, alt, href }: ServiceCardProps) {
   return (
     <div className="bg-white rounded-xl shadow-md overflow-hidden hover:shadow-lg transition-all duration-300 hover:-translate-y-1 border border-gray-100">
       <div className="relative h-48 overflow-hidden">
         <Image
           src={image}
-          alt={title}
+          alt={alt}
           width={400}
           height={250}
           className="w-full h-full object-cover transition-transform duration-500 hover:scale-110"
@@ -67,36 +69,42 @@ export default function ServicesPage() {
       title: "COCKROACH PEST CONTROL",
       description: "Say goodbye to cockroaches with our reliable and long-lasting treatments. Odourless gel treatment with 365-day warranty.",
       image: "/images/Cockroach.webp",
+      alt: "Cockroach pest control Mumbai — odourless herbal gel treatment safe for kitchens",
       href: "/services/cockroach-pest-control"
     },
     {
       title: "MOSQUITO PEST CONTROL",
       description: "Protect your family from mosquito-borne diseases with our effective control solutions. Low-odour mist plus larvae control.",
       image: "/images/Mosquito.webp",
+      alt: "Mosquito pest control Mumbai — low-odour mist and larvae control treatment",
       href: "/services/mosquito-pest-control"
     },
     {
       title: "TERMITE PEST CONTROL",
       description: "Protect your wood with our comprehensive termite control services. Low-odour borate treatment with up to 5-year warranty.",
       image: "/images/Termite.webp",
+      alt: "Anti-termite treatment Mumbai — drill and seal method with 5-year warranty",
       href: "/services/termite-pest-control"
     },
     {
       title: "RODENT PEST CONTROL",
       description: "Stop night noises with our humane rodent control services. Entry-point sealing, smart traps, pet-safe methods with 90-day warranty.",
       image: "/images/Rat.webp",
+      alt: "Rat control Mumbai — rodent removal and entry-point sealing services",
       href: "/services/rodent-pest-control"
     },
     {
       title: "HONEY BEE PEST CONTROL",
       description: "Safe and eco-friendly honey bee removal services. Same-day hive removal, professional technicians, warranty-backed service.",
       image: "/images/Honey Bee.webp",
+      alt: "Honey bee hive removal services Mumbai — eco-friendly same-day treatment",
       href: "/services/honey-bee-pest-control"
     },
     {
       title: "WOOD BORER CONTROL",
       description: "Professional wood borer control services. Same-day inspection, low-odour treatment, neat drill & seal, warranty-backed service.",
       image: "/images/Wood Borer.webp",
+      alt: "Wood borer pest control Mumbai — professional low-odour treatment",
       href: "/services/wood-borer-control"
     }
   ];
@@ -111,7 +119,7 @@ export default function ServicesPage() {
         <div className="container mx-auto px-4">
           <div className="text-center">
             <h1 className="text-2xl sm:text-3xl md:text-4xl font-bold text-gray-800 mb-3 sm:mb-4">
-              Our Services
+              Professional Pest Control Services Mumbai
             </h1>
             <div className="w-16 sm:w-20 h-1 bg-gray-300 mx-auto"></div>
           </div>

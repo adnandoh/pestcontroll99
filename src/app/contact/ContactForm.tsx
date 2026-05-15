@@ -182,7 +182,7 @@ export default function ContactForm() {
                     </div>
                     <div>
                       <h3 className="font-semibold text-gray-900">Phone</h3>
-                      <p className="text-gray-600">+91 77100 32627</p>
+                      <a href="tel:+917710032627" className="text-green-600 font-semibold hover:underline">+91 77100 32627</a>
                       <p className="text-sm text-gray-500">24/7 Emergency Service</p>
                     </div>
                   </div>

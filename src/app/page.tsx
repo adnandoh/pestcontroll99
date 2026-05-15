@@ -8,14 +8,17 @@ import HomeQuoteForm from '@/components/HomeQuoteForm';
 import ClientOnly from '@/components/ClientOnly';
 
 export const metadata: Metadata = {
-  title: "Pest Control in Mumbai | Certified, Safe & Same-Day Services",
-  description: "Book professional pest control in Mumbai. Same-day inspections, eco-friendly treatments, safe for kids & pets, with transparent pricing and 24/7 booking support",
-  keywords: "pest control mumbai, same day pest control, cockroach control mumbai, termite control, rodent control, eco-friendly pest control, certified pest control mumbai",
+  title: "Pest Control in Mumbai | Safe, Same-Day & Certified Services",
+  description: "Trusted pest control services in Mumbai, Thane, & Navi Mumbai. 100% safe, herbal treatments for homes & offices. Get a same-day quote & 365-day warranty. Book now!",
+  keywords: "pest control mumbai, professional pest control services, same-day pest control, pest control thane, pest control navi mumbai, herbal pest control, certified pest control mumbai",
   openGraph: {
-    title: "Pest Control in Mumbai | Certified, Safe & Same-Day Services",
-    description: "Book professional pest control in Mumbai. Same-day inspections, eco-friendly treatments, safe for kids & pets, with transparent pricing and 24/7 booking support",
+    title: "Pest Control in Mumbai | Safe, Same-Day & Certified Services",
+    description: "Trusted pest control services in Mumbai, Thane, & Navi Mumbai. 100% safe, herbal treatments for homes & offices. Get a same-day quote & 365-day warranty. Book now!",
     type: "website",
     url: "https://www.pestcontrol99.com",
+  },
+  alternates: {
+    canonical: "https://www.pestcontrol99.com/",
   },
 };
 
@@ -35,7 +38,7 @@ export default function Home() {
           />
         </div>
         <h1 className="sr-only">
-          100% Safe, Same-Day Pest Control in Mumbai
+          Pest Control in Mumbai — Safe, Same-Day &amp; Certified Services
         </h1>
       </div>
 
@@ -87,11 +90,11 @@ export default function Home() {
 
           <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 sm:gap-6 md:gap-8 max-w-6xl mx-auto">
             {/* Rodent Control Services */}
-            <div className="text-center bg-white rounded-xl p-3 sm:p-4 hover:shadow-md transition-shadow duration-300">
+            <Link href="/services/rodent-pest-control" className="text-center bg-white rounded-xl p-3 sm:p-4 hover:shadow-md transition-shadow duration-300 block">
               <div className="w-24 h-24 sm:w-28 sm:h-28 md:w-32 md:h-32 mx-auto mb-3 sm:mb-4 bg-gray-100 rounded-full overflow-hidden">
                 <OptimizedImage
                   src="/images/Rat.webp"
-                  alt="Rodent Control Services"
+                  alt="Rat control and rodent removal services in Mumbai"
                   width={128}
                   height={128}
                   className="w-full h-full object-cover"
@@ -99,63 +102,63 @@ export default function Home() {
                 />
               </div>
               <h3 className="text-sm sm:text-base md:text-lg font-semibold text-gray-900 mb-1 sm:mb-2">Rodent Control Services</h3>
-            </div>
+            </Link>
 
             {/* Cockroach Control Services */}
-            <div className="text-center bg-white rounded-xl p-3 sm:p-4 hover:shadow-md transition-shadow duration-300">
+            <Link href="/services/cockroach-pest-control" className="text-center bg-white rounded-xl p-3 sm:p-4 hover:shadow-md transition-shadow duration-300 block">
               <div className="w-24 h-24 sm:w-28 sm:h-28 md:w-32 md:h-32 mx-auto mb-3 sm:mb-4 bg-gray-100 rounded-full overflow-hidden">
-                <OptimizedImage src="/images/Cockroach.webp" alt="Cockroach Control Services" width={128} height={128} className="w-full h-full object-cover" sizes="(max-width: 640px) 96px, (max-width: 768px) 112px, 128px" />
+                <OptimizedImage src="/images/Cockroach.webp" alt="Cockroach pest control Mumbai — odourless gel treatment" width={128} height={128} className="w-full h-full object-cover" sizes="(max-width: 640px) 96px, (max-width: 768px) 112px, 128px" />
               </div>
               <h3 className="text-sm sm:text-base md:text-lg font-semibold text-gray-900 mb-1 sm:mb-2">Cockroach Control Services</h3>
-            </div>
+            </Link>
 
             {/* BedBug Control Services */}
-            <div className="text-center bg-white rounded-xl p-3 sm:p-4 hover:shadow-md transition-shadow duration-300">
+            <Link href="/services" className="text-center bg-white rounded-xl p-3 sm:p-4 hover:shadow-md transition-shadow duration-300 block">
               <div className="w-24 h-24 sm:w-28 sm:h-28 md:w-32 md:h-32 mx-auto mb-3 sm:mb-4 bg-gray-100 rounded-full overflow-hidden">
-                <OptimizedImage src="/images/BedBug.webp" alt="BedBug Control Services" width={128} height={128} className="w-full h-full object-cover" sizes="(max-width: 640px) 96px, (max-width: 768px) 112px, 128px" />
+                <OptimizedImage src="/images/BedBug.webp" alt="Bed bug control treatment for homes in Mumbai" width={128} height={128} className="w-full h-full object-cover" sizes="(max-width: 640px) 96px, (max-width: 768px) 112px, 128px" />
               </div>
               <h3 className="text-sm sm:text-base md:text-lg font-semibold text-gray-900 mb-1 sm:mb-2">BedBug Control Services</h3>
-            </div>
+            </Link>
 
             {/* Mosquito Control Services */}
-            <div className="text-center bg-white rounded-xl p-3 sm:p-4 hover:shadow-md transition-shadow duration-300">
+            <Link href="/services/mosquito-pest-control" className="text-center bg-white rounded-xl p-3 sm:p-4 hover:shadow-md transition-shadow duration-300 block">
               <div className="w-24 h-24 sm:w-28 sm:h-28 md:w-32 md:h-32 mx-auto mb-3 sm:mb-4 bg-gray-100 rounded-full overflow-hidden">
-                <OptimizedImage src="/images/Mosquito.webp" alt="Mosquito Control Services" width={128} height={128} className="w-full h-full object-cover" sizes="(max-width: 640px) 96px, (max-width: 768px) 112px, 128px" />
+                <OptimizedImage src="/images/Mosquito.webp" alt="Mosquito control services Mumbai — low-odour mist treatment" width={128} height={128} className="w-full h-full object-cover" sizes="(max-width: 640px) 96px, (max-width: 768px) 112px, 128px" />
               </div>
               <h3 className="text-sm sm:text-base md:text-lg font-semibold text-gray-900 mb-1 sm:mb-2">Mosquito Control Services</h3>
-            </div>
+            </Link>
 
             {/* House Fly Control Services */}
-            <div className="text-center bg-white rounded-xl p-3 sm:p-4 hover:shadow-md transition-shadow duration-300">
+            <Link href="/services" className="text-center bg-white rounded-xl p-3 sm:p-4 hover:shadow-md transition-shadow duration-300 block">
               <div className="w-24 h-24 sm:w-28 sm:h-28 md:w-32 md:h-32 mx-auto mb-3 sm:mb-4 bg-gray-100 rounded-full overflow-hidden">
-                <OptimizedImage src="/images/House Fly.webp" alt="House Fly Control Services" width={128} height={128} className="w-full h-full object-cover" sizes="(max-width: 640px) 96px, (max-width: 768px) 112px, 128px" />
+                <OptimizedImage src="/images/House Fly.webp" alt="House fly control and prevention services Mumbai" width={128} height={128} className="w-full h-full object-cover" sizes="(max-width: 640px) 96px, (max-width: 768px) 112px, 128px" />
               </div>
               <h3 className="text-sm sm:text-base md:text-lg font-semibold text-gray-900 mb-1 sm:mb-2">HouseFly Control Services</h3>
-            </div>
+            </Link>
 
             {/* Termite Control Services */}
-            <div className="text-center bg-white rounded-xl p-3 sm:p-4 hover:shadow-md transition-shadow duration-300">
+            <Link href="/services/termite-pest-control" className="text-center bg-white rounded-xl p-3 sm:p-4 hover:shadow-md transition-shadow duration-300 block">
               <div className="w-24 h-24 sm:w-28 sm:h-28 md:w-32 md:h-32 mx-auto mb-3 sm:mb-4 bg-gray-100 rounded-full overflow-hidden">
-                <OptimizedImage src="/images/Termite.webp" alt="Termite Control Services" width={128} height={128} className="w-full h-full object-cover" sizes="(max-width: 640px) 96px, (max-width: 768px) 112px, 128px" />
+                <OptimizedImage src="/images/Termite.webp" alt="Anti-termite treatment Mumbai — drill and seal method" width={128} height={128} className="w-full h-full object-cover" sizes="(max-width: 640px) 96px, (max-width: 768px) 112px, 128px" />
               </div>
               <h3 className="text-sm sm:text-base md:text-lg font-semibold text-gray-900 mb-1 sm:mb-2">Termite Control Services</h3>
-            </div>
+            </Link>
 
             {/* Wood Borer Services */}
-            <div className="text-center bg-white rounded-xl p-3 sm:p-4 hover:shadow-md transition-shadow duration-300">
+            <Link href="/services/wood-borer-control" className="text-center bg-white rounded-xl p-3 sm:p-4 hover:shadow-md transition-shadow duration-300 block">
               <div className="w-24 h-24 sm:w-28 sm:h-28 md:w-32 md:h-32 mx-auto mb-3 sm:mb-4 bg-gray-100 rounded-full overflow-hidden">
-                <OptimizedImage src="/images/Wood Borer.webp" alt="Wood Borer Services" width={128} height={128} className="w-full h-full object-cover" sizes="(max-width: 640px) 96px, (max-width: 768px) 112px, 128px" />
+                <OptimizedImage src="/images/Wood Borer.webp" alt="Wood borer control Mumbai — professional drill and seal treatment" width={128} height={128} className="w-full h-full object-cover" sizes="(max-width: 640px) 96px, (max-width: 768px) 112px, 128px" />
               </div>
               <h3 className="text-sm sm:text-base md:text-lg font-semibold text-gray-900 mb-1 sm:mb-2">Wood Borer Services</h3>
-            </div>
+            </Link>
 
             {/* Honey Bee Removal */}
-            <div className="text-center bg-white rounded-xl p-3 sm:p-4 hover:shadow-md transition-shadow duration-300">
+            <Link href="/services/honey-bee-pest-control" className="text-center bg-white rounded-xl p-3 sm:p-4 hover:shadow-md transition-shadow duration-300 block">
               <div className="w-24 h-24 sm:w-28 sm:h-28 md:w-32 md:h-32 mx-auto mb-3 sm:mb-4 bg-gray-100 rounded-full overflow-hidden">
-                <OptimizedImage src="/images/Honey Bee.webp" alt="Honey Bee Removal" width={128} height={128} className="w-full h-full object-cover" sizes="(max-width: 640px) 96px, (max-width: 768px) 112px, 128px" />
+                <OptimizedImage src="/images/Honey Bee.webp" alt="Honey bee hive removal services Mumbai — eco-friendly" width={128} height={128} className="w-full h-full object-cover" sizes="(max-width: 640px) 96px, (max-width: 768px) 112px, 128px" />
               </div>
               <h3 className="text-sm sm:text-base md:text-lg font-semibold text-gray-900 mb-1 sm:mb-2">Honey Bee Removal</h3>
-            </div>
+            </Link>
           </div>
         </div>
       </section>

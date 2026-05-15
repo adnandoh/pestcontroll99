@@ -4,17 +4,18 @@ import Image from 'next/image';
 import Breadcrumb from '@/components/Breadcrumb';
 
 export const metadata: Metadata = {
-  title: 'Rodent Pest Control Mumbai | Humane, Same-Day Service',
-  description: 'Stop night noises today. Same-day rodent control in Mumbai with entry-point sealing, smart traps, pet-safe methods, and 90-day warranty. Book or WhatsApp now.',
-  keywords: 'rodent pest control, rat pest control, rodent control services, rat exterminator near me, rodent removal service, rat infestation, rodent treatment, pest and rodent control, pest control prices, rat control services near me, rat removal from home, residential pest control services, commercial pest control services, rat control',
+  title: 'Rodent Control Mumbai | Effective Rat Removal & Entry Point Sealing',
+  description: 'Noisy rats keeping you up? Professional rodent control in Mumbai using smart traps and entry-point sealing. Safe for pets with a 90-day warranty.',
+  keywords: 'rat control mumbai, rodent removal services, mice control, rodent control mumbai, rat pest control mumbai, rat exterminator near me, rodent removal service',
   openGraph: {
-    title: 'Rodent Pest Control Mumbai | Humane, Same-Day Service',
-    description: 'Stop night noises today. Same-day rodent control in Mumbai with entry-point sealing, smart traps, pet-safe methods, and 90-day warranty.',
+    title: 'Rodent Control Mumbai | Effective Rat Removal & Entry Point Sealing',
+    description: 'Noisy rats keeping you up? Professional rodent control in Mumbai using smart traps and entry-point sealing. Safe for pets with a 90-day warranty.',
     type: 'website',
     images: ['/images/rodent-control-hero.jpg'],
+    url: 'https://www.pestcontrol99.com/services/rodent-pest-control/',
   },
   alternates: {
-    canonical: 'https://www.pestcontrol99.com/services/rodent-pest-control',
+    canonical: 'https://www.pestcontrol99.com/services/rodent-pest-control/',
   },
 };
 
@@ -66,7 +67,7 @@ export default function RodentPestControlPage() {
             <div className="space-y-8">
               <div className="space-y-4">
                 <h1 className="text-4xl lg:text-5xl font-bold text-gray-900 leading-tight">
-                  Rodent Pest Control Mumbai — <span className="text-green-600">Safe. Humane. Fast.</span>
+                  Rodent Control Mumbai — <span className="text-green-600">Effective Rat Removal & Entry Point Sealing</span>
                 </h1>
                 <p className="text-xl text-gray-600 leading-relaxed mb-4">
                   Hearing scrapes in the ceiling or finding droppings by the stove? Rats spread germs and chew wires, then return through the same gaps each night. Our local team delivers rodent pest control with same-day inspection, entry-point sealing, and smart, pet-safe traps—so the noise stops and your home stays usable while we work.
@@ -102,7 +103,7 @@ export default function RodentPestControlPage() {
             <div className="relative">
               <Image
                 src="/images/Rat.webp"
-                alt="Professional rodent pest control service in Mumbai"
+                alt="Professional rat removal and rodent control Mumbai — entry-point sealing with smart traps"
                 width={600}
                 height={400}
                 className="rounded-2xl shadow-2xl"
