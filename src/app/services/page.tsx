@@ -137,6 +137,7 @@ export default function ServicesPage() {
                   title={service.title}
                   description={service.description}
                   image={service.image}
+                  alt={service.alt}
                   href={service.href}
                 />
               ))}
