@@ -10,8 +10,9 @@ import RelatedPosts from '@/components/RelatedPosts';
 import TrackView from '@/components/blog/TrackView';
 import { extractToc } from '@/lib/toc';
 
-export async function generateMetadata({ params }: { params: { slug: string } }): Promise<Metadata> {
-  const blog = await getBlog(params.slug);
+export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }): Promise<Metadata> {
+  const resolvedParams = await params;
+  const blog = await getBlog(resolvedParams.slug);
   if (!blog) {
     return { title: 'Not Found' };
   }
@@ -44,8 +45,9 @@ export async function generateMetadata({ params }: { params: { slug: string } })
   };
 }
 
-export default async function BlogPostPage({ params }: { params: { slug: string } }) {
-  const blog = await getBlog(params.slug);
+export default async function BlogPostPage({ params }: { params: Promise<{ slug: string }> }) {
+  const resolvedParams = await params;
+  const blog = await getBlog(resolvedParams.slug);
 
   if (!blog) {
     notFound();

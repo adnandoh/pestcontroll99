@@ -26,11 +26,12 @@ export const metadata: Metadata = {
 export default async function BlogPage({
   searchParams,
 }: {
-  searchParams: { page?: string; q?: string; category?: string }
+  searchParams: Promise<{ page?: string; q?: string; category?: string }>
 }) {
-  const page = parseInt(searchParams.page || '1');
-  const query = searchParams.q || '';
-  const categoryParam = searchParams.category || '';
+  const resolvedParams = await searchParams;
+  const page = parseInt(resolvedParams.page || '1');
+  const query = resolvedParams.q || '';
+  const categoryParam = resolvedParams.category || '';
 
   // Fetch blogs from our new backend
   let data;
