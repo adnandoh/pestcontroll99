@@ -97,18 +97,16 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     },
   ]
 
-  // Fetch blog posts from WordPress
+  // Fetch blog posts from CRM backend
   let blogPosts: MetadataRoute.Sitemap = []
   try {
-    const response = await fetch('https://pestcontrol99.in/wp-json/wp/v2/posts?per_page=100', {
-      next: { revalidate: 3600 } // Revalidate every hour
-    })
+    const { getBlogs } = await import('@/lib/api')
+    const data = await getBlogs({ page_size: 100 })
     
-    if (response.ok) {
-      const posts = await response.json()
-      blogPosts = posts.map((post: { slug: string; modified: string }) => ({
-        url: `${baseUrl}/blog/${post.slug}`,
-        lastModified: new Date(post.modified),
+    if (data && data.results) {
+      blogPosts = data.results.map((post: any) => ({
+        url: `${baseUrl}/blog/${post.slug}/`,
+        lastModified: new Date(post.updated_at || post.publish_date || new Date()),
         changeFrequency: 'monthly' as const,
         priority: 0.6,
       }))

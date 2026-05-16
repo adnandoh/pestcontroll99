@@ -57,7 +57,7 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-50 to-gray-100">
-      <TrackView slug={params.slug} />
+      <TrackView slug={resolvedParams.slug} />
       <Breadcrumb 
         items={[
           { label: 'Blog', href: '/blog' },
