@@ -1,4 +1,4 @@
-import Link from 'next/link';
+import { Link } from 'react-router-dom';
 
 interface BreadcrumbItem {
   label: string;
@@ -41,7 +41,7 @@ export default function Breadcrumb({ items }: BreadcrumbProps) {
           <ol className="flex items-center space-x-2 text-sm">
             <li>
               <Link 
-                href="/" 
+                to="/" 
                 className="text-gray-500 hover:text-green-600 transition-colors flex items-center group"
               >
                 <svg className="w-4 h-4 group-hover:text-green-600" fill="currentColor" viewBox="0 0 20 20">
@@ -59,7 +59,7 @@ export default function Breadcrumb({ items }: BreadcrumbProps) {
                 
                 {item.href && index < items.length - 1 ? (
                   <Link 
-                    href={item.href} 
+                    to={item.href} 
                     className="text-gray-500 hover:text-green-600 transition-colors truncate max-w-[150px] sm:max-w-none"
                     title={item.label}
                   >

@@ -1,21 +1,5 @@
-import { Metadata } from 'next';
-import Link from 'next/link';
-import Image from 'next/image';
-
-export const metadata: Metadata = {
-  title: 'Mosquito Pest Control in Mumbai | Safe & Same-Day Service',
-  description: 'Professional mosquito pest control in Mumbai. Kid- & pet-safe, eco-friendly treatments. Same-day inspection & service, 24×7 booking available',
-  keywords: 'mosquito pest control, mosquito pest control mumbai, mosquito pest control near me, mosquito control during monsoon, pest control prices, residential pest control services, commercial pest control services, mosquito pest control cost, mosquito pest control spray, mosquito pest control services',
-  openGraph: {
-    title: 'Mosquito Pest Control in Mumbai | Safe & Same-Day Service',
-    description: 'Professional mosquito pest control in Mumbai. Kid- & pet-safe, eco-friendly treatments. Same-day inspection & service, 24×7 booking available',
-    type: 'website',
-    images: ['/images/mosquito-control-hero.jpg'],
-  },
-  alternates: {
-    canonical: 'https://www.pestcontrol99.com/services/mosquito-pest-control',
-  },
-};
+import { Link } from 'react-router-dom';
+import AppImage from '@/components/AppImage';
 
 export default function MosquitoPestControlPage() {
   return (
@@ -38,23 +22,22 @@ export default function MosquitoPestControlPage() {
               </div>
               
               <div className="flex flex-col sm:flex-row gap-4">
-                <Link
-                  href="/quote"
+                <Link to="/quote"
                   className="inline-flex items-center justify-center px-8 py-4 bg-green-600 text-white font-semibold rounded-full hover:bg-green-700 transition-colors duration-300 shadow-lg hover:shadow-xl"
                 >
                   Get Instant Quote →
                 </Link>
                 <a
-                  href="https://wa.me/7710032627?text=Hello%20Multi%20pest%20care%20LLP,%20can%20you%20share%20details%20and%20pricing%20for%20your%20pest%20control%20services?"
+                  href="https://wa.me/8080748282?text=Hello%20Pest%20Control%2099,%20can%20you%20share%20details%20and%20pricing%20for%20your%20pest%20control%20services?"
                   className="inline-flex items-center justify-center px-8 py-4 bg-white text-green-600 font-semibold rounded-full border-2 border-green-600 hover:bg-green-50 transition-colors duration-300"
                 >
-                  💬 WhatsApp 24×7: +91 77100 32627
+                  💬 WhatsApp 24×7: +91 80807 48282
                 </a>
               </div>
             </div>
             
             <div className="relative">
-              <Image
+              <AppImage
                 src="/images/heroimage.png"
                 alt="Professional mosquito pest control service in Mumbai"
                 width={600}
@@ -132,8 +115,7 @@ export default function MosquitoPestControlPage() {
             <p className="text-lg text-gray-700 leading-relaxed mb-8">
               We knock down adults with a low-odour wall mist, then stop the source with mosquito control during monsoon: treat small water, set water-trap barriers, and guide easy fixes. Many homes feel relief the same day; results may vary by site.
             </p>
-            <Link
-              href="/quote"
+            <Link to="/quote"
               className="inline-flex items-center justify-center px-8 py-4 bg-green-600 text-white font-semibold rounded-full hover:bg-green-700 transition-colors duration-300 shadow-lg hover:shadow-xl"
             >
               Book Mosquito Relief →
@@ -249,7 +231,7 @@ export default function MosquitoPestControlPage() {
               <div className="bg-white p-6 rounded-2xl shadow-lg border border-gray-100">
                 <h3 className="text-lg font-bold text-gray-900 mb-4">Reports that help</h3>
                 <p className="text-gray-700 leading-relaxed">
-                  We email a proper GST invoice and service report. Good records help homes, cafés, and audits stay smooth.
+                  We email a proper service invoice and service report. Good records help homes, cafés, and audits stay smooth.
                 </p>
               </div>
               
@@ -329,8 +311,7 @@ export default function MosquitoPestControlPage() {
               <p className="text-lg text-gray-700 mb-6">
                 We will send you the mosquito pest control cost (quotation) within hours
               </p>
-              <Link
-                href="/quote"
+              <Link to="/quote"
                 className="inline-flex items-center justify-center px-8 py-4 bg-green-600 text-white font-semibold rounded-full hover:bg-green-700 transition-colors duration-300 shadow-lg hover:shadow-xl"
               >
                 Get Your Quote Now
@@ -388,21 +369,20 @@ export default function MosquitoPestControlPage() {
               Fill the 60-second form to book a same-day slot. Pay after service is complete; your plan covers any returns within the window.
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <Link
-                href="/quote"
+              <Link to="/quote"
                 className="inline-flex items-center justify-center px-8 py-4 bg-white text-green-600 font-semibold rounded-full hover:bg-gray-100 transition-colors duration-300 shadow-lg hover:shadow-xl"
               >
                 Schedule My Treatment →
               </Link>
               <a
-                href="https://wa.me/7710032627?text=Hello%20Multi%20pest%20care%20LLP,%20can%20you%20share%20details%20and%20pricing%20for%20your%20pest%20control%20services?"
+                href="https://wa.me/8080748282?text=Hello%20Pest%20Control%2099,%20can%20you%20share%20details%20and%20pricing%20for%20your%20pest%20control%20services?"
                 className="inline-flex items-center justify-center px-8 py-4 bg-transparent text-white font-semibold rounded-full border-2 border-white hover:bg-white hover:text-green-600 transition-colors duration-300"
               >
-                💬 WhatsApp 24×7: +91 77100 32627
+                💬 WhatsApp 24×7: +91 80807 48282
               </a>
             </div>
             <p className="text-sm mt-6 opacity-75">
-              No hidden fees • Low-odour mist • No stains • GST invoice
+              No hidden fees • Low-odour mist • No stains • service invoice
             </p>
           </div>
         </div>

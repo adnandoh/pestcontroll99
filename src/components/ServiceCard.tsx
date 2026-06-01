@@ -1,4 +1,4 @@
-import Link from 'next/link';
+import { Link } from 'react-router-dom';
 
 interface ServiceCardProps {
   title: string;
@@ -11,7 +11,7 @@ interface ServiceCardProps {
 
 export default function ServiceCard({ title, description, icon, href, features }: ServiceCardProps) {
   return (
-    <Link href={href} className="block group">
+    <Link to={href} className="block group">
       <div className="bg-white border-2 border-gray-100 rounded-2xl p-8 hover:shadow-lg hover:border-green-200 transition-all duration-150 relative overflow-hidden cursor-pointer">
         {/* Background decoration */}
         <div className="absolute top-0 right-0 w-20 h-20 bg-green-50 opacity-30 rounded-full -mr-10 -mt-10"></div>

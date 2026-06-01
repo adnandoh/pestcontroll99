@@ -1,44 +1,47 @@
-import Link from 'next/link';
-import Image from 'next/image';
-
-import { Metadata } from 'next';
+import { Link } from 'react-router-dom';
+import AppImage from '@/components/AppImage';
+import PageMeta from '@/components/PageMeta';
 import { Suspense } from 'react';
 import OptimizedImage from '@/components/OptimizedImage';
 import HomeQuoteForm from '@/components/HomeQuoteForm';
 import ClientOnly from '@/components/ClientOnly';
-
-export const metadata: Metadata = {
-  title: "Pest Control in Mumbai | Safe, Same-Day & Certified Services",
-  description: "Trusted pest control services in Mumbai, Thane, & Navi Mumbai. 100% safe, herbal treatments for homes & offices. Get a same-day quote & 365-day warranty. Book now!",
-  keywords: "pest control mumbai, professional pest control services, same-day pest control, pest control thane, pest control navi mumbai, herbal pest control, certified pest control mumbai",
-  openGraph: {
-    title: "Pest Control in Mumbai | Safe, Same-Day & Certified Services",
-    description: "Trusted pest control services in Mumbai, Thane, & Navi Mumbai. 100% safe, herbal treatments for homes & offices. Get a same-day quote & 365-day warranty. Book now!",
-    type: "website",
-    url: "https://www.pestcontrol99.com",
-  },
-  alternates: {
-    canonical: "https://www.pestcontrol99.com/",
-  },
-};
+import BusinessIdentityBanner from '@/components/BusinessIdentityBanner';
+import TrustSection from '@/components/TrustSection';
+import { BUSINESS, DEFAULT_WHATSAPP_MESSAGE, whatsAppUrl } from '@/config/business';
 
 export default function Home() {
   return (
     <div>
+      <PageMeta
+        title="Pest Control in Mumbai | Safe, Same-Day & Certified Services"
+        description="Trusted pest control services in Mumbai, Thane, & Navi Mumbai. 100% safe, herbal treatments for homes & offices. Get a same-day quote & 365-day warranty. Book now!"
+        keywords="pest control mumbai, professional pest control services, same-day pest control, pest control thane, pest control navi mumbai"
+        canonical="https://www.pestcontrol99.com/"
+        ogUrl="https://www.pestcontrol99.com"
+      />
       {/* Hero: explicit height in layout (avoids collapsed strip on mobile when children are position:absolute) */}
       <div className="hero-container relative w-full shrink-0 overflow-hidden pb-3 sm:pb-4 md:pb-6">
         <div className="relative z-0 w-full min-h-[196px] h-[30dvh] sm:min-h-[238px] sm:h-[34dvh] md:min-h-[294px] md:h-[min(60vh,630px)]">
-          <Image
+          <AppImage
             src="/images/hero-home.png"
-            alt="PestControl99 technician providing safe, professional pest control in a Mumbai home"
+            alt={`${BUSINESS.brandName} technician providing safe, professional pest control in a Mumbai home`}
             fill
             priority
             sizes="100vw"
             className="object-cover object-center"
           />
+          <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/25 to-transparent pointer-events-none" />
+          <div className="absolute bottom-4 left-4 right-4 sm:bottom-6 sm:left-6 sm:right-6 md:bottom-8 md:left-8 md:max-w-xl z-10 pointer-events-none">
+            <p className="text-white text-2xl sm:text-3xl md:text-4xl font-bold drop-shadow-md">
+              {BUSINESS.brandName}
+            </p>
+            <p className="text-white/90 text-sm sm:text-base mt-1 drop-shadow">
+              Safe, same-day pest control in Mumbai, Thane &amp; Navi Mumbai
+            </p>
+          </div>
         </div>
         <h1 className="sr-only">
-          Pest Control in Mumbai — Safe, Same-Day &amp; Certified Services
+          {BUSINESS.brandName} — Pest Control in Mumbai, Safe, Same-Day &amp; Certified Services
         </h1>
       </div>
 
@@ -74,7 +77,9 @@ export default function Home() {
         </Suspense>
       </ClientOnly>
 
-
+      <section className="container mx-auto px-4 sm:px-6 -mt-2 sm:mt-0 pb-4">
+        <BusinessIdentityBanner />
+      </section>
 
       {/* Our Services Grid */}
       <section className="py-12 sm:py-16 md:py-20 bg-white">
@@ -90,7 +95,7 @@ export default function Home() {
 
           <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 sm:gap-6 md:gap-8 max-w-6xl mx-auto">
             {/* Rodent Control Services */}
-            <Link href="/services/rodent-pest-control" className="text-center bg-white rounded-xl p-3 sm:p-4 hover:shadow-md transition-shadow duration-300 block">
+            <Link to="/services/rodent-pest-control" className="text-center bg-white rounded-xl p-3 sm:p-4 hover:shadow-md transition-shadow duration-300 block">
               <div className="w-24 h-24 sm:w-28 sm:h-28 md:w-32 md:h-32 mx-auto mb-3 sm:mb-4 bg-gray-100 rounded-full overflow-hidden">
                 <OptimizedImage
                   src="/images/Rat.webp"
@@ -105,7 +110,7 @@ export default function Home() {
             </Link>
 
             {/* Cockroach Control Services */}
-            <Link href="/services/cockroach-pest-control" className="text-center bg-white rounded-xl p-3 sm:p-4 hover:shadow-md transition-shadow duration-300 block">
+            <Link to="/services/cockroach-pest-control" className="text-center bg-white rounded-xl p-3 sm:p-4 hover:shadow-md transition-shadow duration-300 block">
               <div className="w-24 h-24 sm:w-28 sm:h-28 md:w-32 md:h-32 mx-auto mb-3 sm:mb-4 bg-gray-100 rounded-full overflow-hidden">
                 <OptimizedImage src="/images/Cockroach.webp" alt="Cockroach pest control Mumbai — odourless gel treatment" width={128} height={128} className="w-full h-full object-cover" sizes="(max-width: 640px) 96px, (max-width: 768px) 112px, 128px" />
               </div>
@@ -113,7 +118,7 @@ export default function Home() {
             </Link>
 
             {/* BedBug Control Services */}
-            <Link href="/services" className="text-center bg-white rounded-xl p-3 sm:p-4 hover:shadow-md transition-shadow duration-300 block">
+            <Link to="/services" className="text-center bg-white rounded-xl p-3 sm:p-4 hover:shadow-md transition-shadow duration-300 block">
               <div className="w-24 h-24 sm:w-28 sm:h-28 md:w-32 md:h-32 mx-auto mb-3 sm:mb-4 bg-gray-100 rounded-full overflow-hidden">
                 <OptimizedImage src="/images/BedBug.webp" alt="Bed bug control treatment for homes in Mumbai" width={128} height={128} className="w-full h-full object-cover" sizes="(max-width: 640px) 96px, (max-width: 768px) 112px, 128px" />
               </div>
@@ -121,7 +126,7 @@ export default function Home() {
             </Link>
 
             {/* Mosquito Control Services */}
-            <Link href="/services/mosquito-pest-control" className="text-center bg-white rounded-xl p-3 sm:p-4 hover:shadow-md transition-shadow duration-300 block">
+            <Link to="/services/mosquito-pest-control" className="text-center bg-white rounded-xl p-3 sm:p-4 hover:shadow-md transition-shadow duration-300 block">
               <div className="w-24 h-24 sm:w-28 sm:h-28 md:w-32 md:h-32 mx-auto mb-3 sm:mb-4 bg-gray-100 rounded-full overflow-hidden">
                 <OptimizedImage src="/images/Mosquito.webp" alt="Mosquito control services Mumbai — low-odour mist treatment" width={128} height={128} className="w-full h-full object-cover" sizes="(max-width: 640px) 96px, (max-width: 768px) 112px, 128px" />
               </div>
@@ -129,7 +134,7 @@ export default function Home() {
             </Link>
 
             {/* House Fly Control Services */}
-            <Link href="/services" className="text-center bg-white rounded-xl p-3 sm:p-4 hover:shadow-md transition-shadow duration-300 block">
+            <Link to="/services" className="text-center bg-white rounded-xl p-3 sm:p-4 hover:shadow-md transition-shadow duration-300 block">
               <div className="w-24 h-24 sm:w-28 sm:h-28 md:w-32 md:h-32 mx-auto mb-3 sm:mb-4 bg-gray-100 rounded-full overflow-hidden">
                 <OptimizedImage src="/images/House Fly.webp" alt="House fly control and prevention services Mumbai" width={128} height={128} className="w-full h-full object-cover" sizes="(max-width: 640px) 96px, (max-width: 768px) 112px, 128px" />
               </div>
@@ -137,7 +142,7 @@ export default function Home() {
             </Link>
 
             {/* Termite Control Services */}
-            <Link href="/services/termite-pest-control" className="text-center bg-white rounded-xl p-3 sm:p-4 hover:shadow-md transition-shadow duration-300 block">
+            <Link to="/services/termite-pest-control" className="text-center bg-white rounded-xl p-3 sm:p-4 hover:shadow-md transition-shadow duration-300 block">
               <div className="w-24 h-24 sm:w-28 sm:h-28 md:w-32 md:h-32 mx-auto mb-3 sm:mb-4 bg-gray-100 rounded-full overflow-hidden">
                 <OptimizedImage src="/images/Termite.webp" alt="Anti-termite treatment Mumbai — drill and seal method" width={128} height={128} className="w-full h-full object-cover" sizes="(max-width: 640px) 96px, (max-width: 768px) 112px, 128px" />
               </div>
@@ -145,7 +150,7 @@ export default function Home() {
             </Link>
 
             {/* Wood Borer Services */}
-            <Link href="/services/wood-borer-control" className="text-center bg-white rounded-xl p-3 sm:p-4 hover:shadow-md transition-shadow duration-300 block">
+            <Link to="/services/wood-borer-control" className="text-center bg-white rounded-xl p-3 sm:p-4 hover:shadow-md transition-shadow duration-300 block">
               <div className="w-24 h-24 sm:w-28 sm:h-28 md:w-32 md:h-32 mx-auto mb-3 sm:mb-4 bg-gray-100 rounded-full overflow-hidden">
                 <OptimizedImage src="/images/Wood Borer.webp" alt="Wood borer control Mumbai — professional drill and seal treatment" width={128} height={128} className="w-full h-full object-cover" sizes="(max-width: 640px) 96px, (max-width: 768px) 112px, 128px" />
               </div>
@@ -153,7 +158,7 @@ export default function Home() {
             </Link>
 
             {/* Honey Bee Removal */}
-            <Link href="/services/honey-bee-pest-control" className="text-center bg-white rounded-xl p-3 sm:p-4 hover:shadow-md transition-shadow duration-300 block">
+            <Link to="/services/honey-bee-pest-control" className="text-center bg-white rounded-xl p-3 sm:p-4 hover:shadow-md transition-shadow duration-300 block">
               <div className="w-24 h-24 sm:w-28 sm:h-28 md:w-32 md:h-32 mx-auto mb-3 sm:mb-4 bg-gray-100 rounded-full overflow-hidden">
                 <OptimizedImage src="/images/Honey Bee.webp" alt="Honey bee hive removal services Mumbai — eco-friendly" width={128} height={128} className="w-full h-full object-cover" sizes="(max-width: 640px) 96px, (max-width: 768px) 112px, 128px" />
               </div>
@@ -190,7 +195,7 @@ export default function Home() {
                 <p className="text-gray-700 text-sm mb-4">
                   Quick steps to prevent mosquito breeding in your home during monsoon season
                 </p>
-                <Link href="/blog/eliminate-standing-water" className="text-blue-600 font-medium text-sm flex items-center">
+                <Link to="/blog/eliminate-standing-water" className="text-blue-600 font-medium text-sm flex items-center">
                   Learn How
                   <svg className="ml-2 w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
@@ -213,7 +218,7 @@ export default function Home() {
                 <p className="text-gray-700 text-sm mb-4">
                   Early detection can save thousands in repair costs and protect your property
                 </p>
-                <Link href="/blog/termite-warning-signs" className="text-orange-600 font-medium text-sm flex items-center">
+                <Link to="/blog/termite-warning-signs" className="text-orange-600 font-medium text-sm flex items-center">
                   Read More
                   <svg className="ml-2 w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
@@ -236,7 +241,7 @@ export default function Home() {
                 <p className="text-gray-700 text-sm mb-4">
                   Safe alternatives for families with children and pets that deliver real results
                 </p>
-                <Link href="/blog" className="text-green-600 font-medium text-sm flex items-center">
+                <Link to="/blog" className="text-green-600 font-medium text-sm flex items-center">
                   Explore Solutions
                   <svg className="ml-2 w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
@@ -281,6 +286,8 @@ export default function Home() {
         </div>
       </section>
 
+      <TrustSection />
+
       {/* Final CTA Section */}
       <section className="py-12 sm:py-16 md:py-20 bg-gradient-to-br from-green-400 to-green-500 text-white">
         <div className="container mx-auto px-4 sm:px-6 text-center">
@@ -292,14 +299,13 @@ export default function Home() {
           </p>
 
           <div className="flex flex-col sm:flex-row gap-4 justify-center mb-6 sm:mb-8">
-            <Link
-              href="/quote"
+            <Link to="/quote"
               className="bg-white text-green-600 px-5 sm:px-6 py-2 sm:py-3 rounded-full font-medium text-sm hover:bg-gray-100 transition-all duration-300 shadow-md flex items-center justify-center"
             >
               Get My 60-Second Quote →
             </Link>
             <a
-              href="https://wa.me/7710032627?text=Hello%20Multi%20pest%20care%20LLP,%20can%20you%20share%20details%20and%20pricing%20for%20your%20pest%20control%20services?"
+              href={whatsAppUrl(DEFAULT_WHATSAPP_MESSAGE)}
               target="_blank"
               rel="noopener noreferrer"
               className="border border-white text-white px-5 sm:px-6 py-2 sm:py-3 rounded-full font-medium text-sm hover:bg-white hover:text-green-600 transition-all duration-300 shadow-md flex items-center justify-center gap-2"
@@ -307,7 +313,7 @@ export default function Home() {
               <svg className="w-5 h-5 mr-2" fill="currentColor" viewBox="0 0 24 24">
                 <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893A11.821 11.821 0 0020.885 3.488" />
               </svg>
-              Chat on WhatsApp: 7710032627
+              Chat on WhatsApp: {BUSINESS.phoneDisplay}
             </a>
           </div>
 

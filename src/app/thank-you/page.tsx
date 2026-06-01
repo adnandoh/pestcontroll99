@@ -1,6 +1,4 @@
-'use client';
-
-import Link from 'next/link';
+import { Link } from 'react-router-dom';
 import { useEffect } from 'react';
 
 export default function ThankYouPage() {
@@ -49,8 +47,8 @@ export default function ThankYouPage() {
             </div>
             <h3 className="font-bold text-gray-900 mb-1">Call Us Now</h3>
             <p className="text-sm text-gray-500 mb-3">For emergency service</p>
-            <a href="tel:+917710032627" className="text-green-600 font-bold hover:underline">
-              +91 77100 32627
+            <a href="tel:+918080748282" className="text-green-600 font-bold hover:underline">
+              +91 80807 48282
             </a>
           </div>
 
@@ -63,7 +61,7 @@ export default function ThankYouPage() {
             <h3 className="font-bold text-gray-900 mb-1">WhatsApp Us</h3>
             <p className="text-sm text-gray-500 mb-3">Fast responses</p>
             <a 
-              href="https://wa.me/917710032627?text=Hi%2C%20I%20just%20submitted%20a%20quote%20request%20on%20your%20website." 
+              href="https://wa.me/918080748282?text=Hi%2C%20I%20just%20submitted%20a%20quote%20request%20on%20your%20website." 
               target="_blank" 
               rel="noopener noreferrer" 
               className="text-green-600 font-bold hover:underline"
@@ -74,14 +72,12 @@ export default function ThankYouPage() {
         </div>
 
         <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
-          <Link 
-            href="/" 
+          <Link to="/" 
             className="w-full sm:w-auto px-8 py-4 bg-green-600 text-white rounded-xl font-bold hover:bg-green-700 transition-all shadow-lg hover:shadow-green-200"
           >
             Back to Home
           </Link>
-          <Link 
-            href="/services" 
+          <Link to="/services" 
             className="w-full sm:w-auto px-8 py-4 bg-white text-gray-700 border border-gray-200 rounded-xl font-bold hover:bg-gray-50 transition-all"
           >
             Explore Services

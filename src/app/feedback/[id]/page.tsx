@@ -1,8 +1,7 @@
-'use client';
-
 import React, { useState, useEffect } from 'react';
-import Image from 'next/image';
-import { useParams } from 'next/navigation';
+import AppImage from '@/components/AppImage';
+import { useParams } from 'react-router-dom';
+import { getApiBase } from '@/config/env';
 
 const StarIcon = ({ filled }: { filled: boolean }) => (
   <svg
@@ -33,11 +32,10 @@ export default function FeedbackPage() {
   const [submitted, setSubmitted] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
-  const API_BASE = process.env.NEXT_PUBLIC_API_URL 
-    ? `${process.env.NEXT_PUBLIC_API_URL}/feedbacks/`
-    : process.env.NODE_ENV === 'production'
-      ? 'https://api.vacationbna.site/api/v1/feedbacks/'
-      : 'http://localhost:8000/api/v1/feedbacks/';
+  const apiRoot = getApiBase();
+  const API_BASE = apiRoot
+    ? `${apiRoot}/api/v1/feedbacks/`
+    : '/api/v1/feedbacks/';
 
   useEffect(() => {
     if (!id) return;
@@ -190,9 +188,9 @@ export default function FeedbackPage() {
                 </div>
               </div>
               <div className="flex-shrink-0 bg-white p-3 rounded-2xl border border-gray-50 shadow-sm self-start sm:self-center transform hover:rotate-2 transition-transform">
-                <Image
+                <AppImage
                   src="/images/logo.svg"
-                  alt="Multi pest care LLP Logo"
+                  alt="Pest Control 99 Logo"
                   width={110}
                   height={40}
                   className="h-auto w-24 sm:w-28"

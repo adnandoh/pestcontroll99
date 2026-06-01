@@ -1,8 +1,7 @@
-'use client';
-
 import { useState, useEffect } from 'react';
-import { useRouter, useSearchParams } from 'next/navigation';
+import { useNavigate, useSearchParams } from 'react-router-dom';
 import { saveFormData, HomeFormData, decodeFormDataFromURL, getFormData, clearFormData } from '@/utils/formStorage';
+import { submitHomeQuoteForm } from '@/services/formSubmit';
 import MultiSelectPest from './MultiSelectPest';
 import { AddressInput } from './GoogleMaps';
 
@@ -12,8 +11,8 @@ type HomeQuoteFormProps = {
 };
 
 export default function HomeQuoteForm({ compact = false }: HomeQuoteFormProps) {
-  const router = useRouter();
-  const searchParams = useSearchParams();
+  const navigate = useNavigate();
+  const [searchParams] = useSearchParams();
   const [formData, setFormData] = useState<HomeFormData>({
     pestTypes: [],
     phone: '',
@@ -133,17 +132,9 @@ export default function HomeQuoteForm({ compact = false }: HomeQuoteFormProps) {
 
     try {
       // Submit to the backend API which handles both CRM and Email
-      const response = await fetch('/api/home-quote', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(formData),
-      });
+      const result = await submitHomeQuoteForm(formData as unknown as Record<string, unknown>);
 
-      const result = await response.json();
-
-      if (response.ok) {
+      if (result.ok) {
         setShowSuccessPopup(true);
         setSubmitMessage(result.message || 'Quote request submitted successfully! We will contact you soon.');
 
@@ -167,9 +158,8 @@ export default function HomeQuoteForm({ compact = false }: HomeQuoteFormProps) {
         saveFormData(formData);
 
         // Redirect to Thank You page
-        router.push('/thank-you');
+        navigate('/thank-you');
       } else {
-        // Submission failed
         setShowSuccessPopup(false);
         setSubmitMessage(result.error || 'Failed to submit quote request. Please try again or contact us directly.');
       }
@@ -330,7 +320,7 @@ export default function HomeQuoteForm({ compact = false }: HomeQuoteFormProps) {
                     </div>
                   ) : (
                     <div className="mt-1">
-                      <span className={`font-semibold text-[#111827] tracking-tight whitespace-nowrap ${compact ? 'text-xl' : 'text-2xl'}`}>₹ {formData.estimatedPrice?.toLocaleString()}</span>
+                      <span className={`font-semibold text-[#111827] tracking-tight whitespace-nowrap ${compact ? 'text-xl' : 'text-2xl'}`}>? {formData.estimatedPrice?.toLocaleString()}</span>
                     </div>
                   )}
                 </div>
@@ -513,7 +503,7 @@ export default function HomeQuoteForm({ compact = false }: HomeQuoteFormProps) {
               <div className="grid grid-cols-2 gap-3">
                 {/* WhatsApp Button */}
                 <a
-                  href="https://wa.me/917710032627?text=Hi%2C%20I%20just%20submitted%20a%20quote%20request%20on%20your%20website.%20Can%20you%20please%20provide%20me%20with%20a%20detailed%20quote%3F"
+                  href="https://wa.me/918080748282?text=Hi%2C%20I%20just%20submitted%20a%20quote%20request%20on%20your%20website.%20Can%20you%20please%20provide%20me%20with%20a%20detailed%20quote%3F"
                   target="_blank"
                   rel="noopener noreferrer"
                   className="bg-[#25D366] text-white py-2.5 px-4 rounded-lg font-semibold hover:bg-[#20bd5a] transition-colors flex items-center justify-center gap-2 text-sm"
@@ -526,7 +516,7 @@ export default function HomeQuoteForm({ compact = false }: HomeQuoteFormProps) {
 
                 {/* Call Button */}
                 <a
-                  href="tel:+917710032627"
+                  href="tel:+918080748282"
                   className="bg-blue-600 text-white py-2.5 px-4 rounded-lg font-semibold hover:bg-blue-700 transition-colors flex items-center justify-center gap-2 text-sm"
                 >
                   <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">

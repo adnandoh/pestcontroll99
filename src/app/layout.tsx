@@ -1,4 +1,3 @@
-import type { Metadata } from "next";
 // import { Inter } from "next/font/google";
 import Script from "next/script";
 import "./globals.css";
@@ -13,41 +12,6 @@ import WebVitals from "@/components/WebVitals";
 //   display: 'swap',
 // });
 
-export const metadata: Metadata = {
-  title: "Pest Control in Mumbai | Safe, Same-Day & Certified Services",
-  description: "Trusted pest control services in Mumbai, Thane, & Navi Mumbai. 100% safe, herbal treatments for homes & offices. Get a same-day quote & 365-day warranty. Book now!",
-  keywords: "pest control mumbai, professional pest control services, same-day pest control, residential pest control, commercial pest control, termite control, cockroach control, rodent control",
-  icons: {
-    icon: [
-      { url: '/favicon-16x16.png', sizes: '16x16', type: 'image/png' },
-      { url: '/favicon-32x32.png', sizes: '32x32', type: 'image/png' },
-    ],
-    apple: [
-      { url: '/apple-touch-icon.png', sizes: '180x180', type: 'image/png' },
-    ],
-    other: [
-      { url: '/android-chrome-512x512.png', sizes: '512x512', type: 'image/png' },
-    ],
-  },
-  manifest: '/site.webmanifest',
-  verification: {
-    google: "google519d773b7c35ae3d",
-  },
-  other: {
-    'msapplication-TileColor': '#0C9500',
-  },
-  openGraph: {
-    title: "Pest Control in Mumbai | Safe, Same-Day & Certified Services",
-    description: "Trusted pest control services in Mumbai, Thane, & Navi Mumbai. 100% safe, herbal treatments for homes & offices. Get a same-day quote & 365-day warranty.",
-    type: "website",
-    url: "https://www.pestcontrol99.com",
-    siteName: "PestControl99",
-  },
-  alternates: {
-    canonical: "https://www.pestcontrol99.com",
-  },
-};
-
 export const viewport = {
   themeColor: '#0C9500',
 };
@@ -57,7 +21,7 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  const googleMapsApiKey = process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY;
+  const googleMapsApiKey = import.meta.env.VITE_GOOGLE_MAPS_API_KEY;
   return (
     <html lang="en" data-scroll-behavior="smooth">
       <head>
@@ -101,8 +65,8 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
               "alternateName": "Multi Pest Care LLP",
               "description": "Professional pest control services in Mumbai, Thane & Navi Mumbai. Licensed experts offering cockroach, termite, rodent, and mosquito control with same-day service and 365-day warranty.",
               "url": "https://www.pestcontrol99.com",
-              "telephone": "+91-7710032627",
-              "email": "info@pestcontrol99.com",
+              "telephone": "+91-8080748282",
+              "email": "accounts@pestcontrol99.com",
               "image": "https://www.pestcontrol99.com/images/heroimage.webp",
               "logo": "https://www.pestcontrol99.com/android-chrome-512x512.png",
               "address": {

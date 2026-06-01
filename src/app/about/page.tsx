@@ -1,22 +1,9 @@
-import Link from 'next/link';
+import { Link } from 'react-router-dom';
 import OptimizedImage from '@/components/OptimizedImage';
 import Breadcrumb from '@/components/Breadcrumb';
-import { Metadata } from 'next';
-
-export const metadata: Metadata = {
-  title: "About PestControl99 | Mumbai's Trusted Local Pest Experts",
-  description: "Learn why PestControl99 is Mumbai's top choice for pest management. Licensed experts with 3+ years of experience providing transparent, effective, and safe solutions.",
-  keywords: "pest control experts mumbai, multi pest care llp, licensed pest control, about pestcontrol99, pest control mumbai experts",
-  openGraph: {
-    title: "About PestControl99 | Mumbai's Trusted Local Pest Experts",
-    description: "Learn why PestControl99 is Mumbai's top choice for pest management. Licensed experts with 3+ years of experience providing transparent, effective, and safe solutions.",
-    type: "website",
-    url: "https://www.pestcontrol99.com/about/",
-  },
-  alternates: {
-    canonical: "https://www.pestcontrol99.com/about/",
-  },
-};
+import BusinessIdentityBanner from '@/components/BusinessIdentityBanner';
+import BusinessDetailsCard from '@/components/BusinessDetailsCard';
+import { BUSINESS, DEFAULT_WHATSAPP_MESSAGE, whatsAppUrl } from '@/config/business';
 
 export default function AboutPage() {
   return (
@@ -28,8 +15,12 @@ export default function AboutPage() {
         </div>
       </div>
 
+      <div className="container mx-auto px-4 py-8">
+        <BusinessIdentityBanner />
+      </div>
+
       {/* Hero Section */}
-      <section className="relative overflow-hidden pt-16 pb-20 lg:pt-24 lg:pb-32">
+      <section className="relative overflow-hidden pt-8 pb-20 lg:pt-12 lg:pb-32">
         {/* Background Decor */}
         <div className="absolute top-0 right-0 -translate-y-1/4 translate-x-1/4 w-96 h-96 bg-green-100/50 rounded-full blur-3xl pointer-events-none" />
         <div className="absolute bottom-0 left-0 translate-y-1/4 -translate-x-1/4 w-96 h-96 bg-blue-100/50 rounded-full blur-3xl pointer-events-none" />
@@ -46,17 +37,20 @@ export default function AboutPage() {
               </div>
 
               <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold tracking-tight text-gray-900 mb-6 leading-[1.15]">
-                Mumbai&apos;s Trusted <br className="hidden lg:block" />
-                <span className="text-transparent bg-clip-text bg-gradient-to-r from-green-600 to-emerald-500">Local Pest Experts</span>.
+                <span className="text-transparent bg-clip-text bg-gradient-to-r from-green-600 to-emerald-500">{BUSINESS.brandName}</span>
+                <br className="hidden lg:block" />
+                Mumbai&apos;s Trusted Local Pest Experts
               </h1>
 
-              <p className="text-xl text-gray-600 mb-8 leading-relaxed max-w-lg">
+              <p className="text-xl text-gray-600 mb-4 leading-relaxed max-w-lg">
+                {BUSINESS.brandStatement}
+              </p>
+              <p className="text-lg text-gray-600 mb-8 leading-relaxed max-w-lg">
                 Clear talk. Clean work. Real results. We keep it simple—same-day help, clear prices, and service notes you can actually understand.
               </p>
 
               <div className="flex flex-col sm:flex-row gap-4">
-                <Link
-                  href="/quote"
+                <Link to="/quote"
                   className="group inline-flex items-center justify-center px-8 py-4 text-base font-semibold text-white transition-all duration-300 bg-green-600 rounded-xl hover:bg-green-700 hover:shadow-lg hover:shadow-green-200 hover:-translate-y-1"
                 >
                   Get Free Quote
@@ -65,7 +59,7 @@ export default function AboutPage() {
                   </svg>
                 </Link>
                 <a
-                  href="https://wa.me/7710032627?text=Hello%20Multi%20pest%20care%20LLP,%20can%20you%20share%20details%20and%20pricing%20for%20your%20pest%20control%20services?"
+                  href={whatsAppUrl(DEFAULT_WHATSAPP_MESSAGE)}
                   target="_blank"
                   rel="noopener noreferrer"
                   className="group inline-flex items-center justify-center px-8 py-4 text-base font-semibold text-gray-700 transition-all duration-300 bg-white border border-gray-200 rounded-xl hover:bg-gray-50 hover:text-green-600 hover:border-green-200 hover:shadow-lg hover:-translate-y-1"
@@ -83,7 +77,7 @@ export default function AboutPage() {
               <div className="relative rounded-[2rem] overflow-hidden shadow-2xl border-8 border-white/50 backdrop-blur-sm">
                 <OptimizedImage
                   src="/images/heroimage.webp"
-                  alt="Licensed PestControl99 expert providing professional pest control service in a Mumbai home"
+                  alt="Licensed Pest Control 99 expert providing professional pest control service in a Mumbai home"
                   width={800}
                   height={600}
                   className="w-full h-full object-cover transform hover:scale-105 transition-transform duration-700"
@@ -242,7 +236,7 @@ export default function AboutPage() {
       {/* Why Choose Us - Bento Grid Style */}
       <section className="py-20 bg-white">
         <div className="container mx-auto px-4">
-          <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-12 text-center">Why Choose PestControl99</h2>
+          <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-12 text-center">Why Choose Pest Control 99</h2>
 
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 max-w-6xl mx-auto">
             {[
@@ -269,7 +263,7 @@ export default function AboutPage() {
               },
               {
                 title: "No surprises",
-                desc: "One fair quote. No hidden fees. GST invoice provided.",
+                desc: "One fair quote. No hidden fees. Service invoice provided.",
                 icon: "M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1",
                 color: "text-purple-600",
                 bg: "bg-purple-50"
@@ -354,7 +348,7 @@ export default function AboutPage() {
           <div className="mt-16 text-center">
             <p className="text-gray-400 mb-6">Don&apos;t see your area? We likely cover it.</p>
             <a
-              href="https://wa.me/7710032627"
+              href={whatsAppUrl()}
               target="_blank"
               rel="noopener noreferrer"
               className="inline-flex items-center justify-center px-6 py-3 bg-white/10 hover:bg-white/20 text-white rounded-lg backdrop-blur-sm transition-all duration-300"
@@ -365,6 +359,10 @@ export default function AboutPage() {
           </div>
         </div>
       </section>
+
+      <div className="container mx-auto px-4 py-12">
+        <BusinessDetailsCard />
+      </div>
     </div>
   );
 }

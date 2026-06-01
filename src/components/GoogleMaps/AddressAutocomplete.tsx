@@ -1,5 +1,3 @@
-'use client';
-
 // Note: Google Maps Places API AutocompleteService is deprecated as of March 2025
 // The use-places-autocomplete library still uses the deprecated API
 // This will continue to work but should be updated when the library supports the new API

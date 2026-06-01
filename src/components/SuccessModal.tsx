@@ -1,5 +1,3 @@
-'use client';
-
 import { useEffect } from 'react';
 
 interface SuccessModalProps {
@@ -100,7 +98,7 @@ export default function SuccessModal({
               Continue Browsing
             </button>
             <a
-              href="https://wa.me/7710032627?text=Hello%20Multi%20pest%20care%20LLP,%20can%20you%20share%20details%20and%20pricing%20for%20your%20pest%20control%20services?"
+              href="https://wa.me/8080748282?text=Hello%20Pest%20Control%2099,%20can%20you%20share%20details%20and%20pricing%20for%20your%20pest%20control%20services?"
               target="_blank"
               rel="noopener noreferrer"
               className="flex-1 border-2 border-green-600 text-green-600 px-6 py-3 rounded-lg font-semibold hover:bg-green-600 hover:text-white transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2 flex items-center justify-center gap-2"

@@ -1,23 +1,6 @@
-import { Metadata } from 'next';
-import Link from 'next/link';
-import Image from 'next/image';
+import { Link } from 'react-router-dom';
+import AppImage from '@/components/AppImage';
 import Breadcrumb from '@/components/Breadcrumb';
-
-export const metadata: Metadata = {
-  title: 'Rodent Control Mumbai | Effective Rat Removal & Entry Point Sealing',
-  description: 'Noisy rats keeping you up? Professional rodent control in Mumbai using smart traps and entry-point sealing. Safe for pets with a 90-day warranty.',
-  keywords: 'rat control mumbai, rodent removal services, mice control, rodent control mumbai, rat pest control mumbai, rat exterminator near me, rodent removal service',
-  openGraph: {
-    title: 'Rodent Control Mumbai | Effective Rat Removal & Entry Point Sealing',
-    description: 'Noisy rats keeping you up? Professional rodent control in Mumbai using smart traps and entry-point sealing. Safe for pets with a 90-day warranty.',
-    type: 'website',
-    images: ['/images/rodent-control-hero.jpg'],
-    url: 'https://www.pestcontrol99.com/services/rodent-pest-control/',
-  },
-  alternates: {
-    canonical: 'https://www.pestcontrol99.com/services/rodent-pest-control/',
-  },
-};
 
 export default function RodentPestControlPage() {
   // Structured data for SEO
@@ -35,7 +18,7 @@ export default function RodentPestControlPage() {
         "addressRegion": "Maharashtra",
         "addressCountry": "IN"
       },
-      "telephone": "+917710032627"
+      "telephone": "+918080748282"
     },
     "areaServed": {
       "@type": "City",
@@ -78,14 +61,13 @@ export default function RodentPestControlPage() {
               </div>
               
               <div className="flex flex-col sm:flex-row gap-4">
-                <Link
-                  href="/quote"
+                <Link to="/quote"
                   className="inline-flex items-center justify-center px-8 py-4 bg-green-600 text-white font-semibold rounded-full hover:bg-green-700 transition-colors duration-300 shadow-lg hover:shadow-xl"
                 >
                   Get My Inspection Slot →
                 </Link>
                 <a
-                  href="https://wa.me/7710032627?text=Hello%20Multi%20pest%20care%20LLP,%20can%20you%20share%20details%20and%20pricing%20for%20your%20rodent%20pest%20control%20services?"
+                  href="https://wa.me/8080748282?text=Hello%20Pest%20Control%2099,%20can%20you%20share%20details%20and%20pricing%20for%20your%20rodent%20pest%20control%20services?"
                   className="inline-flex items-center justify-center px-8 py-4 bg-white text-green-600 font-semibold rounded-full border-2 border-green-600 hover:bg-green-50 transition-colors duration-300"
                 >
                   💬 WhatsApp 24 × 7: 98 XXX XX 990
@@ -101,7 +83,7 @@ export default function RodentPestControlPage() {
             </div>
             
             <div className="relative">
-              <Image
+              <AppImage
                 src="/images/Rat.webp"
                 alt="Professional rat removal and rodent control Mumbai — entry-point sealing with smart traps"
                 width={600}
@@ -181,8 +163,7 @@ export default function RodentPestControlPage() {
             <p className="text-lg text-gray-700 leading-relaxed mb-8">
               Our rodent treatment combines proofing, smart traps, and safe baiting to cut activity fast. We proof entries with steel mesh and door sweeps, place tamper-resistant stations, and use targeted, pet-safe methods. Many sites calm the same day; lasting results come from sealing and smart monitoring. It&apos;s professional rat pest control that focuses on sealing first, then monitoring.
             </p>
-            <Link
-              href="/quote"
+            <Link to="/quote"
               className="inline-flex items-center justify-center px-8 py-4 bg-green-600 text-white font-semibold rounded-full hover:bg-green-700 transition-colors duration-300 shadow-lg hover:shadow-xl"
             >
               Book Rat Guard →
@@ -306,7 +287,7 @@ export default function RodentPestControlPage() {
               </div>
               
               <div className="bg-white p-6 rounded-2xl shadow-lg border border-gray-100">
-                <h3 className="text-lg font-bold text-gray-900 mb-4">GST invoice and service reports</h3>
+                <h3 className="text-lg font-bold text-gray-900 mb-4">service invoice and service reports</h3>
                 <p className="text-gray-700 leading-relaxed">
                   A digital bill and photo-tagged notes arrive the same day. These help with property records, rentals, and FSSAI or internal audits.
                 </p>
@@ -405,8 +386,7 @@ export default function RodentPestControlPage() {
               <p className="text-lg text-gray-700 mb-6">
                 Our pest and rodent control plans are site-based; share your layout to get a single fair quote. Packages quotation will be provided to you by today!
               </p>
-              <Link
-                href="/quote"
+              <Link to="/quote"
                 className="inline-flex items-center justify-center px-8 py-4 bg-green-600 text-white font-semibold rounded-full hover:bg-green-700 transition-colors duration-300 shadow-lg hover:shadow-xl"
               >
                 See My Rodent Quote →
@@ -464,14 +444,13 @@ export default function RodentPestControlPage() {
               Book a same-day inspection. Pay after service is complete; warranty covers any return within the window.
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <Link
-                href="/quote"
+              <Link to="/quote"
                 className="inline-flex items-center justify-center px-8 py-4 bg-white text-green-600 font-semibold rounded-full hover:bg-gray-100 transition-colors duration-300 shadow-lg hover:shadow-xl"
               >
                 Schedule My Inspection →
               </Link>
               <a
-                href="https://wa.me/7710032627?text=Hello%20Multi%20pest%20care%20LLP,%20can%20you%20share%20details%20and%20pricing%20for%20your%20rodent%20pest%20control%20services?"
+                href="https://wa.me/8080748282?text=Hello%20Pest%20Control%2099,%20can%20you%20share%20details%20and%20pricing%20for%20your%20rodent%20pest%20control%20services?"
                 className="inline-flex items-center justify-center px-8 py-4 bg-transparent text-white font-semibold rounded-full border-2 border-white hover:bg-white hover:text-green-600 transition-colors duration-300"
               >
                 💬 WhatsApp 24 × 7: 98 XXX XX 990

@@ -1,5 +1,3 @@
-'use client';
-
 import { useState, useRef, useEffect } from 'react';
 
 interface PestOption {
@@ -15,13 +13,13 @@ interface MultiSelectPestProps {
 }
 
 const pestOptions: PestOption[] = [
-  { value: 'cockroach-ants', label: 'Cockroach / Ants', icon: '🪳' },
-  { value: 'bedbugs', label: 'Bed Bugs', icon: '🛏️' },
-  { value: 'termite', label: 'Termite', icon: '🐛' },
-  { value: 'rodent', label: 'Rodent', icon: '🐭' },
-  { value: 'mosquito', label: 'Mosquito', icon: '🦟' },
-  { value: 'hotel-commercial', label: 'Hotel / Commercial', icon: '🏢' },
-  { value: 'other', label: 'Other', icon: '🔍' }
+  { value: 'cockroach-ants', label: 'Cockroach / Ants', icon: '??' },
+  { value: 'bedbugs', label: 'Bed Bugs', icon: '???' },
+  { value: 'termite', label: 'Termite', icon: '??' },
+  { value: 'rodent', label: 'Rodent', icon: '??' },
+  { value: 'mosquito', label: 'Mosquito', icon: '??' },
+  { value: 'hotel-commercial', label: 'Hotel / Commercial', icon: '??' },
+  { value: 'other', label: 'Other', icon: '??' }
 ];
 
 export default function MultiSelectPest({ selectedPests, onChange, className = '' }: MultiSelectPestProps) {

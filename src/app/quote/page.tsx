@@ -1,5 +1,3 @@
-'use client';
-
 import { Suspense } from 'react';
 import HomeQuoteForm from '@/components/HomeQuoteForm';
 import Breadcrumb from '@/components/Breadcrumb';

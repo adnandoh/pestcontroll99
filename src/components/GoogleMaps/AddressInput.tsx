@@ -1,5 +1,3 @@
-'use client';
-
 
 import AddressAutocomplete from './AddressAutocomplete';
 import LocationDetector from './LocationDetector';

@@ -1,14 +1,5 @@
-import { Metadata } from 'next';
 import Breadcrumb from '@/components/Breadcrumb';
-
-export const metadata: Metadata = {
-  title: 'Terms and Conditions | PestControl99',
-  description: 'Terms and conditions for using PestControl99 services. Learn about our service terms, bookings, and user responsibilities.',
-  keywords: 'terms and conditions, service agreement, pest control terms, PestControl99',
-  alternates: {
-    canonical: 'https://www.pestcontrol99.com/terms-and-conditions',
-  },
-};
+import { BUSINESS } from '@/config/business';
 
 export default function TermsAndConditionsPage() {
   return (
@@ -29,7 +20,7 @@ export default function TermsAndConditionsPage() {
             <div className="p-8 md:p-12 space-y-10">
               {/* Intro */}
               <p className="text-lg text-gray-700 leading-relaxed italic border-l-4 border-blue-500 pl-6">
-                By using PestControl99.com, you agree to the following terms and conditions. These services are provided by <span className="font-bold">Multi pest care LLP</span>. Please read them carefully before using our services.
+                {BUSINESS.legalOperatorLine} By using {BUSINESS.websiteDisplay}, you agree to the following terms and conditions for {BUSINESS.brandName} services. Please read them carefully before booking.
               </p>
 
               {/* Section 1 */}
@@ -40,7 +31,7 @@ export default function TermsAndConditionsPage() {
                 </h2>
                 <div className="bg-gray-50 rounded-xl p-6 border border-gray-100">
                   <p className="text-gray-700 leading-relaxed">
-                    <span className="font-bold">Multi pest care LLP</span> (PestControl99) provides pest control-related services and support through its website and communication channels. We strive to provide the highest quality service to ensure your environment is pest-free.
+                    <span className="font-bold">{BUSINESS.legalName}</span> ({BUSINESS.brandName}) provides pest control-related services and support through its website and communication channels. We strive to provide the highest quality service to ensure your environment is pest-free.
                   </p>
                 </div>
               </section>
@@ -96,7 +87,7 @@ export default function TermsAndConditionsPage() {
                   <span className="bg-blue-100 text-blue-700 w-8 h-8 rounded-full flex items-center justify-center mr-3 text-sm">4</span>
                   Limitation of Liability
                 </h2>
-                <p className="text-gray-700 mb-6 italic"><span className="font-bold">Multi pest care LLP</span> is not liable for:</p>
+                <p className="text-gray-700 mb-6 italic"><span className="font-bold">{BUSINESS.legalName}</span> is not liable for:</p>
                 <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
                   {[
                     'Delays caused by external factors',
@@ -115,7 +106,7 @@ export default function TermsAndConditionsPage() {
                 <section className="bg-gray-50 p-6 rounded-xl border border-gray-100">
                   <h2 className="text-xl font-bold text-gray-900 mb-4">5. Intellectual Property</h2>
                   <p className="text-gray-600 text-sm leading-relaxed">
-                    All website content, branding, logos, and materials belong to <span className="font-bold">Multi pest care LLP</span>.
+                    All website content, branding, logos, and materials belong to <span className="font-bold">{BUSINESS.legalName}</span> ({BUSINESS.brandName}).
                   </p>
                 </section>
                 <section className="bg-gray-50 p-6 rounded-xl border border-gray-100">
@@ -136,11 +127,13 @@ export default function TermsAndConditionsPage() {
               <section className="pt-8 border-t border-gray-100">
                 <h2 className="text-2xl font-bold text-gray-900 mb-6 text-center">8. Contact</h2>
                 <div className="max-w-md mx-auto bg-gray-50 rounded-2xl p-8 border border-gray-100 text-center">
-                  <p className="text-xl font-bold text-gray-900 mb-2">Multi pest care LLP</p>
-                  <p className="text-gray-600 mb-4">For any clarifications on our terms, please contact us:</p>
+                  <p className="text-xl font-bold text-gray-900 mb-1">{BUSINESS.brandName}</p>
+                  <p className="text-sm text-gray-500 mb-4">{BUSINESS.legalName}</p>
+                  <p className="text-gray-600 mb-4">{BUSINESS.legalOperatorLine}</p>
                   <div className="space-y-3">
-                    <a href="https://pestcontrol99.com" className="block text-blue-600 hover:underline font-medium">pestcontrol99.com</a>
-                    <a href="mailto:info@pestcontrol99.com" className="block text-blue-600 hover:underline font-medium">info@pestcontrol99.com</a>
+                    <a href={BUSINESS.website} className="block text-blue-600 hover:underline font-medium">{BUSINESS.websiteDisplay}</a>
+                    <a href={`mailto:${BUSINESS.email}`} className="block text-blue-600 hover:underline font-medium">{BUSINESS.email}</a>
+                    <a href={`tel:${BUSINESS.phoneTel}`} className="block text-blue-600 hover:underline font-medium">{BUSINESS.phoneDisplay}</a>
                   </div>
                 </div>
               </section>

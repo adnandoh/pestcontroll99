@@ -1,14 +1,5 @@
-import { Metadata } from 'next';
 import Breadcrumb from '@/components/Breadcrumb';
-
-export const metadata: Metadata = {
-  title: 'Privacy Policy | PestControl99',
-  description: 'Privacy Policy for PestControl99. Learn how we collect, use, and protect your information.',
-  keywords: 'privacy policy, data protection, pest control privacy, PestControl99',
-  alternates: {
-    canonical: 'https://www.pestcontrol99.com/privacy-policy',
-  },
-};
+import { BUSINESS } from '@/config/business';
 
 export default function PrivacyPolicyPage() {
   return (
@@ -29,7 +20,7 @@ export default function PrivacyPolicyPage() {
             <div className="p-8 md:p-12 space-y-10">
               {/* Intro */}
               <p className="text-lg text-gray-700 leading-relaxed italic border-l-4 border-green-500 pl-6">
-                Welcome to PestControl99.com. Your privacy is important to us. These services are provided by <span className="font-bold">Multi pest care LLP</span>. This Privacy Policy explains how we collect, use, and protect your information when you use our website and services.
+                {BUSINESS.legalOperatorLine} Your privacy is important to us. This Privacy Policy explains how {BUSINESS.legalName} collects, uses, and protects your information when you use {BUSINESS.websiteDisplay} and {BUSINESS.brandName} services.
               </p>
 
               {/* Section 1 */}
@@ -157,11 +148,13 @@ export default function PrivacyPolicyPage() {
               <section className="pt-8 border-t border-gray-100">
                 <h2 className="text-2xl font-bold text-gray-900 mb-6 text-center">8. Contact Us</h2>
                 <div className="max-w-md mx-auto bg-gray-50 rounded-2xl p-8 border border-gray-100 text-center">
-                  <p className="text-xl font-bold text-gray-900 mb-2">Multi pest care LLP</p>
-                  <p className="text-gray-600 mb-4">If you have questions regarding this Privacy Policy, contact us:</p>
+                  <p className="text-xl font-bold text-gray-900 mb-1">{BUSINESS.brandName}</p>
+                  <p className="text-sm text-gray-500 mb-4">{BUSINESS.legalName}</p>
+                  <p className="text-gray-600 mb-4">{BUSINESS.legalOperatorLine} Contact us:</p>
                   <div className="space-y-3">
-                    <a href="https://pestcontrol99.com" className="block text-green-600 hover:underline font-medium">pestcontrol99.com</a>
-                    <a href="mailto:info@pestcontrol99.com" className="block text-green-600 hover:underline font-medium">info@pestcontrol99.com</a>
+                    <a href={BUSINESS.website} className="block text-green-600 hover:underline font-medium">{BUSINESS.websiteDisplay}</a>
+                    <a href={`mailto:${BUSINESS.email}`} className="block text-green-600 hover:underline font-medium">{BUSINESS.email}</a>
+                    <a href={`tel:${BUSINESS.phoneTel}`} className="block text-green-600 hover:underline font-medium">{BUSINESS.phoneDisplay}</a>
                   </div>
                 </div>
               </section>

@@ -1,20 +1,6 @@
-import { Metadata } from 'next';
-import Link from 'next/link';
+import { Link } from 'react-router-dom';
 import Breadcrumb from '@/components/Breadcrumb';
-
-export const metadata: Metadata = {
-  title: 'Terms & Conditions | Privacy Policy | PestControl99',
-  description: 'Terms and conditions, privacy policy, and legal information for PestControl99 pest control services in Mumbai.',
-  keywords: 'terms and conditions, privacy policy, legal, pest control terms, pest control privacy',
-  openGraph: {
-    title: 'Terms & Conditions | Privacy Policy | PestControl99',
-    description: 'Terms and conditions, privacy policy, and legal information for PestControl99 pest control services in Mumbai.',
-    type: 'website',
-  },
-  alternates: {
-    canonical: 'https://www.pestcontrol99.com/legal',
-  },
-};
+import { BUSINESS } from '@/config/business';
 
 export default function LegalPage() {
   return (
@@ -25,10 +11,14 @@ export default function LegalPage() {
 
       <div className="container mx-auto px-4 py-12">
         <div className="max-w-4xl mx-auto">
-          <h1 className="text-3xl lg:text-4xl font-bold text-gray-900 mb-8 text-center">
+          <h1 className="text-3xl lg:text-4xl font-bold text-gray-900 mb-4 text-center">
             Terms & Conditions & Privacy Policy
           </h1>
-          
+          <p className="text-center text-gray-600 max-w-2xl mx-auto mb-8 leading-relaxed">
+            {BUSINESS.legalOperatorLine} All policies on this page apply to {BUSINESS.brandName} services
+            ({BUSINESS.websiteDisplay}).
+          </p>
+
           <div className="bg-white rounded-lg shadow-lg p-8 space-y-12">
             
             {/* Terms & Conditions Section */}
@@ -39,14 +29,14 @@ export default function LegalPage() {
                 <div>
                   <h3 className="text-lg font-semibold text-gray-900 mb-3">1. Acceptance of Terms</h3>
                   <p>
-                    By accessing and using PestControl99 services, provided by <span className="font-bold">Multi pest care LLP</span>, you accept and agree to be bound by the terms and provision of this agreement. If you do not agree to abide by the above, please do not use this service.
+                    {BUSINESS.legalOperatorLine} By accessing and using {BUSINESS.brandName} services, you accept and agree to be bound by the terms and provision of this agreement.
                   </p>
                 </div>
 
                 <div>
                   <h3 className="text-lg font-semibold text-gray-900 mb-3">2. Service Description</h3>
                   <p>
-                    <span className="font-bold">Multi pest care LLP</span> (PestControl99) provides professional pest control services including but not limited to cockroach control, termite treatment, rodent control, mosquito control, wood borer control, and honey bee removal services in Mumbai and surrounding areas.
+                    <span className="font-bold">{BUSINESS.legalName}</span> ({BUSINESS.brandName}) provides professional pest control services including but not limited to cockroach control, termite treatment, rodent control, mosquito control, wood borer control, and honey bee removal services in Mumbai and surrounding areas.
                   </p>
                 </div>
 
@@ -56,7 +46,7 @@ export default function LegalPage() {
                     <li>All bookings are subject to availability and confirmation</li>
                     <li>Payment is due upon completion of services unless otherwise agreed</li>
                     <li>We accept cash, digital payments, and bank transfers</li>
-                    <li>GST will be charged as applicable by law</li>
+                    <li>Applicable taxes will be included in the final bill as per law</li>
                     <li>Prices are subject to change without prior notice</li>
                   </ul>
                 </div>
@@ -97,14 +87,14 @@ export default function LegalPage() {
                 <div>
                   <h3 className="text-lg font-semibold text-gray-900 mb-3">7. Liability</h3>
                   <p>
-                    <span className="font-bold">Multi pest care LLP</span> (PestControl99) shall not be liable for any indirect, incidental, special, consequential, or punitive damages, including without limitation, loss of profits, data, use, goodwill, or other intangible losses, resulting from your use of our services.
+                    <span className="font-bold">{BUSINESS.legalName}</span> ({BUSINESS.brandName}) shall not be liable for any indirect, incidental, special, consequential, or punitive damages, including without limitation, loss of profits, data, use, goodwill, or other intangible losses, resulting from your use of our services.
                   </p>
                 </div>
 
                 <div>
                   <h3 className="text-lg font-semibold text-gray-900 mb-3">8. Force Majeure</h3>
                   <p>
-                    <span className="font-bold">Multi pest care LLP</span> shall not be liable for any failure to perform its obligations where such failure is a result of Acts of Nature, government actions, war, civil disturbance, or other causes beyond our reasonable control.
+                    <span className="font-bold">Multi Pest Care LLP</span> shall not be liable for any failure to perform its obligations where such failure is a result of Acts of Nature, government actions, war, civil disturbance, or other causes beyond our reasonable control.
                   </p>
                 </div>
               </div>
@@ -113,7 +103,8 @@ export default function LegalPage() {
             {/* Privacy Policy Section */}
             <section>
               <h2 className="text-2xl font-bold text-gray-900 mb-6">Privacy Policy</h2>
-              
+              <p className="text-gray-700 mb-6 leading-relaxed">{BUSINESS.legalOperatorLine}</p>
+
               <div className="space-y-6 text-gray-700 leading-relaxed">
                 <div>
                   <h3 className="text-lg font-semibold text-gray-900 mb-3">1. Information We Collect</h3>
@@ -211,7 +202,7 @@ export default function LegalPage() {
                   </p>
                   <div className="mt-3 p-4 bg-gray-50 rounded-lg">
                     <p><strong>Email:</strong> accounts@pestcontrol99.com</p>
-                    <p><strong>Phone:</strong> +91 77100 32627</p>
+                    <p><strong>Phone:</strong> +91 80807 48282</p>
                     <p><strong>Address:</strong> 503 Sai Rushabh CHS Ltd, Geeta Nagar Phase 1, Mira Road, Thane, Maharashtra 401107</p>
                   </div>
                 </div>
@@ -224,16 +215,9 @@ export default function LegalPage() {
               
               <div className="space-y-6 text-gray-700 leading-relaxed">
                 <div>
-                  <h3 className="text-lg font-semibold text-gray-900 mb-3">GST Information</h3>
-                  <p>
-                    All our services are subject to applicable GST rates as per Indian tax laws. GST invoices will be provided for all transactions.
-                  </p>
-                </div>
-
-                <div>
                   <h3 className="text-lg font-semibold text-gray-900 mb-3">Insurance and Licensing</h3>
                   <p>
-                    PestControl99 maintains appropriate insurance coverage and holds all necessary licenses and permits required for pest control operations in Mumbai.
+                    {BUSINESS.brandName} maintains appropriate insurance coverage and holds all necessary licenses and permits required for pest control operations in Mumbai.
                   </p>
                 </div>
 
@@ -260,24 +244,23 @@ export default function LegalPage() {
                 If you have any questions about our terms and conditions or privacy policy, please don&apos;t hesitate to contact us.
               </p>
               <div className="flex flex-col sm:flex-row gap-4">
-                <Link
-                  href="/contact"
+                <Link to="/contact"
                   className="inline-flex items-center justify-center px-6 py-3 bg-green-600 text-white font-semibold rounded-full hover:bg-green-700 transition-colors duration-300"
                 >
                   Contact Us
                 </Link>
                 <a
-                  href="tel:+917710032627"
+                  href="tel:+918080748282"
                   className="inline-flex items-center justify-center px-6 py-3 bg-white text-green-600 font-semibold rounded-full border-2 border-green-600 hover:bg-green-50 transition-colors duration-300"
                 >
-                  Call Now: +91 77100 32627
+                  Call Now: +91 80807 48282
                 </a>
               </div>
             </section>
 
             <div className="text-center text-sm text-gray-500 pt-6 border-t border-gray-200">
               <p>Last Updated: August 2024</p>
-              <p>© 2024 Multi pest care LLP. All rights reserved.</p>
+              <p>© 2024 Multi Pest Care LLP. All rights reserved.</p>
             </div>
           </div>
         </div>

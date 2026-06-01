@@ -1,11 +1,12 @@
-'use client';
-
 import { useState } from 'react';
-import { useRouter } from 'next/navigation';
+import { useNavigate } from 'react-router-dom';
 import Breadcrumb from '@/components/Breadcrumb';
+import { submitContactForm } from '@/services/formSubmit';
+import BusinessDetailsCard from '@/components/BusinessDetailsCard';
+import { BUSINESS, DEFAULT_WHATSAPP_MESSAGE, whatsAppUrl } from '@/config/business';
 
 export default function ContactForm() {
-  const router = useRouter();
+  const navigate = useNavigate();
   const [formData, setFormData] = useState({
     name: '',
     email: '',
@@ -29,15 +30,9 @@ export default function ContactForm() {
     setSubmitStatus('idle');
 
     try {
-      const response = await fetch('/api/contact', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(formData),
-      });
+      const result = await submitContactForm(formData);
 
-      if (response.ok) {
+      if (result.ok) {
         setSubmitStatus('success');
         setFormData({
           name: '',
@@ -46,7 +41,7 @@ export default function ContactForm() {
           service: '',
           message: ''
         });
-        router.push('/thank-you');
+        navigate('/thank-you');
       } else {
         setSubmitStatus('error');
       }
@@ -70,7 +65,7 @@ export default function ContactForm() {
               Contact Us
             </h1>
             <p className="text-lg md:text-xl opacity-90 max-w-2xl mx-auto">
-              Get in touch with our pest control experts in Mumbai. We&apos;re here to help you with all your pest control needs.
+              {BUSINESS.legalOperatorLine} Get in touch with our pest control experts in Mumbai.
             </p>
           </div>
         </div>
@@ -79,7 +74,9 @@ export default function ContactForm() {
       {/* Contact Content */}
       <section className="py-12">
         <div className="container mx-auto px-4">
-          <div className="max-w-6xl mx-auto">
+          <div className="max-w-6xl mx-auto space-y-8">
+            <BusinessDetailsCard />
+
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
               {/* Contact Form */}
               <div>
@@ -129,7 +126,7 @@ export default function ContactForm() {
                       onChange={handleChange}
                       required
                       className="w-full p-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent text-sm"
-                      placeholder="+91 77100 32627"
+                      placeholder={BUSINESS.phoneDisplay}
                     />
                   </div>
                   <div>
@@ -182,7 +179,7 @@ export default function ContactForm() {
                     </div>
                     <div>
                       <h3 className="font-semibold text-gray-900">Phone</h3>
-                      <a href="tel:+917710032627" className="text-green-600 font-semibold hover:underline">+91 77100 32627</a>
+                      <a href={`tel:${BUSINESS.phoneTel}`} className="text-green-600 font-semibold hover:underline">{BUSINESS.phoneDisplay}</a>
                       <p className="text-sm text-gray-500">24/7 Emergency Service</p>
                     </div>
                   </div>
@@ -195,7 +192,7 @@ export default function ContactForm() {
                     </div>
                     <div>
                       <h3 className="font-semibold text-gray-900">Email</h3>
-                      <p className="text-gray-600">accounts@pestcontrol99.com</p>
+                      <a href={`mailto:${BUSINESS.email}`} className="text-green-600 font-semibold hover:underline">{BUSINESS.email}</a>
                       <p className="text-sm text-gray-500">We respond fast to all inquiries</p>
                     </div>
                   </div>
@@ -209,7 +206,7 @@ export default function ContactForm() {
                     </div>
                     <div>
                       <h3 className="font-semibold text-gray-900">Office Address</h3>
-                      <p className="text-gray-600">503 Sai Rushabh CHS Ltd, Geeta Nagar Phase 1, Mira Road, Thane, Maharashtra 401107</p>
+                      <p className="text-gray-600">{BUSINESS.address.full}</p>
                     </div>
                   </div>
 
@@ -232,7 +229,7 @@ export default function ContactForm() {
                   <h3 className="font-semibold text-gray-900 mb-2">Need Immediate Help?</h3>
                   <p className="text-gray-600 mb-4">Get instant support via WhatsApp</p>
                   <a
-                    href="https://wa.me/7710032627?text=Hello%20Multi%20pest%20care%20LLP,%20I%20need%20help%20with%20pest%20control%20services."
+                    href={whatsAppUrl(DEFAULT_WHATSAPP_MESSAGE)}
                     target="_blank"
                     rel="noopener noreferrer"
                     className="inline-flex items-center bg-green-600 text-white px-6 py-3 rounded-lg font-semibold hover:bg-green-700 transition-colors"

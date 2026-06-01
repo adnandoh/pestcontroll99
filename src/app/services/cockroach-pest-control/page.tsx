@@ -1,22 +1,5 @@
-import { Metadata } from 'next';
-import Link from 'next/link';
-import Image from 'next/image';
-
-export const metadata: Metadata = {
-  title: 'Cockroach Control Mumbai | Odourless Gel Treatment | 1-Year Warranty',
-  description: 'Get rid of cockroaches instantly with our herbal, odourless gel treatment. 100% safe for kitchens, kids, and pets. 365-day warranty included. Get a free quote.',
-  keywords: 'cockroach pest control mumbai, gel treatment for cockroaches, cockroach control mumbai, odourless cockroach treatment, herbal cockroach gel treatment, cockroach control services',
-  openGraph: {
-    title: 'Cockroach Control Mumbai | Odourless Gel Treatment | 1-Year Warranty',
-    description: 'Get rid of cockroaches instantly with our herbal, odourless gel treatment. 100% safe for kitchens, kids, and pets. 365-day warranty included. Get a free quote.',
-    type: 'website',
-    images: ['/images/cockroach-control-hero.jpg'],
-    url: 'https://www.pestcontrol99.com/services/cockroach-pest-control/',
-  },
-  alternates: {
-    canonical: 'https://www.pestcontrol99.com/services/cockroach-pest-control/',
-  },
-};
+import { Link } from 'react-router-dom';
+import AppImage from '@/components/AppImage';
 
 export default function CockroachPestControlPage() {
   return (
@@ -40,23 +23,22 @@ export default function CockroachPestControlPage() {
               </div>
               
               <div className="flex flex-col sm:flex-row gap-4">
-                <Link
-                  href="/quote"
+                <Link to="/quote"
                   className="inline-flex items-center justify-center px-8 py-4 bg-green-600 text-white font-semibold rounded-full hover:bg-green-700 transition-colors duration-300 shadow-lg hover:shadow-xl"
                 >
                   Get Instant Quote →
                 </Link>
                 <a
-                  href="https://wa.me/7710032627?text=Hello%20Multi%20pest%20care%20LLP,%20can%20you%20share%20details%20and%20pricing%20for%20your%20pest%20control%20services?"
+                  href="https://wa.me/8080748282?text=Hello%20Pest%20Control%2099,%20can%20you%20share%20details%20and%20pricing%20for%20your%20pest%20control%20services?"
                   className="inline-flex items-center justify-center px-8 py-4 bg-white text-green-600 font-semibold rounded-full border-2 border-green-600 hover:bg-green-50 transition-colors duration-300"
                 >
-                  💬 WhatsApp 24×7: +91 77100 32627
+                  💬 WhatsApp 24×7: +91 80807 48282
                 </a>
               </div>
             </div>
             
             <div className="relative">
-              <Image
+              <AppImage
                 src="/images/heroimage.png"
                 alt="Herbal cockroach gel treatment Mumbai — odourless, safe for kids and pets"
                 width={600}
@@ -145,8 +127,7 @@ export default function CockroachPestControlPage() {
             <p className="text-lg text-gray-700 leading-relaxed mb-8">
               Our odourless, herbal gel reaches deep crevices and domino-kills the entire colony within four hours—no emptying cupboards, no stains, safe for kids and pets.
             </p>
-            <Link
-              href="/quote"
+            <Link to="/quote"
               className="inline-flex items-center justify-center px-8 py-4 bg-green-600 text-white font-semibold rounded-full hover:bg-green-700 transition-colors duration-300 shadow-lg hover:shadow-xl"
             >
               Book Cockroach Blitz
@@ -260,9 +241,9 @@ export default function CockroachPestControlPage() {
               </div>
               
               <div className="bg-white p-6 rounded-2xl shadow-lg border border-gray-100">
-                <h3 className="text-lg font-bold text-gray-900 mb-4">GST invoice</h3>
+                <h3 className="text-lg font-bold text-gray-900 mb-4">service invoice</h3>
                 <p className="text-gray-700 leading-relaxed">
-                  We email a GST invoice after the job done. These GST invoice are being used in tax filling and all.
+                  We email a service invoice after the job done. Invoices are provided after the job is completed for your records.
                 </p>
               </div>
             </div>
@@ -338,7 +319,7 @@ export default function CockroachPestControlPage() {
                 <p className="text-gray-700">Free re-service within 365 days. Our warranty covers any returns.</p>
               </div>
               <div className="bg-white p-6 rounded-2xl shadow-lg border border-gray-100">
-                <h3 className="text-lg font-bold text-gray-900 mb-3">Do you provide GST invoices?</h3>
+                <h3 className="text-lg font-bold text-gray-900 mb-3">Do you provide service invoices?</h3>
                 <p className="text-gray-700">Instant e-mail after job. Proper documentation for all services.</p>
               </div>
             </div>
@@ -357,8 +338,7 @@ export default function CockroachPestControlPage() {
               <p className="text-lg text-gray-700 mb-6">
                 Contact us for transparent pricing with no hidden fees
               </p>
-              <Link
-                href="/quote"
+              <Link to="/quote"
                 className="inline-flex items-center justify-center px-8 py-4 bg-green-600 text-white font-semibold rounded-full hover:bg-green-700 transition-colors duration-300 shadow-lg hover:shadow-xl"
               >
                 Get Your Quote Now
@@ -376,11 +356,11 @@ export default function CockroachPestControlPage() {
               DIY Until We Arrive
             </h2>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              <Link href="/blog" className="bg-white p-6 rounded-2xl shadow-lg border border-gray-100 hover:shadow-xl transition-shadow duration-300">
+              <Link to="/blog" className="bg-white p-6 rounded-2xl shadow-lg border border-gray-100 hover:shadow-xl transition-shadow duration-300">
                 <h3 className="text-lg font-semibold text-green-600 mb-3">DIY checklist: seal gaps, clean drains</h3>
                 <p className="text-gray-600 text-sm">5 min read</p>
               </Link>
-              <Link href="/blog" className="bg-white p-6 rounded-2xl shadow-lg border border-gray-100 hover:shadow-xl transition-shadow duration-300">
+              <Link to="/blog" className="bg-white p-6 rounded-2xl shadow-lg border border-gray-100 hover:shadow-xl transition-shadow duration-300">
                 <h3 className="text-lg font-semibold text-green-600 mb-3">How to keep groceries roach-free during monsoon</h3>
                 <p className="text-gray-600 text-sm">Quick prevention tips</p>
               </Link>
@@ -449,17 +429,16 @@ export default function CockroachPestControlPage() {
               Fill our 60-second form, lock your same-day slot, and rest easy under our 365-day guarantee.
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <Link
-                href="/quote"
+              <Link to="/quote"
                 className="inline-flex items-center justify-center px-8 py-4 bg-white text-green-600 font-semibold rounded-full hover:bg-gray-100 transition-colors duration-300 shadow-lg hover:shadow-xl"
               >
                 Schedule My Same-Day Treatment
               </Link>
               <a
-                href="https://wa.me/7710032627?text=Hello%20Multi%20pest%20care%20LLP,%20can%20you%20share%20details%20and%20pricing%20for%20your%20pest%20control%20services?"
+                href="https://wa.me/8080748282?text=Hello%20Pest%20Control%2099,%20can%20you%20share%20details%20and%20pricing%20for%20your%20pest%20control%20services?"
                 className="inline-flex items-center justify-center px-8 py-4 bg-transparent text-white font-semibold rounded-full border-2 border-white hover:bg-white hover:text-green-600 transition-colors duration-300"
               >
-                💬 WhatsApp 24×7: +91 77100 32627
+                💬 WhatsApp 24×7: +91 80807 48282
               </a>
             </div>
             <p className="text-sm mt-6 opacity-75">

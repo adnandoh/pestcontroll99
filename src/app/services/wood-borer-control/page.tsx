@@ -1,22 +1,6 @@
-import { Metadata } from 'next';
-import Link from 'next/link';
-import Image from 'next/image';
+import { Link } from 'react-router-dom';
+import AppImage from '@/components/AppImage';
 import Breadcrumb from '@/components/Breadcrumb';
-
-export const metadata: Metadata = {
-  title: 'Wood Borer Control Mumbai | Same-Day, Low-Odour',
-  description: 'Wood borer control Mumbai made easy: same-day inspection, neat borate injection, low-odour service, transparent treatment cost',
-  keywords: 'wood borer control, wood borer control mumbai, wood borer treatment, wood borer pest control, wood borer injection, furniture borer control, wood borer powder, wood borer holes, wood borer larvae, wood borer damage, wood borer inspection, wood borer removal, wood borer prevention, wood borer cost, wood borer service',
-  openGraph: {
-    title: 'Wood Borer Control Mumbai | Same-Day, Low-Odour',
-    description: 'Wood borer control Mumbai made easy: same-day inspection, neat borate injection, low-odour service, transparent treatment cost',
-    type: 'website',
-    images: ['/images/Wood Borer.webp'],
-  },
-  alternates: {
-    canonical: 'https://www.pestcontrol99.com/services/wood-borer-control',
-  },
-};
 
 export default function WoodBorerControlPage() {
   return (
@@ -43,14 +27,13 @@ export default function WoodBorerControlPage() {
               </div>
               
               <div className="flex flex-col sm:flex-row gap-4">
-                <Link
-                  href="/quote"
+                <Link to="/quote"
                   className="inline-flex items-center justify-center px-8 py-4 bg-green-600 text-white font-semibold rounded-full hover:bg-green-700 transition-colors duration-300 shadow-lg hover:shadow-xl"
                 >
                   Get My Inspection Slot →
                 </Link>
                 <a
-                  href="https://wa.me/7710032627?text=Hello%20Multi%20pest%20care%20LLP,%20can%20you%20share%20details%20and%20pricing%20for%20your%20wood%20borer%20control%20services?"
+                  href="https://wa.me/8080748282?text=Hello%20Pest%20Control%2099,%20can%20you%20share%20details%20and%20pricing%20for%20your%20wood%20borer%20control%20services?"
                   className="inline-flex items-center justify-center px-8 py-4 bg-white text-green-600 font-semibold rounded-full border-2 border-green-600 hover:bg-green-50 transition-colors duration-300"
                 >
                   💬 WhatsApp 24 × 7: 98 XXX XX 990
@@ -59,7 +42,7 @@ export default function WoodBorerControlPage() {
             </div>
             
             <div className="relative">
-              <Image
+              <AppImage
                 src="/images/Wood Borer.webp"
                 alt="Professional wood borer control service in Mumbai"
                 width={600}
@@ -145,8 +128,7 @@ export default function WoodBorerControlPage() {
             <p className="text-lg text-gray-700 leading-relaxed mb-8">
               We inject borate into infested wood, create a protective barrier, and apply surface protection where needed. No harsh smell, no stains; furniture usually stays in place. Many homes feel safer the same day; results may vary.
             </p>
-            <Link
-              href="/quote"
+            <Link to="/quote"
               className="inline-flex items-center justify-center px-8 py-4 bg-green-600 text-white font-semibold rounded-full hover:bg-green-700 transition-colors duration-300 shadow-lg hover:shadow-xl"
             >
               Book Wood Borer Shield →
@@ -251,9 +233,9 @@ export default function WoodBorerControlPage() {
               </div>
               
               <div className="bg-white p-6 rounded-2xl shadow-lg border border-gray-100">
-                <h3 className="text-lg font-bold text-gray-900 mb-4">GST invoice & service report</h3>
+                <h3 className="text-lg font-bold text-gray-900 mb-4">service invoice & service report</h3>
                 <p className="text-gray-700 leading-relaxed">
-                  You receive a digital GST bill plus a photo-tagged service report within hours. Perfect for property files or rentals.
+                  You receive a digital service bill plus a photo-tagged service report within hours. Perfect for property files or rentals.
                 </p>
               </div>
               
@@ -333,8 +315,7 @@ export default function WoodBorerControlPage() {
               <p className="text-lg text-gray-700 mb-6">
                 Your wood borer treatment cost depends on the type of property: commercial or residential. We send a same-day, all-inclusive quote with no doorstep add-ons.
               </p>
-              <Link
-                href="/quote"
+              <Link to="/quote"
                 className="inline-flex items-center justify-center px-8 py-4 bg-green-600 text-white font-semibold rounded-full hover:bg-green-700 transition-colors duration-300 shadow-lg hover:shadow-xl"
               >
                 Get Your Quote Now
@@ -395,14 +376,13 @@ export default function WoodBorerControlPage() {
               Book a same-day inspection. Pay after service is complete; warranty covers any return.
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <Link
-                href="/quote"
+              <Link to="/quote"
                 className="inline-flex items-center justify-center px-8 py-4 bg-white text-green-600 font-semibold rounded-full hover:bg-gray-100 transition-colors duration-300 shadow-lg hover:shadow-xl"
               >
                 Schedule My Inspection →
               </Link>
               <a
-                href="https://wa.me/7710032627?text=Hello%20Multi%20pest%20care%20LLP,%20can%20you%20share%20details%20and%20pricing%20for%20your%20wood%20borer%20control%20services?"
+                href="https://wa.me/8080748282?text=Hello%20Pest%20Control%2099,%20can%20you%20share%20details%20and%20pricing%20for%20your%20wood%20borer%20control%20services?"
                 className="inline-flex items-center justify-center px-8 py-4 bg-transparent text-white font-semibold rounded-full border-2 border-white hover:bg-white hover:text-green-600 transition-colors duration-300"
               >
                 💬 WhatsApp 24 × 7: 98 XXX XX 990
@@ -432,7 +412,7 @@ export default function WoodBorerControlPage() {
                 "addressRegion": "Maharashtra",
                 "addressCountry": "IN"
               },
-              "telephone": "+91-7710032627"
+              "telephone": "+91-8080748282"
             },
             "areaServed": {
               "@type": "City",

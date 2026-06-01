@@ -1,5 +1,3 @@
-'use client';
-
 import { useState } from 'react';
 import MultiSelectPest from './MultiSelectPest';
 import SuccessModal from './SuccessModal';

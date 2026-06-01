@@ -1,22 +1,6 @@
-import { Metadata } from 'next';
-import Link from 'next/link';
-import Image from 'next/image';
+import { Link } from 'react-router-dom';
+import AppImage from '@/components/AppImage';
 import Breadcrumb from '@/components/Breadcrumb';
-
-export const metadata: Metadata = {
-  title: 'Honey Bee Pest Control Mumbai | Safe & Fast Hive Removal',
-  description: 'Get safe honey bee pest control in Mumbai today. Same-day hive removal, eco-friendly methods, neat cleanup, GST billing & warranty-backed service',
-  keywords: 'honey bee pest control, honey bee removal, bee hive removal, bee nest removal, pest control for honey bees, eco-friendly bee removal, how to get rid of honey bees, bee swarm removal, cost of bee removal, local pest control experts, safe for family and pets, bees in walls ceiling roof, beehive near home, bee exterminator near me, protecting environment while removing bees',
-  openGraph: {
-    title: 'Honey Bee Pest Control Mumbai | Safe & Fast Hive Removal',
-    description: 'Get safe honey bee pest control in Mumbai today. Same-day hive removal, eco-friendly methods, neat cleanup, GST billing & warranty-backed service',
-    type: 'website',
-    images: ['/images/Honey Bee.webp'],
-  },
-  alternates: {
-    canonical: 'https://www.pestcontrol99.com/services/honey-bee-pest-control',
-  },
-};
 
 export default function HoneyBeePestControlPage() {
   return (
@@ -45,14 +29,13 @@ export default function HoneyBeePestControlPage() {
               </div>
               
               <div className="flex flex-col sm:flex-row gap-4">
-                <Link
-                  href="/quote"
+                <Link to="/quote"
                   className="inline-flex items-center justify-center px-8 py-4 bg-green-600 text-white font-semibold rounded-full hover:bg-green-700 transition-colors duration-300 shadow-lg hover:shadow-xl"
                 >
                   Get My Inspection Slot →
                 </Link>
                 <a
-                  href="https://wa.me/7710032627?text=Hello%20Multi%20pest%20care%20LLP,%20can%20you%20share%20details%20and%20pricing%20for%20your%20honey%20bee%20pest%20control%20services?"
+                  href="https://wa.me/8080748282?text=Hello%20Pest%20Control%2099,%20can%20you%20share%20details%20and%20pricing%20for%20your%20honey%20bee%20pest%20control%20services?"
                   className="inline-flex items-center justify-center px-8 py-4 bg-white text-green-600 font-semibold rounded-full border-2 border-green-600 hover:bg-green-50 transition-colors duration-300"
                 >
                   💬 WhatsApp 24 × 7: 98 XXX XX 990
@@ -61,7 +44,7 @@ export default function HoneyBeePestControlPage() {
             </div>
             
             <div className="relative">
-              <Image
+              <AppImage
                 src="/images/Honey Bee.webp"
                 alt="Professional honey bee pest control service in Mumbai"
                 width={600}
@@ -153,8 +136,7 @@ export default function HoneyBeePestControlPage() {
             <p className="text-lg text-gray-700 leading-relaxed mb-8">
               We remove hives using protective gear and eco-friendly methods, ensure safety for residents, and seal the area to stop bees from returning. No toxic chemicals, no damage, and a tidy cleanup after. Many homes and businesses feel safer the same day; results may vary.
             </p>
-            <Link
-              href="/quote"
+            <Link to="/quote"
               className="inline-flex items-center justify-center px-8 py-4 bg-green-600 text-white font-semibold rounded-full hover:bg-green-700 transition-colors duration-300 shadow-lg hover:shadow-xl"
             >
               Book My Bee Hive Removal →
@@ -261,9 +243,9 @@ export default function HoneyBeePestControlPage() {
               </div>
               
               <div className="bg-white p-6 rounded-2xl shadow-lg border border-gray-100">
-                <h3 className="text-lg font-bold text-gray-900 mb-4">GST invoice & service report</h3>
+                <h3 className="text-lg font-bold text-gray-900 mb-4">service invoice & service report</h3>
                 <p className="text-gray-700 leading-relaxed">
-                  You receive a digital GST bill plus a service report. Perfect for property files, offices, and rentals.
+                  You receive a digital service bill plus a service report. Perfect for property files, offices, and rentals.
                 </p>
               </div>
               
@@ -346,8 +328,7 @@ export default function HoneyBeePestControlPage() {
               <p className="text-lg text-gray-700 mb-6">
                 Your honey bee removal cost depends on hive size and location: residential or commercial. We send a same-day, all-inclusive quote with no doorstep add-ons.
               </p>
-              <Link
-                href="/quote"
+              <Link to="/quote"
                 className="inline-flex items-center justify-center px-8 py-4 bg-green-600 text-white font-semibold rounded-full hover:bg-green-700 transition-colors duration-300 shadow-lg hover:shadow-xl"
               >
                 Get Your Quote Now
@@ -410,14 +391,13 @@ export default function HoneyBeePestControlPage() {
               Book a same-day inspection. Pay after service is complete; warranty covers any hive return.
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <Link
-                href="/quote"
+              <Link to="/quote"
                 className="inline-flex items-center justify-center px-8 py-4 bg-white text-green-600 font-semibold rounded-full hover:bg-gray-100 transition-colors duration-300 shadow-lg hover:shadow-xl"
               >
                 Schedule My Inspection →
               </Link>
               <a
-                href="https://wa.me/7710032627?text=Hello%20Multi%20pest%20care%20LLP,%20can%20you%20share%20details%20and%20pricing%20for%20your%20honey%20bee%20pest%20control%20services?"
+                href="https://wa.me/8080748282?text=Hello%20Pest%20Control%2099,%20can%20you%20share%20details%20and%20pricing%20for%20your%20honey%20bee%20pest%20control%20services?"
                 className="inline-flex items-center justify-center px-8 py-4 bg-transparent text-white font-semibold rounded-full border-2 border-white hover:bg-white hover:text-green-600 transition-colors duration-300"
               >
                 💬 WhatsApp 24 × 7: 98 XXX XX 990
@@ -448,7 +428,7 @@ export default function HoneyBeePestControlPage() {
                 "addressRegion": "Maharashtra",
                 "addressCountry": "IN"
               },
-              "telephone": "+91-7710032627"
+              "telephone": "+91-8080748282"
             },
             "areaServed": {
               "@type": "City",

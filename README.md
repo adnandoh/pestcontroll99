@@ -1,134 +1,54 @@
-# PestControl99 - Professional Pest Control Website
+# PestControl99 — Customer Website (Vite + React)
 
-A modern, responsive pest control business website built with Next.js, featuring advanced form handling, Google Maps integration, and CRM system integration.
+Public customer website for [pestcontrol99.com](https://www.pestcontrol99.com), built with **Vite**, **React 19**, and **React Router**. Lives in `pestcontroll99/` inside the backend monorepo and does not affect Django CRM routes.
 
-## 🚀 Live Backend API
+## Quick start
 
-The project is now connected to a **production Railway backend**:
-- **Backend URL**: https://pestcontrol-backend-production.up.railway.app/
-- **Status**: Running ✅
-- **API Version**: v1.0.0
+```bash
+cd pestcontroll99
+npm install
+npm run dev
+```
 
-## 🔗 APIs & Integrations
+Open **http://localhost:3001**
 
-### External APIs
-- **Google Maps JavaScript API** - Map functionality and address autocomplete
-- **Google Places API** - Address search and validation
-- **Google Geocoding API** - Address to coordinates conversion
-- **Gmail SMTP** - Email notifications
-- **Google Analytics 4** - Website analytics
+## Environment
 
-### Backend APIs
-- **Railway Production Backend** - CRM inquiry management
-- **Internal API Routes** - Form processing and data handling
-
-## 🛠️ Environment Variables
-
-Create a `.env.local` file with the following variables:
+Copy `.env.example` to `.env.local`:
 
 ```env
-# Google Maps
-NEXT_PUBLIC_GOOGLE_MAPS_API_KEY=your_google_maps_api_key
-
-# Email (Gmail SMTP)
-EMAIL_USER=accounts@pestcontrol99.com
-EMAIL_PASS=your_app_password
-
-# CRM System (Optional - Auto-detected based on environment)
-# Development: http://localhost:8000
-# Production: https://pestcontrol-backend-production.up.railway.app
-NEXT_PUBLIC_CRM_API_URL=your_custom_api_url
-
-# Analytics
-NEXT_PUBLIC_GA_ID=G-69K3FRS21R
-NEXT_PUBLIC_ENABLE_ANALYTICS=true
+VITE_CRM_API_URL=http://localhost:8000
+VITE_GOOGLE_MAPS_API_KEY=your_key
 ```
 
-### 🔄 Smart Backend Configuration
+In development, Vite proxies `/api/*` to `VITE_CRM_API_URL` (default `http://localhost:8000`), so forms and blogs talk to your local Django backend without CORS issues.
 
-The system automatically detects the environment and uses the appropriate backend:
+## Scripts
 
-- **Development Mode** (`npm run dev`): Uses `http://localhost:8000`
-- **Production Mode** (`npm run build && npm start`): Uses Railway backend
-- **Custom URL**: Set `NEXT_PUBLIC_CRM_API_URL` to override both
+| Command | Description |
+|---------|-------------|
+| `npm run dev` | Dev server on port 3001 |
+| `npm run build` | Production build → `dist/` |
+| `npm run preview` | Preview production build |
 
-## 🧪 Testing Backend Connection
+## Architecture
 
-Test the backend connection (automatically detects environment):
+- **UI**: React + Tailwind CSS v4
+- **Routing**: React Router (client-side)
+- **SEO**: `react-helmet-async` per page
+- **Forms**: Submit directly to Django `/api/inquiries/` (no Next.js API routes)
+- **Blog**: Fetches from Django `/api/public/blogs/`
+
+## Deployment
+
+Build static assets:
+
 ```bash
-# Test API endpoint
-curl http://localhost:3000/api/test-railway
-
-# Or visit the test page
-http://localhost:3000/test-railway
-```
-
-## 📦 Installation & Setup
-
-```bash
-# Install dependencies
-npm install
-
-# Run development server
-npm run dev
-
-# Build for production
 npm run build
-
-# Start production server
-npm start
 ```
 
-## 🎯 Key Features
+Deploy the `dist/` folder to Vercel, Netlify, Cloudflare Pages, or any static host. Point `VITE_CRM_API_URL` to production (`https://api.vacationbna.site` or your Railway URL).
 
-- **Responsive Design** - Mobile-first approach
-- **Google Maps Integration** - Address autocomplete and location services
-- **CRM Integration** - Direct connection to Railway backend
-- **Email Notifications** - Automated quote and inquiry processing
-- **SEO Optimized** - Meta tags, sitemap, and structured data
-- **Performance Optimized** - Image optimization and lazy loading
-- **Analytics** - Google Analytics integration
+## Note on email notifications
 
-## 🔧 API Endpoints
-
-### Internal Routes
-- `/api/contact` - Contact form processing
-- `/api/send-quote` - Quote request handling
-- `/api/home-quote` - Home page quote form
-- `/api/test-railway` - Railway backend connection test
-
-### External Backend (Railway)
-- `https://pestcontrol-backend-production.up.railway.app/api/inquiries/` - CRM inquiry submission
-
-## 📱 Mobile Optimization
-
-- Responsive design for all devices
-- Touch-friendly interface
-- Optimized loading times
-- Mobile-specific navigation
-
-## 🚀 Deployment
-
-The project is optimized for deployment on Vercel with:
-- Automatic image optimization
-- Edge functions for API routes
-- Global CDN distribution
-- Environment variable management
-
-## 📊 Performance
-
-- Lighthouse score: 90+ across all metrics
-- Core Web Vitals optimized
-- Image compression and WebP format
-- Lazy loading for better UX
-
-## 🔒 Security
-
-- Environment variable protection
-- Input validation and sanitization
-- CORS configuration
-- Rate limiting on API routes
-
-## 📞 Support
-
-For technical support or questions about the Railway backend integration, please refer to the API documentation or contact the development team.
+Previously, Next.js API routes sent Zoho SMTP emails. With Vite (static frontend), forms only submit to the CRM API. Email can be added later on the Django backend if needed.

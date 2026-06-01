@@ -1,14 +1,5 @@
-import { Metadata } from 'next';
 import Breadcrumb from '@/components/Breadcrumb';
-
-export const metadata: Metadata = {
-  title: 'Data Deletion Instructions | PestControl99',
-  description: 'Instructions on how to request the deletion of your personal data from PestControl99.',
-  keywords: 'data deletion, delete account, privacy, data protection, PestControl99',
-  alternates: {
-    canonical: 'https://www.pestcontrol99.com/data-deletion',
-  },
-};
+import { BUSINESS } from '@/config/business';
 
 export default function DataDeletionPage() {
   return (
@@ -30,7 +21,7 @@ export default function DataDeletionPage() {
               {/* Intro */}
               <div className="text-center">
                 <p className="text-xl text-gray-700 leading-relaxed max-w-2xl mx-auto">
-                  Users may request deletion of their personal data collected by <span className="font-bold">Multi pest care LLP</span>. We respect your right to privacy and control over your personal information.
+                  {BUSINESS.legalOperatorLine} Users may request deletion of personal data collected by {BUSINESS.legalName} for {BUSINESS.brandName} services.
                 </p>
               </div>
 
@@ -43,7 +34,7 @@ export default function DataDeletionPage() {
                       <div className="absolute -top-4 left-1/2 transform -translate-x-1/2 bg-red-600 text-white w-10 h-10 rounded-full flex items-center justify-center font-bold text-lg shadow-lg">1</div>
                       <div className="pt-4 text-center">
                         <h3 className="font-bold text-gray-900 mb-3">Compose Email</h3>
-                        <p className="text-sm text-gray-600">Send an email to: <span className="text-red-600 font-medium">info@pestcontrol99.com</span></p>
+                        <p className="text-sm text-gray-600">Send an email to: <span className="text-red-600 font-medium">accounts@pestcontrol99.com</span></p>
                       </div>
                     </div>
                   </div>
@@ -91,10 +82,11 @@ export default function DataDeletionPage() {
               <section className="pt-8 text-center">
                 <h2 className="text-2xl font-bold text-gray-900 mb-6">Contact</h2>
                 <div className="inline-block bg-gray-50 rounded-2xl p-8 border border-gray-100 min-w-[300px]">
-                  <p className="text-xl font-bold text-gray-900 mb-2">Multi pest care LLP</p>
+                  <p className="text-xl font-bold text-gray-900 mb-1">{BUSINESS.brandName}</p>
+                  <p className="text-sm text-gray-500 mb-4">{BUSINESS.legalName}</p>
                   <div className="space-y-2 mt-4">
-                    <a href="https://pestcontrol99.com" className="block text-red-600 hover:underline font-medium">pestcontrol99.com</a>
-                    <a href="mailto:info@pestcontrol99.com" className="block text-red-600 hover:underline font-medium">info@pestcontrol99.com</a>
+                    <a href={BUSINESS.website} className="block text-red-600 hover:underline font-medium">{BUSINESS.websiteDisplay}</a>
+                    <a href={`mailto:${BUSINESS.email}`} className="block text-red-600 hover:underline font-medium">{BUSINESS.email}</a>
                   </div>
                 </div>
               </section>

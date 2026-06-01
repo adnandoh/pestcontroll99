@@ -1,7 +1,5 @@
-'use client';
-
 import React, { useState } from 'react';
-import Image from 'next/image';
+import AppImage from '@/components/AppImage';
 
 const StarIcon = ({ filled }: { filled: boolean }) => (
   <svg
@@ -90,9 +88,9 @@ export default function FeedbackPage() {
                 </p>
               </div>
               <div className="flex-shrink-0 bg-white p-4 rounded-3xl border border-gray-100 shadow-sm self-start sm:self-center transform hover:rotate-3 transition-transform">
-                <Image
+                <AppImage
                   src="/images/logo.svg"
-                  alt="Multi pest care LLP Logo"
+                  alt="Pest Control 99 Logo"
                   width={140}
                   height={50}
                   className="h-auto w-36 sm:w-40 lg:w-44"
@@ -199,7 +197,7 @@ export default function FeedbackPage() {
         </div>
         
         <p className="text-center mt-12 text-[10px] font-black text-gray-300 uppercase tracking-[0.3em] opacity-50">
-          Official Feedback Portal â€¢ Multi Pest Care LLP
+          Official Feedback Portal • Multi Pest Care LLP
         </p>
       </div>
     </div>

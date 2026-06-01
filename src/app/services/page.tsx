@@ -1,22 +1,6 @@
-import Link from 'next/link';
-import Image from 'next/image';
-import { Metadata } from 'next';
+import { Link } from 'react-router-dom';
+import AppImage from '@/components/AppImage';
 import Breadcrumb from '@/components/Breadcrumb';
-
-export const metadata: Metadata = {
-  title: "Professional Pest Control Services Mumbai | Residential & Commercial",
-  description: "Comprehensive pest management solutions including cockroach, termite, rodent, and mosquito control. Low-odour treatments with guaranteed results. View our services.",
-  keywords: "pest control services, residential pest control, commercial pest control, pest control mumbai, termite control, cockroach control, rodent control, mosquito control",
-  openGraph: {
-    title: "Professional Pest Control Services Mumbai | Residential & Commercial",
-    description: "Comprehensive pest management solutions including cockroach, termite, rodent, and mosquito control. Low-odour treatments with guaranteed results.",
-    type: "website",
-    url: "https://www.pestcontrol99.com/services/",
-  },
-  alternates: {
-    canonical: "https://www.pestcontrol99.com/services/",
-  },
-};
 
 interface ServiceCardProps {
   title: string;
@@ -30,7 +14,7 @@ function ServiceCard({ title, description, image, alt, href }: ServiceCardProps)
   return (
     <div className="bg-white rounded-xl shadow-md overflow-hidden hover:shadow-lg transition-all duration-300 hover:-translate-y-1 border border-gray-100">
       <div className="relative h-48 overflow-hidden">
-        <Image
+        <AppImage
           src={image}
           alt={alt}
           width={400}
@@ -50,7 +34,7 @@ function ServiceCard({ title, description, image, alt, href }: ServiceCardProps)
           {description}
         </p>
         <Link 
-          href={href}
+          to={href}
           className="inline-flex items-center justify-center bg-green-600 text-white px-6 py-3 text-sm font-semibold rounded-full hover:bg-green-700 transition-all duration-300 shadow-md hover:shadow-lg group"
         >
           GET QUOTE NOW
@@ -158,17 +142,16 @@ export default function ServicesPage() {
             Contact us today for a free consultation and customized pest control solution
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <Link 
-              href="/quote" 
+            <Link to="/quote" 
               className="bg-green-500 text-white px-6 sm:px-8 py-3 sm:py-4 rounded font-semibold hover:bg-green-600 transition-colors text-base sm:text-lg"
             >
               Get Free Quote
             </Link>
             <a 
-              href="tel:+917710032627" 
+              href="tel:+918080748282" 
               className="border-2 border-white text-white px-6 sm:px-8 py-3 sm:py-4 rounded font-semibold hover:bg-white hover:text-slate-800 transition-colors text-base sm:text-lg"
             >
-              Call Now: +91 77100 32627
+              Call Now: +91 80807 48282
             </a>
           </div>
         </div>

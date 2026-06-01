@@ -1,7 +1,5 @@
-'use client';
-
-import Link from 'next/link';
-import Image from 'next/image';
+import { Link } from 'react-router-dom';
+import AppImage from '@/components/AppImage';
 import { useState, useEffect, useRef } from 'react';
 
 export default function Header() {
@@ -57,12 +55,12 @@ export default function Header() {
     >
       <div className="container mx-auto px-4">
         <div className="flex justify-between items-center py-2 md:py-3">
-          <Link href="/" className="flex items-center" onClick={closeMobileMenu}>
+          <Link to="/" className="flex items-center" onClick={closeMobileMenu}>
             <div className="flex items-center space-x-3">
               <div className="flex items-center" style={{height: 48}}>
-                <Image
+                <AppImage
                   src="/images/logo.svg"
-                  alt="PestControl99 Logo"
+                  alt="Pest Control 99 Logo"
                   width={140}
                   height={40}
                   className="h-full w-auto"
@@ -74,10 +72,10 @@ export default function Header() {
 
           {/* Desktop Navigation */}
           <nav className="hidden md:flex items-center space-x-4">
-            <Link href="/" className="text-gray-700 font-medium hover:text-green-600 transition-colors py-2 px-3 rounded-md hover:bg-green-50">
+            <Link to="/" className="text-gray-700 font-medium hover:text-green-600 transition-colors py-2 px-3 rounded-md hover:bg-green-50">
               Home
             </Link>
-            <Link href="/about" className="text-gray-700 font-medium hover:text-green-600 transition-colors py-2 px-3 rounded-md hover:bg-green-50">
+            <Link to="/about" className="text-gray-700 font-medium hover:text-green-600 transition-colors py-2 px-3 rounded-md hover:bg-green-50">
               About Us
             </Link>
 
@@ -108,7 +106,7 @@ export default function Header() {
                   {services.map((service, index) => (
                     <Link
                       key={service.href}
-                      href={service.href}
+                      to={service.href}
                       className={`block px-4 py-2 text-sm text-gray-700 hover:bg-green-50 hover:text-green-600 transition-all duration-200 hover:translate-x-1 ${index === 0 ? 'font-semibold border-b border-gray-100 mb-1' : ''
                         }`}
                       onClick={() => setIsServicesDropdownOpen(false)}
@@ -120,10 +118,10 @@ export default function Header() {
               )}
             </div>
 
-            <Link href="/blog" className="text-gray-700 font-medium hover:text-green-600 transition-colors py-2 px-3 rounded-md hover:bg-green-50">
+            <Link to="/blog" className="text-gray-700 font-medium hover:text-green-600 transition-colors py-2 px-3 rounded-md hover:bg-green-50">
               Blog
             </Link>
-            <Link href="/contact" className="bg-green-500 text-white font-medium px-5 py-2 rounded-full hover:bg-green-600 transition-colors text-sm">
+            <Link to="/contact" className="bg-green-500 text-white font-medium px-5 py-2 rounded-full hover:bg-green-600 transition-colors text-sm">
               Contact Us
             </Link>
           </nav>
@@ -168,15 +166,13 @@ export default function Header() {
           aria-hidden={!isMenuOpen}
         >
           <div className="flex flex-col space-y-1 pt-3">
-            <Link
-              href="/"
+            <Link to="/"
               className="mobile-menu-item text-gray-700 font-medium hover:text-green-600 py-2 px-2 rounded-md hover:bg-green-50 transition-all duration-200"
               onClick={closeMobileMenu}
             >
               Home
             </Link>
-            <Link
-              href="/about"
+            <Link to="/about"
               className="mobile-menu-item text-gray-700 font-medium hover:text-green-600 py-2 px-2 rounded-md hover:bg-green-50 transition-all duration-200"
               onClick={closeMobileMenu}
             >
@@ -210,7 +206,7 @@ export default function Header() {
                 {services.map((service, index) => (
                   <Link
                     key={service.href}
-                    href={service.href}
+                    to={service.href}
                     className={`block text-gray-600 hover:text-green-600 py-2 px-2 rounded-md hover:bg-green-50 transition-all duration-200 text-sm transform ${isMobileServicesOpen ? 'translate-x-0 opacity-100' : '-translate-x-2 opacity-0'
                       } ${index === 0 ? 'font-semibold text-gray-700' : ''}`}
                     style={{ transitionDelay: `${index * 50}ms` }}
@@ -222,15 +218,13 @@ export default function Header() {
               </div>
             </div>
 
-            <Link
-              href="/blog"
+            <Link to="/blog"
               className="mobile-menu-item text-gray-700 font-medium hover:text-green-600 py-2 px-2 rounded-md hover:bg-green-50 transition-all duration-200"
               onClick={closeMobileMenu}
             >
               Blog
             </Link>
-            <Link
-              href="/contact"
+            <Link to="/contact"
               className="mobile-menu-item bg-green-500 text-white font-medium px-4 py-2 rounded-full hover:bg-green-600 transition-all duration-200 mx-2 text-center text-sm hover:shadow-lg"
               onClick={closeMobileMenu}
             >

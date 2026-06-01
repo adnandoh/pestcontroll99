@@ -1,7 +1,6 @@
-'use client';
-
 import { useState } from 'react';
-import { useRouter } from 'next/navigation';
+import { useNavigate } from 'react-router-dom';
+import { submitQuoteForm } from '@/services/formSubmit';
 
 interface QuoteFormProps {
   service?: string;
@@ -9,7 +8,7 @@ interface QuoteFormProps {
 }
 
 export default function QuoteForm({ service, className = '' }: QuoteFormProps) {
-  const router = useRouter();
+  const navigate = useNavigate();
   const [formData, setFormData] = useState({
     name: '',
     phone: '',
@@ -55,21 +54,12 @@ export default function QuoteForm({ service, className = '' }: QuoteFormProps) {
 
     try {
       // Submit to the backend API which handles both CRM and Email
-      const response = await fetch('/api/send-quote', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(formData),
-      });
+      const result = await submitQuoteForm(formData);
 
-      const result = await response.json();
-
-      if (response.ok && result.success !== false) {
+      if (result.ok) {
         setIsSubmitted(true);
-        router.push('/thank-you');
+        navigate('/thank-you');
       } else {
-        // Submission failed
         throw new Error(result.error || 'Failed to submit quote request');
       }
     } catch (error) {

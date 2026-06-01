@@ -1,10 +1,4 @@
-import Link from 'next/link';
-import { Metadata } from 'next';
-
-export const metadata: Metadata = {
-  title: '404 - Page Not Found | PestControl99',
-  description: 'The page you are looking for could not be found. Return to our homepage or contact us for pest control services.',
-};
+import { Link } from 'react-router-dom';
 
 export default function NotFound() {
   return (
@@ -34,8 +28,7 @@ export default function NotFound() {
         </div>
         
         <div className="space-y-4 sm:space-y-0 sm:space-x-4 sm:flex sm:justify-center">
-          <Link
-            href="/"
+          <Link to="/"
             className="inline-flex items-center px-6 py-3 border border-transparent text-base font-medium rounded-md text-white bg-green-600 hover:bg-green-700 transition-colors"
           >
             <svg className="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -44,8 +37,7 @@ export default function NotFound() {
             Go Home
           </Link>
           
-          <Link
-            href="/contact"
+          <Link to="/contact"
             className="inline-flex items-center px-6 py-3 border border-gray-300 text-base font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 transition-colors"
           >
             <svg className="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -60,13 +52,13 @@ export default function NotFound() {
             Popular Services
           </h3>
           <div className="space-y-2">
-            <Link href="/services" className="block text-green-600 hover:text-green-700 transition-colors">
+            <Link to="/services" className="block text-green-600 hover:text-green-700 transition-colors">
               Pest Control Services
             </Link>
-            <Link href="/quote" className="block text-green-600 hover:text-green-700 transition-colors">
+            <Link to="/quote" className="block text-green-600 hover:text-green-700 transition-colors">
               Get Free Quote
             </Link>
-            <Link href="/blog" className="block text-green-600 hover:text-green-700 transition-colors">
+            <Link to="/blog" className="block text-green-600 hover:text-green-700 transition-colors">
               Pest Control Tips
             </Link>
           </div>

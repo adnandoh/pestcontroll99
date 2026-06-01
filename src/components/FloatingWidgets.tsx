@@ -1,6 +1,5 @@
-'use client';
-
 import { useEffect, useState } from 'react';
+import { BUSINESS, whatsAppUrl } from '@/config/business';
 
 export default function FloatingWidgets() {
   const [isMounted, setIsMounted] = useState(false);
@@ -17,7 +16,7 @@ export default function FloatingWidgets() {
     <div className="fixed bottom-6 right-6 z-50 flex flex-col gap-4">
       {/* WhatsApp Widget */}
       <a
-        href="https://wa.me/917710032627"
+        href={whatsAppUrl()}
         target="_blank"
         rel="noopener noreferrer"
         className="w-14 h-14 bg-[#25D366] text-white rounded-full flex items-center justify-center shadow-lg hover:scale-110 transition-transform hover:shadow-xl group relative"
@@ -33,7 +32,7 @@ export default function FloatingWidgets() {
 
       {/* Call Widget */}
       <a
-        href="tel:+917710032627"
+        href={`tel:${BUSINESS.phoneTel}`}
         className="w-14 h-14 bg-blue-600 text-white rounded-full flex items-center justify-center shadow-lg hover:scale-110 transition-transform hover:shadow-xl group relative"
         aria-label="Call Us"
       >

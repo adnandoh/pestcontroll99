@@ -1,8 +1,6 @@
-'use client';
-
 import { useState, useEffect } from 'react';
-import Link from 'next/link';
-import Image from 'next/image';
+import { Link } from 'react-router-dom';
+import AppImage from '@/components/AppImage';
 import { decodeHtmlEntities, stripHtmlAndDecode } from '@/utils/htmlUtils';
 
 interface WordPressPost {
@@ -133,19 +131,15 @@ export default function RelatedPosts({ currentPostId, limit = 3 }: RelatedPostsP
       <div className="space-y-4">
         {posts.map((post, index) => (
           <article key={post.id} className="group">
-            <Link href={post.slug} className="flex space-x-4 hover:bg-blue-50 p-3 rounded-xl transition-colors duration-150 border border-transparent hover:border-blue-200">
+            <Link to={post.slug} className="flex space-x-4 hover:bg-blue-50 p-3 rounded-xl transition-colors duration-150 border border-transparent hover:border-blue-200">
               <div className="relative w-16 h-16 flex-shrink-0 overflow-hidden rounded-xl">
-                <Image
+                <AppImage
                   src={post.image}
                   alt={post.imageAlt}
                   fill
                   sizes="64px"
                   style={{ objectFit: 'cover' }}
                   className=""
-                  onError={(e) => {
-                    const target = e.target as HTMLImageElement;
-                    target.src = '/images/heroimage.png';
-                  }}
                 />
 
                 {index === 0 && (
@@ -185,8 +179,7 @@ export default function RelatedPosts({ currentPostId, limit = 3 }: RelatedPostsP
       </div>
       
       <div className="mt-6 pt-4 border-t border-gray-100">
-        <Link
-          href="/blog"
+        <Link to="/blog"
           className="w-full bg-blue-50 hover:bg-blue-100 text-blue-700 font-semibold py-3 px-4 rounded-xl transition-colors duration-150 inline-flex items-center justify-center group border border-blue-200 hover:border-blue-300"
         >
           <svg className="h-4 w-4 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
