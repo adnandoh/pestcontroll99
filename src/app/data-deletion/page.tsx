@@ -59,6 +59,50 @@ export default function DataDeletionPage() {
                 </div>
               </section>
 
+              <section className="rounded-2xl border border-gray-200 bg-white p-8">
+                <h2 className="text-2xl font-bold text-gray-900 mb-4">What we delete vs retain</h2>
+                <div className="overflow-x-auto">
+                  <table className="w-full text-sm text-left">
+                    <thead>
+                      <tr className="border-b border-gray-200">
+                        <th className="py-3 pr-4 font-semibold text-gray-900">Data type</th>
+                        <th className="py-3 pr-4 font-semibold text-gray-900">Action</th>
+                        <th className="py-3 font-semibold text-gray-900">Retention</th>
+                      </tr>
+                    </thead>
+                    <tbody className="text-gray-700">
+                      <tr className="border-b border-gray-100">
+                        <td className="py-3 pr-4">Partner profile (name, mobile, photo, bank)</td>
+                        <td className="py-3 pr-4">Deleted / anonymized</td>
+                        <td className="py-3">Immediate</td>
+                      </tr>
+                      <tr className="border-b border-gray-100">
+                        <td className="py-3 pr-4">Login credentials & push tokens</td>
+                        <td className="py-3 pr-4">Deleted</td>
+                        <td className="py-3">Immediate</td>
+                      </tr>
+                      <tr className="border-b border-gray-100">
+                        <td className="py-3 pr-4">Completed booking & payment records</td>
+                        <td className="py-3 pr-4">Retained (anonymized where required)</td>
+                        <td className="py-3">Up to 90 days, then archived</td>
+                      </tr>
+                      <tr>
+                        <td className="py-3 pr-4">Legal / tax invoices</td>
+                        <td className="py-3 pr-4">Retained as required by law</td>
+                        <td className="py-3">As per applicable regulations</td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+                <p className="mt-6 text-sm text-gray-600">
+                  Partner app users can also delete their account in-app under Profile → Delete Account, or via our{' '}
+                  <a href="/delete-account" className="text-red-600 font-medium hover:underline">
+                    Delete Account page
+                  </a>
+                  .
+                </p>
+              </section>
+
               {/* Processing Time */}
               <section className="bg-gray-900 text-white rounded-2xl p-8 md:p-12 relative overflow-hidden">
                 <div className="relative z-10 flex flex-col md:flex-row items-center justify-between gap-8">

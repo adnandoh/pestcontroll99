@@ -38,8 +38,11 @@ export default function PrivacyPolicyPage() {
                       'Email address',
                       'Address',
                       'Booking details',
+                      'Profile photo (Partner App)',
+                      'Service verification photos / selfies (Partner App)',
+                      'Push notification token / device identifier (Partner App)',
                       'Device and browser information',
-                      'IP address'
+                      'IP address',
                     ].map((item, idx) => (
                       <li key={idx} className="flex items-center text-gray-600">
                         <svg className="w-5 h-5 text-green-500 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -126,8 +129,17 @@ export default function PrivacyPolicyPage() {
                   <span className="bg-green-100 text-green-700 w-8 h-8 rounded-full flex items-center justify-center mr-3 text-sm">6</span>
                   Third-Party Services
                 </h2>
-                <p className="text-gray-700 leading-relaxed">
-                  Our website may contain links or integrations with third-party services such as Meta, WhatsApp, Google, or payment providers.
+                <p className="text-gray-700 leading-relaxed mb-4">
+                  Our website and <strong>Pest 99 Partner</strong> mobile app may use third-party services including:
+                </p>
+                <ul className="list-disc pl-6 space-y-2 text-gray-700">
+                  <li>Google Firebase Cloud Messaging (push notifications)</li>
+                  <li>Google Maps (opening directions to customer address — external app)</li>
+                  <li>Meta / WhatsApp (customer communication links where applicable)</li>
+                  <li>Payment or communication providers for business operations</li>
+                </ul>
+                <p className="text-gray-700 leading-relaxed mt-4">
+                  We do <strong>not</strong> collect precise GPS location from the Partner App. Addresses are provided for service delivery only.
                 </p>
               </section>
 

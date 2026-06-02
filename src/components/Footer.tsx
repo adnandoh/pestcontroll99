@@ -178,6 +178,10 @@ export default function Footer() {
               <Link to="/data-deletion" className="hover:text-green-500 transition-colors">
                 Data Deletion
               </Link>
+              <span className="text-white/10">|</span>
+              <Link to="/delete-account" className="hover:text-green-500 transition-colors">
+                Delete Account
+              </Link>
             </div>
           </div>
         </div>

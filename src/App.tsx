@@ -26,6 +26,7 @@ const TermitePage = lazy(() => import('@/app/services/termite-pest-control/page'
 const WoodBorerPage = lazy(() => import('@/app/services/wood-borer-control/page'));
 const TermsPage = lazy(() => import('@/app/terms-and-conditions/page'));
 const RefundPolicyPage = lazy(() => import('@/app/refund-policy/page'));
+const DeleteAccountPage = lazy(() => import('@/app/delete-account/page'));
 const TestPage = lazy(() => import('@/app/test/page'));
 const ThankYouPage = lazy(() => import('@/app/thank-you/page'));
 
@@ -64,6 +65,8 @@ export default function App() {
             <Route path="blog/tag/:slug" element={<BlogTagPage />} />
             <Route path="blog/:slug" element={<BlogPostPage />} />
             <Route path="contact" element={<ContactPage />} />
+            <Route path="contact-us" element={<Navigate to="/contact/" replace />} />
+            <Route path="delete-account" element={<DeleteAccountPage />} />
             <Route path="data-deletion" element={<DataDeletionPage />} />
             <Route path="feedback" element={<FeedbackPage />} />
             <Route path="feedback/:id" element={<FeedbackDetailPage />} />
@@ -79,6 +82,7 @@ export default function App() {
             <Route path="services/termite-pest-control" element={<TermitePage />} />
             <Route path="services/wood-borer-control" element={<WoodBorerPage />} />
             <Route path="terms-and-conditions" element={<TermsPage />} />
+            <Route path="terms" element={<Navigate to="/terms-and-conditions/" replace />} />
             <Route path="refund-policy" element={<RefundPolicyPage />} />
             <Route path="test" element={<TestPage />} />
             <Route path="thank-you" element={<ThankYouPage />} />
