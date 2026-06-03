@@ -103,10 +103,6 @@ export default function HomeQuoteForm({ compact = false }: HomeQuoteFormProps) {
       newErrors.phone = 'Please enter a valid 10-digit phone number';
     }
 
-    if (!formData.streetAddress) {
-      newErrors.streetAddress = 'Street address is required';
-    }
-
     if (!formData.name || !formData.name.trim()) {
       newErrors.name = 'Name is required';
     }
@@ -421,16 +417,18 @@ export default function HomeQuoteForm({ compact = false }: HomeQuoteFormProps) {
                 </div>
               </div>
 
-              {/* 7. Street Address */}
+              {/* 7. Street Address (optional) */}
               <div>
                 <label className={`block font-bold text-[#1a1a1a] mb-2 ${compact ? 'text-[13px]' : 'text-[15px]'}`}>
-                  Street Address *
+                  Street Address <span className="font-normal text-gray-500">(optional)</span>
                 </label>
                 <AddressInput
                   value={formData.streetAddress}
                   onChange={(value) => handleChange('streetAddress', value)}
                   error={errors.streetAddress}
-                  required
+                  required={false}
+                  label=""
+                  placeholder="Enter your street address (optional)"
                   className={`w-full px-4 border border-[#00C950] rounded-xl focus:border-[#00C950] focus:ring-0 outline-none transition-all duration-200 shadow-sm ${compact ? 'py-2.5 text-sm' : 'py-3'}`}
                 />
               </div>

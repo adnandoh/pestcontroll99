@@ -28,10 +28,6 @@ export default function SimpleQuotePage() {
       newErrors.phone = 'Please enter a valid 10-digit phone number';
     }
 
-    if (!formData.address.trim()) {
-      newErrors.address = 'Address is required';
-    }
-
     if (!formData.propertyType) {
       newErrors.propertyType = 'Property type is required';
     }
@@ -225,13 +221,12 @@ export default function SimpleQuotePage() {
                 {/* Property Address */}
                 <div>
                   <label htmlFor="address" className="block text-sm font-medium text-gray-700 mb-2">
-                    Street Address *
+                    Street Address <span className="text-gray-500 font-normal">(optional)</span>
                   </label>
                   <input
                     type="text"
                     id="address"
                     name="address"
-                    required
                     value={formData.address}
                     onChange={handleChange}
                     placeholder="House/Flat No., Building Name, Street, Area, City"

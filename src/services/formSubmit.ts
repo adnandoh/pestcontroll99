@@ -39,8 +39,7 @@ export async function submitHomeQuoteForm(formData: Record<string, unknown>) {
   if (
     !formData.pestTypes ||
     !(formData.pestTypes as string[]).length ||
-    !formData.phone ||
-    !formData.streetAddress
+    !formData.phone
   ) {
     return { ok: false, error: 'Missing required fields' };
   }

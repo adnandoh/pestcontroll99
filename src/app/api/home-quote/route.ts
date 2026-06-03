@@ -30,8 +30,8 @@ export async function POST(request: NextRequest) {
       estimatedPrice
     });
 
-    // Validate required fields
-    if (!pestTypes || pestTypes.length === 0 || !phone || !streetAddress) {
+    // Validate required fields (street address optional)
+    if (!pestTypes || pestTypes.length === 0 || !phone) {
       console.log('❌ Missing required fields');
       return NextResponse.json(
         { error: 'Missing required fields' },
