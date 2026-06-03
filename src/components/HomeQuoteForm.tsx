@@ -3,7 +3,7 @@ import { useNavigate, useSearchParams } from 'react-router-dom';
 import { saveFormData, HomeFormData, decodeFormDataFromURL, getFormData, clearFormData } from '@/utils/formStorage';
 import { submitHomeQuoteForm } from '@/services/formSubmit';
 import MultiSelectPest from './MultiSelectPest';
-import { AddressInput } from './GoogleMaps';
+import { LocationDetector } from './GoogleMaps';
 
 type HomeQuoteFormProps = {
   /** Tighter layout (~30% less vertical footprint) for home hero pairing */
@@ -316,7 +316,9 @@ export default function HomeQuoteForm({ compact = false }: HomeQuoteFormProps) {
                     </div>
                   ) : (
                     <div className="mt-1">
-                      <span className={`font-semibold text-[#111827] tracking-tight whitespace-nowrap ${compact ? 'text-xl' : 'text-2xl'}`}>? {formData.estimatedPrice?.toLocaleString()}</span>
+                      <span className={`font-semibold text-[#111827] tracking-tight whitespace-nowrap ${compact ? 'text-xl' : 'text-2xl'}`}>
+                        Rs. {formData.estimatedPrice?.toLocaleString('en-IN')}
+                      </span>
                     </div>
                   )}
                 </div>
@@ -417,20 +419,31 @@ export default function HomeQuoteForm({ compact = false }: HomeQuoteFormProps) {
                 </div>
               </div>
 
-              {/* 7. Street Address (optional) */}
+              {/* 7. Street Address (optional) — plain input so field is always editable */}
               <div>
-                <label className={`block font-bold text-[#1a1a1a] mb-2 ${compact ? 'text-[13px]' : 'text-[15px]'}`}>
+                <label
+                  htmlFor="streetAddress"
+                  className={`block font-bold text-[#1a1a1a] mb-2 ${compact ? 'text-[13px]' : 'text-[15px]'}`}
+                >
                   Street Address <span className="font-normal text-gray-500">(optional)</span>
                 </label>
-                <AddressInput
+                <input
+                  id="streetAddress"
+                  type="text"
                   value={formData.streetAddress}
-                  onChange={(value) => handleChange('streetAddress', value)}
-                  error={errors.streetAddress}
-                  required={false}
-                  label=""
+                  onChange={(e) => handleChange('streetAddress', e.target.value)}
                   placeholder="Enter your street address (optional)"
-                  className={`w-full px-4 border border-[#00C950] rounded-xl focus:border-[#00C950] focus:ring-0 outline-none transition-all duration-200 shadow-sm ${compact ? 'py-2.5 text-sm' : 'py-3'}`}
+                  autoComplete="street-address"
+                  className={`w-full px-4 border border-[#00C950] rounded-xl focus:border-[#00C950] focus:ring-0 outline-none transition-all duration-200 bg-white font-medium shadow-sm ${compact ? 'py-2.5 text-sm' : 'py-3'}`}
                 />
+                {errors.streetAddress && (
+                  <p className="mt-1 text-xs text-red-600 font-bold">{errors.streetAddress}</p>
+                )}
+                <div className="flex justify-end mt-2">
+                  <LocationDetector
+                    onLocationDetected={(address) => handleChange('streetAddress', address)}
+                  />
+                </div>
               </div>
 
               {/* Submit Button */}

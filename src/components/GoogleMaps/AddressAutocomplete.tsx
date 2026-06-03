@@ -148,7 +148,6 @@ function InnerAutocomplete({
           onChange={(e) => onChange(e.target.value)}
           placeholder={placeholder}
           className={`${className} pr-10`}
-          disabled
         />
         {value && (
           <button
@@ -188,7 +187,6 @@ function InnerAutocomplete({
           onFocus={() => setIsFocused(true)}
           placeholder={placeholder}
           className={`${className} pr-10`}
-          disabled={!ready}
         />
         {inputValue && (
           <button
@@ -309,7 +307,6 @@ export default function AddressAutocomplete(props: AddressAutocompleteProps) {
           onChange={(e) => onChange(e.target.value)}
           placeholder={placeholder}
           className={`${className} pr-10`}
-          disabled
         />
         {error && <p className="mt-1 text-sm text-red-600">{error}</p>}
       </div>
