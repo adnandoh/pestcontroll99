@@ -276,6 +276,7 @@ export default function HomeQuoteForm({ compact = false }: HomeQuoteFormProps) {
                 <MultiSelectPest
                   selectedPests={formData.pestTypes}
                   onChange={(pests) => handleChange('pestTypes', pests)}
+                  compact={compact}
                 />
                 {errors.pestTypes && (
                   <p className="mt-1 text-sm text-red-600 flex items-center">

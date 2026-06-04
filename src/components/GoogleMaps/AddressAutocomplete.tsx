@@ -10,6 +10,9 @@ import usePlacesAutocomplete, {
   Suggestion,
 } from 'use-places-autocomplete';
 
+/** Minimum typed characters before Places autocomplete API is called */
+const MIN_SEARCH_LENGTH = 3;
+
 interface AddressAutocompleteProps {
   value: string;
   onChange: (value: string) => void;
@@ -17,6 +20,10 @@ interface AddressAutocompleteProps {
   placeholder?: string;
   className?: string;
   error?: string;
+}
+
+function shouldFetchSuggestions(text: string): boolean {
+  return text.trim().length >= MIN_SEARCH_LENGTH;
 }
 
 function InnerAutocomplete({
@@ -51,9 +58,12 @@ function InnerAutocomplete({
   // Update the internal value when the external value changes
   useEffect(() => {
     if (value !== inputValue) {
-      setValue(value, false);
+      setValue(value, shouldFetchSuggestions(value));
+      if (!shouldFetchSuggestions(value)) {
+        clearSuggestions();
+      }
     }
-  }, [value, setValue, inputValue]);
+  }, [value, setValue, inputValue, clearSuggestions]);
 
   // Handle click outside to close suggestions
   useEffect(() => {
@@ -70,21 +80,23 @@ function InnerAutocomplete({
   }, []);
 
   const handleInput = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const value = e.target.value;
-    setValue(value);
-    onChange(value);
-    setIsFocused(true); // Ensure dropdown stays open while typing
-    setSelectedIndex(-1); // Reset selected index when typing
+    const next = e.target.value;
+    onChange(next);
+    setIsFocused(true);
+    setSelectedIndex(-1);
 
-    // If the input is empty, clear suggestions
-    if (!value.trim()) {
+    if (!next.trim() || !shouldFetchSuggestions(next)) {
+      setValue(next, false);
       clearSuggestions();
+      return;
     }
+
+    setValue(next, true);
   };
 
   const handleKeyDown = (e: KeyboardEvent<HTMLInputElement>) => {
     // Only handle keyboard navigation when suggestions are visible
-    if (!isFocused || !inputValue || status !== 'OK' || !data.length) return;
+    if (!isFocused || !shouldFetchSuggestions(inputValue) || status !== 'OK' || !data.length) return;
 
     // Handle arrow down (select next suggestion)
     if (e.key === 'ArrowDown') {
@@ -218,8 +230,14 @@ function InnerAutocomplete({
       </div>
       {error && <p className="mt-1 text-sm text-red-600">{error}</p>}
 
+      {isFocused && inputValue && !shouldFetchSuggestions(inputValue) && (
+        <p className="mt-1 text-xs text-gray-500">
+          Type at least {MIN_SEARCH_LENGTH} characters for address suggestions.
+        </p>
+      )}
+
       {/* Suggestions dropdown */}
-      {isFocused && inputValue && status === 'OK' && (
+      {isFocused && shouldFetchSuggestions(inputValue) && status === 'OK' && (
         <div className="absolute z-40 mt-2 w-full bg-white shadow-2xl rounded-xl border border-gray-100 max-h-60 overflow-y-auto animate-in fade-in slide-in-from-top-2">
           {data.map((suggestion, index) => (
             <div
@@ -253,7 +271,7 @@ function InnerAutocomplete({
           ))}
         </div>
       )}
-      {isFocused && inputValue && status === 'ZERO_RESULTS' && (
+      {isFocused && shouldFetchSuggestions(inputValue) && status === 'ZERO_RESULTS' && (
         <div className="absolute z-40 mt-1 w-full bg-white shadow-lg rounded-md border border-gray-200 p-3 text-sm text-gray-500">
           No results found for this search. Try a different address.
         </div>
