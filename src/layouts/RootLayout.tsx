@@ -4,7 +4,7 @@ import Header from '@/components/Header';
 import Footer from '@/components/Footer';
 import FloatingWidgets from '@/components/FloatingWidgets';
 import WebVitals from '@/components/WebVitals';
-import { getGoogleMapsApiKey } from '@/config/env';
+import { getGoogleMapsApiKey, isGoogleMapsReady } from '@/config/env';
 import { getStructuredDataGraph } from '@/utils/structuredData';
 
 function loadScript(id: string, src: string, async = true) {
@@ -36,23 +36,48 @@ export default function RootLayout() {
     gtag('js', new Date());
     gtag('config', 'AW-17687478045');
 
-    if (googleMapsApiKey) {
-      loadScript(
-        'google-maps',
-        `https://maps.googleapis.com/maps/api/js?key=${googleMapsApiKey}&libraries=places&loading=async`,
-        true,
-      );
-      let tries = 0;
-      const timer = window.setInterval(() => {
-        if (window.google?.maps?.places) {
-          window.dispatchEvent(new Event('gmaps:ready'));
-          window.clearInterval(timer);
-        } else if (++tries >= 300) {
-          window.clearInterval(timer);
-        }
-      }, 100);
-      return () => window.clearInterval(timer);
+    if (!googleMapsApiKey) {
+      if (import.meta.env.DEV) {
+        console.warn(
+          '[Maps] Missing API key. Set VITE_GOOGLE_MAPS_API_KEY in .env (or NEXT_PUBLIC_GOOGLE_MAPS_API_KEY).',
+        );
+      }
+      return;
     }
+
+    const onMapsReady = () => {
+      if (isGoogleMapsReady()) {
+        window.dispatchEvent(new Event('gmaps:ready'));
+      }
+    };
+
+    (window as Window & { __gmapsInit?: () => void }).__gmapsInit = onMapsReady;
+
+    if (isGoogleMapsReady()) {
+      onMapsReady();
+      return;
+    }
+
+    loadScript(
+      'google-maps',
+      `https://maps.googleapis.com/maps/api/js?key=${encodeURIComponent(googleMapsApiKey)}&libraries=places&loading=async&callback=__gmapsInit`,
+      true,
+    );
+
+    let tries = 0;
+    const timer = window.setInterval(() => {
+      if (isGoogleMapsReady()) {
+        onMapsReady();
+        window.clearInterval(timer);
+      } else if (++tries >= 300) {
+        window.clearInterval(timer);
+        if (import.meta.env.DEV) {
+          console.warn('[Maps] Google Maps script did not load. Check API key restrictions and enabled APIs.');
+        }
+      }
+    }, 100);
+
+    return () => window.clearInterval(timer);
   }, [googleMapsApiKey]);
 
   return (

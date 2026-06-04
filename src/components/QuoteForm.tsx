@@ -19,7 +19,7 @@ export default function QuoteForm({ service, className = '' }: QuoteFormProps) {
     message: ''
   });
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const [isSubmitted, setIsSubmitted] = useState(false);
+  const [submitError, setSubmitError] = useState('');
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
     const { name, value } = e.target;
@@ -51,44 +51,35 @@ export default function QuoteForm({ service, className = '' }: QuoteFormProps) {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsSubmitting(true);
+    setSubmitError('');
 
     try {
-      // Submit to the backend API which handles both CRM and Email
-      const result = await submitQuoteForm(formData);
+      const result = await submitQuoteForm({
+        ...formData,
+        phone: formData.phone.replace(/\D/g, '').slice(0, 10),
+      });
 
       if (result.ok) {
-        setIsSubmitted(true);
-        navigate('/thank-you');
-      } else {
-        throw new Error(result.error || 'Failed to submit quote request');
+        navigate('/thank-you/', { replace: true });
+        return;
       }
+      setSubmitError(result.error || 'Failed to submit quote request. Please try again or contact us directly.');
     } catch (error) {
       console.error('Error submitting form:', error);
-      alert('Failed to submit quote request. Please try again or contact us directly.');
+      setSubmitError('Network error. Please check your connection and try again.');
     } finally {
       setIsSubmitting(false);
     }
   };
 
-  if (isSubmitted) {
-    return (
-      <div className={`bg-green-50 border border-green-200 rounded-2xl p-8 text-center ${className}`}>
-        <div className="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4">
-          <svg className="w-8 h-8 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
-          </svg>
-        </div>
-        <h3 className="text-xl font-bold text-green-800 mb-2">Thank You!</h3>
-        <p className="text-green-700">
-          We&apos;ve received your request. Our team will contact you shortly with your personalized quote.
-        </p>
-      </div>
-    );
-  }
-
   return (
     <form onSubmit={handleSubmit} className={`bg-white rounded-2xl shadow-lg border border-gray-100 p-8 ${className}`}>
-      
+      {submitError && (
+        <div className="mb-6 p-4 rounded-lg bg-red-50 border border-red-200 text-red-800 text-sm">
+          {submitError}
+        </div>
+      )}
+
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
         <div>
           <label htmlFor="name" className="block text-sm font-medium text-gray-700 mb-2">
@@ -116,9 +107,13 @@ export default function QuoteForm({ service, className = '' }: QuoteFormProps) {
             name="phone"
             required
             value={formData.phone}
-            onChange={handleChange}
+            onChange={(e) => {
+              const value = e.target.value.replace(/\D/g, '').slice(0, 10);
+              setFormData((prev) => ({ ...prev, phone: value }));
+            }}
+            maxLength={10}
             className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent"
-            placeholder="Enter your phone number"
+            placeholder="10-digit mobile number"
           />
         </div>
         

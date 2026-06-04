@@ -7,6 +7,8 @@ export default defineConfig(({ mode }) => {
   const apiProxy = env.VITE_CRM_API_URL || 'http://localhost:8000';
 
   return {
+    // Allow legacy NEXT_PUBLIC_* keys from .env (e.g. Google Maps) alongside VITE_*
+    envPrefix: ['VITE_', 'NEXT_PUBLIC_'],
     plugins: [react()],
     resolve: {
       alias: {

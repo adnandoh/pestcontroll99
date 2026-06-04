@@ -3,7 +3,7 @@ import { useNavigate, useSearchParams } from 'react-router-dom';
 import { saveFormData, HomeFormData, decodeFormDataFromURL, getFormData, clearFormData } from '@/utils/formStorage';
 import { submitHomeQuoteForm } from '@/services/formSubmit';
 import MultiSelectPest from './MultiSelectPest';
-import { LocationDetector } from './GoogleMaps';
+import { AddressInput } from './GoogleMaps';
 
 type HomeQuoteFormProps = {
   /** Tighter layout (~30% less vertical footprint) for home hero pairing */
@@ -131,30 +131,10 @@ export default function HomeQuoteForm({ compact = false }: HomeQuoteFormProps) {
       const result = await submitHomeQuoteForm(formData as unknown as Record<string, unknown>);
 
       if (result.ok) {
-        setShowSuccessPopup(true);
-        setSubmitMessage(result.message || 'Quote request submitted successfully! We will contact you soon.');
-
-        // Clear form after successful submission
-        setFormData({
-          pestTypes: [],
-          phone: '',
-          address: '',
-          streetAddress: '',
-          name: '',
-          premiseType: 'residential',
-          premiseSize: '1bhk',
-          serviceType: 'one-time',
-          estimatedPrice: 0
-        });
-
-        // Clear any existing errors
+        clearFormData();
         setErrors({});
-
-        // Save to localStorage for backup
-        saveFormData(formData);
-
-        // Redirect to Thank You page
-        navigate('/thank-you');
+        navigate('/thank-you/', { replace: true });
+        return;
       } else {
         setShowSuccessPopup(false);
         setSubmitMessage(result.error || 'Failed to submit quote request. Please try again or contact us directly.');
@@ -419,7 +399,7 @@ export default function HomeQuoteForm({ compact = false }: HomeQuoteFormProps) {
                 </div>
               </div>
 
-              {/* 7. Street Address (optional) — plain input so field is always editable */}
+              {/* 7. Street Address (optional) — Google Places autocomplete + current location */}
               <div>
                 <label
                   htmlFor="streetAddress"
@@ -427,23 +407,14 @@ export default function HomeQuoteForm({ compact = false }: HomeQuoteFormProps) {
                 >
                   Street Address <span className="font-normal text-gray-500">(optional)</span>
                 </label>
-                <input
-                  id="streetAddress"
-                  type="text"
+                <AddressInput
+                  label=""
                   value={formData.streetAddress}
-                  onChange={(e) => handleChange('streetAddress', e.target.value)}
+                  onChange={(value) => handleChange('streetAddress', value)}
                   placeholder="Enter your street address (optional)"
-                  autoComplete="street-address"
-                  className={`w-full px-4 border border-[#00C950] rounded-xl focus:border-[#00C950] focus:ring-0 outline-none transition-all duration-200 bg-white font-medium shadow-sm ${compact ? 'py-2.5 text-sm' : 'py-3'}`}
+                  className={`border-[#00C950] focus:ring-0 font-medium shadow-sm ${compact ? 'py-2.5 text-sm' : 'py-3'}`}
+                  error={errors.streetAddress}
                 />
-                {errors.streetAddress && (
-                  <p className="mt-1 text-xs text-red-600 font-bold">{errors.streetAddress}</p>
-                )}
-                <div className="flex justify-end mt-2">
-                  <LocationDetector
-                    onLocationDetected={(address) => handleChange('streetAddress', address)}
-                  />
-                </div>
               </div>
 
               {/* Submit Button */}

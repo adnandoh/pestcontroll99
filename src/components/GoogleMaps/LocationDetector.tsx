@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { getGeocode } from 'use-places-autocomplete';
+import { getGoogleMapsApiKey, isGoogleMapsReady } from '@/config/env';
 
 interface LocationDetectorProps {
   onLocationDetected: (address: string) => void;
@@ -13,6 +14,18 @@ export default function LocationDetector({ onLocationDetected, className = '' }:
   const detectLocation = async () => {
     setIsLoading(true);
     setError(null);
+
+    if (!getGoogleMapsApiKey()) {
+      setError('Address lookup is not configured. Please type your address manually.');
+      setIsLoading(false);
+      return;
+    }
+
+    if (!isGoogleMapsReady()) {
+      setError('Maps is still loading. Wait a moment and try again.');
+      setIsLoading(false);
+      return;
+    }
 
     if (!navigator.geolocation) {
       setError('Geolocation is not supported by your browser');
@@ -44,9 +57,18 @@ export default function LocationDetector({ onLocationDetected, className = '' }:
       } else {
         setError('Could not find address for this location');
       }
-    } catch (error) {
-      console.error('Error getting location:', error);
-      setError('Failed to get your location. Please try again or enter manually.');
+    } catch (err: unknown) {
+      console.error('Error getting location:', err);
+      const geoErr = err as GeolocationPositionError;
+      if (geoErr?.code === 1) {
+        setError('Location permission denied. Allow location access or type your address.');
+      } else if (geoErr?.code === 2) {
+        setError('Could not detect your position. Try again or enter your address manually.');
+      } else if (geoErr?.code === 3) {
+        setError('Location request timed out. Try again or enter your address manually.');
+      } else {
+        setError('Failed to get your location. Please try again or enter manually.');
+      }
     } finally {
       setIsLoading(false);
     }

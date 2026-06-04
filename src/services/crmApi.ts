@@ -1,4 +1,4 @@
-import { getApiBase } from '@/config/env';
+import { getCrmSubmitBases } from '@/config/env';
 
 export interface InquiryData {
   name: string;
@@ -42,24 +42,11 @@ export interface ApiResponse<T> {
 }
 
 class CRMApiService {
-  private baseUrl: string;
-
-  constructor() {
-    const envUrl = import.meta.env.VITE_CRM_API_URL;
-    if (envUrl) {
-      this.baseUrl = envUrl.replace(/\/$/, '');
-    } else if (import.meta.env.DEV) {
-      this.baseUrl = '';
-    } else {
-      this.baseUrl = 'https://api.vacationbna.site';
-    }
-  }
-
-  private apiPath(path: string): string {
-    if (!this.baseUrl) {
+  private apiPath(baseUrl: string, path: string): string {
+    if (!baseUrl) {
       return path;
     }
-    return `${this.baseUrl}${path}`;
+    return `${baseUrl}${path}`;
   }
 
   private getAuthHeaders(): Record<string, string> {
@@ -69,72 +56,95 @@ class CRMApiService {
     };
   }
 
-  async submitInquiry(inquiryData: InquiryData): Promise<ApiResponse<InquiryResponse>> {
-    try {
-      const response = await fetch(this.apiPath('/api/inquiries/'), {
-        method: 'POST',
-        headers: this.getAuthHeaders(),
-        body: JSON.stringify(inquiryData),
-      });
+  private formatApiError(result: unknown, status: number): string {
+    const errorResult = result as {
+      message?: string;
+      detail?: string;
+      error?: string;
+      details?: string;
+      errors?: Record<string, string[] | string>;
+    };
 
-      let result: unknown = null;
-      const contentType = response.headers.get('content-type') || '';
-      if (contentType.includes('application/json')) {
-        result = await response.json();
-      } else {
-        const text = await response.text();
-        try {
-          result = JSON.parse(text);
-        } catch {
-          result = { message: text };
-        }
+    if (errorResult.errors && typeof errorResult.errors === 'object') {
+      const first = Object.values(errorResult.errors)[0];
+      if (Array.isArray(first) && first[0]) {
+        return first[0];
       }
-
-      if (response.ok) {
-        return {
-          success: true,
-          data: result as InquiryResponse,
-        };
+      if (typeof first === 'string') {
+        return first;
       }
+    }
 
-      const errorResult = result as {
-        message?: string;
-        detail?: string;
-        errors?: Record<string, string[]>;
-      };
+    return (
+      errorResult.message ||
+      errorResult.detail ||
+      errorResult.error ||
+      errorResult.details ||
+      `Failed to submit inquiry (HTTP ${status})`
+    );
+  }
+
+  private async postInquiry(
+    baseUrl: string,
+    inquiryData: InquiryData,
+  ): Promise<ApiResponse<InquiryResponse>> {
+    const response = await fetch(this.apiPath(baseUrl, '/api/inquiries/'), {
+      method: 'POST',
+      headers: this.getAuthHeaders(),
+      body: JSON.stringify(inquiryData),
+    });
+
+    let result: unknown = null;
+    const contentType = response.headers.get('content-type') || '';
+    if (contentType.includes('application/json')) {
+      result = await response.json();
+    } else {
+      const text = await response.text();
+      try {
+        result = JSON.parse(text);
+      } catch {
+        result = { message: text };
+      }
+    }
+
+    if (response.ok) {
       return {
-        success: false,
-        error: errorResult.message || errorResult.detail || 'Failed to submit inquiry',
-        errors: errorResult.errors,
-      };
-    } catch (error) {
-      console.error('CRM API Error:', error);
-
-      if (import.meta.env.DEV && !this.baseUrl) {
-        try {
-          const fallbackResponse = await fetch('https://api.vacationbna.site/api/inquiries/', {
-            method: 'POST',
-            headers: this.getAuthHeaders(),
-            body: JSON.stringify(inquiryData),
-          });
-
-          if (fallbackResponse.ok) {
-            const fallbackResult = await fallbackResponse.json();
-            return {
-              success: true,
-              data: fallbackResult as InquiryResponse,
-            };
-          }
-        } catch (fallbackError) {
-          console.error('Fallback to production backend also failed:', fallbackError);
-        }
-      }
-
-      return {
-        success: false,
-        error: 'Network error occurred. Please check your connection and try again.',
+        success: true,
+        data: result as InquiryResponse,
       };
     }
+
+    return {
+      success: false,
+      error: this.formatApiError(result, response.status),
+      errors: (result as { errors?: Record<string, string[]> }).errors,
+    };
+  }
+
+  async submitInquiry(inquiryData: InquiryData): Promise<ApiResponse<InquiryResponse>> {
+    const bases = getCrmSubmitBases();
+    let lastError = 'Failed to submit inquiry';
+
+    for (const baseUrl of bases) {
+      try {
+        const result = await this.postInquiry(baseUrl, inquiryData);
+        if (result.success) {
+          return result;
+        }
+        lastError = result.error || lastError;
+        if (import.meta.env.DEV) {
+          console.warn(`[CRM] Submit failed via ${baseUrl || 'vite-proxy'}:`, lastError);
+        }
+      } catch (error) {
+        console.error(`[CRM] Network error via ${baseUrl || 'vite-proxy'}:`, error);
+        lastError = 'Network error occurred. Please check your connection and try again.';
+      }
+    }
+
+    return {
+      success: false,
+      error: lastError,
+    };
   }
 
   validateInquiryData(data: Partial<InquiryData>): { isValid: boolean; errors: Record<string, string> } {
@@ -183,6 +193,7 @@ class CRMApiService {
       premiseSize?: string;
       estimatedPrice?: number;
       serviceType?: string;
+      message?: string;
     },
     formType: 'home' | 'quote',
   ): InquiryData {
@@ -289,6 +300,7 @@ class CRMApiService {
       premiseType?: string;
       premiseSize?: string;
       estimatedPrice?: number;
+      message?: string;
     },
     formType: 'home' | 'quote',
     serviceFrequency?: string,

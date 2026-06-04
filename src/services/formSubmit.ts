@@ -7,19 +7,40 @@ export async function submitContactForm(formData: {
   service?: string;
   message: string;
 }) {
+  const name = formData.name?.trim() || '';
+  const message = formData.message?.trim() || '';
+
+  if (name.length < 2) {
+    return { ok: false, error: 'Name must be at least 2 characters long' };
+  }
+
   const cleanPhone = formData.phone.replace(/\D/g, '');
   if (cleanPhone.length !== 10) {
     return { ok: false, error: 'Phone number must be exactly 10 digits' };
   }
 
+  if (message.length < 10) {
+    return { ok: false, error: 'Message must be at least 10 characters long' };
+  }
+
+  if (formData.email && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email)) {
+    return { ok: false, error: 'Please enter a valid email address' };
+  }
+
   const crmData = {
-    name: formData.name,
+    name,
     mobile: cleanPhone,
     email: formData.email,
     city: 'Mumbai',
     service_interest: formData.service || 'General Inquiry',
-    message: formData.message,
+    message,
   };
+
+  const validation = crmApi.validateInquiryData(crmData);
+  if (!validation.isValid) {
+    const firstError = Object.values(validation.errors)[0];
+    return { ok: false, error: firstError || 'Please check your form' };
+  }
 
   const crmResponse = await crmApi.submitInquiry(crmData);
   if (crmResponse.success) {
@@ -42,6 +63,11 @@ export async function submitHomeQuoteForm(formData: Record<string, unknown>) {
     !formData.phone
   ) {
     return { ok: false, error: 'Missing required fields' };
+  }
+
+  const name = String(formData.name || '').trim();
+  if (name.length < 2) {
+    return { ok: false, error: 'Name must be at least 2 characters long' };
   }
 
   const cleanPhone = String(formData.phone).replace(/\D/g, '');

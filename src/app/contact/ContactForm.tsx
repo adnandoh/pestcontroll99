@@ -16,6 +16,7 @@ export default function ContactForm() {
   });
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitStatus, setSubmitStatus] = useState<'idle' | 'success' | 'error'>('idle');
+  const [submitError, setSubmitError] = useState('');
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => {
     setFormData({
@@ -28,12 +29,12 @@ export default function ContactForm() {
     e.preventDefault();
     setIsSubmitting(true);
     setSubmitStatus('idle');
+    setSubmitError('');
 
     try {
       const result = await submitContactForm(formData);
 
       if (result.ok) {
-        setSubmitStatus('success');
         setFormData({
           name: '',
           email: '',
@@ -41,12 +42,15 @@ export default function ContactForm() {
           service: '',
           message: ''
         });
-        navigate('/thank-you');
+        navigate('/thank-you/', { replace: true });
+        return;
       } else {
         setSubmitStatus('error');
+        setSubmitError(result.error || 'Sorry, there was an error sending your message. Please try again.');
       }
     } catch {
       setSubmitStatus('error');
+      setSubmitError('Network error. Please check your connection and try again.');
     } finally {
       setIsSubmitting(false);
     }
@@ -89,7 +93,7 @@ export default function ContactForm() {
                   )}
                   {submitStatus === 'error' && (
                     <div className="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded-lg text-sm">
-                      Sorry, there was an error sending your message. Please try again.
+                      {submitError}
                     </div>
                   )}
 
@@ -123,8 +127,12 @@ export default function ContactForm() {
                       type="tel"
                       name="phone"
                       value={formData.phone}
-                      onChange={handleChange}
+                      onChange={(e) => {
+                        const value = e.target.value.replace(/\D/g, '').slice(0, 10);
+                        setFormData((prev) => ({ ...prev, phone: value }));
+                      }}
                       required
+                      maxLength={10}
                       className="w-full p-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent text-sm"
                       placeholder={BUSINESS.phoneDisplay}
                     />
@@ -154,7 +162,8 @@ export default function ContactForm() {
                       onChange={handleChange}
                       required
                       className="w-full p-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent text-sm"
-                      placeholder="Tell us about your pest problem..."
+                      placeholder="Tell us about your pest problem (at least 10 characters)..."
+                      minLength={10}
                     />
                   </div>
                   <button
