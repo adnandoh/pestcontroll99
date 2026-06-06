@@ -1,4 +1,4 @@
-import { crmApi } from '@/services/crmApi';
+import { crmApi, type InquiryTrackingOptions } from '@/services/crmApi';
 
 export async function submitContactForm(formData: {
   name: string;
@@ -56,7 +56,10 @@ export async function submitContactForm(formData: {
   };
 }
 
-export async function submitHomeQuoteForm(formData: Record<string, unknown>) {
+export async function submitHomeQuoteForm(
+  formData: Record<string, unknown>,
+  tracking?: InquiryTrackingOptions,
+) {
   if (
     !formData.pestTypes ||
     !(formData.pestTypes as string[]).length ||
@@ -78,6 +81,7 @@ export async function submitHomeQuoteForm(formData: Record<string, unknown>) {
   const inquiryData = crmApi.mapFormDataToInquiry(
     formData as Parameters<typeof crmApi.mapFormDataToInquiry>[0],
     'home',
+    tracking,
   );
   const crmResult = await crmApi.submitInquiry(inquiryData);
 

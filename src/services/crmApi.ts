@@ -5,6 +5,7 @@ export interface InquiryData {
   mobile: string;
   email?: string;
   city: string;
+  state?: string;
   service_interest: string;
   message: string;
   premise_type?: string;
@@ -13,7 +14,15 @@ export interface InquiryData {
   estimated_price?: number;
   is_inspection_required?: boolean;
   service_frequency?: string;
+  /** Stored as website-lead remark in CRM when provided */
+  remark?: string;
 }
+
+export type InquiryTrackingOptions = {
+  leadSource?: string;
+  defaultCity?: string;
+  defaultState?: string;
+};
 
 export interface InquiryResponse {
   id: number;
@@ -196,6 +205,7 @@ class CRMApiService {
       message?: string;
     },
     formType: 'home' | 'quote',
+    tracking?: InquiryTrackingOptions,
   ): InquiryData {
     const oneTimeOnlyPests = ['rodent', 'bedbugs', 'termite', 'mosquito'];
     const oneTimeOnlyServices = [
@@ -209,17 +219,20 @@ class CRMApiService {
       formData.pestTypes?.some((p: string) => oneTimeOnlyPests.includes(p)) ||
       oneTimeOnlyServices.includes(formData.service || '');
     const serviceFrequency = forcedOneTime ? 'one-time' : formData.serviceType || 'one-time';
+    const address = formData.streetAddress || formData.address || '';
+    const city = this.resolveCity(address, tracking?.defaultCity);
 
-    return {
+    const inquiry: InquiryData = {
       name: formData.name || '',
       mobile: formData.phone || '',
       email: formData.email || '',
-      city: this.extractCityFromAddress(formData.streetAddress || formData.address || ''),
+      city,
+      state: tracking?.defaultState,
       service_interest:
         formType === 'quote' && formData.service
           ? this.formatServiceType(formData.service)
           : this.formatPestTypes(formData.pestTypes || []),
-      message: this.generateMessage(formData, formType, serviceFrequency),
+      message: this.generateMessage(formData, formType, serviceFrequency, tracking?.leadSource),
       premise_type: formData.premiseType || 'residential',
       premise_size: formData.premiseSize || '',
       pest_problems: (formData.pestTypes || []).join(', '),
@@ -228,6 +241,21 @@ class CRMApiService {
         formData.premiseType === 'commercial' || formData.estimatedPrice === 0,
       service_frequency: serviceFrequency,
     };
+
+    if (tracking?.leadSource) {
+      inquiry.remark = `Lead source: ${tracking.leadSource}`;
+    }
+
+    return inquiry;
+  }
+
+  private resolveCity(address: string, defaultCity?: string): string {
+    const addressLower = address.toLowerCase();
+    if (addressLower.includes('lonavala')) return 'Lonavala';
+    if (addressLower.includes('khandala')) return 'Khandala';
+    if (addressLower.includes('karjat')) return 'Karjat';
+    if (defaultCity) return defaultCity;
+    return this.extractCityFromAddress(address);
   }
 
   private extractCityFromAddress(address: string): string {
@@ -238,6 +266,7 @@ class CRMApiService {
     if (addressLower.includes('pune')) return 'Pune';
     if (addressLower.includes('navi mumbai') || addressLower.includes('new mumbai')) return 'Navi Mumbai';
     if (addressLower.includes('thane')) return 'Thane';
+    if (addressLower.includes('lonavala')) return 'Lonavala';
 
     const parts = address.split(',').map((part) => part.trim());
     if (parts.length > 1) {
@@ -304,12 +333,20 @@ class CRMApiService {
     },
     formType: 'home' | 'quote',
     serviceFrequency?: string,
+    leadSource?: string,
   ): string {
     const parts: string[] = [];
 
-    parts.push(
-      `Quote request from website ${formType === 'home' ? 'home page' : 'quote page'}.`,
-    );
+    if (leadSource) {
+      parts.push(`Lead source: ${leadSource}.`);
+    }
+
+    const pageLabel = leadSource
+      ? 'campaign landing page'
+      : formType === 'home'
+        ? 'home page'
+        : 'quote page';
+    parts.push(`Quote request from website ${pageLabel}.`);
 
     if (formData.pestTypes && formData.pestTypes.length > 0) {
       parts.push(`Pest problems: ${formData.pestTypes.join(', ')}.`);

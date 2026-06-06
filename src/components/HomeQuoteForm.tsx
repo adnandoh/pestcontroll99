@@ -8,9 +8,24 @@ import { AddressInput } from './GoogleMaps';
 type HomeQuoteFormProps = {
   /** Tighter layout (~30% less vertical footprint) for home hero pairing */
   compact?: boolean;
+  /** CRM remark + message tag for campaign landing pages */
+  leadSource?: string;
+  thankYouPath?: string;
+  defaultCity?: string;
+  defaultState?: string;
+  formTitle?: string;
+  formSubtitle?: string;
 };
 
-export default function HomeQuoteForm({ compact = false }: HomeQuoteFormProps) {
+export default function HomeQuoteForm({
+  compact = false,
+  leadSource,
+  thankYouPath = '/thank-you/',
+  defaultCity,
+  defaultState,
+  formTitle,
+  formSubtitle,
+}: HomeQuoteFormProps) {
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
   const [formData, setFormData] = useState<HomeFormData>({
@@ -128,12 +143,16 @@ export default function HomeQuoteForm({ compact = false }: HomeQuoteFormProps) {
 
     try {
       // Submit to the backend API which handles both CRM and Email
-      const result = await submitHomeQuoteForm(formData as unknown as Record<string, unknown>);
+      const result = await submitHomeQuoteForm(formData as unknown as Record<string, unknown>, {
+        leadSource,
+        defaultCity,
+        defaultState,
+      });
 
       if (result.ok) {
         clearFormData();
         setErrors({});
-        navigate('/thank-you/', { replace: true });
+        navigate(thankYouPath, { replace: true });
         return;
       } else {
         setShowSuccessPopup(false);
@@ -213,10 +232,21 @@ export default function HomeQuoteForm({ compact = false }: HomeQuoteFormProps) {
               <h2
                 className={`font-bold text-gray-900 mb-2 sm:mb-3 leading-tight ${compact ? 'text-xl sm:text-2xl md:text-3xl' : 'text-2xl sm:text-3xl md:text-4xl'}`}
               >
-                Get Your <span className="text-transparent bg-clip-text bg-gradient-to-r from-green-600 to-emerald-500">Free Quote</span> Today
+                {formTitle ? (
+                  formTitle
+                ) : (
+                  <>
+                    Get Your{' '}
+                    <span className="text-transparent bg-clip-text bg-gradient-to-r from-green-600 to-emerald-500">
+                      Free Quote
+                    </span>{' '}
+                    Today
+                  </>
+                )}
               </h2>
               <p className={`text-gray-600 max-w-xl mx-auto ${compact ? 'text-xs sm:text-sm' : 'text-sm sm:text-base'}`}>
-                Tell us about your pest problem, and we&apos;ll provide a fast, accurate solution.
+                {formSubtitle ??
+                  "Tell us about your pest problem, and we'll provide a fast, accurate solution."}
               </p>
             </div>
 

@@ -29,6 +29,8 @@ const RefundPolicyPage = lazy(() => import('@/app/refund-policy/page'));
 const DeleteAccountPage = lazy(() => import('@/app/delete-account/page'));
 const TestPage = lazy(() => import('@/app/test/page'));
 const ThankYouPage = lazy(() => import('@/app/thank-you/page'));
+const LonavalaLandingPage = lazy(() => import('@/app/pest-control-in-lonavala/page'));
+const LonavalaThankYouPage = lazy(() => import('@/app/lonavala-thank-you/page'));
 
 function PageLoader() {
   return (
@@ -86,6 +88,8 @@ export default function App() {
             <Route path="refund-policy" element={<RefundPolicyPage />} />
             <Route path="test" element={<TestPage />} />
             <Route path="thank-you" element={<ThankYouPage />} />
+            <Route path="pest-control-in-lonavala" element={<LonavalaLandingPage />} />
+            <Route path="lonavala-thank-you" element={<LonavalaThankYouPage />} />
             <Route path="*" element={<NotFoundPage />} />
           </Route>
         </Routes>
