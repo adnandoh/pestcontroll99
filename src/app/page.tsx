@@ -7,6 +7,7 @@ import HomeQuoteForm from '@/components/HomeQuoteForm';
 import ClientOnly from '@/components/ClientOnly';
 import BusinessIdentityBanner from '@/components/BusinessIdentityBanner';
 import TrustSection from '@/components/TrustSection';
+import AreasWeServe from '@/components/AreasWeServe';
 import { BUSINESS, DEFAULT_WHATSAPP_MESSAGE, whatsAppUrl } from '@/config/business';
 
 export default function Home() {
@@ -324,6 +325,8 @@ export default function Home() {
 
         </div>
       </section>
+
+      <AreasWeServe />
     </div>
   );
 }

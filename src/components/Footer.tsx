@@ -1,23 +1,36 @@
 import { Link } from 'react-router-dom';
 import AppImage from '@/components/AppImage';
 import { BUSINESS, DEFAULT_WHATSAPP_MESSAGE, FOOTER_BRAND_LINES, whatsAppUrl } from '@/config/business';
+import { FOOTER_TOP_AREAS, getAreaBySlug, getAreaPath } from '@/config/areasWeServe';
 
 export default function Footer() {
   return (
     <footer className="text-gray-400 overflow-hidden font-sans">
-      <div className="bg-[#111111] pt-10 pb-8 sm:pt-16 sm:pb-12 border-t border-gray-800">
-        <div className="container mx-auto px-6 sm:px-4">
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-10 lg:gap-12">
+      <div className="relative bg-[#111111] pt-10 pb-8 sm:pt-16 sm:pb-12 border-t border-gray-800 overflow-hidden">
+        {/* Soft white glow at top of footer */}
+        <div
+          className="pointer-events-none absolute inset-x-0 top-0 h-32 bg-gradient-to-b from-white/[0.07] to-transparent"
+          aria-hidden="true"
+        />
+        <div
+          className="pointer-events-none absolute -top-20 left-1/2 -translate-x-1/2 w-[70%] max-w-3xl h-40 bg-white/[0.04] blur-3xl rounded-full"
+          aria-hidden="true"
+        />
+
+        <div className="container mx-auto px-6 sm:px-4 relative z-10">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-10 lg:gap-12">
             <div className="space-y-6">
-              <div className="flex items-center">
-                <AppImage
-                  src="/images/logo.svg"
-                  alt={`${BUSINESS.brandName} logo`}
-                  width={140}
-                  height={45}
-                  className="w-32 sm:w-36 h-auto brightness-0 invert opacity-90"
-                />
-              </div>
+              <Link to="/" className="inline-flex">
+                <div className="rounded-xl bg-white px-4 py-3 shadow-[0_8px_30px_rgba(255,255,255,0.15)] ring-1 ring-white/20">
+                  <AppImage
+                    src="/images/logo.svg"
+                    alt={`${BUSINESS.brandName} logo`}
+                    width={140}
+                    height={45}
+                    className="w-32 sm:w-36 h-auto"
+                  />
+                </div>
+              </Link>
               <div>
                 <p className="text-white font-bold text-lg">{FOOTER_BRAND_LINES.line1}</p>
                 <p className="text-green-400 text-sm font-semibold mt-1">{FOOTER_BRAND_LINES.line2}</p>
@@ -114,6 +127,25 @@ export default function Footer() {
                     Blog
                   </Link>
                 </li>
+              </ul>
+            </div>
+
+            <div>
+              <h4 className="text-white font-bold text-lg mb-6 border-b border-gray-800 pb-2 inline-block">
+                Areas We Serve
+              </h4>
+              <ul className="space-y-3 text-gray-400 text-sm">
+                {FOOTER_TOP_AREAS.map((slug) => {
+                  const area = getAreaBySlug(slug);
+                  if (!area) return null;
+                  return (
+                    <li key={slug}>
+                      <Link to={getAreaPath(slug)} className="hover:text-green-500 transition-colors">
+                        Pest Control {area.name}
+                      </Link>
+                    </li>
+                  );
+                })}
               </ul>
             </div>
 

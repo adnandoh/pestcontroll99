@@ -1,7 +1,8 @@
-import { lazy, Suspense } from 'react';
+import { lazy, Suspense, useEffect } from 'react';
 import { Navigate, Route, Routes, useLocation } from 'react-router-dom';
 import RootLayout from '@/layouts/RootLayout';
 import NotFoundPage from '@/app/not-found';
+import { ALL_AREA_SLUGS } from '@/config/areasWeServe';
 
 const HomePage = lazy(() => import('@/app/page'));
 const AboutPage = lazy(() => import('@/app/about/page'));
@@ -31,6 +32,7 @@ const TestPage = lazy(() => import('@/app/test/page'));
 const ThankYouPage = lazy(() => import('@/app/thank-you/page'));
 const LonavalaLandingPage = lazy(() => import('@/app/pest-control-in-lonavala/page'));
 const LonavalaThankYouPage = lazy(() => import('@/app/lonavala-thank-you/page'));
+const AreaPage = lazy(() => import('@/app/area/page'));
 
 function PageLoader() {
   return (
@@ -38,6 +40,24 @@ function PageLoader() {
       <div className="h-10 w-10 animate-spin rounded-full border-4 border-green-600 border-t-transparent" />
     </div>
   );
+}
+
+function ScrollToTop() {
+  const { pathname, hash } = useLocation();
+
+  useEffect(() => {
+    if (hash) {
+      // Allow anchor links (e.g. /#areas-we-serve) to scroll to their target
+      const el = document.querySelector(hash);
+      if (el) {
+        el.scrollIntoView({ behavior: 'smooth' });
+        return;
+      }
+    }
+    window.scrollTo(0, 0);
+  }, [pathname, hash]);
+
+  return null;
 }
 
 function TrailingSlashRedirect() {
@@ -56,6 +76,7 @@ function TrailingSlashRedirect() {
 export default function App() {
   return (
     <div className="font-sans antialiased min-h-screen flex flex-col">
+      <ScrollToTop />
       <TrailingSlashRedirect />
       <Suspense fallback={<PageLoader />}>
         <Routes>
@@ -90,6 +111,9 @@ export default function App() {
             <Route path="thank-you" element={<ThankYouPage />} />
             <Route path="pest-control-in-lonavala" element={<LonavalaLandingPage />} />
             <Route path="lonavala-thank-you" element={<LonavalaThankYouPage />} />
+            {ALL_AREA_SLUGS.map((slug) => (
+              <Route key={slug} path={`pest-control-${slug}`} element={<AreaPage slug={slug} />} />
+            ))}
             <Route path="*" element={<NotFoundPage />} />
           </Route>
         </Routes>
