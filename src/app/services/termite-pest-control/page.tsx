@@ -216,9 +216,9 @@ export default function TermitePestControlPage() {
                 <div className="bg-green-100 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-6">
                   <span className="text-2xl font-bold text-green-600">3</span>
                 </div>
-                <h3 className="text-xl font-bold text-gray-900 mb-4">Build barrier & clean</h3>
+                <h3 className="text-xl font-bold text-gray-900 mb-4">Build barrier</h3>
                 <p className="text-gray-700 leading-relaxed">
-                  We drill along skirting, inject termiticide, plug neatly, and wipe all dust. Furniture stays in place, and rooms remain tidy.
+                  We drill along skirting, inject termiticide, and plug holes neatly. Furniture stays in place while the chemical barrier protects your property.
                 </p>
               </div>
               
@@ -269,7 +269,7 @@ export default function TermitePestControlPage() {
               <div className="bg-white p-6 rounded-2xl shadow-lg border border-gray-100">
                 <h3 className="text-lg font-bold text-gray-900 mb-4">Trained local technicians</h3>
                 <p className="text-gray-700 leading-relaxed">
-                  Each crew member logs 300+ field hours on drilling angles, moisture mapping, and neat sealing. They work tidily, explain each step, and leave your home spotless.
+                  Each crew member logs 300+ field hours on drilling angles, moisture mapping, and neat sealing. They work carefully, explain each step, and respect your home.
                 </p>
               </div>
               
@@ -283,7 +283,7 @@ export default function TermitePestControlPage() {
               <div className="bg-white p-6 rounded-2xl shadow-lg border border-gray-100">
                 <h3 className="text-lg font-bold text-gray-900 mb-4">Minimal prep, no furniture shift</h3>
                 <p className="text-gray-700 leading-relaxed">
-                  We drill 6 mm holes along the skirting and seal them flush with colour-matched plugs. Furniture stays in place, and dust is vacuumed before we leave.
+                  We drill 6 mm holes along the skirting and seal them flush with colour-matched plugs. Furniture stays in place with minimal disruption to your rooms.
                 </p>
               </div>
               
@@ -356,7 +356,7 @@ export default function TermitePestControlPage() {
                     {'★'.repeat(5)}
                   </div>
                 </div>
-                <p className="text-gray-700 mb-4">&ldquo;No drilling mess; kitchen stayed clean in Andheri.&rdquo;</p>
+                <p className="text-gray-700 mb-4">&ldquo;No drilling mess; kitchen stayed usable in Andheri.&rdquo;</p>
                 <p className="text-sm text-gray-500">- Sunita R., Andheri</p>
               </div>
               <div className="bg-white p-6 rounded-2xl shadow-lg border border-gray-100">

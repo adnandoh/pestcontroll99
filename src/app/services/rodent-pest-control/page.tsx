@@ -180,7 +180,7 @@ export default function RodentPestControlPage() {
               How the Visit Works
             </h2>
             
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-8">
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
               <div className="text-center">
                 <div className="bg-green-100 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-6">
                   <span className="text-2xl font-bold text-green-600">1</span>
@@ -215,19 +215,9 @@ export default function RodentPestControlPage() {
                 <div className="bg-green-100 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-6">
                   <span className="text-2xl font-bold text-green-600">4</span>
                 </div>
-                <h3 className="text-xl font-bold text-gray-900 mb-4">Clean up</h3>
-                <p className="text-gray-700 leading-relaxed">
-                  We wipe work spots, vacuum dust, and tidy the treated areas. We share waste, storage, and leak fixes to prevent fresh visits.
-                </p>
-              </div>
-              
-              <div className="text-center">
-                <div className="bg-green-100 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-6">
-                  <span className="text-2xl font-bold text-green-600">5</span>
-                </div>
                 <h3 className="text-xl font-bold text-gray-900 mb-4">Follow-up</h3>
                 <p className="text-gray-700 leading-relaxed">
-                  You get an SMS in 14 days to confirm results or issues. We re-set stations or touch up proofing under your warranty.
+                  You get an SMS in 14 days to confirm results or issues. We re-set stations, touch up proofing under your warranty, and share waste, storage, and leak fixes to prevent fresh visits.
                 </p>
               </div>
             </div>
@@ -268,7 +258,7 @@ export default function RodentPestControlPage() {
               <div className="bg-white p-6 rounded-2xl shadow-lg border border-gray-100">
                 <h3 className="text-lg font-bold text-gray-900 mb-4">Trained, discreet local technicians</h3>
                 <p className="text-gray-700 leading-relaxed">
-                  Crews use neat drill-and-seal methods and clean as they work. They explain each step in simple words and respect your home or café.
+                  Crews use neat drill-and-seal methods and work professionally. They explain each step in simple words and respect your home or café.
                 </p>
               </div>
               
@@ -280,9 +270,9 @@ export default function RodentPestControlPage() {
               </div>
               
               <div className="bg-white p-6 rounded-2xl shadow-lg border border-gray-100">
-                <h3 className="text-lg font-bold text-gray-900 mb-4">Minimal mess, neat sealing</h3>
+                <h3 className="text-lg font-bold text-gray-900 mb-4">Neat proofing & sealing</h3>
                 <p className="text-gray-700 leading-relaxed">
-                  We drill only where needed and seal every gap flush to the surface. Dust is vacuumed, touch points are wiped, and rooms stay usable.
+                  We drill only where needed and seal every gap flush to the surface. Entry points are blocked neatly so your rooms stay usable after service.
                 </p>
               </div>
               

@@ -72,7 +72,7 @@ export default function HoneyBeePestControlPage() {
                 In Mumbai&apos;s warm and humid climate, hives expand quickly, leading to honey leakage, foul odour, sticky residue, and even structural damage if ignored.
               </p>
               <p className="text-center font-semibold text-red-600 bg-red-50 p-4 rounded-lg">
-                That&apos;s why professional bee control focuses on removing the hive completely and cleaning the area thoroughly — not on temporary fixes.
+                That&apos;s why professional bee control focuses on removing the hive completely and sealing entry points — not on temporary fixes.
               </p>
             </div>
           </div>
@@ -134,7 +134,7 @@ export default function HoneyBeePestControlPage() {
               Our Treatment — Safe, Eco-Friendly, Effective
             </h2>
             <p className="text-lg text-gray-700 leading-relaxed mb-8">
-              We remove hives using protective gear and eco-friendly methods, ensure safety for residents, and seal the area to stop bees from returning. No toxic chemicals, no damage, and a tidy cleanup after. Many homes and businesses feel safer the same day; results may vary.
+              We remove hives using protective gear and eco-friendly methods, ensure safety for residents, and seal the area to stop bees from returning. No toxic chemicals and no structural damage. Many homes and businesses feel safer the same day; results may vary.
             </p>
             <Link to="/quote"
               className="inline-flex items-center justify-center px-8 py-4 bg-green-600 text-white font-semibold rounded-full hover:bg-green-700 transition-colors duration-300 shadow-lg hover:shadow-xl"
@@ -178,9 +178,9 @@ export default function HoneyBeePestControlPage() {
                 <div className="bg-green-100 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-6">
                   <span className="text-2xl font-bold text-green-600">3</span>
                 </div>
-                <h3 className="text-xl font-bold text-gray-900 mb-4">Seal & clean</h3>
+                <h3 className="text-xl font-bold text-gray-900 mb-4">Seal entry points</h3>
                 <p className="text-gray-700 leading-relaxed">
-                  We clean honey residue, wax, and stains, then seal entry points to stop re-infestation. Area is sanitized to prevent ants and odour.
+                  We remove the hive and seal entry points to stop re-infestation. Openings are closed securely to reduce odour and keep ants away.
                 </p>
               </div>
               
@@ -217,14 +217,14 @@ export default function HoneyBeePestControlPage() {
               <div className="bg-white p-6 rounded-2xl shadow-lg border border-gray-100">
                 <h3 className="text-lg font-bold text-gray-900 mb-4">Transparent pest control prices</h3>
                 <p className="text-gray-700 leading-relaxed">
-                  After inspection, you receive one all-inclusive quote covering hive removal, labour, cleanup, and follow-ups. The price you sign is the price you pay—no doorstep add-ons.
+                  After inspection, you receive one all-inclusive quote covering hive removal, labour, sealing, and follow-ups. The price you sign is the price you pay—no doorstep add-ons.
                 </p>
               </div>
               
               <div className="bg-white p-6 rounded-2xl shadow-lg border border-gray-100">
                 <h3 className="text-lg font-bold text-gray-900 mb-4">Trained local technicians</h3>
                 <p className="text-gray-700 leading-relaxed">
-                  Each crew member logs 300+ hours on bee control, hive removal, and safe sealing. They explain each step, work neatly, and leave your property spotless.
+                  Each crew member logs 300+ hours on bee control, hive removal, and safe sealing. They explain each step, work neatly, and leave your property secure.
                 </p>
               </div>
               
@@ -238,7 +238,7 @@ export default function HoneyBeePestControlPage() {
               <div className="bg-white p-6 rounded-2xl shadow-lg border border-gray-100">
                 <h3 className="text-lg font-bold text-gray-900 mb-4">Minimal disruption</h3>
                 <p className="text-gray-700 leading-relaxed">
-                  No need to vacate your house or office. Our team works quickly, removes the hive safely, and cleans all residues.
+                  No need to vacate your house or office. Our team works quickly, removes the hive safely, and seals the treated area.
                 </p>
               </div>
               
@@ -404,7 +404,7 @@ export default function HoneyBeePestControlPage() {
               </a>
             </div>
             <p className="text-sm mt-6 opacity-75">
-              No hidden fees • Eco-friendly treatment • Neat removal & cleanup • Warranty-backed
+              No hidden fees • Eco-friendly treatment • Safe hive removal • Warranty-backed
             </p>
           </div>
         </div>

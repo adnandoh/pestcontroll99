@@ -217,7 +217,7 @@ export default function MosquitoPestControlPage() {
               <div className="bg-white p-6 rounded-2xl shadow-lg border border-gray-100">
                 <h3 className="text-lg font-bold text-gray-900 mb-4">Trained local technicians</h3>
                 <p className="text-gray-700 leading-relaxed">
-                  Our local team follows neat, simple steps every time. They explain what they do and keep your home tidy.
+                  Our local team follows neat, simple steps every time. They explain what they do and work respectfully in your home.
                 </p>
               </div>
               

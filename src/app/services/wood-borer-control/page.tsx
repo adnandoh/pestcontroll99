@@ -169,9 +169,9 @@ export default function WoodBorerControlPage() {
                 <div className="bg-green-100 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-6">
                   <span className="text-2xl font-bold text-green-600">3</span>
                 </div>
-                <h3 className="text-xl font-bold text-gray-900 mb-4">Protect & clean</h3>
+                <h3 className="text-xl font-bold text-gray-900 mb-4">Protect wood</h3>
                 <p className="text-gray-700 leading-relaxed">
-                  We inject infested furniture, apply a protective layer where needed, and wipe all dust. Furniture stays put, and rooms remain tidy.
+                  We inject infested furniture and apply a protective borate layer where needed. Furniture stays in place while treatment reaches deep into the wood.
                 </p>
               </div>
               
@@ -214,7 +214,7 @@ export default function WoodBorerControlPage() {
               <div className="bg-white p-6 rounded-2xl shadow-lg border border-gray-100">
                 <h3 className="text-lg font-bold text-gray-900 mb-4">Trained local technicians</h3>
                 <p className="text-gray-700 leading-relaxed">
-                  Each crew member logs 300+ hours on wood inspection, injection angles, and neat sealing. They work tidily, explain each step, and leave your home spotless.
+                  Each crew member logs 300+ hours on wood inspection, injection angles, and neat sealing. They work carefully, explain each step, and respect your home.
                 </p>
               </div>
               
@@ -228,7 +228,7 @@ export default function WoodBorerControlPage() {
               <div className="bg-white p-6 rounded-2xl shadow-lg border border-gray-100">
                 <h3 className="text-lg font-bold text-gray-900 mb-4">Minimal prep, no furniture shift</h3>
                 <p className="text-gray-700 leading-relaxed">
-                  We drill 6 mm holes, inject, and seal them flush with colour-matched plugs. Furniture stays in place, and dust is vacuumed before we leave.
+                  We drill 6 mm holes, inject, and seal them flush with colour-matched plugs. Furniture stays in place with minimal disruption to your rooms.
                 </p>
               </div>
               

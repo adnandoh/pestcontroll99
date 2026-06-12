@@ -70,7 +70,7 @@ export default function LegalPage() {
                     <li>Ensure access to all areas requiring treatment</li>
                     <li>Follow pre-treatment and post-treatment instructions</li>
                     <li>Keep children and pets away during treatment</li>
-                    <li>Maintain cleanliness and hygiene standards</li>
+                    <li>Maintain hygiene standards during service</li>
                   </ul>
                 </div>
 

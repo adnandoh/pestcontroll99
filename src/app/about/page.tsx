@@ -46,7 +46,7 @@ export default function AboutPage() {
                 {BUSINESS.brandStatement}
               </p>
               <p className="text-lg text-gray-600 mb-8 leading-relaxed max-w-lg">
-                Clear talk. Clean work. Real results. We keep it simple—same-day help, clear prices, and service notes you can actually understand.
+                Clear talk. Neat work. Real results. We keep it simple—same-day help, clear prices, and service notes you can actually understand.
               </p>
 
               <div className="flex flex-col sm:flex-row gap-4">

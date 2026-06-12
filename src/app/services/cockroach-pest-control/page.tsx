@@ -144,7 +144,7 @@ export default function CockroachPestControlPage() {
               How the visit works
             </h2>
             
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
               <div className="text-center">
                 <div className="bg-green-100 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-6">
                   <span className="text-2xl font-bold text-green-600">1</span>
@@ -168,16 +168,6 @@ export default function CockroachPestControlPage() {
               <div className="text-center">
                 <div className="bg-green-100 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-6">
                   <span className="text-2xl font-bold text-green-600">3</span>
-                </div>
-                <h3 className="text-xl font-bold text-gray-900 mb-4">Clean</h3>
-                <p className="text-gray-700 leading-relaxed">
-                  We wipe switches, slabs, and handles, then clear crumbs around food zones. Your kitchen stays tidy and usable the same day; the light smell fades in about 3 hours.
-                </p>
-              </div>
-              
-              <div className="text-center">
-                <div className="bg-green-100 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-6">
-                  <span className="text-2xl font-bold text-green-600">4</span>
                 </div>
                 <h3 className="text-xl font-bold text-gray-900 mb-4">Follow-up</h3>
                 <p className="text-gray-700 leading-relaxed">
@@ -229,7 +219,7 @@ export default function CockroachPestControlPage() {
               <div className="bg-white p-6 rounded-2xl shadow-lg border border-gray-100">
                 <h3 className="text-lg font-bold text-gray-900 mb-4">Trained local technicians</h3>
                 <p className="text-gray-700 leading-relaxed">
-                  Our local technicians have over three years of field work and steady hands. They follow clean, simple steps and speak clearly about what they do.
+                  Our local technicians have over three years of field work and steady hands. They follow clear, simple steps and speak plainly about what they do.
                 </p>
               </div>
               
