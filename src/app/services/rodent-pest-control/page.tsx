@@ -1,6 +1,7 @@
 import { Link } from 'react-router-dom';
 import AppImage from '@/components/AppImage';
 import Breadcrumb from '@/components/Breadcrumb';
+import PageMeta from '@/components/PageMeta';
 
 export default function RodentPestControlPage() {
   // Structured data for SEO
@@ -11,19 +12,22 @@ export default function RodentPestControlPage() {
     "description": "Professional rodent pest control services in Mumbai with humane trapping, entry-point sealing, pet-safe methods, and 90-day warranty.",
     "provider": {
       "@type": "LocalBusiness",
-      "name": "PestControl99",
+      "name": "Pest Control 99",
       "address": {
         "@type": "PostalAddress",
-        "addressLocality": "Mumbai",
+        "streetAddress": "503 Sai Rushabh CHS Ltd, Geeta Nagar Phase 1, Mira Road",
+        "addressLocality": "Thane",
         "addressRegion": "Maharashtra",
+        "postalCode": "401107",
         "addressCountry": "IN"
       },
       "telephone": "+918080748282"
     },
-    "areaServed": {
-      "@type": "City",
-      "name": "Mumbai"
-    },
+    "areaServed": [
+      { "@type": "City", "name": "Mumbai" },
+      { "@type": "City", "name": "Thane" },
+      { "@type": "City", "name": "Navi Mumbai" }
+    ],
     "serviceType": "Rodent Control",
     "offers": {
       "@type": "Offer",
@@ -36,6 +40,13 @@ export default function RodentPestControlPage() {
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(structuredData) }}
+      />
+      <PageMeta
+        title="Rodent & Rat Control in Mumbai | Removal & Entry Sealing"
+        description="Effective rat & rodent control in Mumbai, Thane & Navi Mumbai. Trapping, baiting & entry-point sealing with 90-day warranty. Same-day service — +91 80807 48282."
+        keywords="rodent control mumbai, rat control mumbai, rat removal, rodent pest control"
+        canonical="https://www.pestcontrol99.com/services/rodent-pest-control/"
+        ogUrl="https://www.pestcontrol99.com/services/rodent-pest-control/"
       />
       {/* Breadcrumb */}
       <Breadcrumb items={[
@@ -67,10 +78,10 @@ export default function RodentPestControlPage() {
                   Get My Inspection Slot →
                 </Link>
                 <a
-                  href="https://wa.me/8080748282?text=Hello%20Pest%20Control%2099,%20can%20you%20share%20details%20and%20pricing%20for%20your%20rodent%20pest%20control%20services?"
+                  href="https://wa.me/918080748282?text=Hello%20Pest%20Control%2099,%20can%20you%20share%20details%20and%20pricing%20for%20your%20rodent%20pest%20control%20services?"
                   className="inline-flex items-center justify-center px-8 py-4 bg-white text-green-600 font-semibold rounded-full border-2 border-green-600 hover:bg-green-50 transition-colors duration-300"
                 >
-                  💬 WhatsApp 24 × 7: 98 XXX XX 990
+                  💬 WhatsApp 24 × 7: +91 80807 48282
                 </a>
               </div>
               
@@ -440,10 +451,10 @@ export default function RodentPestControlPage() {
                 Schedule My Inspection →
               </Link>
               <a
-                href="https://wa.me/8080748282?text=Hello%20Pest%20Control%2099,%20can%20you%20share%20details%20and%20pricing%20for%20your%20rodent%20pest%20control%20services?"
+                href="https://wa.me/918080748282?text=Hello%20Pest%20Control%2099,%20can%20you%20share%20details%20and%20pricing%20for%20your%20rodent%20pest%20control%20services?"
                 className="inline-flex items-center justify-center px-8 py-4 bg-transparent text-white font-semibold rounded-full border-2 border-white hover:bg-white hover:text-green-600 transition-colors duration-300"
               >
-                💬 WhatsApp 24 × 7: 98 XXX XX 990
+                💬 WhatsApp 24 × 7: +91 80807 48282
               </a>
             </div>
             <p className="text-sm mt-6 opacity-75">

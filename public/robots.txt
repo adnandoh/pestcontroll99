@@ -1,14 +1,13 @@
 User-agent: *
 Allow: /
 
-# Optimize crawling
-Crawl-delay: 1
+# Block utility/non-content paths
+Disallow: /api/
+Disallow: /admin/
+Disallow: /test/
+Disallow: /quote-simple/
 
-# Important pages
 Sitemap: https://www.pestcontrol99.com/sitemap.xml
 
-# Block unnecessary paths
-Disallow: /api/
-Disallow: /_next/
-Disallow: /admin/
-Disallow: *.json$
+# AI / LLM summary of this site
+# https://www.pestcontrol99.com/llms.txt

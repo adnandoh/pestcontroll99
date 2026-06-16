@@ -1,9 +1,15 @@
 import Breadcrumb from '@/components/Breadcrumb';
 import { BUSINESS } from '@/config/business';
+import PageMeta from '@/components/PageMeta';
 
 export default function TermsAndConditionsPage() {
   return (
     <div className="min-h-screen bg-gray-50">
+      <PageMeta
+        title="Terms & Conditions | Pest Control 99"
+        description="Terms and conditions for pest control services provided by Pest Control 99 (Multi Pest Care LLP)."
+        canonical="https://www.pestcontrol99.com/terms-and-conditions/"
+      />
       <Breadcrumb items={[
         { label: 'Terms & Conditions', href: '/terms-and-conditions' }
       ]} />

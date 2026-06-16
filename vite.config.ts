@@ -31,7 +31,15 @@ export default defineConfig(({ mode }) => {
     },
     build: {
       outDir: 'dist',
-      sourcemap: true,
+      sourcemap: false,
+      rollupOptions: {
+        output: {
+          manualChunks: {
+            // Split rarely-changing vendor code so app updates don't bust its cache.
+            'react-vendor': ['react', 'react-dom', 'react-router-dom'],
+          },
+        },
+      },
     },
   };
 });

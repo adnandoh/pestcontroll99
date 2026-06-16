@@ -1,6 +1,7 @@
 import { Link } from 'react-router-dom';
 import AppImage from '@/components/AppImage';
 import Breadcrumb from '@/components/Breadcrumb';
+import PageMeta from '@/components/PageMeta';
 
 export default function TermitePestControlPage() {
   // Structured data for SEO
@@ -11,19 +12,22 @@ export default function TermitePestControlPage() {
     "description": "Professional termite pest control services in Mumbai with low-odour borate treatment, neat drill-and-seal, transparent pricing, and service reports.",
     "provider": {
       "@type": "LocalBusiness",
-      "name": "PestControl99",
+      "name": "Pest Control 99",
       "address": {
         "@type": "PostalAddress",
-        "addressLocality": "Mumbai",
+        "streetAddress": "503 Sai Rushabh CHS Ltd, Geeta Nagar Phase 1, Mira Road",
+        "addressLocality": "Thane",
         "addressRegion": "Maharashtra",
+        "postalCode": "401107",
         "addressCountry": "IN"
       },
       "telephone": "+918080748282"
     },
-    "areaServed": {
-      "@type": "City",
-      "name": "Mumbai"
-    },
+    "areaServed": [
+      { "@type": "City", "name": "Mumbai" },
+      { "@type": "City", "name": "Thane" },
+      { "@type": "City", "name": "Navi Mumbai" }
+    ],
     "serviceType": "Termite Control",
     "offers": {
       "@type": "Offer",
@@ -36,6 +40,13 @@ export default function TermitePestControlPage() {
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(structuredData) }}
+      />
+      <PageMeta
+        title="Termite Control in Mumbai | Anti-Termite Treatment, 5-Yr Warranty"
+        description="Anti-termite treatment in Mumbai, Thane & Navi Mumbai with up to 5-year warranty. Low-odour borate, neat drill & seal, same-day inspection. Free quote — +91 80807 48282."
+        keywords="termite control mumbai, anti termite treatment, termite treatment cost mumbai, deemak control"
+        canonical="https://www.pestcontrol99.com/services/termite-pest-control/"
+        ogUrl="https://www.pestcontrol99.com/services/termite-pest-control/"
       />
       {/* Breadcrumb */}
       <Breadcrumb items={[
@@ -64,17 +75,17 @@ export default function TermitePestControlPage() {
                   Get My Inspection Slot →
                 </Link>
                 <a
-                  href="https://wa.me/8080748282?text=Hello%20Pest%20Control%2099,%20can%20you%20share%20details%20and%20pricing%20for%20your%20termite%20pest%20control%20services?"
+                  href="https://wa.me/918080748282?text=Hello%20Pest%20Control%2099,%20can%20you%20share%20details%20and%20pricing%20for%20your%20termite%20pest%20control%20services?"
                   className="inline-flex items-center justify-center px-8 py-4 bg-white text-green-600 font-semibold rounded-full border-2 border-green-600 hover:bg-green-50 transition-colors duration-300"
                 >
-                  💬 WhatsApp 24 × 7: 98 XXX XX 990
+                  💬 WhatsApp 24 × 7: +91 80807 48282
                 </a>
               </div>
               
               <div className="flex items-center space-x-6 text-sm text-gray-600">
                 <div className="flex items-center">
                   <span className="text-yellow-400 mr-1">★</span>
-                  <span>4.9★ reviews</span>
+                  <span>4.8★ reviews</span>
                 </div>
                 <div className="flex items-center">
                   <span className="text-green-600 mr-1">✓</span>
@@ -493,10 +504,10 @@ export default function TermitePestControlPage() {
                 Schedule My Inspection →
               </Link>
                               <a
-                  href="https://wa.me/8080748282?text=Hello%20Pest%20Control%2099,%20can%20you%20share%20details%20and%20pricing%20for%20your%20termite%20pest%20control%20services?"
+                  href="https://wa.me/918080748282?text=Hello%20Pest%20Control%2099,%20can%20you%20share%20details%20and%20pricing%20for%20your%20termite%20pest%20control%20services?"
                   className="inline-flex items-center justify-center px-8 py-4 bg-transparent text-white font-semibold rounded-full border-2 border-white hover:bg-white hover:text-green-600 transition-colors duration-300"
                 >
-                  💬 WhatsApp 24 × 7: 98 XXX XX 990
+                  💬 WhatsApp 24 × 7: +91 80807 48282
                 </a>
             </div>
             <p className="text-sm mt-6 opacity-75">

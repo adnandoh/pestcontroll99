@@ -1,10 +1,17 @@
 import { Suspense } from 'react';
 import HomeQuoteForm from '@/components/HomeQuoteForm';
 import Breadcrumb from '@/components/Breadcrumb';
+import PageMeta from '@/components/PageMeta';
 
 function QuotePageContent() {
   return (
     <main className="bg-white min-h-screen">
+      <PageMeta
+        title="Get a Free Pest Control Quote | Instant Price Estimate"
+        description="Get an instant pest control price estimate for your home or office in Mumbai, Thane & Navi Mumbai. Same-day service, no hidden charges. Book your free quote now."
+        canonical="https://www.pestcontrol99.com/quote/"
+        ogUrl="https://www.pestcontrol99.com/quote/"
+      />
       <Breadcrumb items={[{ label: 'Get Quote' }]} />
       <div className="-mt-8 md:-mt-12">
         <HomeQuoteForm />

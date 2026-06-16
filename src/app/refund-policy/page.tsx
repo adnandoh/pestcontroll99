@@ -1,9 +1,15 @@
 import Breadcrumb from '@/components/Breadcrumb';
 import { BUSINESS } from '@/config/business';
+import PageMeta from '@/components/PageMeta';
 
 export default function RefundPolicyPage() {
   return (
     <div className="min-h-screen bg-gray-50">
+      <PageMeta
+        title="Refund Policy | Pest Control 99"
+        description="Refund and cancellation policy for pest control services by Pest Control 99 (Multi Pest Care LLP)."
+        canonical="https://www.pestcontrol99.com/refund-policy/"
+      />
       <Breadcrumb items={[{ label: 'Refund Policy', href: '/refund-policy' }]} />
 
       <div className="container mx-auto px-4 py-12">

@@ -69,7 +69,7 @@ export default function CategoryPage() {
                   <Link to={`/blog/${post.slug}`}>
                     <div className="relative h-48 w-full">
                       <AppImage
-                        src={post.image_medium || post.featured_image || '/images/heroimage.png'}
+                        src={post.image_medium || post.featured_image || '/images/heroimage.webp'}
                         alt={post.title}
                         fill
                         className="object-cover"

@@ -1,10 +1,18 @@
 import { Link } from 'react-router-dom';
 import AppImage from '@/components/AppImage';
 import Breadcrumb from '@/components/Breadcrumb';
+import PageMeta from '@/components/PageMeta';
 
 export default function HoneyBeePestControlPage() {
   return (
     <div className="min-h-screen bg-white">
+      <PageMeta
+        title="Honey Bee Removal in Mumbai | Safe Hive Removal Service"
+        description="Safe honey bee & hive removal in Mumbai, Thane & Navi Mumbai. Trained technicians remove beehives without harm to your family. Same-day service — +91 80807 48282."
+        keywords="honey bee removal mumbai, beehive removal, honey bee pest control, bee control mumbai"
+        canonical="https://www.pestcontrol99.com/services/honey-bee-pest-control/"
+        ogUrl="https://www.pestcontrol99.com/services/honey-bee-pest-control/"
+      />
       {/* Breadcrumb */}
       <Breadcrumb items={[
         { label: 'Services', href: '/services' },
@@ -35,10 +43,10 @@ export default function HoneyBeePestControlPage() {
                   Get My Inspection Slot →
                 </Link>
                 <a
-                  href="https://wa.me/8080748282?text=Hello%20Pest%20Control%2099,%20can%20you%20share%20details%20and%20pricing%20for%20your%20honey%20bee%20pest%20control%20services?"
+                  href="https://wa.me/918080748282?text=Hello%20Pest%20Control%2099,%20can%20you%20share%20details%20and%20pricing%20for%20your%20honey%20bee%20pest%20control%20services?"
                   className="inline-flex items-center justify-center px-8 py-4 bg-white text-green-600 font-semibold rounded-full border-2 border-green-600 hover:bg-green-50 transition-colors duration-300"
                 >
-                  💬 WhatsApp 24 × 7: 98 XXX XX 990
+                  💬 WhatsApp 24 × 7: +91 80807 48282
                 </a>
               </div>
             </div>
@@ -397,10 +405,10 @@ export default function HoneyBeePestControlPage() {
                 Schedule My Inspection →
               </Link>
               <a
-                href="https://wa.me/8080748282?text=Hello%20Pest%20Control%2099,%20can%20you%20share%20details%20and%20pricing%20for%20your%20honey%20bee%20pest%20control%20services?"
+                href="https://wa.me/918080748282?text=Hello%20Pest%20Control%2099,%20can%20you%20share%20details%20and%20pricing%20for%20your%20honey%20bee%20pest%20control%20services?"
                 className="inline-flex items-center justify-center px-8 py-4 bg-transparent text-white font-semibold rounded-full border-2 border-white hover:bg-white hover:text-green-600 transition-colors duration-300"
               >
-                💬 WhatsApp 24 × 7: 98 XXX XX 990
+                💬 WhatsApp 24 × 7: +91 80807 48282
               </a>
             </div>
             <p className="text-sm mt-6 opacity-75">
@@ -421,19 +429,22 @@ export default function HoneyBeePestControlPage() {
             "description": "Safe and eco-friendly honey bee removal services in Mumbai. Same-day hive removal with professional technicians.",
             "provider": {
               "@type": "LocalBusiness",
-              "name": "PestControl99",
+              "name": "Pest Control 99",
               "address": {
                 "@type": "PostalAddress",
-                "addressLocality": "Mumbai",
+                "streetAddress": "503 Sai Rushabh CHS Ltd, Geeta Nagar Phase 1, Mira Road",
+                "addressLocality": "Thane",
                 "addressRegion": "Maharashtra",
+                "postalCode": "401107",
                 "addressCountry": "IN"
               },
-              "telephone": "+91-8080748282"
+              "telephone": "+918080748282"
             },
-            "areaServed": {
-              "@type": "City",
-              "name": "Mumbai"
-            },
+            "areaServed": [
+              { "@type": "City", "name": "Mumbai" },
+              { "@type": "City", "name": "Thane" },
+              { "@type": "City", "name": "Navi Mumbai" }
+            ],
             "serviceType": "Honey Bee Pest Control",
             "offers": {
               "@type": "Offer",

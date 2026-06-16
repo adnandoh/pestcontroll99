@@ -1,5 +1,9 @@
 import { useEffect } from 'react';
 
+const SITE_NAME = 'Pest Control 99';
+// TODO: replace with a dedicated 1200×630 branded share image when available.
+const DEFAULT_OG_IMAGE = 'https://www.pestcontrol99.com/android-chrome-512x512.png';
+
 export type PageMetaProps = {
   title: string;
   description?: string;
@@ -51,10 +55,21 @@ export default function PageMeta({
     if (keywords) upsertMeta('name', 'keywords', keywords);
     if (canonical) upsertLink('canonical', canonical);
 
+    // Open Graph
+    const resolvedOgUrl = ogUrl || canonical;
+    const resolvedOgImage = ogImage || DEFAULT_OG_IMAGE;
+    upsertMeta('property', 'og:type', 'website');
+    upsertMeta('property', 'og:site_name', SITE_NAME);
     upsertMeta('property', 'og:title', ogTitle || title);
     if (description) upsertMeta('property', 'og:description', ogDescription || description);
-    if (ogUrl) upsertMeta('property', 'og:url', ogUrl);
-    if (ogImage) upsertMeta('property', 'og:image', ogImage);
+    if (resolvedOgUrl) upsertMeta('property', 'og:url', resolvedOgUrl);
+    upsertMeta('property', 'og:image', resolvedOgImage);
+
+    // Twitter Card
+    upsertMeta('name', 'twitter:card', 'summary_large_image');
+    upsertMeta('name', 'twitter:title', ogTitle || title);
+    if (description) upsertMeta('name', 'twitter:description', ogDescription || description);
+    upsertMeta('name', 'twitter:image', resolvedOgImage);
   }, [title, description, keywords, canonical, ogTitle, ogDescription, ogUrl, ogImage, noindex]);
 
   return null;

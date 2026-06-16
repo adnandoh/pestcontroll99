@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import MultiSelectPest from '@/components/MultiSelectPest';
 import { submitHomeQuoteForm } from '@/services/formSubmit';
+import PageMeta from '@/components/PageMeta';
 
 export default function SimpleQuotePage() {
   const navigate = useNavigate();
@@ -115,6 +116,7 @@ export default function SimpleQuotePage() {
 
   return (
     <div className="py-8 bg-gray-50 min-h-screen">
+      <PageMeta title="Get a Quote | Pest Control 99" noindex />
       <div className="container mx-auto px-4">
         <div className="max-w-3xl mx-auto">
           <div className="text-center mb-8">

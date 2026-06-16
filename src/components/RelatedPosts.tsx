@@ -72,7 +72,7 @@ export default function RelatedPosts({ currentPostId, limit = 3 }: RelatedPostsP
               month: 'short',
               day: 'numeric'
             }),
-            image: post._embedded?.['wp:featuredmedia']?.[0]?.source_url || '/images/heroimage.png',
+            image: post._embedded?.['wp:featuredmedia']?.[0]?.source_url || '/images/heroimage.webp',
             imageAlt: decodeHtmlEntities(post._embedded?.['wp:featuredmedia']?.[0]?.alt_text || post.title.rendered),
             slug: `/blog/${post.slug}`
           }));

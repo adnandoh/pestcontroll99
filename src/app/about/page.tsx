@@ -4,10 +4,17 @@ import Breadcrumb from '@/components/Breadcrumb';
 import BusinessIdentityBanner from '@/components/BusinessIdentityBanner';
 import BusinessDetailsCard from '@/components/BusinessDetailsCard';
 import { BUSINESS, DEFAULT_WHATSAPP_MESSAGE, whatsAppUrl } from '@/config/business';
+import PageMeta from '@/components/PageMeta';
 
 export default function AboutPage() {
   return (
     <div className="min-h-screen bg-white font-sans text-gray-900 selection:bg-green-100 selection:text-green-900">
+      <PageMeta
+        title="About Pest Control 99 | Multi Pest Care LLP, Mumbai"
+        description="Pest Control 99 by Multi Pest Care LLP — licensed, CIB&RC-approved pest management in Mumbai, Thane & Navi Mumbai. Same-day service, written warranty, transparent pricing."
+        canonical="https://www.pestcontrol99.com/about/"
+        ogUrl="https://www.pestcontrol99.com/about/"
+      />
       {/* Breadcrumb */}
       <div className="bg-gray-50/50 border-b border-gray-100 backdrop-blur-sm sticky top-0 z-30">
         <div className="container mx-auto px-4 py-3">

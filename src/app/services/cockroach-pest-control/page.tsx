@@ -1,9 +1,51 @@
 import { Link } from 'react-router-dom';
 import AppImage from '@/components/AppImage';
+import PageMeta from '@/components/PageMeta';
 
 export default function CockroachPestControlPage() {
+  const structuredData = {
+    "@context": "https://schema.org",
+    "@type": "Service",
+    "name": "Cockroach Pest Control Mumbai",
+    "description": "Professional cockroach pest control in Mumbai, Thane & Navi Mumbai with odourless, child- and pet-safe gel treatment and a 365-day warranty.",
+    "provider": {
+      "@type": "LocalBusiness",
+      "name": "Pest Control 99",
+      "address": {
+        "@type": "PostalAddress",
+        "streetAddress": "503 Sai Rushabh CHS Ltd, Geeta Nagar Phase 1, Mira Road",
+        "addressLocality": "Thane",
+        "addressRegion": "Maharashtra",
+        "postalCode": "401107",
+        "addressCountry": "IN"
+      },
+      "telephone": "+918080748282"
+    },
+    "areaServed": [
+      { "@type": "City", "name": "Mumbai" },
+      { "@type": "City", "name": "Thane" },
+      { "@type": "City", "name": "Navi Mumbai" }
+    ],
+    "serviceType": "Cockroach Control",
+    "offers": {
+      "@type": "Offer",
+      "description": "Same-day cockroach gel treatment with 365-day warranty"
+    }
+  };
+
   return (
     <div className="min-h-screen bg-white">
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(structuredData) }}
+      />
+      <PageMeta
+        title="Cockroach Pest Control in Mumbai | Odourless Gel Treatment"
+        description="Same-day cockroach control in Mumbai, Thane & Navi Mumbai. Odourless, child & pet-safe gel treatment with a 365-day warranty. Free quote — call +91 80807 48282."
+        keywords="cockroach control mumbai, cockroach pest control, cockroach gel treatment, kitchen cockroach control"
+        canonical="https://www.pestcontrol99.com/services/cockroach-pest-control/"
+        ogUrl="https://www.pestcontrol99.com/services/cockroach-pest-control/"
+      />
       {/* Hero Section */}
       <section className="relative bg-gradient-to-br from-green-50 via-white to-blue-50 py-16 lg:py-24">
         <div className="container mx-auto px-4">
@@ -29,7 +71,7 @@ export default function CockroachPestControlPage() {
                   Get Instant Quote →
                 </Link>
                 <a
-                  href="https://wa.me/8080748282?text=Hello%20Pest%20Control%2099,%20can%20you%20share%20details%20and%20pricing%20for%20your%20pest%20control%20services?"
+                  href="https://wa.me/918080748282?text=Hello%20Pest%20Control%2099,%20can%20you%20share%20details%20and%20pricing%20for%20your%20pest%20control%20services?"
                   className="inline-flex items-center justify-center px-8 py-4 bg-white text-green-600 font-semibold rounded-full border-2 border-green-600 hover:bg-green-50 transition-colors duration-300"
                 >
                   💬 WhatsApp 24×7: +91 80807 48282
@@ -39,7 +81,7 @@ export default function CockroachPestControlPage() {
             
             <div className="relative">
               <AppImage
-                src="/images/heroimage.png"
+                src="/images/heroimage.webp"
                 alt="Herbal cockroach gel treatment Mumbai — odourless, safe for kids and pets"
                 width={600}
                 height={400}
@@ -425,7 +467,7 @@ export default function CockroachPestControlPage() {
                 Schedule My Same-Day Treatment
               </Link>
               <a
-                href="https://wa.me/8080748282?text=Hello%20Pest%20Control%2099,%20can%20you%20share%20details%20and%20pricing%20for%20your%20pest%20control%20services?"
+                href="https://wa.me/918080748282?text=Hello%20Pest%20Control%2099,%20can%20you%20share%20details%20and%20pricing%20for%20your%20pest%20control%20services?"
                 className="inline-flex items-center justify-center px-8 py-4 bg-transparent text-white font-semibold rounded-full border-2 border-white hover:bg-white hover:text-green-600 transition-colors duration-300"
               >
                 💬 WhatsApp 24×7: +91 80807 48282

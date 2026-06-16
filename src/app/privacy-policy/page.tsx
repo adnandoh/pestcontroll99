@@ -1,9 +1,15 @@
 import Breadcrumb from '@/components/Breadcrumb';
 import { BUSINESS } from '@/config/business';
+import PageMeta from '@/components/PageMeta';
 
 export default function PrivacyPolicyPage() {
   return (
     <div className="min-h-screen bg-gray-50">
+      <PageMeta
+        title="Privacy Policy | Pest Control 99"
+        description="How Pest Control 99 (Multi Pest Care LLP) collects, uses, and protects your personal data."
+        canonical="https://www.pestcontrol99.com/privacy-policy/"
+      />
       <Breadcrumb items={[
         { label: 'Privacy Policy', href: '/privacy-policy' }
       ]} />

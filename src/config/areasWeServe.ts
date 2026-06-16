@@ -162,18 +162,26 @@ export function getAreaBySlug(slug: string | undefined): ServiceArea | undefined
 }
 
 export function getAreaPageTitle(areaName: string): string {
-  return `Pest Control in ${areaName} | PestControl99 | Call Now`;
+  return `Pest Control in ${areaName} | Same-Day Service | Pest Control 99`;
 }
 
 export function getAreaMetaDescription(areaName: string): string {
-  return `[PLACEHOLDER — Professional pest control in ${areaName}, Maharashtra. Cockroach, termite, rodent & mosquito treatment. Same-day service. Call now for a free quote.]`;
+  return `Looking for pest control in ${areaName}? Pest Control 99 offers same-day cockroach, termite, mosquito & rodent treatment with CIB&RC-approved, family-safe products and a written warranty. Call +91 80807 48282 for a free quote.`;
 }
 
 export function getAreaLocalBusinessSchema(area: ServiceArea) {
   return {
     '@context': 'https://schema.org',
     '@type': 'LocalBusiness',
-    name: 'PestControl99',
+    name: 'Pest Control 99',
+    address: {
+      '@type': 'PostalAddress',
+      streetAddress: '503 Sai Rushabh CHS Ltd, Geeta Nagar Phase 1, Mira Road',
+      addressLocality: 'Thane',
+      addressRegion: 'Maharashtra',
+      postalCode: '401107',
+      addressCountry: 'IN',
+    },
     areaServed: `${area.name}, Maharashtra`,
     telephone: '+918080748282',
     url: getAreaCanonical(area.slug),
@@ -196,28 +204,28 @@ export function getAreaFaqItems(areaName: string) {
     {
       id: 'cost',
       question: `How much does pest control cost in ${areaName}?`,
-      answer: `[PLACEHOLDER — Content team will add pricing details for pest control services in ${areaName}.]`,
+      answer: `Pest control in ${areaName} typically starts from ₹800–₹1,000 for a one-time treatment, depending on the pest type and property size. You receive a transparent, all-inclusive quote before any work begins — with no hidden charges.`,
     },
     {
       id: 'best',
       question: `Which is the best pest control service in ${areaName}?`,
-      answer: `[PLACEHOLDER — Content team will add local service comparison for ${areaName}.]`,
+      answer: `Pest Control 99 is a trusted, licensed pest control provider serving ${areaName} and the wider Mumbai region. We use CIB&RC-approved, family-safe treatments backed by a written warranty and same-day service.`,
     },
     {
       id: 'same-day',
       question: `Do you offer same-day pest control in ${areaName}?`,
-      answer: `[PLACEHOLDER — Content team will confirm same-day availability in ${areaName}.]`,
+      answer: `Yes. In most parts of ${areaName} we offer same-day pest control when you book before noon, subject to technician availability. Call +91 80807 48282 to confirm a slot.`,
     },
     {
       id: 'safe',
       question: 'Is the treatment safe for children and pets?',
       answer:
-        '[PLACEHOLDER — Content team will describe herbal and low-odour treatment options safe for families.]',
+        'Yes. We use low-odour, CIB&RC-approved treatments that are safe for children and pets once dry. Our technicians advise on any short re-entry time after each treatment.',
     },
     {
       id: 'frequency',
       question: `How often should I get pest control done in ${areaName}?`,
-      answer: `[PLACEHOLDER — Content team will recommend treatment frequency for homes in ${areaName}.]`,
+      answer: `For most homes in ${areaName}, a general pest treatment every 3–6 months keeps cockroaches, ants and mosquitoes under control. Termite and rodent treatments are warranty-backed and scheduled based on inspection.`,
     },
   ];
 }

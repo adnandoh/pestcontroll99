@@ -110,7 +110,7 @@ export default function BlogPage() {
                     <Link to={`/blog/${post.slug}`} className="block">
                       <div className="relative h-48 w-full overflow-hidden">
                         <AppImage
-                          src={post.image_medium || post.featured_image || '/images/heroimage.png'}
+                          src={post.image_medium || post.featured_image || '/images/heroimage.webp'}
                           alt={post.featured_image_alt || post.title}
                           fill
                           className="object-cover"

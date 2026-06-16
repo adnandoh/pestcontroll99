@@ -32,7 +32,7 @@ export default function HomeLandingTemplate({ config }: HomeLandingTemplateProps
       <div className="hero-container relative w-full shrink-0 overflow-hidden pb-3 sm:pb-4 md:pb-6">
         <div className="relative z-0 w-full min-h-[196px] h-[30dvh] sm:min-h-[238px] sm:h-[34dvh] md:min-h-[294px] md:h-[min(60vh,630px)]">
           <AppImage
-            src="/images/hero-home.png"
+            src="/images/hero-home.webp"
             alt={config.hero.imageAlt}
             fill
             priority

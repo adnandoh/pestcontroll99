@@ -4,6 +4,7 @@ import Breadcrumb from '@/components/Breadcrumb';
 import { submitContactForm } from '@/services/formSubmit';
 import BusinessDetailsCard from '@/components/BusinessDetailsCard';
 import { BUSINESS, DEFAULT_WHATSAPP_MESSAGE, whatsAppUrl } from '@/config/business';
+import PageMeta from '@/components/PageMeta';
 
 export default function ContactForm() {
   const navigate = useNavigate();
@@ -58,6 +59,12 @@ export default function ContactForm() {
 
   return (
     <div className="min-h-screen bg-white">
+      <PageMeta
+        title="Contact Pest Control 99 | Book Pest Control in Mumbai"
+        description="Contact Pest Control 99 for same-day pest control in Mumbai, Thane & Navi Mumbai. Call +91 80807 48282, WhatsApp, or request a free quote online."
+        canonical="https://www.pestcontrol99.com/contact/"
+        ogUrl="https://www.pestcontrol99.com/contact/"
+      />
       {/* Breadcrumb */}
       <Breadcrumb items={[{ label: 'Contact Us' }]} />
 

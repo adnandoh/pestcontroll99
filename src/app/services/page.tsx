@@ -1,6 +1,7 @@
 import { Link } from 'react-router-dom';
 import AppImage from '@/components/AppImage';
 import Breadcrumb from '@/components/Breadcrumb';
+import PageMeta from '@/components/PageMeta';
 
 interface ServiceCardProps {
   title: string;
@@ -95,6 +96,13 @@ export default function ServicesPage() {
 
   return (
     <div className="min-h-screen bg-gray-50">
+      <PageMeta
+        title="Pest Control Services in Mumbai | Cockroach, Termite, Rodent & More"
+        description="Professional pest control services in Mumbai, Thane & Navi Mumbai — cockroach, termite, mosquito, rodent, honey bee & wood borer treatment. Same-day, warranty-backed. Free quote."
+        keywords="pest control services mumbai, pest control mumbai, cockroach termite rodent control"
+        canonical="https://www.pestcontrol99.com/services/"
+        ogUrl="https://www.pestcontrol99.com/services/"
+      />
       {/* Breadcrumb */}
       <Breadcrumb items={[{ label: 'Services' }]} />
       

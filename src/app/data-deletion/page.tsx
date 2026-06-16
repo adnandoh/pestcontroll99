@@ -1,9 +1,15 @@
 import Breadcrumb from '@/components/Breadcrumb';
 import { BUSINESS } from '@/config/business';
+import PageMeta from '@/components/PageMeta';
 
 export default function DataDeletionPage() {
   return (
     <div className="min-h-screen bg-gray-50">
+      <PageMeta
+        title="Data Deletion Request | Pest Control 99"
+        description="Request deletion of your personal data held by Pest Control 99 (Multi Pest Care LLP)."
+        canonical="https://www.pestcontrol99.com/data-deletion/"
+      />
       <Breadcrumb items={[
         { label: 'Data Deletion', href: '/data-deletion' }
       ]} />

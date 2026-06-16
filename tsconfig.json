@@ -25,9 +25,6 @@
     "dist",
     ".next",
     "src/app/api",
-    "src/app/layout.tsx",
-    "src/app/robots.ts",
-    "src/app/sitemap.ts",
     "src/proxy.ts",
     "src/app/blog/**/BlogPostClient.tsx"
   ]

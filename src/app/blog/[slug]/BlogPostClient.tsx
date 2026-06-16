@@ -298,7 +298,7 @@ export default function BlogPostClient({ slug }: { slug: string }) {
                         className="w-full h-full"
                         onError={(e) => {
                           const target = e.target as HTMLImageElement;
-                          target.src = '/images/heroimage.png';
+                          target.src = '/images/heroimage.webp';
                         }}
                       />
                       <div className="absolute inset-0 bg-gradient-to-t from-black/30 to-transparent"></div>
@@ -340,7 +340,7 @@ export default function BlogPostClient({ slug }: { slug: string }) {
                           "@type": "Article",
                           "headline": decodeHtmlEntities(post.title.rendered),
                           "description": stripHtmlAndDecode(post.excerpt.rendered).substring(0, 160),
-                          "image": post._embedded?.['wp:featuredmedia']?.[0]?.source_url || '/images/heroimage.png',
+                          "image": post._embedded?.['wp:featuredmedia']?.[0]?.source_url || '/images/heroimage.webp',
                           "author": {
                             "@type": "Person",
                             "name": decodeHtmlEntities(post._embedded?.author?.[0]?.name || 'PestControl99 Team')

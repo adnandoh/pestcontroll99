@@ -1,10 +1,16 @@
 import { Link } from 'react-router-dom';
 import Breadcrumb from '@/components/Breadcrumb';
 import { BUSINESS } from '@/config/business';
+import PageMeta from '@/components/PageMeta';
 
 export default function LegalPage() {
   return (
     <div className="min-h-screen bg-gray-50">
+      <PageMeta
+        title="Legal Information | Pest Control 99"
+        description="Legal information and business identity for Pest Control 99, operated by Multi Pest Care LLP."
+        canonical="https://www.pestcontrol99.com/legal/"
+      />
       <Breadcrumb items={[
         { label: 'Legal', href: '/legal' }
       ]} />
