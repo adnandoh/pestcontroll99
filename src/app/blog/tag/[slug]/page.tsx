@@ -38,7 +38,7 @@ export default function TagPage() {
   return (
     <div className="min-h-screen bg-gray-50">
       <PageMeta
-        title={`Blogs tagged "${tag?.name || tagSlug}" | PestControl99`}
+        title={`Blogs tagged "${tag?.name || tagSlug}" | Pest Control 99`}
         description={`All pest control blogs tagged ${tag?.name || tagSlug}.`}
         canonical={`https://www.pestcontrol99.com/blog/tag/${tagSlug}/`}
         noindex

@@ -1,11 +1,17 @@
 import { Link } from 'react-router-dom';
 import Breadcrumb from '@/components/Breadcrumb';
-import BusinessDetailsCard from '@/components/BusinessDetailsCard';
+import PageMeta from '@/components/PageMeta';
 import { BUSINESS } from '@/config/business';
 
 export default function DeleteAccountPage() {
   return (
     <div className="min-h-screen bg-gray-50">
+      <PageMeta
+        title="Delete Partner Account | Pest Control 99"
+        description="How to permanently delete your Pest 99 Partner app account. Operated by Multi Pest Care LLP."
+        canonical="https://www.pestcontrol99.com/delete-account/"
+        noindex
+      />
       <Breadcrumb items={[{ label: 'Delete Account', href: '/delete-account' }]} />
 
       <div className="container mx-auto px-4 py-12">
@@ -79,8 +85,6 @@ export default function DeleteAccountPage() {
               </p>
             </div>
           </div>
-
-          <BusinessDetailsCard />
         </div>
       </div>
     </div>

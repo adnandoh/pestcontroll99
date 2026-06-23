@@ -1,5 +1,7 @@
 import React, { useState } from 'react';
 import AppImage from '@/components/AppImage';
+import { SITE_LOGO } from '@/config/business';
+import PageMeta from '@/components/PageMeta';
 
 const StarIcon = ({ filled }: { filled: boolean }) => (
   <svg
@@ -66,6 +68,11 @@ export default function FeedbackPage() {
 
   return (
     <div className="min-h-screen bg-[#fafafa] py-10 sm:py-24 px-4 font-sans text-gray-900">
+      <PageMeta
+        title="Share Your Feedback | Pest Control 99"
+        description="Tell us about your pest control experience with Pest Control 99. Your feedback helps us improve our service across Mumbai, Thane and Navi Mumbai."
+        noindex
+      />
       <div className="fixed top-0 left-0 w-full h-1 bg-[#FFC107] z-50"></div>
 
       <div className="max-w-2xl mx-auto">
@@ -87,13 +94,13 @@ export default function FeedbackPage() {
                   Your thoughts help us maintain the highest standards of pest control in Mumbai.
                 </p>
               </div>
-              <div className="flex-shrink-0 bg-white p-4 rounded-3xl border border-gray-100 shadow-sm self-start sm:self-center transform hover:rotate-3 transition-transform">
+              <div className="flex-shrink-0 self-start sm:self-center">
                 <AppImage
-                  src="/images/logo.svg"
-                  alt="Pest Control 99 Logo"
-                  width={140}
-                  height={50}
-                  className="h-auto w-36 sm:w-40 lg:w-44"
+                  src={SITE_LOGO.src}
+                  alt={SITE_LOGO.alt}
+                  width={SITE_LOGO.width}
+                  height={SITE_LOGO.height}
+                  className="h-auto w-36 sm:w-40 lg:w-44 max-w-full object-contain object-left"
                 />
               </div>
             </div>
@@ -197,7 +204,7 @@ export default function FeedbackPage() {
         </div>
         
         <p className="text-center mt-12 text-[10px] font-black text-gray-300 uppercase tracking-[0.3em] opacity-50">
-          Official Feedback Portal • Multi Pest Care LLP
+          Official Feedback Portal ? Multi Pest Care LLP
         </p>
       </div>
     </div>

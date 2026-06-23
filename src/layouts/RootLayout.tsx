@@ -3,6 +3,7 @@ import { Outlet } from 'react-router-dom';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
 import FloatingWidgets from '@/components/FloatingWidgets';
+import StickyCallBar from '@/components/StickyCallBar';
 import WebVitals from '@/components/WebVitals';
 import { getGoogleMapsApiKey, isGoogleMapsReady } from '@/config/env';
 import { getStructuredDataGraph } from '@/utils/structuredData';
@@ -103,6 +104,7 @@ export default function RootLayout() {
         <Outlet />
       </main>
       <Footer />
+      <StickyCallBar />
       <FloatingWidgets />
       <WebVitals />
     </>

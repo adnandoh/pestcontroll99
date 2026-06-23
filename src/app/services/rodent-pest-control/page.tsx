@@ -2,6 +2,7 @@ import { Link } from 'react-router-dom';
 import AppImage from '@/components/AppImage';
 import Breadcrumb from '@/components/Breadcrumb';
 import PageMeta from '@/components/PageMeta';
+import ServiceAreaLinks from '@/components/ServiceAreaLinks';
 
 export default function RodentPestControlPage() {
   // Structured data for SEO
@@ -43,7 +44,7 @@ export default function RodentPestControlPage() {
       />
       <PageMeta
         title="Rodent & Rat Control in Mumbai | Removal & Entry Sealing"
-        description="Effective rat & rodent control in Mumbai, Thane & Navi Mumbai. Trapping, baiting & entry-point sealing with 90-day warranty. Same-day service — +91 80807 48282."
+        description="Effective rat & rodent control in Mumbai, Navi Mumbai, Thane, Pune & Lonavala. Trapping, baiting & entry-point sealing with 90-day warranty. Call +91 80807 48282."
         keywords="rodent control mumbai, rat control mumbai, rat removal, rodent pest control"
         canonical="https://www.pestcontrol99.com/services/rodent-pest-control/"
         ogUrl="https://www.pestcontrol99.com/services/rodent-pest-control/"
@@ -434,6 +435,7 @@ export default function RodentPestControlPage() {
         </div>
       </section>
 
+      <ServiceAreaLinks />
       {/* Final CTA */}
       <section className="py-16 bg-gradient-to-br from-green-600 to-green-700 text-white">
         <div className="container mx-auto px-4">

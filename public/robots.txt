@@ -6,6 +6,9 @@ Disallow: /api/
 Disallow: /admin/
 Disallow: /test/
 Disallow: /quote-simple/
+Disallow: /thank-you/
+Disallow: /lonavala-thank-you/
+Disallow: /feedback/
 
 Sitemap: https://www.pestcontrol99.com/sitemap.xml
 

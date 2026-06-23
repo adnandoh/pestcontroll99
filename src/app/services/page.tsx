@@ -2,6 +2,7 @@ import { Link } from 'react-router-dom';
 import AppImage from '@/components/AppImage';
 import Breadcrumb from '@/components/Breadcrumb';
 import PageMeta from '@/components/PageMeta';
+import ServiceAreaLinks from '@/components/ServiceAreaLinks';
 
 interface ServiceCardProps {
   title: string;
@@ -97,8 +98,8 @@ export default function ServicesPage() {
   return (
     <div className="min-h-screen bg-gray-50">
       <PageMeta
-        title="Pest Control Services in Mumbai | Cockroach, Termite, Rodent & More"
-        description="Professional pest control services in Mumbai, Thane & Navi Mumbai — cockroach, termite, mosquito, rodent, honey bee & wood borer treatment. Same-day, warranty-backed. Free quote."
+        title="Pest Control Services in Mumbai | Pest Control 99"
+        description="Professional pest control in Mumbai, Navi Mumbai, Thane, Pune & Lonavala — cockroach, termite, mosquito, rodent, honey bee & wood borer. Same-day, warranty-backed. Free quote."
         keywords="pest control services mumbai, pest control mumbai, cockroach termite rodent control"
         canonical="https://www.pestcontrol99.com/services/"
         ogUrl="https://www.pestcontrol99.com/services/"
@@ -138,7 +139,7 @@ export default function ServicesPage() {
         </div>
       </section>
 
-
+      <ServiceAreaLinks />
 
       {/* CTA Section */}
       <section className="py-12 sm:py-16 md:py-20 bg-slate-800 text-white">

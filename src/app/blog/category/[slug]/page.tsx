@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useMemo } from 'react';
 import { Link, useParams, useSearchParams } from 'react-router-dom';
 import AppImage from '@/components/AppImage';
 import Breadcrumb from '@/components/Breadcrumb';
@@ -38,13 +38,23 @@ export default function CategoryPage() {
     };
   }, [categorySlug, page]);
 
+  const categoryMeta = useMemo(() => {
+    const name = category?.name || 'Category';
+    const base = `https://www.pestcontrol99.com/blog/category/${categorySlug}/`;
+    const canonical = page > 1 ? `${base}?page=${page}` : base;
+    return {
+      title: `${name} | Pest Control Blog | Pest Control 99`,
+      description:
+        category?.meta_description ||
+        `Expert ${name} guides and pest control tips for Mumbai homes and businesses from Pest Control 99. Read free articles and book same-day service.`,
+      canonical,
+      noindex: page > 1,
+    };
+  }, [category, categorySlug, page]);
+
   return (
     <div className="min-h-screen bg-gray-50">
-      <PageMeta
-        title={`${category?.name || 'Category'} Blogs | PestControl99`}
-        description={category?.meta_description || `Expert ${category?.name || ''} guides from PestControl99.`}
-        canonical={`https://www.pestcontrol99.com/blog/category/${categorySlug}/`}
-      />
+      <PageMeta {...categoryMeta} />
       <Breadcrumb
         items={[
           { label: 'Blog', href: '/blog' },

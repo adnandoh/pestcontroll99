@@ -2,7 +2,7 @@ import { Link } from 'react-router-dom';
 import AppImage from '@/components/AppImage';
 import { useState, useEffect, useRef } from 'react';
 import { HEADER_CITIES } from '@/config/headerCities';
-
+import { BUSINESS, SITE_LOGO } from '@/config/business';
 function CityPinIcon() {
   return (
     <svg
@@ -14,7 +14,7 @@ function CityPinIcon() {
     >
       <path
         d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7z"
-        fill="#00C950"
+        fill="var(--green-bright)"
       />
       <circle cx="12" cy="9" r="2.5" fill="#FEF08A" stroke="#166534" strokeWidth="0.5" />
     </svg>
@@ -70,35 +70,52 @@ export default function Header() {
   }, [isMenuOpen, isServicesDropdownOpen, isCityDropdownOpen]);
 
   return (
-    <header
-      className="bg-white/95 backdrop-blur supports-[backdrop-filter]:bg-white/75 shadow-sm sticky top-0 z-50 border-b border-gray-100"
-      ref={menuRef}
-      role="navigation"
-      aria-label="Main"
-    >
-      <div className="container mx-auto px-4">
-        <div className="flex justify-between items-center py-2 md:py-3">
-          <Link to="/" className="flex items-center" onClick={closeMobileMenu}>
-            <div className="flex items-center space-x-3">
-              <div className="flex items-center" style={{ height: 48 }}>
-                <AppImage
-                  src="/images/logo.svg"
-                  alt="Pest Control 99 Logo"
-                  width={140}
-                  height={40}
-                  className="h-full w-auto"
-                  priority
-                />
-              </div>
-            </div>
+    <div className="sticky top-0 z-50">
+      {/* Top promo bar */}
+      <div className="bg-navy-dark text-white border-b border-white/10">
+        <div className="container mx-auto px-4 sm:px-6 py-2">
+          <ul className="flex flex-wrap items-center justify-center sm:justify-start gap-x-5 sm:gap-x-8 gap-y-1 text-xs sm:text-sm font-medium">
+            <li className="flex items-center gap-2">
+              <span className="inline-block h-1.5 w-1.5 shrink-0 rounded-sm bg-green-bright" aria-hidden="true" />
+              Free Inspections &amp; Estimates
+            </li>
+            <li className="flex items-center gap-2">
+              <span className="inline-block h-1.5 w-1.5 shrink-0 rounded-sm bg-green-bright" aria-hidden="true" />
+              Same Day Service
+            </li>
+          </ul>
+        </div>
+      </div>
+
+      <header
+        className="site-header bg-white border-b border-divider shadow-sm"
+        ref={menuRef}
+        role="navigation"
+        aria-label="Main"
+      >
+      <div className="container mx-auto px-4 sm:px-6">
+        <div className="flex justify-between items-center min-h-[4.25rem] py-2.5 sm:min-h-[4.75rem] sm:py-3">
+          <Link
+            to="/"
+            className="flex items-center shrink-0 min-w-0"
+            onClick={closeMobileMenu}
+          >
+            <AppImage
+              src={SITE_LOGO.src}
+              alt={SITE_LOGO.alt}
+              width={SITE_LOGO.width}
+              height={SITE_LOGO.height}
+              className="block h-11 sm:h-12 md:h-[3.25rem] w-auto max-w-[min(68vw,240px)] md:max-w-[200px] lg:max-w-[220px] object-contain object-left"
+              priority
+            />
           </Link>
 
           {/* Desktop Navigation */}
-          <nav className="hidden md:flex items-center space-x-4">
-            <Link to="/" className="text-gray-700 font-medium hover:text-green-600 transition-colors py-2 px-3 rounded-md hover:bg-green-50">
+          <nav className="hidden md:flex items-center gap-1 lg:gap-2">
+            <Link to="/" className="nav-link text-[15px] py-2 px-3 rounded-md hover:bg-green-50">
               Home
             </Link>
-            <Link to="/about" className="text-gray-700 font-medium hover:text-green-600 transition-colors py-2 px-3 rounded-md hover:bg-green-50">
+            <Link to="/about" className="nav-link text-[15px] py-2 px-3 rounded-md hover:bg-green-50">
               About Us
             </Link>
 
@@ -108,7 +125,7 @@ export default function Header() {
                 type="button"
                 onClick={() => setIsCityDropdownOpen(!isCityDropdownOpen)}
                 onMouseEnter={() => setIsCityDropdownOpen(true)}
-                className="text-gray-700 font-medium hover:text-green-600 transition-colors py-2 px-3 rounded-md hover:bg-green-50 flex items-center gap-1 uppercase tracking-wide text-sm"
+                className="nav-link text-[15px] py-2 px-3 rounded-md hover:bg-green-50 flex items-center gap-1 uppercase tracking-wide"
                 aria-expanded={isCityDropdownOpen}
                 aria-haspopup="true"
               >
@@ -149,7 +166,7 @@ export default function Header() {
                 type="button"
                 onClick={() => setIsServicesDropdownOpen(!isServicesDropdownOpen)}
                 onMouseEnter={() => setIsServicesDropdownOpen(true)}
-                className="text-gray-700 font-medium hover:text-green-600 transition-colors py-2 px-3 rounded-md hover:bg-green-50 flex items-center gap-1"
+                className="nav-link text-[15px] py-2 px-3 rounded-md hover:bg-green-50 flex items-center gap-1"
               >
                 Services
                 <svg
@@ -183,63 +200,49 @@ export default function Header() {
               )}
             </div>
 
-            <Link to="/blog" className="text-gray-700 font-medium hover:text-green-600 transition-colors py-2 px-3 rounded-md hover:bg-green-50">
+            <Link to="/blog" className="nav-link text-[15px] py-2 px-3 rounded-md hover:bg-green-50">
               Blog
             </Link>
-            <Link to="/contact" className="bg-green-500 text-white font-medium px-5 py-2 rounded-full hover:bg-green-600 transition-colors text-sm">
+            <Link to="/contact" className="btn-cta nav-button font-semibold px-5 py-2.5 rounded-full text-[15px] whitespace-nowrap ml-1">
               Contact Us
             </Link>
           </nav>
 
-          {/* Mobile Menu Button */}
+          {/* Mobile Menu Button — 44×44px minimum tap target (WCAG) */}
           <button
-            className="md:hidden text-gray-700 p-2 rounded-md hover:bg-gray-100 transition-colors duration-200"
+            type="button"
+            className="mobile-menu-toggle md:hidden"
             onClick={() => setIsMenuOpen(!isMenuOpen)}
-            aria-label="Toggle mobile menu"
+            aria-label={isMenuOpen ? 'Close mobile menu' : 'Open mobile menu'}
             aria-expanded={isMenuOpen}
             aria-controls="primary-mobile-menu"
           >
-            <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              {isMenuOpen ? (
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth={2}
-                  d="M6 18L18 6M6 6l12 12"
-                  className="animate-in spin-in-180 duration-300"
-                />
-              ) : (
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth={2}
-                  d="M4 6h16M4 12h16M4 18h16"
-                  className="animate-in fade-in duration-300"
-                />
-              )}
-            </svg>
+            <span className={`mobile-menu-icon${isMenuOpen ? ' is-open' : ''}`} aria-hidden="true">
+              <span />
+              <span />
+              <span />
+            </span>
           </button>
         </div>
 
         {/* Mobile Navigation */}
         <nav
-          className={`md:hidden border-t border-gray-200 bg-white overflow-hidden transition-all duration-150 ${
-            isMenuOpen ? 'max-h-[32rem] opacity-100 pb-3' : 'max-h-0 opacity-0 pb-0'
-          }`}
+          className={`mobile-nav-panel md:hidden border-t border-gray-200 bg-white${isMenuOpen ? ' is-open' : ''}`}
           id="primary-mobile-menu"
           aria-hidden={!isMenuOpen}
         >
-          <div className="flex flex-col space-y-1 pt-3">
+          <div className="mobile-nav-panel-inner">
+            <div className={`mobile-nav-panel-content${isMenuOpen ? ' is-open' : ''}`}>
             <Link
               to="/"
-              className="mobile-menu-item text-gray-700 font-medium hover:text-green-600 py-2 px-2 rounded-md hover:bg-green-50 transition-all duration-200"
+              className="mobile-menu-item nav-link font-medium py-2 px-2 rounded-md hover:bg-green-50 transition-all duration-200"
               onClick={closeMobileMenu}
             >
               Home
             </Link>
             <Link
               to="/about"
-              className="mobile-menu-item text-gray-700 font-medium hover:text-green-600 py-2 px-2 rounded-md hover:bg-green-50 transition-all duration-200"
+              className="mobile-menu-item nav-link font-medium py-2 px-2 rounded-md hover:bg-green-50 transition-all duration-200"
               onClick={closeMobileMenu}
             >
               About Us
@@ -250,7 +253,7 @@ export default function Header() {
               <button
                 type="button"
                 onClick={() => setIsMobileCityOpen(!isMobileCityOpen)}
-                className="w-full text-left text-gray-700 font-medium hover:text-green-600 py-2 px-2 rounded-md hover:bg-green-50 transition-all duration-200 flex items-center justify-between uppercase tracking-wide text-sm"
+                className="w-full text-left nav-link font-medium py-2 px-2 rounded-md hover:bg-green-50 transition-all duration-200 flex items-center justify-between uppercase tracking-wide text-sm"
               >
                 City
                 <svg
@@ -290,7 +293,7 @@ export default function Header() {
               <button
                 type="button"
                 onClick={() => setIsMobileServicesOpen(!isMobileServicesOpen)}
-                className="w-full text-left text-gray-700 font-medium hover:text-green-600 py-2 px-2 rounded-md hover:bg-green-50 transition-all duration-200 flex items-center justify-between"
+                className="w-full text-left nav-link font-medium py-2 px-2 rounded-md hover:bg-green-50 transition-all duration-200 flex items-center justify-between"
               >
                 Services
                 <svg
@@ -326,21 +329,34 @@ export default function Header() {
 
             <Link
               to="/blog"
-              className="mobile-menu-item text-gray-700 font-medium hover:text-green-600 py-2 px-2 rounded-md hover:bg-green-50 transition-all duration-200"
+              className="mobile-menu-item nav-link font-medium py-2 px-2 rounded-md hover:bg-green-50 transition-all duration-200"
               onClick={closeMobileMenu}
             >
               Blog
             </Link>
-            <Link
-              to="/contact"
-              className="mobile-menu-item bg-green-500 text-white font-medium px-4 py-2 rounded-full hover:bg-green-600 transition-all duration-200 mx-2 text-center text-sm hover:shadow-lg"
-              onClick={closeMobileMenu}
-            >
-              Contact Us
-            </Link>
+
+            <div className="mobile-menu-item mobile-menu-cta-row">
+              <a
+                href={`tel:${BUSINESS.phoneTel}`}
+                className="mobile-menu-cta-btn mobile-menu-cta-call"
+                onClick={closeMobileMenu}
+                aria-label={`Call ${BUSINESS.phoneDisplay}`}
+              >
+                Call Us
+              </a>
+              <Link
+                to="/#get-quote"
+                className="mobile-menu-cta-btn mobile-menu-cta-inspection"
+                onClick={closeMobileMenu}
+              >
+                Free Inspection
+              </Link>
+            </div>
+          </div>
           </div>
         </nav>
       </div>
     </header>
+    </div>
   );
 }

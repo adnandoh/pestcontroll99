@@ -116,7 +116,11 @@ export default function SimpleQuotePage() {
 
   return (
     <div className="py-8 bg-gray-50 min-h-screen">
-      <PageMeta title="Get a Quote | Pest Control 99" noindex />
+      <PageMeta
+        title="Get a Quote | Pest Control 99"
+        description="Quick pest control quote form for Mumbai, Thane and Navi Mumbai. Same-day service available."
+        noindex
+      />
       <div className="container mx-auto px-4">
         <div className="max-w-3xl mx-auto">
           <div className="text-center mb-8">

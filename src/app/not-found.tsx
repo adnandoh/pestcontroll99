@@ -1,8 +1,14 @@
 import { Link } from 'react-router-dom';
+import PageMeta from '@/components/PageMeta';
 
 export default function NotFound() {
   return (
     <div className="min-h-screen bg-gray-50 flex items-center justify-center px-4">
+      <PageMeta
+        title="Page Not Found | Pest Control 99"
+        description="The page you requested could not be found. Browse our pest control services in Mumbai, Thane and Navi Mumbai."
+        noindex
+      />
       <div className="text-center max-w-md mx-auto">
         <div className="mb-8">
           <svg
@@ -18,10 +24,10 @@ export default function NotFound() {
               d="M9.172 16.172a4 4 0 015.656 0M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"
             />
           </svg>
-          <h1 className="text-6xl font-bold text-gray-900 mb-2">404</h1>
-          <h2 className="text-2xl font-semibold text-gray-700 mb-4">
+          <p className="text-6xl font-bold text-gray-400 mb-2" aria-hidden="true">404</p>
+          <h1 className="text-2xl font-semibold text-gray-900 mb-4">
             Page Not Found
-          </h2>
+          </h1>
           <p className="text-gray-600 mb-8">
             Sorry, we couldn&apos;t find the page you&apos;re looking for. It may have been moved, deleted, or the URL might be incorrect.
           </p>

@@ -33,15 +33,29 @@ export default function MultiSelectPest({
   const dropdownRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    const handleClickOutside = (event: MouseEvent) => {
-      if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
+    if (!isOpen) return;
+
+    const handlePointerDown = (event: PointerEvent) => {
+      if (dropdownRef.current?.contains(event.target as Node)) {
+        return;
+      }
+      setIsOpen(false);
+    };
+
+    const handleEscape = (event: KeyboardEvent) => {
+      if (event.key === 'Escape') {
         setIsOpen(false);
       }
     };
 
-    document.addEventListener('mousedown', handleClickOutside);
-    return () => document.removeEventListener('mousedown', handleClickOutside);
-  }, []);
+    document.addEventListener('pointerdown', handlePointerDown);
+    document.addEventListener('keydown', handleEscape);
+
+    return () => {
+      document.removeEventListener('pointerdown', handlePointerDown);
+      document.removeEventListener('keydown', handleEscape);
+    };
+  }, [isOpen]);
 
   const handleTogglePest = (pestValue: string) => {
     const newSelected = selectedPests.includes(pestValue)
@@ -65,22 +79,25 @@ export default function MultiSelectPest({
 
   return (
     <div className={`relative ${className}`} ref={dropdownRef}>
-      <label className={labelClass}>Select Service *</label>
+      <label className={labelClass} id="pest-select-label">
+        Select Service *
+      </label>
 
       <button
         type="button"
-        onClick={() => setIsOpen(!isOpen)}
+        onClick={() => setIsOpen((open) => !open)}
         aria-expanded={isOpen}
         aria-haspopup="listbox"
-        className={`w-full px-4 border rounded-xl focus:outline-none transition-all duration-200 text-left flex items-center justify-between shadow-sm bg-white ${
+        aria-labelledby="pest-select-label"
+        className={`quote-field w-full px-4 text-left flex items-center justify-between ${
           compact ? 'py-2.5 text-sm' : 'py-3 text-base'
-        } ${isOpen ? 'border-[#00C950]' : 'border-[#00C950] hover:border-[#00C950]'}`}
+        }`}
       >
         <span className={`truncate ${selectedPests.length > 0 ? 'font-bold text-gray-900' : 'text-gray-400'}`}>
           {getDisplayText()}
         </span>
         <svg
-          className={`w-5 h-5 text-[#00C950] shrink-0 ml-2 transition-transform duration-200 ${isOpen ? 'rotate-180' : ''}`}
+          className={`w-5 h-5 text-green-base shrink-0 ml-2 transition-transform duration-200 ${isOpen ? 'rotate-180' : ''}`}
           fill="none"
           stroke="currentColor"
           viewBox="0 0 24 24"
@@ -90,35 +107,13 @@ export default function MultiSelectPest({
         </svg>
       </button>
 
-      {selectedPests.length > 0 && (
-        <div className="flex flex-wrap gap-1.5 mt-2">
-          {selectedPests.map((value) => {
-            const pest = pestOptions.find((p) => p.value === value);
-            return (
-              <span
-                key={value}
-                className="inline-flex items-center gap-1 rounded-full bg-green-50 border border-[#00C950]/30 px-2.5 py-0.5 text-xs font-semibold text-green-800"
-              >
-                {pest?.label ?? value}
-                <button
-                  type="button"
-                  onClick={() => handleTogglePest(value)}
-                  className="text-green-700 hover:text-green-900 leading-none"
-                  aria-label={`Remove ${pest?.label ?? value}`}
-                >
-                  ×
-                </button>
-              </span>
-            );
-          })}
-        </div>
-      )}
-
       {isOpen && (
         <div
-          className="absolute z-20 w-full mt-1 bg-white border border-[#00C950]/40 rounded-xl shadow-lg overflow-hidden animate-in fade-in zoom-in-95 duration-100"
+          className="absolute z-30 w-full mt-1 bg-white border border-green-base/40 rounded-lg shadow-lg overflow-hidden animate-in fade-in zoom-in-95 duration-100"
           role="listbox"
           aria-multiselectable="true"
+          aria-labelledby="pest-select-label"
+          onPointerDown={(event) => event.stopPropagation()}
         >
           <div className="flex justify-between items-center px-4 py-2 border-b border-gray-100 bg-gray-50">
             <span className="text-[10px] font-bold text-gray-500 uppercase tracking-widest">
@@ -128,12 +123,16 @@ export default function MultiSelectPest({
               <button
                 type="button"
                 onClick={() => onChange([])}
-                className="text-[10px] text-[#00C950] hover:underline font-bold uppercase"
+                className="text-[10px] text-green-base hover:underline font-bold uppercase"
               >
                 Clear all
               </button>
             )}
           </div>
+
+          <p className="px-4 py-1.5 text-[11px] text-gray-500 bg-white border-b border-gray-100">
+            Tap each service you need. The list stays open until you tap Done.
+          </p>
 
           <ul className="max-h-60 overflow-y-auto py-1">
             {pestOptions.map((pest) => {
@@ -146,13 +145,14 @@ export default function MultiSelectPest({
                     className={`flex items-center gap-3 px-4 py-2.5 cursor-pointer transition-colors ${
                       isSelected ? 'bg-green-50' : 'hover:bg-gray-50'
                     }`}
+                    onPointerDown={(event) => event.stopPropagation()}
                   >
                     <input
                       id={id}
                       type="checkbox"
                       checked={isSelected}
                       onChange={() => handleTogglePest(pest.value)}
-                      className="h-4 w-4 rounded border-gray-300 text-[#00C950] focus:ring-[#00C950] focus:ring-offset-0 cursor-pointer"
+                      className="h-4 w-4 rounded border-gray-300 text-green-base focus:ring-green-base focus:ring-offset-0 cursor-pointer"
                     />
                     <span className={`text-base flex-1 ${isSelected ? 'font-semibold text-gray-900' : 'text-gray-800'}`}>
                       {pest.label}
@@ -167,11 +167,35 @@ export default function MultiSelectPest({
             <button
               type="button"
               onClick={() => setIsOpen(false)}
-              className="w-full py-2 text-sm font-bold text-white bg-[#00C950] rounded-lg hover:bg-green-600 transition-colors"
+              className="w-full py-2.5 text-sm font-bold text-white bg-green-base rounded-lg hover:bg-green-dark transition-colors"
             >
               Done
             </button>
           </div>
+        </div>
+      )}
+
+      {selectedPests.length > 0 && (
+        <div className="flex flex-wrap gap-1.5 mt-2">
+          {selectedPests.map((value) => {
+            const pest = pestOptions.find((p) => p.value === value);
+            return (
+              <span
+                key={value}
+                className="inline-flex items-center gap-1 rounded-full bg-green-pale border border-green-base/30 px-2.5 py-0.5 text-xs font-semibold text-green-dark"
+              >
+                {pest?.label ?? value}
+                <button
+                  type="button"
+                  onClick={() => handleTogglePest(value)}
+                  className="text-green-base hover:text-green-dark leading-none"
+                  aria-label={`Remove ${pest?.label ?? value}`}
+                >
+                  ×
+                </button>
+              </span>
+            );
+          })}
         </div>
       )}
     </div>

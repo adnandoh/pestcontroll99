@@ -135,16 +135,21 @@ export default function AreaPageTemplate({ area }: AreaPageTemplateProps) {
 
   const trustBadges = ['Same-Day Service', '365-Day Warranty', 'CIB&RC-Approved', `${ratingValue}★ (${reviewCount}+ reviews)`];
 
+  // Lonavala has a dedicated Ads landing at /pest-control-in-lonavala/ — avoid duplicate indexing.
+  const lonavalaLandingCanonical = 'https://www.pestcontrol99.com/pest-control-in-lonavala/';
+  const isLonavalaAreaPage = area.slug === 'lonavala';
+  const pageCanonical = isLonavalaAreaPage ? lonavalaLandingCanonical : getAreaCanonical(area.slug);
+
   return (
     <div className="bg-white">
       <PageMeta
         title={richContent?.pageTitle ?? getAreaPageTitle(area.name)}
         description={richContent?.metaDescription ?? getAreaMetaDescription(area.name)}
         keywords={richContent?.keywords}
-        canonical={getAreaCanonical(area.slug)}
-        ogUrl={getAreaCanonical(area.slug)}
+        canonical={pageCanonical}
+        ogUrl={pageCanonical}
         ogImage={`https://www.pestcontrol99.com${heroImage}`}
-        noindex={!richContent}
+        noindex={!richContent || isLonavalaAreaPage}
       />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(localBusinessSchema) }} />
 

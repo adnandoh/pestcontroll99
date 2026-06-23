@@ -1,6 +1,7 @@
 import { Link } from 'react-router-dom';
 import AppImage from '@/components/AppImage';
 import PageMeta from '@/components/PageMeta';
+import ServiceAreaLinks from '@/components/ServiceAreaLinks';
 
 export default function MosquitoPestControlPage() {
   const structuredData = {
@@ -40,8 +41,8 @@ export default function MosquitoPestControlPage() {
         dangerouslySetInnerHTML={{ __html: JSON.stringify(structuredData) }}
       />
       <PageMeta
-        title="Mosquito Pest Control in Mumbai | Same-Day Treatment"
-        description="Professional mosquito control in Mumbai, Thane & Navi Mumbai. Safe, same-day fogging & larvicide treatment to cut dengue & malaria risk. Free quote — +91 80807 48282."
+        title="Mosquito Control Mumbai | Dengue Prevention | Pest Control 99"
+        description="Professional mosquito control in Mumbai, Navi Mumbai, Thane, Pune & Lonavala. Same-day fogging & larvicide to cut dengue & malaria risk. Free quote — +91 80807 48282."
         keywords="mosquito control mumbai, mosquito pest control, mosquito fogging mumbai, dengue prevention pest control"
         canonical="https://www.pestcontrol99.com/services/mosquito-pest-control/"
         ogUrl="https://www.pestcontrol99.com/services/mosquito-pest-control/"
@@ -400,6 +401,7 @@ export default function MosquitoPestControlPage() {
         </div>
       </section>
 
+      <ServiceAreaLinks />
       {/* Final CTA */}
       <section className="py-16 bg-gradient-to-br from-green-600 to-green-700 text-white">
         <div className="container mx-auto px-4">

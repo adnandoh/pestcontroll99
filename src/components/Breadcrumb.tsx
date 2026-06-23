@@ -19,14 +19,22 @@ export default function Breadcrumb({ items }: BreadcrumbProps) {
         "@type": "ListItem",
         "position": 1,
         "name": "Home",
-        "item": "https://www.pestcontrol99.com"
+        "item": "https://www.pestcontrol99.com/"
       },
-      ...items.map((item, index) => ({
-        "@type": "ListItem",
-        "position": index + 2,
-        "name": item.label,
-        ...(item.href && { "item": `https://www.pestcontrol99.com${item.href}` })
-      }))
+      ...items.map((item, index) => {
+        const href = item.href;
+        let itemUrl: string | undefined;
+        if (href && !href.startsWith('#')) {
+          const path = href.startsWith('/') ? href : `/${href}`;
+          itemUrl = `https://www.pestcontrol99.com${path.endsWith('/') ? path : `${path}/`}`;
+        }
+        return {
+          '@type': 'ListItem',
+          position: index + 2,
+          name: item.label,
+          ...(itemUrl && { item: itemUrl }),
+        };
+      }),
     ]
   };
 

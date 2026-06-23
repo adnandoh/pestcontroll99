@@ -6,7 +6,7 @@
  * area pages are intentionally excluded until they have unique content (they are
  * also set to noindex in the app).
  */
-import { writeFileSync } from 'node:fs';
+import { readFileSync, writeFileSync } from 'node:fs';
 import { fileURLToPath } from 'node:url';
 import { dirname, resolve } from 'node:path';
 
@@ -14,7 +14,11 @@ const __dirname = dirname(fileURLToPath(import.meta.url));
 const BASE = 'https://www.pestcontrol99.com';
 const today = new Date().toISOString().split('T')[0];
 
-/** Static, indexable routes. Add area/city pages here once they have unique content. */
+const indexedAreaSlugs = JSON.parse(
+  readFileSync(resolve(__dirname, '../src/config/area-content/indexed-slugs.json'), 'utf8'),
+);
+
+/** Static, indexable routes. Area slugs come from indexed-slugs.json when content is added. */
 const staticRoutes = [
   { path: '/', priority: '1.0', changefreq: 'weekly' },
   { path: '/services/', priority: '0.9', changefreq: 'monthly' },
@@ -29,11 +33,16 @@ const staticRoutes = [
   { path: '/contact/', priority: '0.8', changefreq: 'monthly' },
   { path: '/quote/', priority: '0.9', changefreq: 'weekly' },
   { path: '/blog/', priority: '0.7', changefreq: 'weekly' },
-  // Area pages with unique, indexable content (add each slug here as content is written)
-  { path: '/pest-control-andheri/', priority: '0.8', changefreq: 'monthly' },
+  ...indexedAreaSlugs.map((slug) => ({
+    path: `/pest-control-${slug}/`,
+    priority: '0.8',
+    changefreq: 'monthly',
+  })),
   { path: '/privacy-policy/', priority: '0.3', changefreq: 'yearly' },
   { path: '/terms-and-conditions/', priority: '0.3', changefreq: 'yearly' },
   { path: '/refund-policy/', priority: '0.3', changefreq: 'yearly' },
+  { path: '/legal/', priority: '0.3', changefreq: 'yearly' },
+  { path: '/data-deletion/', priority: '0.3', changefreq: 'yearly' },
 ];
 
 /** Best-effort: append published blog posts from the CRM API (non-fatal on failure). */

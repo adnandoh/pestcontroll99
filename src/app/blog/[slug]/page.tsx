@@ -8,6 +8,7 @@ import NewsletterSignup from '@/components/NewsletterSignup';
 import TrackView from '@/components/blog/TrackView';
 import PageMeta from '@/components/PageMeta';
 import { extractToc } from '@/lib/toc';
+import { getBlogPostingSchema } from '@/utils/blogSchema';
 
 export default function BlogPostPage() {
   const { slug } = useParams<{ slug: string }>();
@@ -52,16 +53,21 @@ export default function BlogPostPage() {
   if (!blog) return null;
 
   const toc = extractToc(blog.content || '');
+  const blogPostingSchema = getBlogPostingSchema(blog);
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-50 to-gray-100">
       <PageMeta
-        title={blog.meta_title || `${blog.title} | PestControl99`}
+        title={blog.meta_title || `${blog.title} | Pest Control 99`}
         description={blog.meta_description || blog.excerpt}
         keywords={blog.target_keywords}
         canonical={blog.canonical_url || `https://www.pestcontrol99.com/blog/${blog.slug}/`}
         ogUrl={`https://www.pestcontrol99.com/blog/${blog.slug}/`}
         ogImage={blog.featured_image}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(blogPostingSchema) }}
       />
       <TrackView slug={slug!} />
       <Breadcrumb

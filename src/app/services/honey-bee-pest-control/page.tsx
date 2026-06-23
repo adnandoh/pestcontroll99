@@ -2,13 +2,14 @@ import { Link } from 'react-router-dom';
 import AppImage from '@/components/AppImage';
 import Breadcrumb from '@/components/Breadcrumb';
 import PageMeta from '@/components/PageMeta';
+import ServiceAreaLinks from '@/components/ServiceAreaLinks';
 
 export default function HoneyBeePestControlPage() {
   return (
     <div className="min-h-screen bg-white">
       <PageMeta
-        title="Honey Bee Removal in Mumbai | Safe Hive Removal Service"
-        description="Safe honey bee & hive removal in Mumbai, Thane & Navi Mumbai. Trained technicians remove beehives without harm to your family. Same-day service — +91 80807 48282."
+        title="Honey Bee & Hive Removal Mumbai | Safe, Same-Day | Pest Control 99"
+        description="Safe honey bee & hive removal in Mumbai, Navi Mumbai, Thane, Pune & Lonavala. Trained technicians remove beehives without harm. Same-day service — +91 80807 48282."
         keywords="honey bee removal mumbai, beehive removal, honey bee pest control, bee control mumbai"
         canonical="https://www.pestcontrol99.com/services/honey-bee-pest-control/"
         ogUrl="https://www.pestcontrol99.com/services/honey-bee-pest-control/"
@@ -388,6 +389,7 @@ export default function HoneyBeePestControlPage() {
         </div>
       </section>
 
+      <ServiceAreaLinks />
       {/* Final CTA */}
       <section className="py-16 bg-gradient-to-br from-green-600 to-green-700 text-white">
         <div className="container mx-auto px-4">

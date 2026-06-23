@@ -2,6 +2,7 @@ import { Link } from 'react-router-dom';
 import AppImage from '@/components/AppImage';
 import Breadcrumb from '@/components/Breadcrumb';
 import PageMeta from '@/components/PageMeta';
+import ServiceAreaLinks from '@/components/ServiceAreaLinks';
 
 export default function TermitePestControlPage() {
   // Structured data for SEO
@@ -43,7 +44,7 @@ export default function TermitePestControlPage() {
       />
       <PageMeta
         title="Termite Control in Mumbai | Anti-Termite Treatment, 5-Yr Warranty"
-        description="Anti-termite treatment in Mumbai, Thane & Navi Mumbai with up to 5-year warranty. Low-odour borate, neat drill & seal, same-day inspection. Free quote — +91 80807 48282."
+        description="Anti-termite treatment in Mumbai, Navi Mumbai, Thane, Pune & Lonavala with up to 5-year warranty. Low-odour borate, neat drill & seal, same-day inspection. Free quote — +91 80807 48282."
         keywords="termite control mumbai, anti termite treatment, termite treatment cost mumbai, deemak control"
         canonical="https://www.pestcontrol99.com/services/termite-pest-control/"
         ogUrl="https://www.pestcontrol99.com/services/termite-pest-control/"
@@ -487,6 +488,7 @@ export default function TermitePestControlPage() {
         </div>
       </section>
 
+      <ServiceAreaLinks />
       {/* Final CTA */}
       <section className="py-16 bg-gradient-to-br from-green-600 to-green-700 text-white">
         <div className="container mx-auto px-4">

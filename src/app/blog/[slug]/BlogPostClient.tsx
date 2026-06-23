@@ -350,7 +350,7 @@ export default function BlogPostClient({ slug }: { slug: string }) {
                             "name": "PestControl99",
                             "logo": {
                               "@type": "ImageObject",
-                              "url": "https://www.pestcontrol99.com/images/logo.svg"
+                              "url": "https://www.pestcontrol99.com/images/pestcontrol99-logo.png"
                             }
                           },
                           "datePublished": post.date,

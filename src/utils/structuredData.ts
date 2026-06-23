@@ -1,4 +1,4 @@
-import { BUSINESS } from '@/config/business';
+import { BUSINESS, SITE_LOGO } from '@/config/business';
 
 export function getOrganizationSchema() {
   return {
@@ -11,7 +11,7 @@ export function getOrganizationSchema() {
     url: BUSINESS.website,
     email: BUSINESS.email,
     telephone: BUSINESS.phoneTel,
-    logo: `${BUSINESS.website}/android-chrome-512x512.png`,
+    logo: `${BUSINESS.website}${SITE_LOGO.src}`,
     parentOrganization: {
       '@type': 'Organization',
       name: BUSINESS.legalName,
@@ -32,7 +32,7 @@ export function getLocalBusinessSchema() {
     telephone: BUSINESS.phoneTel,
     email: BUSINESS.email,
     image: `${BUSINESS.website}/images/heroimage.webp`,
-    logo: `${BUSINESS.website}/android-chrome-512x512.png`,
+    logo: `${BUSINESS.website}${SITE_LOGO.src}`,
     parentOrganization: {
       '@type': 'Organization',
       name: BUSINESS.legalName,

@@ -13,6 +13,7 @@ function QuotePageContent() {
         ogUrl="https://www.pestcontrol99.com/quote/"
       />
       <Breadcrumb items={[{ label: 'Get Quote' }]} />
+      <h1 className="sr-only">Get a Free Pest Control Quote</h1>
       <div className="-mt-8 md:-mt-12">
         <HomeQuoteForm />
       </div>

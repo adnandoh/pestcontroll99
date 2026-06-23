@@ -2,13 +2,14 @@ import { Link } from 'react-router-dom';
 import AppImage from '@/components/AppImage';
 import Breadcrumb from '@/components/Breadcrumb';
 import PageMeta from '@/components/PageMeta';
+import ServiceAreaLinks from '@/components/ServiceAreaLinks';
 
 export default function WoodBorerControlPage() {
   return (
     <div className="min-h-screen bg-white">
       <PageMeta
         title="Wood Borer Control in Mumbai | Save Your Furniture"
-        description="Professional wood borer treatment in Mumbai, Thane & Navi Mumbai. Protect furniture & woodwork from powder-post beetles. Warranty-backed — call +91 80807 48282."
+        description="Professional wood borer treatment in Mumbai, Navi Mumbai, Thane, Pune & Lonavala. Protect furniture from powder-post beetles. Warranty-backed — call +91 80807 48282."
         keywords="wood borer control mumbai, wood borer treatment, furniture borer control, powder post beetle treatment"
         canonical="https://www.pestcontrol99.com/services/wood-borer-control/"
         ogUrl="https://www.pestcontrol99.com/services/wood-borer-control/"
@@ -374,6 +375,7 @@ export default function WoodBorerControlPage() {
         </div>
       </section>
 
+      <ServiceAreaLinks />
       <section className="py-16 bg-gradient-to-br from-green-600 to-green-700 text-white">
         <div className="container mx-auto px-4">
           <div className="max-w-4xl mx-auto text-center">

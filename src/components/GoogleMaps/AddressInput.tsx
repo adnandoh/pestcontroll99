@@ -43,8 +43,7 @@ export default function AddressInput({
           onChange={onChange}
           onSelect={handleAddressSelect}
           placeholder={placeholder}
-          className={`w-full px-4 py-3 border rounded-xl focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent transition-all duration-200 ${error ? 'border-red-300 focus:ring-red-200' : 'border-gray-200 hover:border-green-300'
-            } ${className}`}
+          className={`w-full px-4 py-3 quote-field transition-all duration-200 ${error ? 'quote-field-error' : ''} ${className}`}
           error={error}
         />
         <div className="flex justify-end">

@@ -1,4 +1,4 @@
-import { BUSINESS } from '@/config/business';
+import { BUSINESS, OFFICE_LOCATIONS } from '@/config/business';
 
 export default function BusinessDetailsCard({ className = '' }: { className?: string }) {
   const rows = [
@@ -7,7 +7,6 @@ export default function BusinessDetailsCard({ className = '' }: { className?: st
     { label: 'Website', value: BUSINESS.websiteDisplay, href: BUSINESS.website },
     { label: 'Official Email', value: BUSINESS.email, href: `mailto:${BUSINESS.email}` },
     { label: 'Phone Number', value: BUSINESS.phoneDisplay, href: `tel:${BUSINESS.phoneTel}` },
-    { label: 'Registered Address', value: BUSINESS.address.full },
   ];
 
   return (
@@ -29,6 +28,17 @@ export default function BusinessDetailsCard({ className = '' }: { className?: st
             </dd>
           </div>
         ))}
+        <div className="border-b border-green-100/80 pb-4 last:border-0 last:pb-0">
+          <dt className="text-xs font-bold uppercase tracking-wider text-gray-500">Office Locations</dt>
+          <dd className="mt-3 space-y-4">
+            {OFFICE_LOCATIONS.map((office) => (
+              <div key={office.label}>
+                <p className="text-sm font-semibold text-gray-900">{office.label}</p>
+                <p className="mt-1 text-sm text-gray-700 leading-relaxed">{office.full}</p>
+              </div>
+            ))}
+          </dd>
+        </div>
       </dl>
     </div>
   );

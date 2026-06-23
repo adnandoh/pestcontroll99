@@ -44,9 +44,9 @@ export const LONAVALA_LANDING: LandingPageConfig = {
   defaultCity: 'Lonavala',
   defaultState: 'Maharashtra',
   seo: {
-    title: 'Reliable Monsoon Pest Control Services in Lonavala | Pest Control 99',
+    title: 'Monsoon Pest Control in Lonavala | Same-Day Service | Pest Control 99',
     description:
-      'Professional monsoon pest control in Lonavala for villas, resorts, hotels & homestays. Cockroach, mosquito, termite & rodent treatment. Same-day service. Call 8080748282 for a free quote.',
+      'Trusted pest control for villas, resorts & homestays in Lonavala. Cockroach, mosquito, termite & rodent treatment. Same-day, herbal, warranty-backed. Call +91 80807 48282.',
     keywords:
       'pest control services in Lonavala, monsoon pest control in Lonavala, best pest control service in Lonavala, villa pest control in Lonavala, resort pest control in Lonavala, hotel pest control in Lonavala, cockroach control in Lonavala, mosquito control service in Lonavala, termite treatment in Lonavala, emergency pest control in Lonavala',
     canonical: `${SITE}/pest-control-in-lonavala/`,

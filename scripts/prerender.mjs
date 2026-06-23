@@ -9,14 +9,14 @@
  * The <body> still hydrates client-side exactly as before, so there is no
  * hydration risk — PageMeta simply re-applies the same values on the client.
  */
-import { readFileSync, writeFileSync, mkdirSync } from 'node:fs';
+import { readFileSync, writeFileSync, mkdirSync, existsSync } from 'node:fs';
 import { fileURLToPath } from 'node:url';
 import { dirname, resolve, join } from 'node:path';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const DIST = resolve(__dirname, '..', 'dist');
 const BASE = 'https://www.pestcontrol99.com';
-const DEFAULT_IMAGE = `${BASE}/android-chrome-512x512.png`;
+const DEFAULT_IMAGE = `${BASE}/images/hero-home.webp`;
 
 /* ---------- Business identity (mirror of src/config/business.ts) ---------- */
 const BUSINESS = {
@@ -112,24 +112,52 @@ function service(name, serviceType, description, offerDescription) {
 
 /* ---------- Indexable routes (mirror of each page's PageMeta) ---------- */
 const ROUTES = [
-  { path: '/', title: 'Pest Control in Mumbai | Safe, Same-Day & Certified Services', description: 'Trusted pest control services in Mumbai, Thane & Navi Mumbai. 100% safe treatments for homes & offices. Get a same-day quote & 365-day warranty. Book now!', image: `${BASE}/images/hero-home.webp` },
-  { path: '/services/', title: 'Pest Control Services in Mumbai | Cockroach, Termite, Rodent & More', description: 'Professional pest control services in Mumbai, Thane & Navi Mumbai — cockroach, termite, mosquito, rodent, honey bee & wood borer treatment. Same-day, warranty-backed. Free quote.' },
-  { path: '/services/cockroach-pest-control/', title: 'Cockroach Pest Control in Mumbai | Odourless Gel Treatment', description: 'Same-day cockroach control in Mumbai, Thane & Navi Mumbai. Odourless, child & pet-safe gel treatment with a 365-day warranty. Free quote — call +91 80807 48282.', extra: [service('Cockroach Pest Control Mumbai', 'Cockroach Control', 'Professional cockroach pest control in Mumbai, Thane & Navi Mumbai with odourless, child- and pet-safe gel treatment and a 365-day warranty.', 'Same-day cockroach gel treatment with 365-day warranty')] },
-  { path: '/services/mosquito-pest-control/', title: 'Mosquito Pest Control in Mumbai | Same-Day Treatment', description: 'Professional mosquito control in Mumbai, Thane & Navi Mumbai. Safe, same-day fogging & larvicide treatment to cut dengue & malaria risk. Free quote — +91 80807 48282.', extra: [service('Mosquito Pest Control Mumbai', 'Mosquito Control', 'Professional mosquito control in Mumbai, Thane & Navi Mumbai with safe, low-odour fogging and larvicide treatment.', 'Same-day mosquito fogging and larvicide treatment')] },
-  { path: '/services/termite-pest-control/', title: 'Termite Control in Mumbai | Anti-Termite Treatment, 5-Yr Warranty', description: 'Anti-termite treatment in Mumbai, Thane & Navi Mumbai with up to 5-year warranty. Low-odour borate, neat drill & seal, same-day inspection. Free quote — +91 80807 48282.', extra: [service('Termite Pest Control Mumbai', 'Termite Control', 'Professional termite pest control in Mumbai, Thane & Navi Mumbai with low-odour borate treatment and up to a 5-year warranty.', 'Same-day termite inspection and treatment with up to 5-year warranty')] },
-  { path: '/services/rodent-pest-control/', title: 'Rodent & Rat Control in Mumbai | Removal & Entry Sealing', description: 'Effective rat & rodent control in Mumbai, Thane & Navi Mumbai. Trapping, baiting & entry-point sealing with 90-day warranty. Same-day service — +91 80807 48282.', extra: [service('Rodent Pest Control Mumbai', 'Rodent Control', 'Professional rodent pest control in Mumbai, Thane & Navi Mumbai with humane trapping, entry-point sealing and a 90-day warranty.', 'Same-day rodent inspection and treatment with up to 90-day warranty')] },
-  { path: '/services/honey-bee-pest-control/', title: 'Honey Bee Removal in Mumbai | Safe Hive Removal Service', description: 'Safe honey bee & hive removal in Mumbai, Thane & Navi Mumbai. Trained technicians remove beehives without harm to your family. Same-day service — +91 80807 48282.', extra: [service('Honey Bee Pest Control Mumbai', 'Honey Bee Pest Control', 'Safe and eco-friendly honey bee removal in Mumbai, Thane & Navi Mumbai by trained technicians.', 'Professional honey bee removal with warranty')] },
-  { path: '/services/wood-borer-control/', title: 'Wood Borer Control in Mumbai | Save Your Furniture', description: 'Professional wood borer treatment in Mumbai, Thane & Navi Mumbai. Protect furniture & woodwork from powder-post beetles. Warranty-backed — call +91 80807 48282.', extra: [service('Wood Borer Control Mumbai', 'Wood Borer Control', 'Professional wood borer control in Mumbai, Thane & Navi Mumbai with low-odour, warranty-backed treatment.', 'Professional wood borer treatment with warranty')] },
+  { path: '/', title: 'Pest Control in Mumbai | Safe, Same-Day & Certified Services', description: 'Trusted pest control in Mumbai, Navi Mumbai, Thane, Pune & Lonavala. 100% safe, herbal treatments for homes & offices. Same-day service, 365-day warranty. Book now!', image: `${BASE}/images/hero-home.webp` },
+  { path: '/services/', title: 'Pest Control Services in Mumbai | Pest Control 99', description: 'Professional pest control in Mumbai, Navi Mumbai, Thane, Pune & Lonavala — cockroach, termite, mosquito, rodent, honey bee & wood borer. Same-day, warranty-backed. Free quote.' },
+  { path: '/services/cockroach-pest-control/', title: 'Cockroach Pest Control in Mumbai | Odourless Gel Treatment', description: 'Same-day cockroach control in Mumbai, Navi Mumbai, Thane, Pune & Lonavala. Odourless, child & pet-safe gel treatment with a 365-day warranty. Free quote — call +91 80807 48282.', extra: [service('Cockroach Pest Control Mumbai', 'Cockroach Control', 'Professional cockroach pest control in Mumbai, Thane & Navi Mumbai with odourless, child- and pet-safe gel treatment and a 365-day warranty.', 'Same-day cockroach gel treatment with 365-day warranty')] },
+  { path: '/services/mosquito-pest-control/', title: 'Mosquito Control Mumbai | Dengue Prevention | Pest Control 99', description: 'Professional mosquito control in Mumbai, Navi Mumbai, Thane, Pune & Lonavala. Same-day fogging & larvicide to cut dengue & malaria risk. Free quote — +91 80807 48282.', extra: [service('Mosquito Pest Control Mumbai', 'Mosquito Control', 'Professional mosquito control in Mumbai, Thane & Navi Mumbai with safe, low-odour fogging and larvicide treatment.', 'Same-day mosquito fogging and larvicide treatment')] },
+  { path: '/services/termite-pest-control/', title: 'Termite Control in Mumbai | Anti-Termite Treatment, 5-Yr Warranty', description: 'Anti-termite treatment in Mumbai, Navi Mumbai, Thane, Pune & Lonavala with up to 5-year warranty. Low-odour borate, neat drill & seal, same-day inspection. Free quote — +91 80807 48282.', extra: [service('Termite Pest Control Mumbai', 'Termite Control', 'Professional termite pest control in Mumbai, Thane & Navi Mumbai with low-odour borate treatment and up to a 5-year warranty.', 'Same-day termite inspection and treatment with up to 5-year warranty')] },
+  { path: '/services/rodent-pest-control/', title: 'Rodent & Rat Control in Mumbai | Removal & Entry Sealing', description: 'Effective rat & rodent control in Mumbai, Navi Mumbai, Thane, Pune & Lonavala. Trapping, baiting & entry-point sealing with 90-day warranty. Call +91 80807 48282.', extra: [service('Rodent Pest Control Mumbai', 'Rodent Control', 'Professional rodent pest control in Mumbai, Thane & Navi Mumbai with humane trapping, entry-point sealing and a 90-day warranty.', 'Same-day rodent inspection and treatment with up to 90-day warranty')] },
+  { path: '/services/honey-bee-pest-control/', title: 'Honey Bee & Hive Removal Mumbai | Safe, Same-Day | Pest Control 99', description: 'Safe honey bee & hive removal in Mumbai, Navi Mumbai, Thane, Pune & Lonavala. Trained technicians remove beehives without harm. Same-day service — +91 80807 48282.', extra: [service('Honey Bee Pest Control Mumbai', 'Honey Bee Pest Control', 'Safe and eco-friendly honey bee removal in Mumbai, Thane & Navi Mumbai by trained technicians.', 'Professional honey bee removal with warranty')] },
+  { path: '/services/wood-borer-control/', title: 'Wood Borer Control in Mumbai | Save Your Furniture', description: 'Professional wood borer treatment in Mumbai, Navi Mumbai, Thane, Pune & Lonavala. Protect furniture from powder-post beetles. Warranty-backed — call +91 80807 48282.', extra: [service('Wood Borer Control Mumbai', 'Wood Borer Control', 'Professional wood borer control in Mumbai, Thane & Navi Mumbai with low-odour, warranty-backed treatment.', 'Professional wood borer treatment with warranty')] },
   { path: '/about/', title: 'About Pest Control 99 | Multi Pest Care LLP, Mumbai', description: 'Pest Control 99 by Multi Pest Care LLP — licensed, CIB&RC-approved pest management in Mumbai, Thane & Navi Mumbai. Same-day service, written warranty, transparent pricing.' },
   { path: '/contact/', title: 'Contact Pest Control 99 | Book Pest Control in Mumbai', description: 'Contact Pest Control 99 for same-day pest control in Mumbai, Thane & Navi Mumbai. Call +91 80807 48282, WhatsApp, or request a free quote online.' },
   { path: '/quote/', title: 'Get a Free Pest Control Quote | Instant Price Estimate', description: 'Get an instant pest control price estimate for your home or office in Mumbai, Thane & Navi Mumbai. Same-day service, no hidden charges. Book your free quote now.' },
-  { path: '/blog/', title: 'Pest Control Blog | Tips, Guides & Expert Advice | PestControl99', description: 'Read expert pest control blogs, tips, and guides for Mumbai & India.' },
-  { path: '/pest-control-in-lonavala/', title: 'Reliable Monsoon Pest Control Services in Lonavala | Pest Control 99', description: 'Professional monsoon pest control in Lonavala for villas, resorts, hotels & homestays. Cockroach, mosquito, termite & rodent treatment. Same-day service — call +91 80807 48282.', image: `${BASE}/images/pest-control-lonavala.webp` },
-  { path: '/pest-control-andheri/', title: 'Professional Pest Control Services in Andheri | Pest Control 99', description: 'Professional pest control in Andheri for homes, offices, restaurants & shops. Same-day cockroach, termite, rodent & mosquito control with warranty. Call +91 80807 48282.', image: `${BASE}/images/heroimage.webp` },
+  { path: '/blog/', title: 'Pest Control Blog | Tips & Guides | Pest Control 99', description: 'Pest control tips, guides & seasonal advice for Mumbai, Navi Mumbai, Thane & Pune. Expert articles on cockroach, termite, monsoon pests & more. Read free.' },
+  { path: '/pest-control-in-lonavala/', title: 'Monsoon Pest Control in Lonavala | Same-Day Service | Pest Control 99', description: 'Trusted pest control for villas, resorts & homestays in Lonavala. Cockroach, mosquito, termite & rodent treatment. Same-day, herbal, warranty-backed. Call +91 80807 48282.', image: `${BASE}/images/pest-control-lonavala.webp` },
+  { path: '/pest-control-andheri/', title: 'Professional Pest Control Services in Andheri | Pest Control 99', description: 'Professional pest control in Andheri for homes, offices & shops. Same-day cockroach, termite & rodent treatment with warranty. Call +91 80807 48282.', image: `${BASE}/images/heroimage.webp` },
   { path: '/privacy-policy/', title: 'Privacy Policy | Pest Control 99', description: 'How Pest Control 99 (Multi Pest Care LLP) collects, uses, and protects your personal data.' },
   { path: '/terms-and-conditions/', title: 'Terms & Conditions | Pest Control 99', description: 'Terms and conditions for pest control services provided by Pest Control 99 (Multi Pest Care LLP).' },
   { path: '/refund-policy/', title: 'Refund Policy | Pest Control 99', description: 'Refund and cancellation policy for pest control services by Pest Control 99 (Multi Pest Care LLP).' },
+  { path: '/legal/', title: 'Legal Information | Pest Control 99', description: 'Legal information and business identity for Pest Control 99, operated by Multi Pest Care LLP.' },
+  { path: '/data-deletion/', title: 'Data Deletion Request | Pest Control 99', description: 'Request deletion of your personal data held by Pest Control 99 (Multi Pest Care LLP).' },
 ];
+
+function areaRoutesFromIndexedSlugs() {
+  const slugs = JSON.parse(
+    readFileSync(resolve(__dirname, '../src/config/area-content/indexed-slugs.json'), 'utf8'),
+  );
+  const existing = new Set(ROUTES.map((r) => r.path));
+  return slugs
+    .map((slug) => {
+      const file = resolve(__dirname, `../src/config/area-content/${slug}.ts`);
+      if (!existsSync(file)) return null;
+      const text = readFileSync(file, 'utf8');
+      const title = text.match(/pageTitle:\s*\n\s*'([^']+)'/)?.[1] || text.match(/pageTitle:\s*'([^']+)'/)?.[1];
+      const description =
+        text.match(/metaDescription:\s*\n\s*'([^']+)'/)?.[1] || text.match(/metaDescription:\s*'([^']+)'/)?.[1];
+      const heroImage = text.match(/heroImage:\s*'([^']+)'/)?.[1];
+      const path = `/pest-control-${slug}/`;
+      if (existing.has(path) || !title || !description) return null;
+      return {
+        path,
+        title,
+        description,
+        image: heroImage ? `${BASE}${heroImage}` : undefined,
+      };
+    })
+    .filter(Boolean);
+}
 
 /* ---------- helpers ---------- */
 const esc = (s) => String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
@@ -180,7 +208,7 @@ async function getBlogRoutes() {
       .filter((p) => p && p.slug)
       .map((p) => ({
         path: `/blog/${p.slug}/`,
-        title: p.meta_title || p.title || 'Pest Control Blog | Pest Control 99',
+        title: p.meta_title || `${p.title} | Pest Control 99`,
         description: p.meta_description || p.excerpt || 'Expert pest control tips and guides for Mumbai & India.',
         image: typeof p.featured_image === 'string' && p.featured_image.startsWith('http') ? p.featured_image : undefined,
       }));
@@ -196,7 +224,7 @@ const template = readFileSync(join(DIST, 'index.html'), 'utf8');
 // routes (e.g. noindex area pages). vercel.json rewrites unmatched paths here.
 writeFileSync(join(DIST, 'app.html'), template, 'utf8');
 const blogRoutes = await getBlogRoutes();
-const allRoutes = [...ROUTES, ...blogRoutes];
+const allRoutes = [...ROUTES, ...areaRoutesFromIndexedSlugs(), ...blogRoutes];
 let count = 0;
 for (const route of allRoutes) {
   const html = buildHtml(template, route);

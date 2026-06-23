@@ -1,8 +1,6 @@
 import { Link } from 'react-router-dom';
 import OptimizedImage from '@/components/OptimizedImage';
 import Breadcrumb from '@/components/Breadcrumb';
-import BusinessIdentityBanner from '@/components/BusinessIdentityBanner';
-import BusinessDetailsCard from '@/components/BusinessDetailsCard';
 import { BUSINESS, DEFAULT_WHATSAPP_MESSAGE, whatsAppUrl } from '@/config/business';
 import PageMeta from '@/components/PageMeta';
 
@@ -20,10 +18,6 @@ export default function AboutPage() {
         <div className="container mx-auto px-4 py-3">
           <Breadcrumb items={[{ label: 'About Us' }]} />
         </div>
-      </div>
-
-      <div className="container mx-auto px-4 py-8">
-        <BusinessIdentityBanner />
       </div>
 
       {/* Hero Section */}
@@ -50,9 +44,6 @@ export default function AboutPage() {
               </h1>
 
               <p className="text-xl text-gray-600 mb-4 leading-relaxed max-w-lg">
-                {BUSINESS.brandStatement}
-              </p>
-              <p className="text-lg text-gray-600 mb-8 leading-relaxed max-w-lg">
                 Clear talk. Neat work. Real results. We keep it simple—same-day help, clear prices, and service notes you can actually understand.
               </p>
 
@@ -367,9 +358,6 @@ export default function AboutPage() {
         </div>
       </section>
 
-      <div className="container mx-auto px-4 py-12">
-        <BusinessDetailsCard />
-      </div>
     </div>
   );
 }

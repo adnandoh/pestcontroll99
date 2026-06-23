@@ -1,7 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import AppImage from '@/components/AppImage';
+import { SITE_LOGO } from '@/config/business';
 import { useParams } from 'react-router-dom';
 import { getApiBase } from '@/config/env';
+import PageMeta from '@/components/PageMeta';
 
 const StarIcon = ({ filled }: { filled: boolean }) => (
   <svg
@@ -83,20 +85,33 @@ export default function FeedbackPage() {
     }
   };
 
+  const feedbackMeta = (
+    <PageMeta
+      title="Service Feedback | Pest Control 99"
+      description="Share feedback about your recent pest control service with Pest Control 99."
+      noindex
+    />
+  );
+
   if (loading) {
     return (
-      <div className="min-h-screen bg-white flex items-center justify-center p-6">
+      <>
+        {feedbackMeta}
+        <div className="min-h-screen bg-white flex items-center justify-center p-6">
         <div className="flex flex-col items-center gap-4">
           <div className="animate-spin rounded-full h-10 w-10 border-4 border-gray-100 border-t-[#FFC107]" />
           <p className="text-[10px] font-semibold text-gray-400 uppercase tracking-[0.2em]">Authenticating...</p>
         </div>
       </div>
+      </>
     );
   }
 
   if (error) {
     return (
-      <div className="min-h-screen bg-[#fafafa] flex items-center justify-center p-6 text-center">
+      <>
+        {feedbackMeta}
+        <div className="min-h-screen bg-[#fafafa] flex items-center justify-center p-6 text-center">
         <div className="bg-white p-8 sm:p-10 rounded-3xl shadow-xl max-w-md w-full border border-gray-100">
           <div className="w-16 h-16 bg-red-50 text-red-500 rounded-full flex items-center justify-center mx-auto mb-6">
             <svg className="w-8 h-8" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
@@ -113,12 +128,15 @@ export default function FeedbackPage() {
           </button>
         </div>
       </div>
+      </>
     );
   }
 
   if (submitted) {
     return (
-      <div className="min-h-screen flex items-center justify-center px-4 bg-[#fafafa]">
+      <>
+        {feedbackMeta}
+        <div className="min-h-screen flex items-center justify-center px-4 bg-[#fafafa]">
         {/* Decorative elements */}
         <div className="fixed top-0 left-0 w-full h-1 bg-[#FFC107] z-50"></div>
         <div className="absolute top-0 right-0 w-64 h-64 bg-[#FFC107]/5 rounded-full blur-3xl opacity-50"></div>
@@ -153,11 +171,14 @@ export default function FeedbackPage() {
           </button>
         </div>
       </div>
+      </>
     );
   }
 
   return (
-    <div className="min-h-screen bg-[#fafafa] py-8 sm:py-16 px-4 font-sans">
+    <>
+      {feedbackMeta}
+      <div className="min-h-screen bg-[#fafafa] py-8 sm:py-16 px-4 font-sans">
       {/* Background decoration */}
       <div className="fixed top-0 left-0 w-full h-1 bg-[#FFC107] z-50"></div>
       
@@ -187,13 +208,13 @@ export default function FeedbackPage() {
                   </p>
                 </div>
               </div>
-              <div className="flex-shrink-0 bg-white p-3 rounded-2xl border border-gray-50 shadow-sm self-start sm:self-center transform hover:rotate-2 transition-transform">
+              <div className="flex-shrink-0 self-start sm:self-center">
                 <AppImage
-                  src="/images/logo.svg"
-                  alt="Pest Control 99 Logo"
-                  width={110}
-                  height={40}
-                  className="h-auto w-24 sm:w-28"
+                  src={SITE_LOGO.src}
+                  alt={SITE_LOGO.alt}
+                  width={SITE_LOGO.width}
+                  height={SITE_LOGO.height}
+                  className="h-auto w-32 sm:w-36 max-w-full object-contain object-left"
                 />
               </div>
             </div>
@@ -313,5 +334,6 @@ export default function FeedbackPage() {
         </p>
       </div>
     </div>
+    </>
   );
 }

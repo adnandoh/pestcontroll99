@@ -1,6 +1,7 @@
 import { Link } from 'react-router-dom';
 import AppImage from '@/components/AppImage';
 import PageMeta from '@/components/PageMeta';
+import ServiceAreaLinks from '@/components/ServiceAreaLinks';
 
 export default function CockroachPestControlPage() {
   const structuredData = {
@@ -41,7 +42,7 @@ export default function CockroachPestControlPage() {
       />
       <PageMeta
         title="Cockroach Pest Control in Mumbai | Odourless Gel Treatment"
-        description="Same-day cockroach control in Mumbai, Thane & Navi Mumbai. Odourless, child & pet-safe gel treatment with a 365-day warranty. Free quote — call +91 80807 48282."
+        description="Same-day cockroach control in Mumbai, Navi Mumbai, Thane, Pune & Lonavala. Odourless, child & pet-safe gel treatment with a 365-day warranty. Free quote — call +91 80807 48282."
         keywords="cockroach control mumbai, cockroach pest control, cockroach gel treatment, kitchen cockroach control"
         canonical="https://www.pestcontrol99.com/services/cockroach-pest-control/"
         ogUrl="https://www.pestcontrol99.com/services/cockroach-pest-control/"
@@ -450,6 +451,7 @@ export default function CockroachPestControlPage() {
         </div>
       </section>
 
+      <ServiceAreaLinks />
       {/* Final CTA */}
       <section className="py-16 bg-gradient-to-br from-green-600 to-green-700 text-white">
         <div className="container mx-auto px-4">

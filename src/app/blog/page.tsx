@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useMemo } from 'react';
 import { Link, useSearchParams } from 'react-router-dom';
 import AppImage from '@/components/AppImage';
 import Breadcrumb from '@/components/Breadcrumb';
@@ -54,14 +54,29 @@ export default function BlogPage() {
       day: 'numeric',
     });
 
+  const blogMeta = useMemo(() => {
+    const isSearch = Boolean(query);
+    const isPaginated = page > 1;
+    const noindex = isSearch || isPaginated;
+    const base = 'https://www.pestcontrol99.com/blog/';
+    const canonical = isSearch
+      ? undefined
+      : isPaginated
+        ? `${base}?page=${page}`
+        : base;
+    return {
+      title: 'Pest Control Blog | Tips & Guides | Pest Control 99',
+      description:
+        'Pest control tips, guides & seasonal advice for Mumbai, Navi Mumbai, Thane & Pune. Expert articles on cockroach, termite, monsoon pests & more. Read free.',
+      canonical,
+      ogUrl: canonical || base,
+      noindex,
+    };
+  }, [query, page]);
+
   return (
     <div className="min-h-screen bg-gray-50">
-      <PageMeta
-        title="Pest Control Blog | Tips, Guides & Expert Advice | PestControl99"
-        description="Read expert pest control blogs, tips, and guides for Mumbai & India."
-        canonical="https://www.pestcontrol99.com/blog/"
-        ogUrl="https://www.pestcontrol99.com/blog/"
-      />
+      <PageMeta {...blogMeta} />
       <Breadcrumb items={[{ label: 'Blog' }]} />
 
       <section className="py-8">

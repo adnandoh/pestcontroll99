@@ -76,7 +76,7 @@ export default function ContactForm() {
               Contact Us
             </h1>
             <p className="text-lg md:text-xl opacity-90 max-w-2xl mx-auto">
-              {BUSINESS.legalOperatorLine} Get in touch with our pest control experts in Mumbai.
+              Get in touch with our pest control experts in Mumbai, Thane, Navi Mumbai, Lonavala &amp; Pune.
             </p>
           </div>
         </div>
@@ -210,19 +210,6 @@ export default function ContactForm() {
                       <h3 className="font-semibold text-gray-900">Email</h3>
                       <a href={`mailto:${BUSINESS.email}`} className="text-green-600 font-semibold hover:underline">{BUSINESS.email}</a>
                       <p className="text-sm text-gray-500">We respond fast to all inquiries</p>
-                    </div>
-                  </div>
-
-                  <div className="flex items-start space-x-4">
-                    <div className="bg-green-100 p-3 rounded-full">
-                      <svg className="w-6 h-6 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
-                      </svg>
-                    </div>
-                    <div>
-                      <h3 className="font-semibold text-gray-900">Office Address</h3>
-                      <p className="text-gray-600">{BUSINESS.address.full}</p>
                     </div>
                   </div>
 

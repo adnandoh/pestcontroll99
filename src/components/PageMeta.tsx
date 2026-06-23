@@ -1,8 +1,7 @@
 import { useEffect } from 'react';
 
 const SITE_NAME = 'Pest Control 99';
-// TODO: replace with a dedicated 1200×630 branded share image when available.
-const DEFAULT_OG_IMAGE = 'https://www.pestcontrol99.com/android-chrome-512x512.png';
+const DEFAULT_OG_IMAGE = 'https://www.pestcontrol99.com/images/hero-home.webp';
 
 export type PageMetaProps = {
   title: string;
