@@ -1,6 +1,7 @@
 import { Link } from 'react-router-dom';
-import { useEffect } from 'react';
+import { useEffect, useLayoutEffect } from 'react';
 import PageMeta from '@/components/PageMeta';
+import { scrollToTopInstant } from '@/utils/scroll';
 
 export type ThankYouContentProps = {
   pageTitle?: string;
@@ -23,9 +24,11 @@ export default function ThankYouContent({
   backLabel = 'Back to Home',
   noindex = true,
 }: ThankYouContentProps) {
-  useEffect(() => {
-    window.scrollTo(0, 0);
+  useLayoutEffect(() => {
+    scrollToTopInstant();
+  }, []);
 
+  useEffect(() => {
     const gtag = (window as Window & { gtag?: (...args: unknown[]) => void }).gtag;
     if (typeof gtag === 'function') {
       gtag('event', 'conversion', {

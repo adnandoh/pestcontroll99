@@ -1,9 +1,9 @@
 import { Link, useNavigate } from 'react-router-dom';
 import { FEATURED_PEST_SERVICES, HOME_PEST_SERVICES } from '@/config/homeServices';
 
-const SECTION_TITLE = 'We treat hundreds of different pests';
+const SECTION_TITLE = "We've Seen Every Pest. We've Fixed Every Problem.";
 const SECTION_SUBTITLE =
-  'Select the pests that are bothering you to see how we can help you today';
+  'Select your pest and get the right treatment today.';
 
 function PestCard({ service }: { service: (typeof HOME_PEST_SERVICES)[number] }) {
   return (

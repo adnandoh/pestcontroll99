@@ -14,8 +14,8 @@ export const HOME_PEST_SERVICES: HomePestService[] = [
     name: 'Cockroach Control',
     cardLabel: 'Cockroaches',
     href: '/services/cockroach-pest-control',
-    image: '/images/Cockroach.webp',
-    alt: 'Cockroach pest control — odourless gel treatment',
+    image: '/images/cockroaches.webp',
+    alt: 'Cockroaches — professional pest control and odourless gel treatment',
     featured: true,
   },
   {
@@ -23,8 +23,8 @@ export const HOME_PEST_SERVICES: HomePestService[] = [
     name: 'Rodent Control',
     cardLabel: 'Rodents',
     href: '/services/rodent-pest-control',
-    image: '/images/Rat.webp',
-    alt: 'Rodent and rat control services',
+    image: '/images/rodents.webp',
+    alt: 'Rodents and rat control — professional pest control in Mumbai',
     featured: true,
   },
   {
@@ -32,8 +32,8 @@ export const HOME_PEST_SERVICES: HomePestService[] = [
     name: 'Termite Control',
     cardLabel: 'Termites',
     href: '/services/termite-pest-control',
-    image: '/images/Termite.webp',
-    alt: 'Anti-termite treatment for homes and offices',
+    image: '/images/termites.webp',
+    alt: 'Termites — anti-termite treatment for homes and offices in Mumbai',
     featured: true,
   },
   {
@@ -41,8 +41,8 @@ export const HOME_PEST_SERVICES: HomePestService[] = [
     name: 'Mosquito Control',
     cardLabel: 'Mosquitoes',
     href: '/services/mosquito-pest-control',
-    image: '/images/Mosquito.webp',
-    alt: 'Mosquito control and fogging services',
+    image: '/images/mosquitoes.webp',
+    alt: 'Mosquitoes — fogging and mosquito control services in Mumbai',
     featured: true,
   },
   {

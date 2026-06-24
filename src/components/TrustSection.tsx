@@ -48,10 +48,10 @@ function ReviewCard({ review }: { review: (typeof GOOGLE_REVIEWS)[number] }) {
   const initial = review.name.charAt(0).toUpperCase();
 
   return (
-    <article className="review-card flex h-full flex-col rounded-2xl border border-gray-200 bg-white p-4 shadow-sm transition-shadow hover:shadow-md sm:p-5">
-      <div className="flex items-start gap-3">
+    <article className="review-card flex h-full min-h-[220px] w-full flex-col rounded-2xl border border-gray-200 bg-white p-3.5 shadow-sm transition-shadow hover:shadow-md sm:min-h-0 sm:p-5">
+      <div className="flex items-start gap-2.5 sm:gap-3">
         <div
-          className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full text-sm font-semibold text-white"
+          className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full text-sm font-semibold text-white sm:h-10 sm:w-10"
           style={{ backgroundColor: review.avatarColor }}
           aria-hidden="true"
         >
@@ -60,14 +60,16 @@ function ReviewCard({ review }: { review: (typeof GOOGLE_REVIEWS)[number] }) {
         <div className="min-w-0 flex-1">
           <p className="text-sm font-semibold leading-snug text-gray-900">{review.name}</p>
           <p className="mt-0.5 text-xs leading-normal text-gray-500">{review.location}</p>
-          <div className="mt-1.5 flex flex-wrap items-center gap-2">
+          <div className="mt-1 flex flex-wrap items-center gap-1.5 sm:mt-1.5 sm:gap-2">
             <StarRating rating={review.rating} />
             <span className="text-xs text-gray-400">{review.date}</span>
           </div>
         </div>
       </div>
-      <p className="review-card-text mt-4 flex-1 text-sm text-gray-700">{review.text}</p>
-      <div className="mt-4 flex items-center gap-1.5 border-t border-gray-100 pt-3">
+      <p className="review-card-text mt-3 flex-1 text-[13px] leading-snug text-gray-700 sm:mt-4 sm:text-sm sm:leading-relaxed">
+        {review.text}
+      </p>
+      <div className="mt-3 flex shrink-0 items-center gap-1.5 border-t border-gray-100 pt-2.5 sm:mt-4 sm:pt-3">
         <GoogleLogo className="h-4 w-4" />
         <span className="text-xs text-gray-500">
           Posted on <span className="font-medium text-gray-700">Google</span>
@@ -150,29 +152,33 @@ function ReviewsSlider() {
   }, [maxIndex]);
 
   const pageCount = maxIndex + 1;
+  const useCompactPagination = pageCount > 10;
+
+  const navButtonClass =
+    'reviews-slider-nav flex h-9 w-9 shrink-0 items-center justify-center rounded-full border border-gray-200 bg-white text-navy-base shadow-md transition hover:border-green-base hover:text-green-base disabled:cursor-not-allowed disabled:opacity-40 sm:h-11 sm:w-11';
 
   return (
     <div className="mx-auto max-w-6xl">
-      <div className="reviews-slider flex items-center gap-2 sm:gap-3">
+      <div className="md:flex md:items-center md:gap-3">
         <button
           type="button"
           onClick={() => scrollToIndex(activeIndex - 1)}
           disabled={activeIndex === 0}
-          className="reviews-slider-nav inline-flex h-9 w-9 shrink-0 items-center justify-center rounded-full border border-gray-200 bg-white text-navy-base shadow-md transition hover:border-green-base hover:text-green-base disabled:cursor-not-allowed disabled:opacity-40 sm:h-11 sm:w-11"
+          className={`${navButtonClass} !hidden md:!flex`}
           aria-label="Previous review"
         >
           <ChevronIcon direction="left" />
         </button>
 
-        <div className="min-w-0 flex-1 overflow-hidden">
+        <div className="min-w-0 flex-1 overflow-x-clip rounded-2xl md:rounded-none">
           <div
             ref={trackRef}
             onScroll={handleScroll}
-            className="reviews-slider-track flex snap-x snap-mandatory gap-4 overflow-x-auto scroll-smooth pb-1 [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
+            className="reviews-slider-track flex snap-x snap-mandatory gap-3 overflow-x-auto scroll-smooth pb-1 [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden md:gap-4"
             aria-label="Client testimonials carousel"
           >
             {GOOGLE_REVIEWS.map((review) => (
-              <div key={review.id} className="reviews-slider-slide shrink-0 snap-start">
+              <div key={review.id} className="reviews-slider-slide flex shrink-0 snap-start">
                 <ReviewCard review={review} />
               </div>
             ))}
@@ -183,26 +189,58 @@ function ReviewsSlider() {
           type="button"
           onClick={() => scrollToIndex(activeIndex + 1)}
           disabled={activeIndex >= maxIndex}
-          className="reviews-slider-nav inline-flex h-9 w-9 shrink-0 items-center justify-center rounded-full border border-gray-200 bg-white text-navy-base shadow-md transition hover:border-green-base hover:text-green-base disabled:cursor-not-allowed disabled:opacity-40 sm:h-11 sm:w-11"
+          className={`${navButtonClass} !hidden md:!flex`}
           aria-label="Next review"
         >
           <ChevronIcon direction="right" />
         </button>
       </div>
 
-      <div className="mt-6 flex items-center justify-center gap-2">
-        {Array.from({ length: pageCount }, (_, index) => (
-          <button
-            key={index}
-            type="button"
-            onClick={() => scrollToIndex(index)}
-            className={`h-2.5 rounded-full transition-all ${
-              index === activeIndex ? 'w-7 bg-green-base' : 'w-2.5 bg-gray-300 hover:bg-gray-400'
-            }`}
-            aria-label={`Go to review slide ${index + 1}`}
-            aria-current={index === activeIndex ? 'true' : undefined}
-          />
-        ))}
+      <div className="mt-4 flex items-center justify-center gap-4 md:mt-6">
+        <button
+          type="button"
+          onClick={() => scrollToIndex(activeIndex - 1)}
+          disabled={activeIndex === 0}
+          className={`${navButtonClass} flex md:!hidden`}
+          aria-label="Previous review"
+        >
+          <ChevronIcon direction="left" />
+        </button>
+
+        <div className="flex min-w-[4.5rem] items-center justify-center">
+          {useCompactPagination ? (
+            <p className="text-sm font-medium tabular-nums text-gray-600">
+              {activeIndex + 1} / {GOOGLE_REVIEWS.length}
+            </p>
+          ) : (
+            <div className="flex items-center justify-center gap-2">
+              {Array.from({ length: pageCount }, (_, index) => (
+                <button
+                  key={index}
+                  type="button"
+                  onClick={() => scrollToIndex(index)}
+                  className={`h-2 rounded-full transition-all md:h-2.5 ${
+                    index === activeIndex
+                      ? 'w-6 bg-green-base md:w-7'
+                      : 'w-2 bg-gray-300 hover:bg-gray-400 md:w-2.5'
+                  }`}
+                  aria-label={`Go to review slide ${index + 1}`}
+                  aria-current={index === activeIndex ? 'true' : undefined}
+                />
+              ))}
+            </div>
+          )}
+        </div>
+
+        <button
+          type="button"
+          onClick={() => scrollToIndex(activeIndex + 1)}
+          disabled={activeIndex >= maxIndex}
+          className={`${navButtonClass} flex md:!hidden`}
+          aria-label="Next review"
+        >
+          <ChevronIcon direction="right" />
+        </button>
       </div>
     </div>
   );
@@ -210,16 +248,16 @@ function ReviewsSlider() {
 
 export default function TrustSection() {
   return (
-    <section className="border-y border-gray-100 bg-gray-50 py-12 sm:py-16">
+    <section className="border-y border-gray-100 bg-gray-50 py-10 pb-12 sm:py-16 sm:pb-16">
       <div className="container mx-auto px-4 sm:px-6">
-        <div className="mb-8 text-center sm:mb-10">
-          <h2 className="text-2xl font-bold text-gray-900 sm:text-3xl">Client Testimonials</h2>
-          <p className="mx-auto mt-2 max-w-2xl text-sm text-gray-600 sm:text-base">
+        <div className="mb-6 text-center sm:mb-10">
+          <h2 className="text-xl font-bold text-gray-900 sm:text-2xl md:text-3xl">Client Testimonials</h2>
+          <p className="mx-auto mt-2 max-w-2xl text-xs leading-relaxed text-gray-600 sm:text-sm md:text-base">
             Real feedback from customers across Mumbai, Thane, Navi Mumbai, Lonavala &amp; Pune
           </p>
         </div>
 
-        <div className="mx-auto mb-8 flex max-w-xl flex-col items-center justify-center gap-4 rounded-2xl border border-gray-200 bg-white px-5 py-4 shadow-sm sm:flex-row sm:gap-6">
+        <div className="mx-auto mb-6 flex max-w-xl flex-col items-center justify-center gap-3 rounded-2xl border border-gray-200 bg-white px-4 py-3.5 shadow-sm sm:mb-8 sm:flex-row sm:gap-6 sm:px-5 sm:py-4">
           <div className="flex items-center gap-3">
             <GoogleLogo className="h-8 w-8" />
             <div className="text-left">

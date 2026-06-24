@@ -61,7 +61,7 @@ export default function NotFound() {
             <Link to="/services" className="block text-green-600 hover:text-green-700 transition-colors">
               Pest Control Services
             </Link>
-            <Link to="/quote" className="block text-green-600 hover:text-green-700 transition-colors">
+            <Link to="/quote" className="btn btn-cta btn-quote">
               Get Free Quote
             </Link>
             <Link to="/blog" className="block text-green-600 hover:text-green-700 transition-colors">

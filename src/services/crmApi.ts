@@ -284,14 +284,24 @@ class CRMApiService {
     const pestMap: Record<string, string> = {
       ants: '🐜 Ants',
       cockroaches: '🪳 Cockroaches',
+      cockroachants: '🪳 Cockroach / Ants',
       termites: '🐛 Termites',
+      termite: '🐛 Termites',
       rodents: '🐭 Rodents (Mice/Rats)',
+      rodent: '🐭 Rodents',
       spiders: '🕷️ Spiders',
       wasps: '🐝 Wasps/Bees',
+      honeybee: '🐝 Honey Bee',
       'bed-bugs': '🛏️ Bed Bugs',
+      bedbugs: '🛏️ Bed Bugs',
       fleas: '🦟 Fleas',
       mosquitoes: '🦟 Mosquitoes',
+      mosquito: '🦟 Mosquitoes',
       flies: '🪰 House Flies',
+      housefly: '🪰 House Flies',
+      woodborer: '🪵 Wood Borer',
+      hotelcommercial: '🏨 Hotel / Commercial',
+      other: '🔍 Other',
     };
 
     const mappedPests = pestTypes.map((pest) => {

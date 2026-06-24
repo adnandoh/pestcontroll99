@@ -1,8 +1,9 @@
-import { lazy, Suspense, useEffect } from 'react';
+import { lazy, Suspense, useLayoutEffect } from 'react';
 import { Navigate, Route, Routes, useLocation } from 'react-router-dom';
 import RootLayout from '@/layouts/RootLayout';
 import NotFoundPage from '@/app/not-found';
 import { ALL_AREA_SLUGS } from '@/config/areasWeServe';
+import { scrollToElement, scrollToTopInstant } from '@/utils/scroll';
 
 const HomePage = lazy(() => import('@/app/page'));
 const AboutPage = lazy(() => import('@/app/about/page'));
@@ -45,16 +46,15 @@ function PageLoader() {
 function ScrollToTop() {
   const { pathname, hash } = useLocation();
 
-  useEffect(() => {
+  useLayoutEffect(() => {
     if (hash) {
-      // Allow anchor links (e.g. /#areas-we-serve) to scroll to their target
       const el = document.querySelector(hash);
       if (el) {
-        el.scrollIntoView({ behavior: 'smooth' });
+        scrollToElement(el);
         return;
       }
     }
-    window.scrollTo(0, 0);
+    scrollToTopInstant();
   }, [pathname, hash]);
 
   return null;

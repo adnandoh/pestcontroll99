@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import AppImage from '@/components/AppImage';
 import { SITE_LOGO } from '@/config/business';
 import PageMeta from '@/components/PageMeta';
+import { FEEDBACK_SERVICE_OPTIONS } from '@/config/serviceOptions';
 
 const StarIcon = ({ filled }: { filled: boolean }) => (
   <svg
@@ -35,14 +36,7 @@ export default function FeedbackPage() {
     setSubmitted(true);
   };
 
-  const services = [
-    'Cockroach Control',
-    'Termite Control',
-    'Rodent Control',
-    'Bed Bug Treatment',
-    'General Pest Control',
-    'Mosquito Control'
-  ];
+  const services = FEEDBACK_SERVICE_OPTIONS.map((option) => option.label);
 
   if (submitted) {
     return (

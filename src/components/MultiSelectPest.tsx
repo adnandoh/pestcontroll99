@@ -1,9 +1,5 @@
 import { useState, useRef, useEffect } from 'react';
-
-interface PestOption {
-  value: string;
-  label: string;
-}
+import { MULTI_SELECT_PEST_OPTIONS } from '@/config/serviceOptions';
 
 interface MultiSelectPestProps {
   selectedPests: string[];
@@ -13,15 +9,7 @@ interface MultiSelectPestProps {
   compact?: boolean;
 }
 
-const pestOptions: PestOption[] = [
-  { value: 'cockroach-ants', label: 'Cockroach / Ants' },
-  { value: 'bedbugs', label: 'Bed Bugs' },
-  { value: 'termite', label: 'Termite' },
-  { value: 'rodent', label: 'Rodent' },
-  { value: 'mosquito', label: 'Mosquito' },
-  { value: 'hotel-commercial', label: 'Hotel / Commercial' },
-  { value: 'other', label: 'Other' },
-];
+const pestOptions = MULTI_SELECT_PEST_OPTIONS;
 
 export default function MultiSelectPest({
   selectedPests,
@@ -62,6 +50,7 @@ export default function MultiSelectPest({
       ? selectedPests.filter((p) => p !== pestValue)
       : [...selectedPests, pestValue];
     onChange(newSelected);
+    setIsOpen(false);
   };
 
   const getDisplayText = () => {
@@ -130,10 +119,6 @@ export default function MultiSelectPest({
             )}
           </div>
 
-          <p className="px-4 py-1.5 text-[11px] text-gray-500 bg-white border-b border-gray-100">
-            Tap each service you need. The list stays open until you tap Done.
-          </p>
-
           <ul className="max-h-60 overflow-y-auto py-1">
             {pestOptions.map((pest) => {
               const isSelected = selectedPests.includes(pest.value);
@@ -162,16 +147,6 @@ export default function MultiSelectPest({
               );
             })}
           </ul>
-
-          <div className="border-t border-gray-100 px-4 py-2 bg-gray-50">
-            <button
-              type="button"
-              onClick={() => setIsOpen(false)}
-              className="w-full py-2.5 text-sm font-bold text-white bg-green-base rounded-lg hover:bg-green-dark transition-colors"
-            >
-              Done
-            </button>
-          </div>
         </div>
       )}
 

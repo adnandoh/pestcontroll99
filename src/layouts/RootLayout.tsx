@@ -2,6 +2,7 @@ import { useEffect } from 'react';
 import { Outlet } from 'react-router-dom';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
+import AreasWeServe from '@/components/AreasWeServe';
 import FloatingWidgets from '@/components/FloatingWidgets';
 import StickyCallBar from '@/components/StickyCallBar';
 import WebVitals from '@/components/WebVitals';
@@ -103,6 +104,7 @@ export default function RootLayout() {
       <main className="flex-grow">
         <Outlet />
       </main>
+      <AreasWeServe />
       <Footer />
       <StickyCallBar />
       <FloatingWidgets />

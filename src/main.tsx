@@ -4,6 +4,10 @@ import { BrowserRouter } from 'react-router-dom';
 import App from './App';
 import './app/globals.css';
 
+if (typeof window !== 'undefined' && 'scrollRestoration' in window.history) {
+  window.history.scrollRestoration = 'manual';
+}
+
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
     <BrowserRouter>

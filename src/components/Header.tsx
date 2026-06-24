@@ -47,6 +47,21 @@ export default function Header() {
     setIsMobileCityOpen(false);
   };
 
+  const closeDesktopDropdowns = () => {
+    setIsCityDropdownOpen(false);
+    setIsServicesDropdownOpen(false);
+  };
+
+  const openCityDropdown = () => {
+    setIsCityDropdownOpen(true);
+    setIsServicesDropdownOpen(false);
+  };
+
+  const openServicesDropdown = () => {
+    setIsServicesDropdownOpen(true);
+    setIsCityDropdownOpen(false);
+  };
+
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
       if (menuRef.current && !menuRef.current.contains(event.target as Node)) {
@@ -112,19 +127,31 @@ export default function Header() {
 
           {/* Desktop Navigation */}
           <nav className="hidden md:flex items-center gap-1 lg:gap-2">
-            <Link to="/" className="nav-link text-[15px] py-2 px-3 rounded-md hover:bg-green-50">
+            <Link
+              to="/"
+              className="nav-link text-[15px] py-2 px-3 rounded-md hover:bg-green-50"
+              onMouseEnter={closeDesktopDropdowns}
+            >
               Home
             </Link>
-            <Link to="/about" className="nav-link text-[15px] py-2 px-3 rounded-md hover:bg-green-50">
+            <Link
+              to="/about"
+              className="nav-link text-[15px] py-2 px-3 rounded-md hover:bg-green-50"
+              onMouseEnter={closeDesktopDropdowns}
+            >
               About Us
             </Link>
 
             {/* City Dropdown */}
-            <div className="relative" ref={cityDropdownRef}>
+            <div
+              className="relative"
+              ref={cityDropdownRef}
+              onMouseEnter={openCityDropdown}
+              onMouseLeave={() => setIsCityDropdownOpen(false)}
+            >
               <button
                 type="button"
-                onClick={() => setIsCityDropdownOpen(!isCityDropdownOpen)}
-                onMouseEnter={() => setIsCityDropdownOpen(true)}
+                onClick={() => (isCityDropdownOpen ? setIsCityDropdownOpen(false) : openCityDropdown())}
                 className="nav-link text-[15px] py-2 px-3 rounded-md hover:bg-green-50 flex items-center gap-1 uppercase tracking-wide"
                 aria-expanded={isCityDropdownOpen}
                 aria-haspopup="true"
@@ -141,32 +168,37 @@ export default function Header() {
               </button>
 
               {isCityDropdownOpen && (
-                <div
-                  className="absolute top-full left-0 mt-1 w-56 bg-white rounded-lg shadow-lg border border-gray-200 py-2 z-50 animate-in fade-in slide-in-from-top-2 duration-200"
-                  onMouseLeave={() => setIsCityDropdownOpen(false)}
-                >
-                  {HEADER_CITIES.map((city) => (
-                    <Link
-                      key={city.name}
-                      to={city.href}
-                      className="flex items-center gap-3 px-4 py-3 text-sm font-semibold uppercase tracking-wide text-gray-800 hover:bg-green-50 hover:text-green-600 transition-all duration-200 border-b border-gray-100 last:border-b-0"
-                      onClick={() => setIsCityDropdownOpen(false)}
-                    >
-                      <CityPinIcon />
-                      <span>{city.name}</span>
-                    </Link>
-                  ))}
+                <div className="absolute top-full left-0 pt-1 w-56 z-50">
+                  <div className="bg-white rounded-lg shadow-lg border border-gray-200 py-2 animate-in fade-in slide-in-from-top-2 duration-200">
+                    {HEADER_CITIES.map((city) => (
+                      <Link
+                        key={city.name}
+                        to={city.href}
+                        className="flex items-center gap-3 px-4 py-3 text-sm font-semibold uppercase tracking-wide text-gray-800 hover:bg-green-50 hover:text-green-600 transition-all duration-200 border-b border-gray-100 last:border-b-0"
+                        onClick={() => setIsCityDropdownOpen(false)}
+                      >
+                        <CityPinIcon />
+                        <span>{city.name}</span>
+                      </Link>
+                    ))}
+                  </div>
                 </div>
               )}
             </div>
 
             {/* Services Dropdown */}
-            <div className="relative" ref={servicesDropdownRef}>
+            <div
+              className="relative"
+              ref={servicesDropdownRef}
+              onMouseEnter={openServicesDropdown}
+              onMouseLeave={() => setIsServicesDropdownOpen(false)}
+            >
               <button
                 type="button"
-                onClick={() => setIsServicesDropdownOpen(!isServicesDropdownOpen)}
-                onMouseEnter={() => setIsServicesDropdownOpen(true)}
+                onClick={() => (isServicesDropdownOpen ? setIsServicesDropdownOpen(false) : openServicesDropdown())}
                 className="nav-link text-[15px] py-2 px-3 rounded-md hover:bg-green-50 flex items-center gap-1"
+                aria-expanded={isServicesDropdownOpen}
+                aria-haspopup="true"
               >
                 Services
                 <svg
@@ -180,38 +212,45 @@ export default function Header() {
               </button>
 
               {isServicesDropdownOpen && (
-                <div
-                  className="absolute top-full left-0 mt-1 w-64 bg-white rounded-lg shadow-lg border border-gray-200 py-2 z-50 animate-in fade-in slide-in-from-top-2 duration-200"
-                  onMouseLeave={() => setIsServicesDropdownOpen(false)}
-                >
-                  {services.map((service, index) => (
-                    <Link
-                      key={service.href}
-                      to={service.href}
-                      className={`block px-4 py-2 text-sm text-gray-700 hover:bg-green-50 hover:text-green-600 transition-all duration-200 hover:translate-x-1 ${
-                        index === 0 ? 'font-semibold border-b border-gray-100 mb-1' : ''
-                      }`}
-                      onClick={() => setIsServicesDropdownOpen(false)}
-                    >
-                      {service.name}
-                    </Link>
-                  ))}
+                <div className="absolute top-full left-0 pt-1 w-64 z-50">
+                  <div className="bg-white rounded-lg shadow-lg border border-gray-200 py-2 animate-in fade-in slide-in-from-top-2 duration-200">
+                    {services.map((service, index) => (
+                      <Link
+                        key={service.href}
+                        to={service.href}
+                        className={`block px-4 py-2 text-sm text-gray-700 hover:bg-green-50 hover:text-green-600 transition-all duration-200 hover:translate-x-1 ${
+                          index === 0 ? 'font-semibold border-b border-gray-100 mb-1' : ''
+                        }`}
+                        onClick={() => setIsServicesDropdownOpen(false)}
+                      >
+                        {service.name}
+                      </Link>
+                    ))}
+                  </div>
                 </div>
               )}
             </div>
 
-            <Link to="/blog" className="nav-link text-[15px] py-2 px-3 rounded-md hover:bg-green-50">
+            <Link
+              to="/blog"
+              className="nav-link text-[15px] py-2 px-3 rounded-md hover:bg-green-50"
+              onMouseEnter={closeDesktopDropdowns}
+            >
               Blog
             </Link>
-            <Link to="/contact" className="btn-cta nav-button font-semibold px-5 py-2.5 rounded-full text-[15px] whitespace-nowrap ml-1">
+            <Link
+              to="/contact"
+              className="btn-cta nav-button font-semibold px-5 py-2.5 rounded-full text-[15px] whitespace-nowrap ml-1"
+              onMouseEnter={closeDesktopDropdowns}
+            >
               Contact Us
             </Link>
           </nav>
 
-          {/* Mobile Menu Button — 44×44px minimum tap target (WCAG) */}
+          {/* Mobile Menu Button — hidden on md+ via CSS (.mobile-menu-toggle) */}
           <button
             type="button"
-            className="mobile-menu-toggle md:hidden"
+            className="mobile-menu-toggle"
             onClick={() => setIsMenuOpen(!isMenuOpen)}
             aria-label={isMenuOpen ? 'Close mobile menu' : 'Open mobile menu'}
             aria-expanded={isMenuOpen}
@@ -227,7 +266,7 @@ export default function Header() {
 
         {/* Mobile Navigation */}
         <nav
-          className={`mobile-nav-panel md:hidden border-t border-gray-200 bg-white${isMenuOpen ? ' is-open' : ''}`}
+          className={`mobile-nav-panel border-t border-gray-200 bg-white${isMenuOpen ? ' is-open' : ''}`}
           id="primary-mobile-menu"
           aria-hidden={!isMenuOpen}
         >
@@ -235,14 +274,14 @@ export default function Header() {
             <div className={`mobile-nav-panel-content${isMenuOpen ? ' is-open' : ''}`}>
             <Link
               to="/"
-              className="mobile-menu-item nav-link font-medium py-2 px-2 rounded-md hover:bg-green-50 transition-all duration-200"
+              className="mobile-menu-item nav-link text-sm font-medium py-1.5 px-2 rounded-md hover:bg-green-50 transition-all duration-200"
               onClick={closeMobileMenu}
             >
               Home
             </Link>
             <Link
               to="/about"
-              className="mobile-menu-item nav-link font-medium py-2 px-2 rounded-md hover:bg-green-50 transition-all duration-200"
+              className="mobile-menu-item nav-link text-sm font-medium py-1.5 px-2 rounded-md hover:bg-green-50 transition-all duration-200"
               onClick={closeMobileMenu}
             >
               About Us
@@ -253,11 +292,11 @@ export default function Header() {
               <button
                 type="button"
                 onClick={() => setIsMobileCityOpen(!isMobileCityOpen)}
-                className="w-full text-left nav-link font-medium py-2 px-2 rounded-md hover:bg-green-50 transition-all duration-200 flex items-center justify-between uppercase tracking-wide text-sm"
+                className="w-full text-left nav-link text-sm font-medium py-1.5 px-2 rounded-md hover:bg-green-50 transition-all duration-200 flex items-center justify-between uppercase tracking-wide"
               >
                 City
                 <svg
-                  className={`w-4 h-4 transition-transform duration-150 ${isMobileCityOpen ? 'rotate-180' : ''}`}
+                  className={`w-3.5 h-3.5 transition-transform duration-150 ${isMobileCityOpen ? 'rotate-180' : ''}`}
                   fill="none"
                   stroke="currentColor"
                   viewBox="0 0 24 24"
@@ -267,18 +306,18 @@ export default function Header() {
               </button>
 
               <div
-                className={`ml-2 mt-1 space-y-1 overflow-hidden transition-all duration-150 ${
-                  isMobileCityOpen ? 'max-h-64 opacity-100' : 'max-h-0 opacity-0'
+                className={`mobile-menu-subpanel ml-2 mt-0.5 space-y-0.5 transition-all duration-150 ${
+                  isMobileCityOpen ? 'is-expanded' : ''
                 }`}
               >
                 {HEADER_CITIES.map((city, index) => (
                   <Link
                     key={city.name}
                     to={city.href}
-                    className={`flex items-center gap-2.5 text-gray-700 hover:text-green-600 py-2.5 px-2 rounded-md hover:bg-green-50 transition-all duration-200 text-sm font-semibold uppercase tracking-wide transform ${
+                    className={`flex items-center gap-2 text-gray-700 hover:text-green-600 py-1.5 px-2 rounded-md hover:bg-green-50 transition-all duration-200 text-xs font-semibold uppercase tracking-wide transform ${
                       isMobileCityOpen ? 'translate-x-0 opacity-100' : '-translate-x-2 opacity-0'
                     }`}
-                    style={{ transitionDelay: `${index * 50}ms` }}
+                    style={{ transitionDelay: `${index * 30}ms` }}
                     onClick={closeMobileMenu}
                   >
                     <CityPinIcon />
@@ -293,11 +332,11 @@ export default function Header() {
               <button
                 type="button"
                 onClick={() => setIsMobileServicesOpen(!isMobileServicesOpen)}
-                className="w-full text-left nav-link font-medium py-2 px-2 rounded-md hover:bg-green-50 transition-all duration-200 flex items-center justify-between"
+                className="w-full text-left nav-link text-sm font-medium py-1.5 px-2 rounded-md hover:bg-green-50 transition-all duration-200 flex items-center justify-between"
               >
                 Services
                 <svg
-                  className={`w-4 h-4 transition-transform duration-150 ${isMobileServicesOpen ? 'rotate-180' : ''}`}
+                  className={`w-3.5 h-3.5 transition-transform duration-150 ${isMobileServicesOpen ? 'rotate-180' : ''}`}
                   fill="none"
                   stroke="currentColor"
                   viewBox="0 0 24 24"
@@ -307,18 +346,18 @@ export default function Header() {
               </button>
 
               <div
-                className={`ml-4 mt-1 space-y-1 overflow-hidden transition-all duration-150 ${
-                  isMobileServicesOpen ? 'max-h-64 opacity-100' : 'max-h-0 opacity-0'
+                className={`mobile-menu-subpanel ml-3 mt-0.5 space-y-0.5 transition-all duration-150 ${
+                  isMobileServicesOpen ? 'is-expanded' : ''
                 }`}
               >
                 {services.map((service, index) => (
                   <Link
                     key={service.href}
                     to={service.href}
-                    className={`block text-gray-600 hover:text-green-600 py-2 px-2 rounded-md hover:bg-green-50 transition-all duration-200 text-sm transform ${
+                    className={`block text-gray-600 hover:text-green-600 py-1.5 px-2 rounded-md hover:bg-green-50 transition-all duration-200 text-xs leading-snug transform ${
                       isMobileServicesOpen ? 'translate-x-0 opacity-100' : '-translate-x-2 opacity-0'
                     } ${index === 0 ? 'font-semibold text-gray-700' : ''}`}
-                    style={{ transitionDelay: `${index * 50}ms` }}
+                    style={{ transitionDelay: `${index * 30}ms` }}
                     onClick={closeMobileMenu}
                   >
                     {service.name}
@@ -329,7 +368,7 @@ export default function Header() {
 
             <Link
               to="/blog"
-              className="mobile-menu-item nav-link font-medium py-2 px-2 rounded-md hover:bg-green-50 transition-all duration-200"
+              className="mobile-menu-item nav-link text-sm font-medium py-1.5 px-2 rounded-md hover:bg-green-50 transition-all duration-200"
               onClick={closeMobileMenu}
             >
               Blog

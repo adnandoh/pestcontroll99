@@ -3,6 +3,7 @@ import AppImage from '@/components/AppImage';
 import Breadcrumb from '@/components/Breadcrumb';
 import PageMeta from '@/components/PageMeta';
 import ServiceAreaLinks from '@/components/ServiceAreaLinks';
+import ServiceReviewsSection from '@/components/ServiceReviewsSection';
 
 export default function RodentPestControlPage() {
   // Structured data for SEO
@@ -74,7 +75,7 @@ export default function RodentPestControlPage() {
               
               <div className="flex flex-col sm:flex-row gap-4">
                 <Link to="/quote"
-                  className="inline-flex items-center justify-center px-8 py-4 bg-green-600 text-white font-semibold rounded-full hover:bg-green-700 transition-colors duration-300 shadow-lg hover:shadow-xl"
+                  className="btn btn-cta btn-quote shadow-lg hover:shadow-xl"
                 >
                   Get My Inspection Slot →
                 </Link>
@@ -96,7 +97,7 @@ export default function RodentPestControlPage() {
             
             <div className="relative">
               <AppImage
-                src="/images/Rat.webp"
+                src="/images/rodents.webp"
                 alt="Professional rat removal and rodent control Mumbai — entry-point sealing with smart traps"
                 width={600}
                 height={400}
@@ -176,7 +177,7 @@ export default function RodentPestControlPage() {
               Our rodent treatment combines proofing, smart traps, and safe baiting to cut activity fast. We proof entries with steel mesh and door sweeps, place tamper-resistant stations, and use targeted, pet-safe methods. Many sites calm the same day; lasting results come from sealing and smart monitoring. It&apos;s professional rat pest control that focuses on sealing first, then monitoring.
             </p>
             <Link to="/quote"
-              className="inline-flex items-center justify-center px-8 py-4 bg-green-600 text-white font-semibold rounded-full hover:bg-green-700 transition-colors duration-300 shadow-lg hover:shadow-xl"
+              className="btn btn-cta btn-quote shadow-lg hover:shadow-xl"
             >
               Book Rat Guard →
             </Link>
@@ -334,48 +335,7 @@ export default function RodentPestControlPage() {
         </div>
       </section>
 
-      {/* What customers say */}
-      <section className="py-16 bg-gray-50">
-        <div className="container mx-auto px-4">
-          <div className="max-w-4xl mx-auto text-center">
-            <h2 className="text-3xl lg:text-4xl font-bold text-gray-900 mb-12">
-              What Customers Say
-            </h2>
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-              <div className="bg-white p-6 rounded-2xl shadow-lg border border-gray-100">
-                <div className="flex items-center mb-4">
-                  <div className="flex text-yellow-400">
-                    {'★'.repeat(5)}
-                  </div>
-                </div>
-                <p className="text-gray-700 mb-4">&ldquo;Store rat-free in 48 hrs.&rdquo;</p>
-                <p className="text-sm text-gray-500">- Amit P., Bandra</p>
-              </div>
-              <div className="bg-white p-6 rounded-2xl shadow-lg border border-gray-100">
-                <div className="flex items-center mb-4">
-                  <div className="flex text-yellow-400">
-                    {'★'.repeat(5)}
-                  </div>
-                </div>
-                <p className="text-gray-700 mb-4">&ldquo;No more night noises in Andheri.&rdquo;</p>
-                <p className="text-sm text-gray-500">- Sunita R., Andheri</p>
-              </div>
-              <div className="bg-white p-6 rounded-2xl shadow-lg border border-gray-100">
-                <div className="flex items-center mb-4">
-                  <div className="flex text-yellow-400">
-                    {'★'.repeat(5)}
-                  </div>
-                </div>
-                <p className="text-gray-700 mb-4">&ldquo;FSSAI audit passed thanks to their service.&rdquo;</p>
-                <p className="text-sm text-gray-500">- Vikram S., Thane</p>
-              </div>
-            </div>
-            <div className="mt-8 text-center">
-              <p className="text-lg font-semibold text-green-600">6,432 Mumbai homes protected</p>
-            </div>
-          </div>
-        </div>
-      </section>
+      <ServiceReviewsSection service="rodent" />
 
       {/* Pricing */}
       <section className="py-16">
@@ -389,7 +349,7 @@ export default function RodentPestControlPage() {
                 Our pest and rodent control plans are site-based; share your layout to get a single fair quote. Packages quotation will be provided to you by today!
               </p>
               <Link to="/quote"
-                className="inline-flex items-center justify-center px-8 py-4 bg-green-600 text-white font-semibold rounded-full hover:bg-green-700 transition-colors duration-300 shadow-lg hover:shadow-xl"
+                className="btn btn-cta btn-quote shadow-lg hover:shadow-xl"
               >
                 See My Rodent Quote →
               </Link>
@@ -437,7 +397,7 @@ export default function RodentPestControlPage() {
 
       <ServiceAreaLinks />
       {/* Final CTA */}
-      <section className="py-16 bg-gradient-to-br from-green-600 to-green-700 text-white">
+      <section className="section-cta-green py-16 bg-gradient-to-br from-green-600 to-green-700 text-white">
         <div className="container mx-auto px-4">
           <div className="max-w-4xl mx-auto text-center">
             <h2 className="text-3xl lg:text-4xl font-bold mb-8">

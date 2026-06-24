@@ -3,9 +3,10 @@ import PageMeta from '@/components/PageMeta';
 import { Suspense } from 'react';
 import HomeQuoteForm from '@/components/HomeQuoteForm';
 import ClientOnly from '@/components/ClientOnly';
+import HomeHeroBackgroundSlider from '@/components/HomeHeroBackgroundSlider';
+import HomeHeroQuoteSlot from '@/components/HomeHeroQuoteSlot';
 import OurServicesSection from '@/components/OurServicesSection';
 import TrustSection from '@/components/TrustSection';
-import AreasWeServe from '@/components/AreasWeServe';
 import { BUSINESS } from '@/config/business';
 
 export default function Home() {
@@ -18,55 +19,84 @@ export default function Home() {
         canonical="https://www.pestcontrol99.com/"
         ogUrl="https://www.pestcontrol99.com/"
       />
-      {/* Hero: explicit height in layout (avoids collapsed strip on mobile when children are position:absolute) */}
-      <div className="hero-container relative w-full shrink-0 overflow-hidden pb-3 sm:pb-4 md:pb-6">
-        <div className="relative z-0 w-full min-h-[196px] h-[30dvh] sm:min-h-[238px] sm:h-[34dvh] md:min-h-[294px] md:h-[min(60vh,630px)]">
-          <AppImage
-            src="/images/hero-home.webp"
-            alt={`${BUSINESS.brandName} technician providing safe, professional pest control in a Mumbai home`}
-            fill
-            priority
-            sizes="100vw"
-            className="object-cover object-center"
-          />
-          <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/25 to-transparent pointer-events-none" />
+      {/* Hero + quote form overlap — hero strip unchanged; desktop only shifts form right + left image */}
+      <div className="home-hero-block">
+        <div className="hero-container relative w-full shrink-0 overflow-hidden pb-3 sm:pb-4 md:pb-6 bg-gradient-to-br from-[#E6F0E6] to-[#CDE2CD]">
+          <div className="relative z-0 w-full aspect-[4/3] md:aspect-[3/1] lg:aspect-[2241/702] min-h-[250px]">
+            <ClientOnly
+              fallback={
+                <>
+                  <div className="hidden md:block absolute inset-0 h-full w-full">
+                    <AppImage
+                      src="/images/hero-monsoon-wide.webp"
+                      alt={`${BUSINESS.brandName} — don't let monsoon invite pests into your home`}
+                      fill
+                      priority
+                      sizes="100vw"
+                      className="object-cover object-left md:object-center"
+                    />
+                  </div>
+                  <div className="block md:hidden absolute inset-0 h-full w-full">
+                    <AppImage
+                      src="/images/hero-monsoon-mobile.webp"
+                      alt={`${BUSINESS.brandName} — don't let monsoon invite pests into your home`}
+                      fill
+                      priority
+                      sizes="100vw"
+                      className="object-cover object-center"
+                    />
+                  </div>
+                </>
+              }
+            >
+              <HomeHeroBackgroundSlider />
+            </ClientOnly>
+          </div>
+          <h1 className="sr-only">
+            {BUSINESS.brandName} — Pest Control in Mumbai, Safe, Same-Day &amp; Certified Services
+          </h1>
         </div>
-        <h1 className="sr-only">
-          {BUSINESS.brandName} — Pest Control in Mumbai, Safe, Same-Day &amp; Certified Services
-        </h1>
-      </div>
 
-      {/* Service Selector Wizard */}
-      <ClientOnly fallback={
-        <section className="py-12 sm:py-16 md:py-20 bg-gradient-to-br from-gray-50 to-gray-100">
-          <div className="container mx-auto px-4 sm:px-6">
-            <div className="text-center mb-8 sm:mb-12">
-              <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-gray-900 mb-4">
-                Choose Your Pest & Property – Get Quotation the Same Day
-              </h2>
-              <div className="animate-pulse">
-                <div className="h-4 bg-gray-300 rounded w-3/4 mx-auto"></div>
+        <ClientOnly fallback={
+          <section className="py-12 sm:py-16 md:py-20 bg-gradient-to-br from-gray-50 to-gray-100">
+            <div className="container mx-auto px-4 sm:px-6">
+              <div className="text-center mb-8 sm:mb-12">
+                <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-gray-900 mb-4">
+                  Choose Your Pest & Property – Get Quotation the Same Day
+                </h2>
+                <div className="animate-pulse">
+                  <div className="h-4 bg-gray-300 rounded w-3/4 mx-auto"></div>
+                </div>
               </div>
-            </div>
-            <div className="max-w-4xl mx-auto bg-white rounded-2xl sm:rounded-3xl p-6 sm:p-8 shadow-lg sm:shadow-xl">
-              <div className="animate-pulse space-y-6">
-                <div className="h-12 bg-gray-300 rounded"></div>
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
+              <div className="max-w-4xl mx-auto bg-white rounded-2xl sm:rounded-3xl p-6 sm:p-8 shadow-lg sm:shadow-xl">
+                <div className="animate-pulse space-y-6">
                   <div className="h-12 bg-gray-300 rounded"></div>
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
+                    <div className="h-12 bg-gray-300 rounded"></div>
+                    <div className="h-12 bg-gray-300 rounded"></div>
+                  </div>
                   <div className="h-12 bg-gray-300 rounded"></div>
                 </div>
-                <div className="h-12 bg-gray-300 rounded"></div>
               </div>
             </div>
-          </div>
-        </section>
-      }>
-        <Suspense fallback={null}>
-          <div className="relative z-30 mt-4 sm:mt-6 scroll-mt-20 md:-mt-8 lg:-mt-10 xl:-mt-12">
-            <HomeQuoteForm compact />
-          </div>
-        </Suspense>
-      </ClientOnly>
+          </section>
+        }>
+          <Suspense fallback={null}>
+            <HomeHeroQuoteSlot
+              image={
+                <AppImage
+                  src="/images/hero-quote-left.webp"
+                  alt={`${BUSINESS.brandName} technician providing safe, eco-friendly pest control treatment at home`}
+                  fill
+                  sizes="(min-width: 1024px) 42vw"
+                  className="object-cover object-center"
+                />
+              }
+              form={<HomeQuoteForm compact />}
+            />
+          </Suspense>
+        </ClientOnly>
+      </div>
 
       <OurServicesSection />
 
@@ -104,8 +134,6 @@ export default function Home() {
       </section>
 
       <TrustSection />
-
-      <AreasWeServe />
     </div>
   );
 }

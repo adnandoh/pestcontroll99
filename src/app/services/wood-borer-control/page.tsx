@@ -3,6 +3,7 @@ import AppImage from '@/components/AppImage';
 import Breadcrumb from '@/components/Breadcrumb';
 import PageMeta from '@/components/PageMeta';
 import ServiceAreaLinks from '@/components/ServiceAreaLinks';
+import ServiceReviewsSection from '@/components/ServiceReviewsSection';
 
 export default function WoodBorerControlPage() {
   return (
@@ -37,7 +38,7 @@ export default function WoodBorerControlPage() {
               
               <div className="flex flex-col sm:flex-row gap-4">
                 <Link to="/quote"
-                  className="inline-flex items-center justify-center px-8 py-4 bg-green-600 text-white font-semibold rounded-full hover:bg-green-700 transition-colors duration-300 shadow-lg hover:shadow-xl"
+                  className="btn btn-cta btn-quote shadow-lg hover:shadow-xl"
                 >
                   Get My Inspection Slot →
                 </Link>
@@ -138,7 +139,7 @@ export default function WoodBorerControlPage() {
               We inject borate into infested wood, create a protective barrier, and apply surface protection where needed. No harsh smell, no stains; furniture usually stays in place. Many homes feel safer the same day; results may vary.
             </p>
             <Link to="/quote"
-              className="inline-flex items-center justify-center px-8 py-4 bg-green-600 text-white font-semibold rounded-full hover:bg-green-700 transition-colors duration-300 shadow-lg hover:shadow-xl"
+              className="btn btn-cta btn-quote shadow-lg hover:shadow-xl"
             >
               Book Wood Borer Shield →
             </Link>
@@ -272,47 +273,7 @@ export default function WoodBorerControlPage() {
         </div>
       </section>
 
-      <section className="py-16 bg-gray-50">
-        <div className="container mx-auto px-4">
-          <div className="max-w-4xl mx-auto text-center">
-            <h2 className="text-3xl lg:text-4xl font-bold text-gray-900 mb-12">
-              What Customers Say
-            </h2>
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-              <div className="bg-white p-6 rounded-2xl shadow-lg border border-gray-100">
-                <div className="flex items-center mb-4">
-                  <div className="flex text-yellow-400">
-                    {'★'.repeat(5)}
-                  </div>
-                </div>
-                <p className="text-gray-700 mb-4">&ldquo;They saved my antique furniture from wood borers. No damage to the finish.&rdquo;</p>
-                <p className="text-sm text-gray-500">- Meera S., Bandra</p>
-              </div>
-              <div className="bg-white p-6 rounded-2xl shadow-lg border border-gray-100">
-                <div className="flex items-center mb-4">
-                  <div className="flex text-yellow-400">
-                    {'★'.repeat(5)}
-                  </div>
-                </div>
-                <p className="text-gray-700 mb-4">&ldquo;Professional service, no mess, and my wardrobes are safe now.&rdquo;</p>
-                <p className="text-sm text-gray-500">- Amit K., Andheri</p>
-              </div>
-              <div className="bg-white p-6 rounded-2xl shadow-lg border border-gray-100">
-                <div className="flex items-center mb-4">
-                  <div className="flex text-yellow-400">
-                    {'★'.repeat(5)}
-                  </div>
-                </div>
-                <p className="text-gray-700 mb-4">&ldquo;Quick response, low odour, and effective treatment.&rdquo;</p>
-                <p className="text-sm text-gray-500">- Priya R., Thane</p>
-              </div>
-            </div>
-            <div className="mt-8 text-center">
-              <p className="text-lg font-semibold text-green-600">1,956 Mumbai homes protected</p>
-            </div>
-          </div>
-        </div>
-      </section>
+      <ServiceReviewsSection service="wood-borer" />
 
       <section className="py-16">
         <div className="container mx-auto px-4">
@@ -325,7 +286,7 @@ export default function WoodBorerControlPage() {
                 Your wood borer treatment cost depends on the type of property: commercial or residential. We send a same-day, all-inclusive quote with no doorstep add-ons.
               </p>
               <Link to="/quote"
-                className="inline-flex items-center justify-center px-8 py-4 bg-green-600 text-white font-semibold rounded-full hover:bg-green-700 transition-colors duration-300 shadow-lg hover:shadow-xl"
+                className="btn btn-cta btn-quote shadow-lg hover:shadow-xl"
               >
                 Get Your Quote Now
               </Link>
@@ -376,7 +337,7 @@ export default function WoodBorerControlPage() {
       </section>
 
       <ServiceAreaLinks />
-      <section className="py-16 bg-gradient-to-br from-green-600 to-green-700 text-white">
+      <section className="section-cta-green py-16 bg-gradient-to-br from-green-600 to-green-700 text-white">
         <div className="container mx-auto px-4">
           <div className="max-w-4xl mx-auto text-center">
             <h2 className="text-3xl lg:text-4xl font-bold mb-8">

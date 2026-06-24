@@ -4,6 +4,7 @@ import Breadcrumb from '@/components/Breadcrumb';
 import { submitContactForm } from '@/services/formSubmit';
 import BusinessDetailsCard from '@/components/BusinessDetailsCard';
 import { BUSINESS, DEFAULT_WHATSAPP_MESSAGE, whatsAppUrl } from '@/config/business';
+import { CONTACT_SERVICE_OPTIONS } from '@/config/serviceOptions';
 import PageMeta from '@/components/PageMeta';
 
 export default function ContactForm() {
@@ -69,7 +70,7 @@ export default function ContactForm() {
       <Breadcrumb items={[{ label: 'Contact Us' }]} />
 
       {/* Page Header */}
-      <section className="bg-gradient-to-r from-green-600 to-green-700 text-white py-12">
+      <section className="section-cta-green bg-gradient-to-r from-green-600 to-green-700 text-white py-12">
         <div className="container mx-auto px-4">
           <div className="max-w-4xl mx-auto text-center">
             <h1 className="text-3xl md:text-4xl lg:text-5xl font-bold mb-4">
@@ -150,14 +151,15 @@ export default function ContactForm() {
                       name="service"
                       value={formData.service}
                       onChange={handleChange}
+                      required
                       className="w-full p-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent text-sm"
                     >
                       <option value="">Select a service</option>
-                      <option value="Residential Pest Control">Residential Pest Control</option>
-                      <option value="Commercial Pest Control">Commercial Pest Control</option>
-                      <option value="Termite Control">Termite Control</option>
-                      <option value="Rodent Control">Rodent Control</option>
-                      <option value="Emergency Service">Emergency Service</option>
+                      {CONTACT_SERVICE_OPTIONS.map((option) => (
+                        <option key={option.value} value={option.value}>
+                          {option.label}
+                        </option>
+                      ))}
                     </select>
                   </div>
                   <div>

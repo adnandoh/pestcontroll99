@@ -1,6 +1,10 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { submitQuoteForm } from '@/services/formSubmit';
+import {
+  ONE_TIME_ONLY_QUOTE_SERVICES,
+  QUOTE_FORM_SERVICE_OPTIONS,
+} from '@/config/serviceOptions';
 
 interface QuoteFormProps {
   service?: string;
@@ -32,15 +36,7 @@ export default function QuoteForm({ service, className = '' }: QuoteFormProps) {
 
       // Check if the selected service restricts the service type to One-Time
       // Matching CRM rules: Only Cockroach/Ants and General Pest Control support AMC
-      const oneTimeOnlyServices = [
-        'Mosquito Control', 
-        'Termite Control', 
-        'Bed Bug Control', 
-        'Rodent Control',
-        'Other'
-      ];
-      
-      if (name === 'service' && oneTimeOnlyServices.includes(value)) {
+      if (name === 'service' && ONE_TIME_ONLY_QUOTE_SERVICES.includes(value as (typeof ONE_TIME_ONLY_QUOTE_SERVICES)[number])) {
         nextData.serviceType = 'one-time';
       }
 
@@ -145,13 +141,11 @@ export default function QuoteForm({ service, className = '' }: QuoteFormProps) {
             className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent"
           >
             <option value="">Select a service</option>
-            <option value="Cockroach / Ants">Cockroach / Ants Control</option>
-            <option value="Bed Bug Control">Bed Bug Control</option>
-            <option value="Termite Control">Termite Control</option>
-            <option value="Rodent Control">Rodent Control</option>
-            <option value="Mosquito Control">Mosquito Control</option>
-            <option value="General Pest Control">General Pest Control</option>
-            <option value="Other">Other</option>
+            {QUOTE_FORM_SERVICE_OPTIONS.map((option) => (
+              <option key={option.value} value={option.value}>
+                {option.label}
+              </option>
+            ))}
           </select>
         </div>
 
@@ -169,11 +163,11 @@ export default function QuoteForm({ service, className = '' }: QuoteFormProps) {
           >
             <option value="" disabled>Select Type</option>
             <option value="one-time">One Time Service</option>
-            {!['Mosquito Control', 'Termite Control', 'Bed Bug Control', 'Rodent Control', 'Other'].includes(formData.service) && (
+            {!ONE_TIME_ONLY_QUOTE_SERVICES.includes(formData.service as (typeof ONE_TIME_ONLY_QUOTE_SERVICES)[number]) && (
               <option value="amc">AMC 3 Services</option>
             )}
           </select>
-          {['Mosquito Control', 'Termite Control', 'Bed Bug Control', 'Rodent Control', 'Other'].includes(formData.service) && (
+          {ONE_TIME_ONLY_QUOTE_SERVICES.includes(formData.service as (typeof ONE_TIME_ONLY_QUOTE_SERVICES)[number]) && (
             <p className="mt-1 text-[10px] text-orange-600 font-bold italic">* Selected service available only as One-Time treatment</p>
           )}
         </div>

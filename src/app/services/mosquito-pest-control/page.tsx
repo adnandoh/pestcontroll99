@@ -2,6 +2,7 @@ import { Link } from 'react-router-dom';
 import AppImage from '@/components/AppImage';
 import PageMeta from '@/components/PageMeta';
 import ServiceAreaLinks from '@/components/ServiceAreaLinks';
+import ServiceReviewsSection from '@/components/ServiceReviewsSection';
 
 export default function MosquitoPestControlPage() {
   const structuredData = {
@@ -66,7 +67,7 @@ export default function MosquitoPestControlPage() {
               
               <div className="flex flex-col sm:flex-row gap-4">
                 <Link to="/quote"
-                  className="inline-flex items-center justify-center px-8 py-4 bg-green-600 text-white font-semibold rounded-full hover:bg-green-700 transition-colors duration-300 shadow-lg hover:shadow-xl"
+                  className="btn btn-cta btn-quote shadow-lg hover:shadow-xl"
                 >
                   Get Instant Quote →
                 </Link>
@@ -81,7 +82,7 @@ export default function MosquitoPestControlPage() {
             
             <div className="relative">
               <AppImage
-                src="/images/heroimage.webp"
+                src="/images/mosquitoes.webp"
                 alt="Professional mosquito pest control service in Mumbai"
                 width={600}
                 height={400}
@@ -159,7 +160,7 @@ export default function MosquitoPestControlPage() {
               We knock down adults with a low-odour wall mist, then stop the source with mosquito control during monsoon: treat small water, set water-trap barriers, and guide easy fixes. Many homes feel relief the same day; results may vary by site.
             </p>
             <Link to="/quote"
-              className="inline-flex items-center justify-center px-8 py-4 bg-green-600 text-white font-semibold rounded-full hover:bg-green-700 transition-colors duration-300 shadow-lg hover:shadow-xl"
+              className="btn btn-cta btn-quote shadow-lg hover:shadow-xl"
             >
               Book Mosquito Relief →
             </Link>
@@ -303,45 +304,7 @@ export default function MosquitoPestControlPage() {
         </div>
       </section>
 
-      {/* What customers say */}
-      <section className="py-16 bg-gray-50">
-        <div className="container mx-auto px-4">
-          <div className="max-w-4xl mx-auto text-center">
-            <h2 className="text-3xl lg:text-4xl font-bold text-gray-900 mb-12">
-              What customers say
-            </h2>
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-              <div className="bg-white p-6 rounded-2xl shadow-lg">
-                <div className="flex items-center mb-4">
-                  <div className="flex text-yellow-400">
-                    {'★'.repeat(5)}
-                  </div>
-                </div>
-                <p className="text-gray-700 mb-4">&ldquo;Excellent service! No more mosquito bites at night.&rdquo;</p>
-                <p className="text-sm text-gray-500">- Priya S., Bandra</p>
-              </div>
-              <div className="bg-white p-6 rounded-2xl shadow-lg">
-                <div className="flex items-center mb-4">
-                  <div className="flex text-yellow-400">
-                    {'★'.repeat(5)}
-                  </div>
-                </div>
-                <p className="text-gray-700 mb-4">&ldquo;Safe for kids and very effective treatment.&rdquo;</p>
-                <p className="text-sm text-gray-500">- Rahul M., Andheri</p>
-              </div>
-              <div className="bg-white p-6 rounded-2xl shadow-lg">
-                <div className="flex items-center mb-4">
-                  <div className="flex text-yellow-400">
-                    {'★'.repeat(5)}
-                  </div>
-                </div>
-                <p className="text-gray-700 mb-4">&ldquo;Quick response and professional service.&rdquo;</p>
-                <p className="text-sm text-gray-500">- Sneha K., Thane</p>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
+      <ServiceReviewsSection service="mosquito" />
 
       {/* Pricing */}
       <section className="py-16">
@@ -355,7 +318,7 @@ export default function MosquitoPestControlPage() {
                 We will send you the mosquito pest control cost (quotation) within hours
               </p>
               <Link to="/quote"
-                className="inline-flex items-center justify-center px-8 py-4 bg-green-600 text-white font-semibold rounded-full hover:bg-green-700 transition-colors duration-300 shadow-lg hover:shadow-xl"
+                className="btn btn-cta btn-quote shadow-lg hover:shadow-xl"
               >
                 Get Your Quote Now
               </Link>
@@ -403,7 +366,7 @@ export default function MosquitoPestControlPage() {
 
       <ServiceAreaLinks />
       {/* Final CTA */}
-      <section className="py-16 bg-gradient-to-br from-green-600 to-green-700 text-white">
+      <section className="section-cta-green py-16 bg-gradient-to-br from-green-600 to-green-700 text-white">
         <div className="container mx-auto px-4">
           <div className="max-w-4xl mx-auto text-center">
             <h2 className="text-3xl lg:text-4xl font-bold mb-8">

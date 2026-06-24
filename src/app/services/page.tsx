@@ -37,7 +37,7 @@ function ServiceCard({ title, description, image, alt, href }: ServiceCardProps)
         </p>
         <Link 
           to={href}
-          className="inline-flex items-center justify-center bg-green-600 text-white px-6 py-3 text-sm font-semibold rounded-full hover:bg-green-700 transition-all duration-300 shadow-md hover:shadow-lg group"
+          className="btn btn-cta btn-quote text-sm !px-6 !py-3 group"
         >
           GET QUOTE NOW
           <svg className="ml-2 h-4 w-4 transition-transform group-hover:translate-x-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -54,28 +54,28 @@ export default function ServicesPage() {
     {
       title: "COCKROACH PEST CONTROL",
       description: "Say goodbye to cockroaches with our reliable and long-lasting treatments. Odourless gel treatment with 365-day warranty.",
-      image: "/images/Cockroach.webp",
-      alt: "Cockroach pest control Mumbai — odourless herbal gel treatment safe for kitchens",
+      image: "/images/cockroaches.webp",
+      alt: "Cockroach pest control services in Mumbai — odourless herbal gel treatment safe for kitchens",
       href: "/services/cockroach-pest-control"
     },
     {
       title: "MOSQUITO PEST CONTROL",
       description: "Protect your family from mosquito-borne diseases with our effective control solutions. Low-odour mist plus larvae control.",
-      image: "/images/Mosquito.webp",
+      image: "/images/mosquitoes.webp",
       alt: "Mosquito pest control Mumbai — low-odour mist and larvae control treatment",
       href: "/services/mosquito-pest-control"
     },
     {
       title: "TERMITE PEST CONTROL",
       description: "Protect your wood with our comprehensive termite control services. Low-odour borate treatment with up to 5-year warranty.",
-      image: "/images/Termite.webp",
+      image: "/images/termites.webp",
       alt: "Anti-termite treatment Mumbai — drill and seal method with 5-year warranty",
       href: "/services/termite-pest-control"
     },
     {
       title: "RODENT PEST CONTROL",
       description: "Stop night noises with our humane rodent control services. Entry-point sealing, smart traps, pet-safe methods with 90-day warranty.",
-      image: "/images/Rat.webp",
+      image: "/images/rodents.webp",
       alt: "Rat control Mumbai — rodent removal and entry-point sealing services",
       href: "/services/rodent-pest-control"
     },
@@ -142,7 +142,7 @@ export default function ServicesPage() {
       <ServiceAreaLinks />
 
       {/* CTA Section */}
-      <section className="py-12 sm:py-16 md:py-20 bg-slate-800 text-white">
+      <section className="section-cta-dark py-12 sm:py-16 md:py-20 bg-slate-800 text-white">
         <div className="container mx-auto px-4 text-center">
           <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold mb-4 sm:mb-6">
             Ready to Get Started?
@@ -151,8 +151,9 @@ export default function ServicesPage() {
             Contact us today for a free consultation and customized pest control solution
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <Link to="/quote" 
-              className="bg-green-500 text-white px-6 sm:px-8 py-3 sm:py-4 rounded font-semibold hover:bg-green-600 transition-colors text-base sm:text-lg"
+            <Link
+              to="/quote"
+              className="btn btn-cta btn-quote-lg w-full sm:w-auto rounded-lg"
             >
               Get Free Quote
             </Link>

@@ -51,13 +51,13 @@ type ServiceCard = { label: string; image: string; href: string; blurb: string }
 function getServiceCard(label: string): ServiceCard {
   const l = label.toLowerCase();
   if (l.includes('cockroach'))
-    return { label, image: '/images/Cockroach.webp', href: '/services/cockroach-pest-control/', blurb: 'Odourless gel treatment, 365-day warranty.' };
+    return { label, image: '/images/cockroaches.webp', href: '/services/cockroach-pest-control/', blurb: 'Odourless gel treatment, 365-day warranty.' };
   if (l.includes('mosquito'))
-    return { label, image: '/images/Mosquito.webp', href: '/services/mosquito-pest-control/', blurb: 'Fogging & larvicide to cut dengue risk.' };
+    return { label, image: '/images/mosquitoes.webp', href: '/services/mosquito-pest-control/', blurb: 'Fogging & larvicide to cut dengue risk.' };
   if (l.includes('termite'))
-    return { label, image: '/images/Termite.webp', href: '/services/termite-pest-control/', blurb: 'Anti-termite barrier, up to 5-yr warranty.' };
+    return { label, image: '/images/termites.webp', href: '/services/termite-pest-control/', blurb: 'Anti-termite barrier, up to 5-yr warranty.' };
   if (l.includes('rodent') || l.includes('rat'))
-    return { label, image: '/images/Rat.webp', href: '/services/rodent-pest-control/', blurb: 'Trapping & entry-point sealing.' };
+    return { label, image: '/images/rodents.webp', href: '/services/rodent-pest-control/', blurb: 'Trapping & entry-point sealing.' };
   if (l.includes('wood borer'))
     return { label, image: '/images/Wood Borer.webp', href: '/services/wood-borer-control/', blurb: 'Protect furniture from powder-post beetles.' };
   if (l.includes('honey') || l.includes('bee'))
@@ -67,7 +67,7 @@ function getServiceCard(label: string): ServiceCard {
   if (l.includes('fly'))
     return { label, image: '/images/House Fly.webp', href: '/services/', blurb: 'Fly control for kitchens & eateries.' };
   if (l.includes('ant'))
-    return { label, image: '/images/Cockroach.webp', href: '/services/cockroach-pest-control/', blurb: 'Targeted ant gel & barrier treatment.' };
+    return { label, image: '/images/Residential Pest Control.webp', href: '/services/cockroach-pest-control/', blurb: 'Targeted ant gel & barrier treatment.' };
   return { label, image: '/images/Residential Pest Control.webp', href: '/services/', blurb: 'Safe, warranty-backed pest management.' };
 }
 
@@ -196,7 +196,7 @@ export default function AreaPageTemplate({ area }: AreaPageTemplateProps) {
               <div className="mt-8 flex flex-col sm:flex-row gap-3">
                 <a
                   href="#free-quote"
-                  className="inline-flex items-center justify-center gap-2 bg-green-600 hover:bg-green-700 text-white px-7 py-3.5 rounded-full font-semibold shadow-lg shadow-green-600/20 transition-colors"
+                  className="btn btn-cta btn-quote shadow-lg shadow-green-600/20"
                 >
                   Get a Free Quote →
                 </a>
@@ -393,7 +393,7 @@ export default function AreaPageTemplate({ area }: AreaPageTemplateProps) {
       )}
 
       {/* ===================== FINAL CTA ===================== */}
-      <section className="bg-gradient-to-br from-green-600 to-green-700 text-white">
+      <section className="section-cta-green bg-gradient-to-br from-green-600 to-green-700 text-white">
         <div className="container mx-auto px-4 sm:px-6 py-14 sm:py-16 text-center max-w-3xl">
           <h2 className="text-2xl sm:text-3xl lg:text-4xl font-extrabold">Get Rid of Pests in {area.name} Today</h2>
           <p className="mt-4 text-lg text-green-50/90">

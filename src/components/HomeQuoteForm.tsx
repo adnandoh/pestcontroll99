@@ -228,6 +228,7 @@ export default function HomeQuoteForm({
       <div className="container mx-auto px-4 sm:px-6 relative z-10">
         <div className={`mx-auto ${compact ? 'max-w-2xl' : 'max-w-3xl'}`}>
           <div
+            data-hero-form-card={compact ? '' : undefined}
             className={`bg-white shadow-xl border border-gray-100 relative overflow-hidden ${compact ? 'p-4 sm:p-6 rounded-xl' : 'p-6 sm:p-10 rounded-2xl'}`}
           >
             {/* Header moved inside the card for better readability when overlapping hero */}

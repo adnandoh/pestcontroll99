@@ -6,50 +6,46 @@ import PageMeta from '@/components/PageMeta';
 
 export default function AboutPage() {
   return (
-    <div className="min-h-screen bg-white font-sans text-gray-900 selection:bg-green-100 selection:text-green-900">
+    <div className="min-h-screen w-full max-w-full overflow-x-hidden bg-white font-sans text-gray-900 selection:bg-green-100 selection:text-green-900">
       <PageMeta
         title="About Pest Control 99 | Multi Pest Care LLP, Mumbai"
         description="Pest Control 99 by Multi Pest Care LLP — licensed, CIB&RC-approved pest management in Mumbai, Thane & Navi Mumbai. Same-day service, written warranty, transparent pricing."
         canonical="https://www.pestcontrol99.com/about/"
         ogUrl="https://www.pestcontrol99.com/about/"
       />
-      {/* Breadcrumb */}
-      <div className="bg-gray-50/50 border-b border-gray-100 backdrop-blur-sm sticky top-0 z-30">
-        <div className="container mx-auto px-4 py-3">
-          <Breadcrumb items={[{ label: 'About Us' }]} />
-        </div>
-      </div>
+      <Breadcrumb items={[{ label: 'About Us' }]} />
 
       {/* Hero Section */}
-      <section className="relative overflow-hidden pt-8 pb-20 lg:pt-12 lg:pb-32">
+      <section className="relative overflow-hidden pt-6 pb-12 sm:pt-8 sm:pb-16 lg:pt-12 lg:pb-32">
         {/* Background Decor */}
         <div className="absolute top-0 right-0 -translate-y-1/4 translate-x-1/4 w-96 h-96 bg-green-100/50 rounded-full blur-3xl pointer-events-none" />
         <div className="absolute bottom-0 left-0 translate-y-1/4 -translate-x-1/4 w-96 h-96 bg-blue-100/50 rounded-full blur-3xl pointer-events-none" />
 
-        <div className="container mx-auto px-4 relative z-10">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-20 items-center">
-            <div className="order-2 lg:order-1">
-              <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-green-50 border border-green-100 text-green-700 text-sm font-semibold mb-8 shadow-sm hover:shadow-md transition-shadow cursor-default">
-                <span className="relative flex h-2.5 w-2.5">
+        <div className="container mx-auto px-4 sm:px-6 relative z-10">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 sm:gap-12 lg:gap-20 items-center">
+            <div className="order-2 lg:order-1 min-w-0">
+              <div className="inline-flex max-w-full items-center gap-2 px-3 py-1.5 sm:px-4 sm:py-2 rounded-full bg-green-50 border border-green-100 text-green-700 text-xs sm:text-sm font-semibold mb-5 sm:mb-8 shadow-sm">
+                <span className="relative flex h-2.5 w-2.5 shrink-0">
                   <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75"></span>
                   <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-green-500"></span>
                 </span>
-                Serving Mumbai, Thane & Navi Mumbai
+                <span className="leading-snug">Serving Mumbai, Thane &amp; Navi Mumbai</span>
               </div>
 
-              <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold tracking-tight text-gray-900 mb-6 leading-[1.15]">
+              <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold tracking-tight text-gray-900 mb-4 sm:mb-6 leading-[1.15]">
                 <span className="text-transparent bg-clip-text bg-gradient-to-r from-green-600 to-emerald-500">{BUSINESS.brandName}</span>
                 <br className="hidden lg:block" />
-                Mumbai&apos;s Trusted Local Pest Experts
+                <span className="block sm:inline"> Mumbai&apos;s Trusted Local Pest Experts</span>
               </h1>
 
-              <p className="text-xl text-gray-600 mb-4 leading-relaxed max-w-lg">
+              <p className="text-base sm:text-lg md:text-xl text-gray-600 mb-5 sm:mb-6 leading-relaxed max-w-lg">
                 Clear talk. Neat work. Real results. We keep it simple—same-day help, clear prices, and service notes you can actually understand.
               </p>
 
-              <div className="flex flex-col sm:flex-row gap-4">
-                <Link to="/quote"
-                  className="group inline-flex items-center justify-center px-8 py-4 text-base font-semibold text-white transition-all duration-300 bg-green-600 rounded-xl hover:bg-green-700 hover:shadow-lg hover:shadow-green-200 hover:-translate-y-1"
+              <div className="flex flex-col sm:flex-row gap-3 sm:gap-4">
+                <Link
+                  to="/quote"
+                  className="btn btn-cta btn-quote-rounded btn-quote-lg group w-full sm:w-auto"
                 >
                   Get Free Quote
                   <svg className="w-5 h-5 ml-2 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -60,7 +56,7 @@ export default function AboutPage() {
                   href={whatsAppUrl(DEFAULT_WHATSAPP_MESSAGE)}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="group inline-flex items-center justify-center px-8 py-4 text-base font-semibold text-gray-700 transition-all duration-300 bg-white border border-gray-200 rounded-xl hover:bg-gray-50 hover:text-green-600 hover:border-green-200 hover:shadow-lg hover:-translate-y-1"
+                  className="group inline-flex w-full sm:w-auto items-center justify-center px-6 py-3.5 sm:px-8 sm:py-4 text-base font-semibold text-gray-700 transition-all duration-300 bg-white border border-gray-200 rounded-xl hover:bg-gray-50 hover:text-green-600 hover:border-green-200 hover:shadow-lg hover:-translate-y-1"
                 >
                   <svg className="w-5 h-5 mr-2 text-green-500 group-hover:scale-110 transition-transform" fill="currentColor" viewBox="0 0 24 24">
                     <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893A11.821 11.821 0 0020.885 3.488" />
@@ -70,41 +66,40 @@ export default function AboutPage() {
               </div>
             </div>
 
-            <div className="order-1 lg:order-2 relative">
-              <div className="absolute -inset-4 bg-gradient-to-r from-green-200 to-blue-200 rounded-[2rem] blur-2xl opacity-40 animate-pulse"></div>
-              <div className="relative rounded-[2rem] overflow-hidden shadow-2xl border-8 border-white/50 backdrop-blur-sm">
+            <div className="order-1 lg:order-2 relative min-w-0 overflow-hidden">
+              <div className="absolute inset-0 sm:-inset-4 bg-gradient-to-r from-green-200 to-blue-200 rounded-[1.5rem] sm:rounded-[2rem] blur-2xl opacity-40 animate-pulse pointer-events-none"></div>
+              <div className="relative rounded-2xl sm:rounded-[2rem] overflow-hidden shadow-2xl border-4 sm:border-8 border-white/50 backdrop-blur-sm">
                 <OptimizedImage
                   src="/images/heroimage.webp"
                   alt="Licensed Pest Control 99 expert providing professional pest control service in a Mumbai home"
                   width={800}
                   height={600}
-                  className="w-full h-full object-cover transform hover:scale-105 transition-transform duration-700"
+                  className="w-full h-auto aspect-[4/3] object-cover transform hover:scale-105 transition-transform duration-700"
                   sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 800px"
                 />
 
                 {/* Floating Stats Card */}
-                <div className="absolute bottom-6 left-6 right-6 bg-white/95 backdrop-blur-md p-4 rounded-xl shadow-lg border border-white/20 flex items-center justify-between gap-4">
-                  <div className="flex items-center gap-3">
-                    <div className="w-10 h-10 bg-green-100 rounded-full flex items-center justify-center text-green-600">
-                      <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <div className="absolute bottom-3 left-3 right-3 sm:bottom-6 sm:left-6 sm:right-6 bg-white/95 backdrop-blur-md p-3 sm:p-4 rounded-xl shadow-lg border border-white/20 grid grid-cols-2 gap-2 sm:gap-4">
+                  <div className="flex items-center gap-2 sm:gap-3 min-w-0">
+                    <div className="w-8 h-8 sm:w-10 sm:h-10 shrink-0 bg-green-100 rounded-full flex items-center justify-center text-green-600">
+                      <svg className="w-4 h-4 sm:w-6 sm:h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
                       </svg>
                     </div>
-                    <div>
-                      <p className="text-xs text-gray-500 font-semibold uppercase tracking-wider">Satisfaction</p>
-                      <p className="text-sm font-bold text-gray-900">100% Guaranteed</p>
+                    <div className="min-w-0">
+                      <p className="text-[10px] sm:text-xs text-gray-500 font-semibold uppercase tracking-wide">Satisfaction</p>
+                      <p className="text-xs sm:text-sm font-bold text-gray-900 leading-tight">100% Guaranteed</p>
                     </div>
                   </div>
-                  <div className="h-8 w-px bg-gray-200"></div>
-                  <div className="flex items-center gap-3">
-                    <div className="w-10 h-10 bg-blue-100 rounded-full flex items-center justify-center text-blue-600">
-                      <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <div className="flex items-center gap-2 sm:gap-3 min-w-0 border-l border-gray-200 pl-2 sm:pl-0 sm:border-l-0">
+                    <div className="w-8 h-8 sm:w-10 sm:h-10 shrink-0 bg-blue-100 rounded-full flex items-center justify-center text-blue-600">
+                      <svg className="w-4 h-4 sm:w-6 sm:h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
                       </svg>
                     </div>
-                    <div>
-                      <p className="text-xs text-gray-500 font-semibold uppercase tracking-wider">Service</p>
-                      <p className="text-sm font-bold text-gray-900">Same Day</p>
+                    <div className="min-w-0">
+                      <p className="text-[10px] sm:text-xs text-gray-500 font-semibold uppercase tracking-wide">Service</p>
+                      <p className="text-xs sm:text-sm font-bold text-gray-900 leading-tight">Same Day</p>
                     </div>
                   </div>
                 </div>
@@ -115,14 +110,14 @@ export default function AboutPage() {
       </section>
 
       {/* What We Believe Section */}
-      <section className="py-20 bg-white">
-        <div className="container mx-auto px-4">
-          <div className="max-w-3xl mx-auto text-center mb-16">
-            <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">What We Believe</h2>
-            <p className="text-lg text-gray-600">Core values that drive every service we provide to your home and business.</p>
+      <section className="py-12 sm:py-16 md:py-20 bg-white">
+        <div className="container mx-auto px-4 sm:px-6">
+          <div className="max-w-3xl mx-auto text-center mb-10 sm:mb-16">
+            <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-gray-900 mb-3 sm:mb-4">What We Believe</h2>
+            <p className="text-base sm:text-lg text-gray-600">Core values that drive every service we provide to your home and business.</p>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-6xl mx-auto">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-5 sm:gap-8 max-w-6xl mx-auto">
             {[
               {
                 title: "Safety first",
@@ -155,12 +150,12 @@ export default function AboutPage() {
                 color: "bg-orange-50 border-orange-100"
               }
             ].map((item, idx) => (
-              <div key={idx} className={`group p-8 rounded-2xl border ${item.color} hover:shadow-xl transition-all duration-300 hover:-translate-y-1 bg-white`}>
-                <div className="w-16 h-16 bg-white rounded-xl shadow-sm border border-gray-100 flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300">
+              <div key={idx} className={`group p-5 sm:p-8 rounded-2xl border ${item.color} hover:shadow-xl transition-all duration-300 hover:-translate-y-1 bg-white`}>
+                <div className="w-14 h-14 sm:w-16 sm:h-16 bg-white rounded-xl shadow-sm border border-gray-100 flex items-center justify-center mb-4 sm:mb-6 group-hover:scale-110 transition-transform duration-300">
                   {item.icon}
                 </div>
-                <h3 className="text-xl font-bold text-gray-900 mb-4">{item.title}</h3>
-                <p className="text-gray-600 leading-relaxed">
+                <h3 className="text-lg sm:text-xl font-bold text-gray-900 mb-3 sm:mb-4">{item.title}</h3>
+                <p className="text-sm sm:text-base text-gray-600 leading-relaxed">
                   {item.desc}
                 </p>
               </div>
@@ -169,29 +164,48 @@ export default function AboutPage() {
         </div>
       </section>
 
-      {/* What We Do Section - Typography Focus */}
-      <section className="py-20 bg-white border-t border-gray-100">
-        <div className="container mx-auto px-4">
-          <div className="max-w-4xl mx-auto text-center">
-            <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-8">What We Do</h2>
-            <p className="text-xl md:text-2xl text-gray-600 leading-relaxed font-light">
-              From <span className="font-semibold text-green-600">Bandra kitchens</span> to <span className="font-semibold text-blue-600">Thane offices</span>, we protect your space.
-              Specializing in cockroach control, termite protection, mosquito relief, and rodent proofing for homes and businesses across Mumbai.
+      {/* What We Do Section */}
+      <section className="py-12 sm:py-16 md:py-20 bg-white border-t border-gray-100">
+        <div className="container mx-auto px-4 sm:px-6">
+          <div className="max-w-3xl mx-auto text-center">
+            <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-gray-900 mb-4 sm:mb-5">What We Do</h2>
+            <p className="text-base sm:text-lg md:text-xl text-gray-900 font-semibold leading-snug mb-3 sm:mb-4 px-1">
+              We don&apos;t spray and disappear.
             </p>
+            <p className="text-sm sm:text-base md:text-lg text-gray-600 leading-relaxed mb-6 sm:mb-8 max-w-2xl mx-auto px-1">
+              Our team inspects your space, treats pests at the source, seals entry points, and leaves you with a clear service report—whether it&apos;s a Bandra flat, a Thane shop, or an office in Navi Mumbai.
+            </p>
+            <div className="flex flex-wrap justify-center gap-2 px-1">
+              {[
+                'Cockroach control',
+                'Termite protection',
+                'Mosquito treatment',
+                'Rodent proofing',
+                'Bee removal',
+                'Wood borer',
+              ].map((service) => (
+                <span
+                  key={service}
+                  className="inline-flex items-center rounded-full border border-green-100 bg-green-50 px-3 py-1.5 text-xs sm:text-sm font-medium text-green-800"
+                >
+                  {service}
+                </span>
+              ))}
+            </div>
           </div>
         </div>
       </section>
 
       {/* How We Work Section - Timeline Style */}
-      <section className="py-20 bg-gray-50 relative overflow-hidden">
-        <div className="container mx-auto px-4 relative z-10">
-          <div className="max-w-3xl mx-auto text-center mb-16">
-            <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">How We Work</h2>
-            <p className="text-lg text-gray-600">A simple, transparent process designed for your peace of mind.</p>
+      <section className="py-12 sm:py-16 md:py-20 bg-gray-50 relative overflow-hidden">
+        <div className="container mx-auto px-4 sm:px-6 relative z-10">
+          <div className="max-w-3xl mx-auto text-center mb-10 sm:mb-16">
+            <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-gray-900 mb-3 sm:mb-4">How We Work</h2>
+            <p className="text-base sm:text-lg text-gray-600">A simple, transparent process designed for your peace of mind.</p>
           </div>
 
           <div className="max-w-6xl mx-auto">
-            <div className="grid grid-cols-1 md:grid-cols-4 gap-8 relative">
+            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-6 sm:gap-8 relative">
               {/* Connecting Line (Desktop) */}
               <div className="hidden md:block absolute top-8 left-0 w-full h-0.5 bg-gray-200 -z-10"></div>
 
@@ -202,11 +216,11 @@ export default function AboutPage() {
                 { step: "4", title: "Report", desc: "Digital invoice & clear service notes.", color: "bg-purple-500" }
               ].map((item, idx) => (
                 <div key={idx} className="relative flex flex-col items-center text-center group">
-                  <div className={`${item.color} w-16 h-16 rounded-2xl text-white flex items-center justify-center text-2xl font-bold shadow-lg mb-6 group-hover:scale-110 transition-transform duration-300 relative z-10 border-4 border-gray-50`}>
+                  <div className={`${item.color} w-14 h-14 sm:w-16 sm:h-16 rounded-2xl text-white flex items-center justify-center text-xl sm:text-2xl font-bold shadow-lg mb-4 sm:mb-6 group-hover:scale-110 transition-transform duration-300 relative z-10 border-4 border-gray-50`}>
                     {item.step}
                   </div>
-                  <h3 className="text-xl font-bold text-gray-900 mb-3">{item.title}</h3>
-                  <p className="text-gray-600 text-sm leading-relaxed px-4">
+                  <h3 className="text-lg sm:text-xl font-bold text-gray-900 mb-2 sm:mb-3">{item.title}</h3>
+                  <p className="text-gray-600 text-sm leading-relaxed px-2 sm:px-4">
                     {item.desc}
                   </p>
                 </div>
@@ -214,15 +228,15 @@ export default function AboutPage() {
             </div>
 
             {/* Follow Up Box */}
-            <div className="mt-16 text-center">
-              <div className="inline-block bg-white rounded-2xl p-8 shadow-lg border border-gray-100 max-w-2xl mx-auto transform hover:-translate-y-1 transition-transform duration-300">
-                <h3 className="text-xl font-bold text-gray-900 mb-3 flex items-center justify-center gap-2">
-                  <svg className="w-6 h-6 text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <div className="mt-10 sm:mt-16 text-center px-1">
+              <div className="w-full max-w-2xl mx-auto bg-white rounded-2xl p-5 sm:p-8 shadow-lg border border-gray-100 transform hover:-translate-y-1 transition-transform duration-300">
+                <h3 className="text-lg sm:text-xl font-bold text-gray-900 mb-2 sm:mb-3 flex flex-wrap items-center justify-center gap-2">
+                  <svg className="w-5 h-5 sm:w-6 sm:h-6 text-green-500 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
                   </svg>
                   The Follow Up
                 </h3>
-                <p className="text-gray-600">
+                <p className="text-sm sm:text-base text-gray-600 leading-relaxed">
                   We check results after service. If pests return within warranty, we come back and fix it at no extra cost.
                 </p>
               </div>
@@ -232,11 +246,11 @@ export default function AboutPage() {
       </section>
 
       {/* Why Choose Us - Bento Grid Style */}
-      <section className="py-20 bg-white">
-        <div className="container mx-auto px-4">
-          <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-12 text-center">Why Choose Pest Control 99</h2>
+      <section className="py-12 sm:py-16 md:py-20 bg-white">
+        <div className="container mx-auto px-4 sm:px-6">
+          <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-gray-900 mb-8 sm:mb-12 text-center px-2">Why Choose Pest Control 99</h2>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 max-w-6xl mx-auto">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6 max-w-6xl mx-auto">
             {[
               {
                 title: "Mumbai-fast",
@@ -281,79 +295,16 @@ export default function AboutPage() {
                 bg: "bg-teal-50"
               }
             ].map((item, idx) => (
-              <div key={idx} className="bg-gray-50 rounded-2xl p-8 hover:bg-white hover:shadow-xl transition-all duration-300 border border-transparent hover:border-gray-100 group">
-                <div className={`w-12 h-12 ${item.bg} rounded-xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300`}>
-                  <svg className={`w-6 h-6 ${item.color}`} fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <div key={idx} className="bg-gray-50 rounded-2xl p-5 sm:p-8 hover:bg-white hover:shadow-xl transition-all duration-300 border border-transparent hover:border-gray-100 group">
+                <div className={`w-11 h-11 sm:w-12 sm:h-12 ${item.bg} rounded-xl flex items-center justify-center mb-4 sm:mb-6 group-hover:scale-110 transition-transform duration-300`}>
+                  <svg className={`w-5 h-5 sm:w-6 sm:h-6 ${item.color}`} fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d={item.icon} />
                   </svg>
                 </div>
-                <h3 className="text-xl font-bold text-gray-900 mb-3">{item.title}</h3>
-                <p className="text-gray-600 leading-relaxed">{item.desc}</p>
+                <h3 className="text-lg sm:text-xl font-bold text-gray-900 mb-2 sm:mb-3">{item.title}</h3>
+                <p className="text-sm sm:text-base text-gray-600 leading-relaxed">{item.desc}</p>
               </div>
             ))}
-          </div>
-        </div>
-      </section>
-
-      {/* Service Areas - Clean List */}
-      <section className="py-20 bg-gray-900 text-white">
-        <div className="container mx-auto px-4">
-          <div className="max-w-4xl mx-auto text-center mb-16">
-            <h2 className="text-3xl md:text-4xl font-bold mb-6">Where We Serve</h2>
-            <p className="text-gray-400 text-lg">
-              Mumbai, Thane, and Navi Mumbai—from Chembur to Andheri, Bandra to Borivali, Powai to Panvel.
-            </p>
-          </div>
-
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-12 max-w-6xl mx-auto">
-            {/* Mumbai */}
-            <div>
-              <h3 className="text-xl font-bold text-green-400 mb-6 flex items-center gap-2">
-                <span className="w-2 h-2 bg-green-400 rounded-full"></span> Mumbai
-              </h3>
-              <ul className="space-y-2 text-gray-300 text-sm columns-2">
-                {["Andheri East", "Andheri West", "Bandra East", "Bandra West", "Borivali East", "Borivali West", "Chembur", "Dadar", "Goregaon East", "Goregaon West", "Juhu", "Kandivali East", "Kandivali West", "Khar", "Kurla", "Malad East", "Malad West", "Mulund East", "Mulund West", "Powai", "Santacruz East", "Santacruz West", "Versova", "Vikhroli", "Vile Parle East", "Vile Parle West", "Worli", "Lower Parel"].map(area => (
-                  <li key={area} className="hover:text-white transition-colors cursor-default">{area}</li>
-                ))}
-              </ul>
-            </div>
-
-            {/* Thane */}
-            <div>
-              <h3 className="text-xl font-bold text-blue-400 mb-6 flex items-center gap-2">
-                <span className="w-2 h-2 bg-blue-400 rounded-full"></span> Thane
-              </h3>
-              <ul className="space-y-2 text-gray-300 text-sm">
-                {["Thane West", "Thane East", "Ghodbunder Road", "Hiranandani Estate", "Kasarvadavali", "Majiwada", "Naupada", "Vartak Nagar", "Wagle Estate", "Dombivli East", "Dombivli West", "Kalyan East", "Kalyan West", "Bhiwandi", "Ulhasnagar", "Ambernath"].map(area => (
-                  <li key={area} className="hover:text-white transition-colors cursor-default">{area}</li>
-                ))}
-              </ul>
-            </div>
-
-            {/* Navi Mumbai */}
-            <div>
-              <h3 className="text-xl font-bold text-orange-400 mb-6 flex items-center gap-2">
-                <span className="w-2 h-2 bg-orange-400 rounded-full"></span> Navi Mumbai
-              </h3>
-              <ul className="space-y-2 text-gray-300 text-sm">
-                {["Vashi", "Nerul", "Belapur", "Kharghar", "Panvel", "Kamothe", "Airoli", "Ghansoli", "Kopar Khairane"].map(area => (
-                  <li key={area} className="hover:text-white transition-colors cursor-default">{area}</li>
-                ))}
-              </ul>
-            </div>
-          </div>
-
-          <div className="mt-16 text-center">
-            <p className="text-gray-400 mb-6">Don&apos;t see your area? We likely cover it.</p>
-            <a
-              href={whatsAppUrl()}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="inline-flex items-center justify-center px-6 py-3 bg-white/10 hover:bg-white/20 text-white rounded-lg backdrop-blur-sm transition-all duration-300"
-            >
-              <svg className="w-5 h-5 mr-2" fill="currentColor" viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893A11.821 11.821 0 0020.885 3.488" /></svg>
-              Check Availability on WhatsApp
-            </a>
           </div>
         </div>
       </section>

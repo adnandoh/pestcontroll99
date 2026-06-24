@@ -34,7 +34,7 @@ export const BUSINESS = {
   ],
   aggregateRating: {
     ratingValue: '4.8',
-    reviewCount: '150',
+    reviewCount: '50',
   },
 } as const;
 

@@ -292,7 +292,7 @@ export default function SimpleQuotePage() {
                 <button
                   type="submit"
                   disabled={isSubmitting}
-                  className="bg-green-500 text-white px-8 py-4 rounded-lg font-semibold hover:bg-green-600 transition-colors w-full md:w-auto text-lg shadow-lg disabled:bg-gray-400 disabled:cursor-not-allowed min-w-[200px]"
+                  className="btn btn-cta w-full md:w-auto text-lg shadow-lg disabled:opacity-60 disabled:cursor-not-allowed disabled:hover:transform-none min-w-[200px]"
                 >
                   {isSubmitting ? 'Sending Request...' : 'Get My Free Quote'}
                 </button>
