@@ -38,7 +38,7 @@ const HERO_SLIDES: HeroSlide[] = [
 
 ];
 
-const AUTO_MS = 6000;
+const AUTO_MS = 5000;
 
 function HeroSlideOverlayPanel({ overlay }: { overlay: HeroSlideOverlay }) {
   return (
