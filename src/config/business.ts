@@ -58,12 +58,12 @@ export const OFFICE_LOCATIONS = [
   },
 ] as const;
 
-/** Primary site logo (header, footer, marketing pages). Cropped 744×160 PNG. */
+/** Primary site logo (header, footer, marketing pages). */
 export const SITE_LOGO = {
-  src: '/images/pestcontrol99-logo.png',
+  src: '/images/pestcontrol99-logo-v5.webp',
   alt: 'Pest Control 99 — Safe, Eco-Friendly, Trusted Experts',
-  width: 744,
-  height: 160,
+  width: 5184,
+  height: 1261,
 } as const;
 
 export const FOOTER_BRAND_LINES = {
