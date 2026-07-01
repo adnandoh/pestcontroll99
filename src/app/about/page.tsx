@@ -1,15 +1,110 @@
+import { useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import OptimizedImage from '@/components/OptimizedImage';
 import Breadcrumb from '@/components/Breadcrumb';
+import TrustSection from '@/components/TrustSection';
 import { BUSINESS, DEFAULT_WHATSAPP_MESSAGE, whatsAppUrl } from '@/config/business';
+import { GOOGLE_RATING_SUMMARY } from '@/config/googleReviews';
 import PageMeta from '@/components/PageMeta';
 
+const ABOUT_WARRANTY = [
+  {
+    service: 'Cockroach Control',
+    period: '1 Year',
+    href: '/services/cockroach-pest-control/',
+    description: 'Written warranty on cockroach treatments — free revisit if pests return within the warranty period.',
+  },
+  {
+    service: 'Termite Treatment',
+    period: '2 Years',
+    href: '/services/termite-pest-control/',
+    description: 'Long-term termite protection with up to 2 years of warranty-backed coverage on eligible treatments.',
+  },
+] as const;
+
+const ABOUT_CITIES = [
+  {
+    name: 'Mumbai',
+    href: '/pest-control-mumbai/',
+    description: 'Same-day pest control across Mumbai — homes, offices, restaurants, and societies.',
+  },
+  {
+    name: 'Navi Mumbai',
+    href: '/pest-control-navi-mumbai/',
+    description: 'Professional pest management in Vashi, Kharghar, Nerul, Belapur, and all Navi Mumbai nodes.',
+  },
+] as const;
+
+const MORE_SERVICE_CITIES = [
+  { name: 'Thane', href: '/pest-control-thane/' },
+  { name: 'Pune', href: '/pest-control-pune/' },
+  { name: 'Lonavala', href: '/pest-control-lonavala/' },
+] as const;
+
+function useAboutPageSchema() {
+  useEffect(() => {
+    const scriptId = 'about-page-jsonld';
+    const existing = document.getElementById(scriptId);
+    if (existing) existing.remove();
+
+    const schema = {
+      '@context': 'https://schema.org',
+      '@graph': [
+        {
+          '@type': 'AboutPage',
+          '@id': 'https://www.pestcontrol99.com/about/#webpage',
+          url: 'https://www.pestcontrol99.com/about/',
+          name: `About ${BUSINESS.brandName}`,
+          description:
+            `${BUSINESS.brandName} by ${BUSINESS.legalName} — 2 lacs+ happy customers, Google-rated pest control with warranty-backed service in Mumbai and Navi Mumbai.`,
+          isPartOf: { '@id': 'https://www.pestcontrol99.com/#website' },
+          about: { '@id': 'https://www.pestcontrol99.com/#organization' },
+        },
+        {
+          '@type': 'Organization',
+          '@id': 'https://www.pestcontrol99.com/#organization',
+          name: BUSINESS.brandName,
+          legalName: BUSINESS.legalName,
+          url: BUSINESS.website,
+          email: BUSINESS.email,
+          telephone: BUSINESS.phoneTel,
+          description: BUSINESS.operatingStatement,
+          areaServed: BUSINESS.serviceAreas.map((city) => ({
+            '@type': 'City',
+            name: city,
+          })),
+          aggregateRating: {
+            '@type': 'AggregateRating',
+            ratingValue: BUSINESS.aggregateRating.ratingValue,
+            reviewCount: BUSINESS.aggregateRating.reviewCount,
+            bestRating: '5',
+            worstRating: '1',
+          },
+        },
+      ],
+    };
+
+    const script = document.createElement('script');
+    script.id = scriptId;
+    script.type = 'application/ld+json';
+    script.textContent = JSON.stringify(schema);
+    document.head.appendChild(script);
+
+    return () => {
+      document.getElementById(scriptId)?.remove();
+    };
+  }, []);
+}
+
 export default function AboutPage() {
+  useAboutPageSchema();
+
   return (
     <div className="min-h-screen w-full max-w-full overflow-x-hidden bg-white font-sans text-gray-900 selection:bg-green-100 selection:text-green-900">
       <PageMeta
-        title="About Pest Control 99 | Multi Pest Care LLP, Mumbai"
-        description="Pest Control 99 by Multi Pest Care LLP — licensed, CIB&RC-approved pest management in Mumbai, Thane & Navi Mumbai. Same-day service, written warranty, transparent pricing."
+        title="About Pest Control 99 | 2 Lacs+ Happy Customers in Mumbai & Navi Mumbai"
+        description="Why choose Pest Control 99? 2 lacs+ happy customers, top Google ratings, warranty-backed cockroach & termite service, 24/7 emergency help, and herbal 100% safe chemicals in Mumbai & Navi Mumbai."
+        keywords="about pest control 99, pest control mumbai, pest control navi mumbai, warranty pest control, herbal pest control mumbai, 24/7 pest control"
         canonical="https://www.pestcontrol99.com/about/"
         ogUrl="https://www.pestcontrol99.com/about/"
       />
@@ -83,28 +178,99 @@ export default function AboutPage() {
                   <div className="flex items-center gap-2 sm:gap-3 min-w-0">
                     <div className="w-8 h-8 sm:w-10 sm:h-10 shrink-0 bg-green-100 rounded-full flex items-center justify-center text-green-600">
                       <svg className="w-4 h-4 sm:w-6 sm:h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
                       </svg>
                     </div>
                     <div className="min-w-0">
-                      <p className="text-[10px] sm:text-xs text-gray-500 font-semibold uppercase tracking-wide">Satisfaction</p>
-                      <p className="text-xs sm:text-sm font-bold text-gray-900 leading-tight">100% Guaranteed</p>
+                      <p className="text-[10px] sm:text-xs text-gray-500 font-semibold uppercase tracking-wide">Customers</p>
+                      <p className="text-xs sm:text-sm font-bold text-gray-900 leading-tight">2 Lacs+ Happy</p>
                     </div>
                   </div>
                   <div className="flex items-center gap-2 sm:gap-3 min-w-0 border-l border-gray-200 pl-2 sm:pl-0 sm:border-l-0">
                     <div className="w-8 h-8 sm:w-10 sm:h-10 shrink-0 bg-blue-100 rounded-full flex items-center justify-center text-blue-600">
-                      <svg className="w-4 h-4 sm:w-6 sm:h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+                      <svg className="w-4 h-4 sm:w-6 sm:h-6" fill="currentColor" viewBox="0 0 24 24">
+                        <path d="M12 2l2.9 6.26L22 9.27l-5 4.87L18.2 22 12 18.56 5.8 22 7 14.14l-5-4.87 7.1-1.01L12 2z" />
                       </svg>
                     </div>
                     <div className="min-w-0">
-                      <p className="text-[10px] sm:text-xs text-gray-500 font-semibold uppercase tracking-wide">Service</p>
-                      <p className="text-xs sm:text-sm font-bold text-gray-900 leading-tight">Same Day</p>
+                      <p className="text-[10px] sm:text-xs text-gray-500 font-semibold uppercase tracking-wide">Google</p>
+                      <p className="text-xs sm:text-sm font-bold text-gray-900 leading-tight">{GOOGLE_RATING_SUMMARY.rating}★ Rated</p>
                     </div>
                   </div>
                 </div>
               </div>
             </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Why Choose — key trust points */}
+      <section className="py-10 sm:py-12 bg-gray-50 border-y border-gray-100" aria-labelledby="why-choose-heading">
+        <div className="container mx-auto px-4 sm:px-6">
+          <div className="max-w-3xl mx-auto text-center mb-8 sm:mb-10">
+            <h2 id="why-choose-heading" className="text-2xl sm:text-3xl md:text-4xl font-bold text-gray-900 mb-3">
+              Why Choose {BUSINESS.brandName}
+            </h2>
+            <p className="text-base sm:text-lg text-gray-600">
+              Trusted by families and businesses across Maharashtra — backed by real results, written warranties, and round-the-clock support.
+            </p>
+          </div>
+
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6 max-w-6xl mx-auto">
+            {[
+              {
+                title: '2 Lacs+ Happy Customers',
+                desc: 'Over two lakh satisfied homes and businesses served with professional, reliable pest management.',
+                icon: 'M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z',
+                color: 'text-green-600',
+                bg: 'bg-green-50',
+              },
+              {
+                title: 'Google Ratings',
+                desc: `${GOOGLE_RATING_SUMMARY.rating}★ average rating from ${GOOGLE_RATING_SUMMARY.reviewCount}+ verified Google reviews — real feedback from real customers.`,
+                icon: 'M11.049 2.927c.3-.921 1.603-.921 1.902 0l1.519 4.674a1 1 0 00.95.69h4.915c.969 0 1.371 1.24.588 1.81l-3.976 2.888a1 1 0 00-.363 1.118l1.518 4.674c.3.922-.755 1.688-1.538 1.118l-3.976-2.888a1 1 0 00-1.176 0l-3.976 2.888c-.783.57-1.838-.197-1.538-1.118l1.518-4.674a1 1 0 00-.363-1.118l-3.976-2.888c-.784-.57-.38-1.81.588-1.81h4.914a1 1 0 00.951-.69l1.519-4.674z',
+                color: 'text-yellow-600',
+                bg: 'bg-yellow-50',
+              },
+              {
+                title: 'Warranty-Backed Service',
+                desc: 'Cockroach control with 1-year warranty and termite treatment with up to 2-year warranty — we stand behind every job.',
+                icon: 'M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z',
+                color: 'text-blue-600',
+                bg: 'bg-blue-50',
+              },
+              {
+                title: '24/7 Emergency Service',
+                desc: 'Pest emergency at midnight or early morning? Call or WhatsApp us — we respond fast when you need help most.',
+                icon: 'M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z',
+                color: 'text-red-600',
+                bg: 'bg-red-50',
+              },
+              {
+                title: 'Herbal & 100% Safe Chemicals',
+                desc: 'CIB&RC-approved herbal and lab-tested chemicals — safe for kids, pets, and food areas when applied as directed.',
+                icon: 'M5 3v4M3 5h4M6 17v4m-2-2h4m5-16l2.286 6.857L21 12l-5.714 2.143L13 21l-2.286-6.857L5 12l5.714-2.143L13 3z',
+                color: 'text-emerald-600',
+                bg: 'bg-emerald-50',
+              },
+              {
+                title: 'Licensed & Transparent',
+                desc: `Operated by ${BUSINESS.legalName} with trained technicians, clear pricing, and digital service reports.`,
+                icon: 'M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z',
+                color: 'text-purple-600',
+                bg: 'bg-purple-50',
+              },
+            ].map((item, idx) => (
+              <article key={idx} className="bg-white rounded-2xl p-5 sm:p-6 border border-gray-100 shadow-sm hover:shadow-md transition-shadow">
+                <div className={`w-11 h-11 sm:w-12 sm:h-12 ${item.bg} rounded-xl flex items-center justify-center mb-4`}>
+                  <svg className={`w-5 h-5 sm:w-6 sm:h-6 ${item.color}`} fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d={item.icon} />
+                  </svg>
+                </div>
+                <h3 className="text-lg font-bold text-gray-900 mb-2">{item.title}</h3>
+                <p className="text-sm text-gray-600 leading-relaxed">{item.desc}</p>
+              </article>
+            ))}
           </div>
         </div>
       </section>
@@ -245,66 +411,117 @@ export default function AboutPage() {
         </div>
       </section>
 
-      {/* Why Choose Us - Bento Grid Style */}
-      <section className="py-12 sm:py-16 md:py-20 bg-white">
+      {/* Warranty-Backed Service */}
+      <section className="py-12 sm:py-16 md:py-20 bg-white" aria-labelledby="warranty-heading">
         <div className="container mx-auto px-4 sm:px-6">
-          <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-gray-900 mb-8 sm:mb-12 text-center px-2">Why Choose Pest Control 99</h2>
+          <div className="max-w-3xl mx-auto text-center mb-8 sm:mb-12">
+            <h2 id="warranty-heading" className="text-2xl sm:text-3xl md:text-4xl font-bold text-gray-900 mb-3 sm:mb-4">
+              Warranty-Backed Service
+            </h2>
+            <p className="text-base sm:text-lg text-gray-600">
+              We don&apos;t just treat and leave — every service comes with a clear written warranty so you&apos;re protected long after we go.
+            </p>
+          </div>
 
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6 max-w-6xl mx-auto">
-            {[
-              {
-                title: "Mumbai-fast",
-                desc: "Same-day slots most days. Live updates until we reach you.",
-                icon: "M13 10V3L4 14h7v7l9-11h-7z",
-                color: "text-green-600",
-                bg: "bg-green-50"
-              },
-              {
-                title: "Low odour, no stains",
-                desc: "Water-based treatments dry fast. Safe for family & pets.",
-                icon: "M5 3v4M3 5h4M6 17v4m-2-2h4m5-16l2.286 6.857L21 12l-5.714 2.143L13 21l-2.286-6.857L5 12l5.714-2.143L13 3z",
-                color: "text-blue-600",
-                bg: "bg-blue-50"
-              },
-              {
-                title: "Written cover",
-                desc: "Clear warranty. If they return, so do we—for free.",
-                icon: "M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z",
-                color: "text-orange-600",
-                bg: "bg-orange-50"
-              },
-              {
-                title: "No surprises",
-                desc: "One fair quote. No hidden fees. Service invoice provided.",
-                icon: "M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1",
-                color: "text-purple-600",
-                bg: "bg-purple-50"
-              },
-              {
-                title: "Real people, real care",
-                desc: "Trained technicians who respect your home and explain the process.",
-                icon: "M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z",
-                color: "text-red-600",
-                bg: "bg-red-50"
-              },
-              {
-                title: "Safety & compliance",
-                desc: "We operate by the book. Licensed, safe, and professional.",
-                icon: "M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z",
-                color: "text-teal-600",
-                bg: "bg-teal-50"
-              }
-            ].map((item, idx) => (
-              <div key={idx} className="bg-gray-50 rounded-2xl p-5 sm:p-8 hover:bg-white hover:shadow-xl transition-all duration-300 border border-transparent hover:border-gray-100 group">
-                <div className={`w-11 h-11 sm:w-12 sm:h-12 ${item.bg} rounded-xl flex items-center justify-center mb-4 sm:mb-6 group-hover:scale-110 transition-transform duration-300`}>
-                  <svg className={`w-5 h-5 sm:w-6 sm:h-6 ${item.color}`} fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d={item.icon} />
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-5 sm:gap-6 max-w-4xl mx-auto">
+            {ABOUT_WARRANTY.map((item) => (
+              <article key={item.service} className="rounded-2xl border border-green-100 bg-green-50/50 p-6 sm:p-8">
+                <p className="text-sm font-semibold uppercase tracking-wide text-green-700 mb-2">Warranty</p>
+                <h3 className="text-xl sm:text-2xl font-bold text-gray-900 mb-2">{item.service}</h3>
+                <p className="text-3xl sm:text-4xl font-bold text-green-600 mb-3">{item.period}</p>
+                <p className="text-sm sm:text-base text-gray-600 leading-relaxed mb-4">{item.description}</p>
+                <Link
+                  to={item.href}
+                  className="inline-flex items-center text-sm font-semibold text-green-700 hover:text-green-800 transition-colors"
+                >
+                  Learn more
+                  <svg className="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
                   </svg>
-                </div>
-                <h3 className="text-lg sm:text-xl font-bold text-gray-900 mb-2 sm:mb-3">{item.title}</h3>
-                <p className="text-sm sm:text-base text-gray-600 leading-relaxed">{item.desc}</p>
-              </div>
+                </Link>
+              </article>
             ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Cities We Serve */}
+      <section className="py-12 sm:py-16 md:py-20 bg-gray-50" aria-labelledby="cities-heading">
+        <div className="container mx-auto px-4 sm:px-6">
+          <div className="max-w-3xl mx-auto text-center mb-8 sm:mb-12">
+            <h2 id="cities-heading" className="text-2xl sm:text-3xl md:text-4xl font-bold text-gray-900 mb-3 sm:mb-4">
+              Cities We Serve
+            </h2>
+            <p className="text-base sm:text-lg text-gray-600">
+              Professional pest control across Mumbai, Navi Mumbai, and nearby cities — same-day slots available in most areas.
+            </p>
+          </div>
+
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-5 sm:gap-6 max-w-4xl mx-auto mb-6 sm:mb-8">
+            {ABOUT_CITIES.map((city) => (
+              <Link
+                key={city.name}
+                to={city.href}
+                className="group rounded-2xl border border-gray-200 bg-white p-6 sm:p-8 shadow-sm hover:shadow-lg hover:border-green-200 transition-all"
+              >
+                <h3 className="text-xl sm:text-2xl font-bold text-gray-900 mb-2 group-hover:text-green-700 transition-colors">
+                  Pest Control {city.name}
+                </h3>
+                <p className="text-sm sm:text-base text-gray-600 leading-relaxed">{city.description}</p>
+                <span className="inline-flex items-center mt-4 text-sm font-semibold text-green-700">
+                  View {city.name} services
+                  <svg className="w-4 h-4 ml-1 group-hover:translate-x-0.5 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                  </svg>
+                </span>
+              </Link>
+            ))}
+          </div>
+
+          <div className="text-center">
+            <p className="text-sm text-gray-500 mb-3">Also serving</p>
+            <div className="flex flex-wrap justify-center gap-2 sm:gap-3">
+              {MORE_SERVICE_CITIES.map((city) => (
+                <Link
+                  key={city.name}
+                  to={city.href}
+                  className="inline-flex items-center rounded-full border border-gray-200 bg-white px-4 py-2 text-sm font-medium text-gray-800 hover:border-green-300 hover:text-green-700 transition-colors"
+                >
+                  {city.name}
+                </Link>
+              ))}
+            </div>
+            <p className="mt-5 text-sm text-gray-600">
+              <Link to="/contact/" className="font-semibold text-green-700 hover:text-green-800 underline-offset-2 hover:underline">
+                Read more
+              </Link>
+              {' '}about all service areas or call {BUSINESS.phoneDisplay} for your locality.
+            </p>
+          </div>
+        </div>
+      </section>
+
+      <TrustSection />
+
+      {/* CTA */}
+      <section className="py-12 sm:py-16 bg-white border-t border-gray-100">
+        <div className="container mx-auto px-4 sm:px-6 text-center">
+          <h2 className="text-2xl sm:text-3xl font-bold text-gray-900 mb-3">Ready for a Pest-Free Space?</h2>
+          <p className="text-gray-600 mb-6 max-w-xl mx-auto">
+            Get a free quote today — same-day inspection available across Mumbai and Navi Mumbai.
+          </p>
+          <div className="flex flex-col sm:flex-row gap-3 justify-center">
+            <Link to="/quote/" className="btn btn-cta btn-quote-rounded btn-quote-lg w-full sm:w-auto">
+              Get Free Quote
+            </Link>
+            <a
+              href={whatsAppUrl(DEFAULT_WHATSAPP_MESSAGE)}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex w-full sm:w-auto items-center justify-center px-6 py-3.5 text-base font-semibold text-gray-700 bg-white border border-gray-200 rounded-xl hover:bg-gray-50 hover:text-green-600 transition-colors"
+            >
+              WhatsApp Us
+            </a>
           </div>
         </div>
       </section>

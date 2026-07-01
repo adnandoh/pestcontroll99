@@ -22,6 +22,12 @@ const SITE = 'https://www.pestcontrol99.com';
 /** Zone-grouped links for the homepage "Areas We Serve" section */
 export const AREAS_WE_SERVE_ZONES: AreaZone[] = [
   {
+    zone: 'Mumbai',
+    areas: [
+      { label: 'Pest Control Mumbai', slug: 'mumbai' },
+    ],
+  },
+  {
     zone: 'Mumbai – Western Suburbs',
     areas: [
       { label: 'Pest Control Andheri', slug: 'andheri' },
