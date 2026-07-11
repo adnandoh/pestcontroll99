@@ -275,6 +275,44 @@ export default function AboutPage() {
         </div>
       </section>
 
+      {/* Our Features — from content doc */}
+      <section className="py-10 sm:py-12 bg-white border-b border-gray-100" aria-labelledby="our-features-heading">
+        <div className="container mx-auto px-4 sm:px-6">
+          <div className="max-w-3xl mx-auto text-center mb-8 sm:mb-10">
+            <h2 id="our-features-heading" className="text-2xl sm:text-3xl md:text-4xl font-bold text-gray-900 mb-3">
+              Our Features
+            </h2>
+          </div>
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-5 max-w-5xl mx-auto">
+            {[
+              { title: '365 Days Service', desc: 'Year-round pest protection and support whenever you need it.' },
+              { title: 'Herbal & Safe', desc: 'Government-approved herbal and lab-tested chemicals safe for families and pets.' },
+              { title: 'Same-Day Service', desc: 'Book before noon and our team reaches you the same day in most areas.' },
+              { title: 'No Hidden Charges', desc: 'Transparent, all-inclusive quotes with zero surprise fees.' },
+            ].map((item) => (
+              <article key={item.title} className="rounded-2xl border border-green-100 bg-green-50/40 p-5 sm:p-6 text-center">
+                <h3 className="text-lg font-bold text-gray-900 mb-2">{item.title}</h3>
+                <p className="text-sm text-gray-600 leading-relaxed">{item.desc}</p>
+              </article>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Mission — from content doc */}
+      <section className="py-10 sm:py-12 bg-gray-50" aria-labelledby="mission-heading">
+        <div className="container mx-auto px-4 sm:px-6">
+          <div className="max-w-3xl mx-auto text-center">
+            <h2 id="mission-heading" className="text-2xl sm:text-3xl md:text-4xl font-bold text-gray-900 mb-4">
+              Safeguard for your Homes, Communities, and Commercial Properties
+            </h2>
+            <p className="text-base sm:text-lg text-gray-600 leading-relaxed">
+              At {BUSINESS.brandName}, we&apos;re committed to creating safe and healthy spaces, whether it&apos;s a home or a business in Mumbai, Navi Mumbai, Pune, or Lonavala. We provide safe, efficient, and long-lasting pest control services to our customers.
+            </p>
+          </div>
+        </div>
+      </section>
+
       {/* What We Believe Section */}
       <section className="py-12 sm:py-16 md:py-20 bg-white">
         <div className="container mx-auto px-4 sm:px-6">
@@ -497,6 +535,46 @@ export default function AboutPage() {
               </Link>
               {' '}about all service areas or call {BUSINESS.phoneDisplay} for your locality.
             </p>
+          </div>
+        </div>
+      </section>
+
+      {/* FAQ — from content doc */}
+      <section className="py-12 sm:py-16 bg-white border-t border-gray-100" aria-labelledby="about-faq-heading">
+        <div className="container mx-auto px-4 sm:px-6 max-w-3xl">
+          <div className="text-center mb-8 sm:mb-10">
+            <h2 id="about-faq-heading" className="text-2xl sm:text-3xl md:text-4xl font-bold text-gray-900 mb-3">
+              Answers to All Your Questions
+            </h2>
+            <p className="text-base text-gray-600">Giving answers, building trust.</p>
+          </div>
+          <div className="space-y-3">
+            {[
+              {
+                q: 'Are pest control services necessary?',
+                a: 'Yes. There are many health risks associated with pest issues in homes and businesses. Pests not only damage property but also harm your reputation. Professional pest control is a necessary investment to keep your environment safe.',
+              },
+              {
+                q: 'What is the process of pest control inspection?',
+                a: 'A trained specialist conducts a full assessment of all accessible areas where existing or potential pest infestations may occur. They use expert devices to identify infestations. Based on the inspection, they provide expert recommendations and a treatment plan.',
+              },
+              {
+                q: 'What should be the frequency of pest control services?',
+                a: 'We normally recommend pest control services monthly or quarterly, depending on infestation levels. While spring and summer seasons often see higher pest activity, different pests have different peak seasons. Pest control is recommended when you see unwanted pests in your home or business.',
+              },
+              {
+                q: 'How can we prevent common pests naturally?',
+                a: 'Common pests like cockroaches, rodents, ants, and termites can be prevented by maintaining good personal hygiene, ensuring proper sanitation, and managing waste effectively. Sealing cracks is also crucial.',
+              },
+            ].map((item) => (
+              <details key={item.q} className="group bg-gray-50 rounded-xl border border-gray-200 overflow-hidden">
+                <summary className="cursor-pointer px-5 py-4 font-semibold text-gray-900 text-sm sm:text-base list-none flex items-center justify-between gap-4">
+                  {item.q}
+                  <span className="text-green-600 group-open:rotate-180 transition-transform">▾</span>
+                </summary>
+                <p className="px-5 pb-4 text-sm sm:text-base text-gray-600 leading-relaxed">{item.a}</p>
+              </details>
+            ))}
           </div>
         </div>
       </section>

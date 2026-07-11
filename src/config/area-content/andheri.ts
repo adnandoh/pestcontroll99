@@ -33,7 +33,7 @@ export const ANDHERI_AREA_CONTENT: AreaRichContent = {
     'Whether you manage an apartment, office, restaurant, warehouse or retail store across Andheri East and Andheri West — including Lokhandwala, Marol, SEEPZ and Versova — Pest Control 99 delivers same-day, warranty-backed pest control using CIB&RC-approved, family-safe treatments. Book a free inspection today and keep your property protected throughout the year.',
   phoneCta: '+91 80807 48282',
   keywords:
-    'best pest control services in Andheri, affordable pest control in Andheri, professional pest control services in Andheri, 24/7 pest control services in Andheri, cockroach control services in Andheri, termite treatment in Andheri, rodent control services in Andheri, mosquito control services in Andheri, residential pest control in Andheri, commercial pest control in Andheri, pest control company in Andheri, home pest control in Andheri',
+    'best pest control services in Andheri, affordable pest control in Andheri, professional pest control services in Andheri, reliable pest control services in Andheri, 24/7 pest control services in Andheri, cockroach control services in Andheri, termite treatment in Andheri, rodent control services in Andheri, mosquito control services in Andheri, residential pest control in Andheri, commercial pest control in Andheri, pest control company in Andheri, home pest control in Andheri',
   faq: [
     {
       id: 'cost',
