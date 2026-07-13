@@ -7,6 +7,7 @@ import { scrollToElement, scrollToTopInstant } from '@/utils/scroll';
 
 const HomePage = lazy(() => import('@/app/page'));
 const AboutPage = lazy(() => import('@/app/about/page'));
+const BrochurePage = lazy(() => import('@/app/brochure/page'));
 const BlogPage = lazy(() => import('@/app/blog/page'));
 const BlogPostPage = lazy(() => import('@/app/blog/[slug]/page'));
 const BlogCategoryPage = lazy(() => import('@/app/blog/category/[slug]/page'));
@@ -83,6 +84,7 @@ export default function App() {
           <Route element={<RootLayout />}>
             <Route index element={<HomePage />} />
             <Route path="about" element={<AboutPage />} />
+            <Route path="brochure" element={<BrochurePage />} />
             <Route path="blog" element={<BlogPage />} />
             <Route path="blog/category/:slug" element={<BlogCategoryPage />} />
             <Route path="blog/tag/:slug" element={<BlogTagPage />} />
