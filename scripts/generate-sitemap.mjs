@@ -31,6 +31,7 @@ const staticRoutes = [
   { path: '/pest-control-in-lonavala/', priority: '0.9', changefreq: 'weekly' },
   { path: '/about/', priority: '0.7', changefreq: 'monthly' },
   { path: '/brochure/', priority: '0.8', changefreq: 'monthly' },
+  { path: '/e-card/', priority: '0.7', changefreq: 'monthly' },
   { path: '/contact/', priority: '0.8', changefreq: 'monthly' },
   { path: '/quote/', priority: '0.9', changefreq: 'weekly' },
   { path: '/blog/', priority: '0.7', changefreq: 'weekly' },

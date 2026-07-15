@@ -13,6 +13,10 @@ export type BrochureRateSection = {
   title: string;
   subtitle?: string;
   warranty?: string;
+  /** Circular pest illustration shown at the top of the rate card */
+  icon?: string;
+  /** One-line "why this matters" hook under the card title */
+  tagline?: string;
   columns: RateColumn[];
   rows: RateRow[];
   note?: string;
@@ -40,6 +44,36 @@ export const BROCHURE_SERVICES = [
 
 function inr(amount: number): string {
   return amount > 0 ? `₹${amount.toLocaleString('en-IN')}` : 'On inspection';
+}
+
+/** Pest illustration + hook line per service category */
+const SECTION_META: Record<string, { icon: string; tagline: string }> = {
+  'general-pest': {
+    icon: '/images/Cockroach.webp',
+    tagline: 'Cockroaches contaminate kitchens and spread bacteria year-round',
+  },
+  'bed-bugs': {
+    icon: '/images/BedBug.webp',
+    tagline: 'Bed bugs multiply fast — professional treatment targets every life stage',
+  },
+  termite: {
+    icon: '/images/Termite.webp',
+    tagline: 'Termites silently destroy furniture and woodwork before you spot them',
+  },
+  mosquito: {
+    icon: '/images/Mosquito.webp',
+    tagline: 'Cut dengue, malaria & chikungunya risk at the breeding source',
+  },
+  rodent: {
+    icon: '/images/Rat.webp',
+    tagline: 'Rats damage wiring, stock and food supplies while spreading disease',
+  },
+};
+
+export function getSectionMeta(sectionId: string): { icon: string; tagline: string } | undefined {
+  if (sectionId.startsWith('general-pest')) return SECTION_META['general-pest'];
+  if (sectionId.startsWith('mosquito')) return SECTION_META.mosquito;
+  return SECTION_META[sectionId];
 }
 
 export const MUMBAI_RATE_SECTIONS: BrochureRateSection[] = [

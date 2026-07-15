@@ -239,13 +239,6 @@ export default function Header() {
               Blog
             </Link>
             <Link
-              to="/brochure"
-              className="nav-link text-[15px] py-2 px-3 rounded-md border border-green-200 bg-green-50/80 font-semibold text-green-800 hover:bg-green-100"
-              onMouseEnter={closeDesktopDropdowns}
-            >
-              Brochure
-            </Link>
-            <Link
               to="/contact"
               className="btn-cta nav-button font-semibold px-5 py-2.5 rounded-full text-[15px] whitespace-nowrap ml-1"
               onMouseEnter={closeDesktopDropdowns}
@@ -379,13 +372,6 @@ export default function Header() {
               onClick={closeMobileMenu}
             >
               Blog
-            </Link>
-            <Link
-              to="/brochure"
-              className="mobile-menu-item nav-link text-sm font-semibold py-1.5 px-2 rounded-md bg-green-50 text-green-800 hover:bg-green-100 transition-all duration-200"
-              onClick={closeMobileMenu}
-            >
-              Brochure &amp; Rates
             </Link>
 
             <div className="mobile-menu-item mobile-menu-cta-row">

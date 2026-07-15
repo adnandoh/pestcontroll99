@@ -107,7 +107,6 @@ export default function Footer() {
               <ul className="space-y-2.5 text-sm">
                 <li><Link to="/" className="footer-link hover:text-green-bright transition-colors">Home</Link></li>
                 <li><Link to="/about" className="footer-link hover:text-green-bright transition-colors">About Us</Link></li>
-                <li><Link to="/brochure" className="footer-link hover:text-green-bright transition-colors">Brochure &amp; Rates</Link></li>
                 <li><Link to="/services" className="footer-link hover:text-green-bright transition-colors">Services</Link></li>
                 <li><Link to="/quote" className="footer-link hover:text-green-bright transition-colors">Get Free Quote</Link></li>
                 <li><Link to="/contact" className="footer-link hover:text-green-bright transition-colors">Contact Us</Link></li>
