@@ -1,7 +1,7 @@
 import { FormEvent, useEffect, useMemo, useRef, useState } from 'react';
 import AppImage from '@/components/AppImage';
 import PageMeta from '@/components/PageMeta';
-import { BUSINESS, SITE_LOGO, whatsAppUrl } from '@/config/business';
+import { BUSINESS, whatsAppUrl } from '@/config/business';
 import {
   ECARD_ABOUT,
   ECARD_GALLERY,
@@ -245,30 +245,16 @@ export default function ECardPage() {
       />
 
       <div className="mx-auto max-w-[440px] bg-white shadow-[0_0_40px_rgba(17,28,78,0.08)] sm:my-0 sm:min-h-screen">
-        {/* Brand header */}
-        <header className="bg-navy-dark">
-          <div className="flex justify-center px-5 py-5">
-            <div className="inline-flex rounded-md bg-white px-4 py-2.5 shadow-sm">
-              <AppImage
-                src={SITE_LOGO.src}
-                alt={SITE_LOGO.alt}
-                width={220}
-                height={54}
-                priority
-                className="h-11 w-auto object-contain"
-              />
-            </div>
-          </div>
-          <div className="w-full overflow-hidden bg-white">
-            <AppImage
-              src="/images/ecard/banner-monsoon.webp"
-              alt="Don't let monsoon invite pests into your home — mosquitoes, cockroaches, termites & rodents"
-              width={1400}
-              height={746}
-              priority
-              className="h-auto w-full object-cover"
-            />
-          </div>
+        {/* Brand banner */}
+        <header className="w-full overflow-hidden bg-white">
+          <AppImage
+            src="/images/ecard/banner-brand.webp"
+            alt="PestControl99.com — Complete pest control. Safe. Effective. Reliable. Call 80807 48282"
+            width={1600}
+            height={640}
+            priority
+            className="h-auto w-full object-cover"
+          />
         </header>
 
         {/* Action buttons */}
