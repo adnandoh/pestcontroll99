@@ -68,6 +68,89 @@ export const ECARD_SERVICES: ECardService[] = [
   },
 ];
 
+export type ECardRateRow = {
+  property: string;
+  oneTime?: string;
+  amc?: string;
+  price?: string;
+};
+
+export type ECardRateSection = {
+  id: string;
+  title: string;
+  subtitle?: string;
+  badge?: string;
+  icon: string;
+  iconBg: string;
+  columns: { key: 'oneTime' | 'amc' | 'price'; label: string }[];
+  rows: ECardRateRow[];
+};
+
+function rs(amount: number): string {
+  return `₹${amount.toLocaleString('en-IN')}`;
+}
+
+/** Residential rate card — matches PestControl99_Rate_Card PDF */
+export const ECARD_RATE_SECTIONS: ECardRateSection[] = [
+  {
+    id: 'general-pest',
+    title: 'Cockroach & General Pest Control',
+    subtitle: 'Covers Cockroach, Ants, Spider, Silverfish & House Lizard',
+    icon: '/images/Cockroach.webp',
+    iconBg: 'bg-[#1E7E34]',
+    columns: [
+      { key: 'oneTime', label: 'One Time' },
+      { key: 'amc', label: 'AMC (3 Visits)' },
+    ],
+    rows: [
+      { property: '1 RK', oneTime: rs(1000), amc: rs(1800) },
+      { property: '1 BHK', oneTime: rs(1200), amc: rs(2200) },
+      { property: '2 BHK', oneTime: rs(1500), amc: rs(2500) },
+      { property: '3 BHK', oneTime: rs(1800), amc: rs(3000) },
+      { property: '4 BHK', oneTime: rs(2000), amc: rs(3500) },
+    ],
+  },
+  {
+    id: 'bed-bugs',
+    title: 'Bed Bugs Treatment',
+    badge: '2 Visits Included',
+    icon: '/images/BedBug.webp',
+    iconBg: 'bg-[#E11D48]',
+    columns: [{ key: 'price', label: 'Price' }],
+    rows: [
+      { property: '1 RK', price: rs(2000) },
+      { property: '1 BHK', price: rs(2500) },
+      { property: '2 BHK', price: rs(3000) },
+      { property: '3 BHK', price: rs(3500) },
+      { property: '4 BHK', price: rs(4000) },
+    ],
+  },
+  {
+    id: 'termite',
+    title: 'Termite Treatment',
+    badge: '2 Years Warranty',
+    icon: '/images/Termite.webp',
+    iconBg: 'bg-[#1B2A6B]',
+    columns: [{ key: 'price', label: 'Price' }],
+    rows: [
+      { property: '1 RK', price: rs(2000) },
+      { property: '1 BHK', price: rs(2500) },
+      { property: '2 BHK', price: rs(3000) },
+      { property: '3 BHK', price: rs(3500) },
+      { property: '4 BHK', price: rs(4000) },
+    ],
+  },
+];
+
+export const ECARD_OTHER_SERVICES = [
+  'Rodent Control',
+  'Mosquito Control',
+  'Society Pest Control',
+  'Hotel & Restaurant',
+  'Office',
+  'Warehouse & Factory',
+] as const;
+
 export const ECARD_GALLERY = [
   {
     src: '/images/ecard/gallery-monsoon-kitchen.webp',

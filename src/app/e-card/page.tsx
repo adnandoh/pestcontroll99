@@ -5,11 +5,14 @@ import { BUSINESS, whatsAppUrl } from '@/config/business';
 import {
   ECARD_ABOUT,
   ECARD_GALLERY,
+  ECARD_OTHER_SERVICES,
+  ECARD_RATE_SECTIONS,
   ECARD_SERVICES,
   ECARD_SOCIAL,
   ECARD_URL,
   buildECardVcf,
   type ECardService,
+  type ECardRateSection,
 } from '@/config/eCard';
 import { submitContactForm } from '@/services/formSubmit';
 
@@ -97,6 +100,102 @@ function IconContact({ className = 'h-5 w-5' }: { className?: string }) {
         d="M15 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm-9-2V7H4v3H1v2h3v3h2v-3h3v-2H6zm9 4c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"
       />
     </svg>
+  );
+}
+
+function IconRates({ className = 'h-5 w-5' }: { className?: string }) {
+  return (
+    <svg className={className} viewBox="0 0 24 24" aria-hidden>
+      <path
+        fill="#FFFFFF"
+        d="M7 15h2v2H7v-2zm0-4h2v2H7v-2zm4 4h6v2h-6v-2zm0-4h6v2h-6v-2zM3 5v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2H5c-1.1 0-2 .9-2 2zm16 14H5V5h14v14z"
+      />
+    </svg>
+  );
+}
+
+const POPULAR_BHK = '2 BHK';
+
+function RateSectionCard({ section }: { section: ECardRateSection }) {
+  const dualColumn = section.columns.length > 1;
+
+  return (
+    <article className="overflow-hidden rounded-lg border border-gray-200 bg-white">
+      <div className="flex items-start gap-3 border-b border-gray-100 bg-gradient-to-r from-navy-pale/60 to-white px-3.5 py-3">
+        <span
+          className={`flex h-10 w-10 shrink-0 items-center justify-center overflow-hidden rounded-full shadow-sm ${section.iconBg}`}
+        >
+          <AppImage
+            src={section.icon}
+            alt=""
+            width={36}
+            height={36}
+            className="h-8 w-8 object-contain"
+          />
+        </span>
+        <div className="min-w-0 flex-1">
+          <h3 className="text-sm font-bold leading-snug text-navy-dark">{section.title}</h3>
+          {section.subtitle && (
+            <p className="mt-0.5 text-[11px] leading-relaxed text-gray-600">{section.subtitle}</p>
+          )}
+          {section.badge && (
+            <span className="mt-1.5 inline-flex rounded-sm bg-green-100 px-2 py-0.5 text-[10px] font-bold uppercase tracking-wide text-green-800">
+              {section.badge}
+            </span>
+          )}
+        </div>
+      </div>
+
+      {dualColumn && (
+        <div className="grid grid-cols-[1fr_1fr_1fr] gap-2 border-b border-gray-100 bg-gray-50 px-3.5 py-2 text-[10px] font-bold uppercase tracking-wide text-gray-500">
+          <span>Property</span>
+          {section.columns.map((col) => (
+            <span key={col.key} className="text-right">
+              {col.label}
+            </span>
+          ))}
+        </div>
+      )}
+
+      <ul className="divide-y divide-gray-50">
+        {section.rows.map((row, idx) => {
+          const isPopular = row.property === POPULAR_BHK;
+          return (
+            <li
+              key={`${section.id}-${row.property}`}
+              className={`px-3.5 py-2.5 ${idx % 2 === 0 ? 'bg-white' : 'bg-slate-50/70'} ${isPopular ? 'border-l-[3px] border-l-green-600' : ''}`}
+            >
+              {dualColumn ? (
+                <div className="grid grid-cols-[1fr_1fr_1fr] items-center gap-2">
+                  <span className="flex items-center gap-1.5">
+                    <span className="inline-flex rounded-full bg-navy-pale px-2 py-0.5 text-[11px] font-bold text-navy-dark">
+                      {row.property}
+                    </span>
+                    {isPopular && (
+                      <span className="text-[9px] font-bold uppercase text-amber-600">Popular</span>
+                    )}
+                  </span>
+                  <span className="text-right text-sm font-bold text-green-700">{row.oneTime}</span>
+                  <span className="text-right text-sm font-bold text-navy-dark">{row.amc}</span>
+                </div>
+              ) : (
+                <div className="flex items-center justify-between gap-3">
+                  <span className="flex items-center gap-1.5">
+                    <span className="inline-flex rounded-full bg-navy-pale px-2.5 py-0.5 text-[11px] font-bold text-navy-dark">
+                      {row.property}
+                    </span>
+                    {isPopular && (
+                      <span className="text-[9px] font-bold uppercase text-amber-600">Popular</span>
+                    )}
+                  </span>
+                  <span className="text-base font-bold text-green-700">{row.price}</span>
+                </div>
+              )}
+            </li>
+          );
+        })}
+      </ul>
+    </article>
   );
 }
 
@@ -366,6 +465,52 @@ export default function ECardPage() {
                   d="M23.498 6.186a3.016 3.016 0 00-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 00.502 6.186 31.247 31.247 0 000 12.017a31.25 31.25 0 00.502 5.831 3.016 3.016 0 002.121 2.136c1.871.505 9.377.505 9.377.505s7.505 0 9.377-.505a3.015 3.015 0 002.122-2.136A31.25 31.25 0 0024 12.017a31.247 31.247 0 00-.502-5.831zM9.545 15.568V8.466l6.273 3.551-6.273 3.551z"
                 />
               </svg>
+            </a>
+          </div>
+        </section>
+
+        {/* Rate Card */}
+        <section className="border-b border-gray-100 px-5 py-5">
+          <div className="flex items-center gap-3 pb-4">
+            <span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full bg-[#F59E0B] shadow-sm">
+              <IconRates className="h-[22px] w-[22px]" />
+            </span>
+            <div>
+              <h2 className="text-lg font-bold uppercase tracking-wide text-navy-dark !text-[1.15rem]">
+                Rate Card
+              </h2>
+              <p className="text-[11px] text-gray-500">Official residential rates · Mumbai region</p>
+            </div>
+          </div>
+
+          <div className="space-y-4">
+            {ECARD_RATE_SECTIONS.map((section) => (
+              <RateSectionCard key={section.id} section={section} />
+            ))}
+          </div>
+
+          <div className="mt-4 rounded-lg border border-dashed border-gray-300 bg-slate-50 px-3.5 py-3">
+            <p className="text-[11px] font-bold uppercase tracking-wide text-gray-500">Other Services</p>
+            <div className="mt-2 flex flex-wrap gap-1.5">
+              {ECARD_OTHER_SERVICES.map((item) => (
+                <span
+                  key={item}
+                  className="rounded-full border border-gray-200 bg-white px-2.5 py-1 text-[11px] font-medium text-navy-dark"
+                >
+                  {item}
+                </span>
+              ))}
+            </div>
+            <p className="mt-3 text-xs leading-relaxed text-gray-600">
+              Free inspection &amp; custom quotation for commercial, society &amp; large properties.
+            </p>
+            <a
+              href={whatsAppUrl('Hi, I need a rate quote from your rate card.')}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="mt-3 inline-flex items-center gap-1.5 text-xs font-bold text-green-700 hover:text-green-dark"
+            >
+              Get a quote on WhatsApp →
             </a>
           </div>
         </section>
