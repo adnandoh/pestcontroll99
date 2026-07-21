@@ -7,6 +7,7 @@ export type AreaRichContent = {
   heroImageAlt: string;
   introParagraphs: string[];
   servicesOffered: string[];
+  serviceDescriptions?: Record<string, string>;
   commitmentParagraph: string;
   closingParagraph: string;
   phoneCta: string;

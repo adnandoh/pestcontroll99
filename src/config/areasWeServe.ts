@@ -176,17 +176,30 @@ export function getAreaMetaDescription(areaName: string): string {
 }
 
 export function getAreaLocalBusinessSchema(area: ServiceArea) {
+  const address =
+    area.slug === 'pune'
+      ? {
+          streetAddress: 'Office No. 6, 1st Floor, Graficon Arcade, Sassoon Road, Opp. Ruby Hall Clinic, Near Jehangir Hospital',
+          addressLocality: 'Pune',
+          addressRegion: 'Maharashtra',
+          postalCode: '411001',
+          addressCountry: 'IN',
+        }
+      : {
+          streetAddress: '503 Sai Rushabh CHS Ltd, Geeta Nagar Phase 1, Mira Road',
+          addressLocality: 'Thane',
+          addressRegion: 'Maharashtra',
+          postalCode: '401107',
+          addressCountry: 'IN',
+        };
+
   return {
     '@context': 'https://schema.org',
     '@type': 'LocalBusiness',
     name: 'Pest Control 99',
     address: {
       '@type': 'PostalAddress',
-      streetAddress: '503 Sai Rushabh CHS Ltd, Geeta Nagar Phase 1, Mira Road',
-      addressLocality: 'Thane',
-      addressRegion: 'Maharashtra',
-      postalCode: '401107',
-      addressCountry: 'IN',
+      ...address,
     },
     areaServed: `${area.name}, Maharashtra`,
     telephone: '+918080748282',

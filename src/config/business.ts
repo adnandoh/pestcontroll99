@@ -53,8 +53,8 @@ export const OFFICE_LOCATIONS = [
     full: 'William Industry Estate, Office No. 19, 2nd Floor, SG Barve Marg, Above Sheetal Mithaiwala, Kurla West, Mumbai, Maharashtra 400070',
   },
   {
-    label: 'Pune — Hadapsar',
-    full: '114, Bhaskar Colony, Near Krome Mall, Next to Vijay Sales, Solapur Road, Hadapsar, Pune, Maharashtra 411013',
+    label: 'Pune — Sassoon Road',
+    full: 'Office No. 6, 1st Floor, Graficon Arcade, Sassoon Road, Opp. Ruby Hall Clinic, Near Jehangir Hospital, Pune, Maharashtra 411001',
   },
 ] as const;
 

@@ -131,7 +131,13 @@ export default function AreaPageTemplate({ area }: AreaPageTemplateProps) {
   const phoneCta = richContent?.phoneCta ?? BUSINESS.phoneDisplay;
   const { ratingValue, reviewCount } = BUSINESS.aggregateRating;
 
-  const serviceCards = (richContent?.servicesOffered ?? AREA_PAGE_SERVICES.map((s) => s.label)).map(getServiceCard);
+  const serviceCards = (richContent?.servicesOffered ?? AREA_PAGE_SERVICES.map((s) => s.label)).map((label) => {
+    const service = getServiceCard(label);
+    return {
+      ...service,
+      blurb: richContent?.serviceDescriptions?.[label] ?? service.blurb,
+    };
+  });
 
   const trustBadges = ['Same-Day Service', '365-Day Warranty', 'CIB&RC-Approved', `${ratingValue}★ (${reviewCount}+ reviews)`];
 
