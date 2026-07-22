@@ -29,6 +29,7 @@ const staticRoutes = [
   { path: '/services/honey-bee-pest-control/', priority: '0.8', changefreq: 'monthly' },
   { path: '/services/wood-borer-control/', priority: '0.8', changefreq: 'monthly' },
   { path: '/pest-control-in-lonavala/', priority: '0.9', changefreq: 'weekly' },
+  { path: '/monsoon-pest-control-pune/', priority: '0.9', changefreq: 'weekly' },
   { path: '/about/', priority: '0.7', changefreq: 'monthly' },
   { path: '/brochure/', priority: '0.8', changefreq: 'monthly' },
   { path: '/e-card/', priority: '0.7', changefreq: 'monthly' },

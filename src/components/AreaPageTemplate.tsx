@@ -22,6 +22,10 @@ import { BUSINESS, whatsAppUrl } from '@/config/business';
 
 type AreaPageTemplateProps = {
   area: ServiceArea;
+  /** Load rich content from a slug other than `area.slug` (e.g. monsoon landing on Pune). */
+  contentSlug?: string;
+  /** Override canonical path when the page URL differs from `/pest-control-{slug}/`. */
+  canonicalPath?: string;
 };
 
 const DEFAULT_HERO = '/images/heroimage.webp';
@@ -112,8 +116,8 @@ const PROCESS: { step: string; title: string; desc: string }[] = [
   { step: '4', title: 'Follow-Up', desc: 'We check back and re-treat free under warranty if pests return.' },
 ];
 
-export default function AreaPageTemplate({ area }: AreaPageTemplateProps) {
-  const richContent = getAreaRichContent(area.slug);
+export default function AreaPageTemplate({ area, contentSlug, canonicalPath }: AreaPageTemplateProps) {
+  const richContent = getAreaRichContent(contentSlug ?? area.slug);
   const faqItems = richContent?.faq ?? getAreaFaqItems(area.name);
   const nearbyAreas = area.nearbySlugs
     .map((slug) => getAreaBySlug(slug))
@@ -129,6 +133,8 @@ export default function AreaPageTemplate({ area }: AreaPageTemplateProps) {
     richContent?.heroSubtitle ??
     `Same-day, warranty-backed pest control across ${area.name} and ${area.zone}.`;
   const phoneCta = richContent?.phoneCta ?? BUSINESS.phoneDisplay;
+  const displayName = richContent?.breadcrumbLabel ?? area.name;
+  const faqLabel = richContent?.faqAreaLabel ?? area.name;
   const { ratingValue, reviewCount } = BUSINESS.aggregateRating;
 
   const serviceCards = (richContent?.servicesOffered ?? AREA_PAGE_SERVICES.map((s) => s.label)).map((label) => {
@@ -144,7 +150,11 @@ export default function AreaPageTemplate({ area }: AreaPageTemplateProps) {
   // Lonavala has a dedicated Ads landing at /pest-control-in-lonavala/ — avoid duplicate indexing.
   const lonavalaLandingCanonical = 'https://www.pestcontrol99.com/pest-control-in-lonavala/';
   const isLonavalaAreaPage = area.slug === 'lonavala';
-  const pageCanonical = isLonavalaAreaPage ? lonavalaLandingCanonical : getAreaCanonical(area.slug);
+  const pageCanonical = canonicalPath
+    ? `https://www.pestcontrol99.com${canonicalPath}`
+    : isLonavalaAreaPage
+      ? lonavalaLandingCanonical
+      : getAreaCanonical(area.slug);
 
   return (
     <div className="bg-white">
@@ -162,7 +172,7 @@ export default function AreaPageTemplate({ area }: AreaPageTemplateProps) {
       <Breadcrumb
         items={[
           { label: 'Areas We Serve', href: '/#areas-we-serve' },
-          { label: area.name },
+          { label: displayName },
         ]}
       />
 
@@ -177,7 +187,7 @@ export default function AreaPageTemplate({ area }: AreaPageTemplateProps) {
             <div>
               <span className="inline-flex items-center gap-2 rounded-full bg-green-100 text-green-800 px-4 py-1.5 text-sm font-semibold">
                 <span className="w-2 h-2 rounded-full bg-green-500" />
-                Pest Control in {area.name}
+                {richContent?.heroBadge ?? `Pest Control in ${area.name}`}
               </span>
 
               <h1 className="mt-5 text-3xl sm:text-4xl lg:text-5xl font-extrabold text-gray-900 leading-tight">
@@ -249,7 +259,7 @@ export default function AreaPageTemplate({ area }: AreaPageTemplateProps) {
       <section className="py-12 sm:py-16">
         <div className="container mx-auto px-4 sm:px-6 max-w-3xl">
           <h2 className="text-2xl sm:text-3xl font-bold text-gray-900 mb-6">
-            Trusted Pest Control in {area.name}
+            {richContent?.introHeading ?? `Trusted Pest Control in ${area.name}`}
           </h2>
           <div className="space-y-5 text-gray-700 text-base sm:text-lg leading-relaxed">
             {richContent ? (
@@ -278,10 +288,11 @@ export default function AreaPageTemplate({ area }: AreaPageTemplateProps) {
         <div className="container mx-auto px-4 sm:px-6">
           <div className="text-center max-w-2xl mx-auto mb-10">
             <h2 id="area-services-heading" className="text-2xl sm:text-3xl font-bold text-gray-900">
-              Pest Control Services in {area.name}
+              {richContent?.servicesHeading ?? `Pest Control Services in ${area.name}`}
             </h2>
             <p className="mt-3 text-gray-600">
-              Complete protection for homes, offices and commercial spaces — all backed by warranty.
+              {richContent?.servicesSubheading ??
+                'Complete protection for homes, offices and commercial spaces — all backed by warranty.'}
             </p>
           </div>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5 max-w-5xl mx-auto">
@@ -376,7 +387,7 @@ export default function AreaPageTemplate({ area }: AreaPageTemplateProps) {
       />
 
       {/* ===================== FAQ ===================== */}
-      <AreaPageFAQ areaName={area.name} items={faqItems} />
+      <AreaPageFAQ areaName={faqLabel} items={faqItems} />
 
       {/* ===================== NEARBY AREAS ===================== */}
       {nearbyAreas.length > 0 && (

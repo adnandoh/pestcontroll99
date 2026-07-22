@@ -10,6 +10,7 @@ import { BADLAPUR_AREA_CONTENT } from './badlapur';
 import { BANDRA_AREA_CONTENT } from './bandra';
 import { VASHI_AREA_CONTENT } from './vashi';
 import { PUNE_AREA_CONTENT } from './pune';
+import { MONSOON_PEST_CONTROL_PUNE_CONTENT } from './monsoon-pest-control-pune';
 
 const AREA_CONTENT_REGISTRY: Record<string, AreaRichContent> = {
   andheri: ANDHERI_AREA_CONTENT,
@@ -22,6 +23,7 @@ const AREA_CONTENT_REGISTRY: Record<string, AreaRichContent> = {
   bandra: BANDRA_AREA_CONTENT,
   vashi: VASHI_AREA_CONTENT,
   pune: PUNE_AREA_CONTENT,
+  'monsoon-pest-control-pune': MONSOON_PEST_CONTROL_PUNE_CONTENT,
 };
 
 /** Slugs that should appear in sitemap.xml (add slug in indexed-slugs.json when content goes live) */

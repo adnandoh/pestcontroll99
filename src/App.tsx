@@ -34,6 +34,7 @@ const DeleteAccountPage = lazy(() => import('@/app/delete-account/page'));
 const TestPage = lazy(() => import('@/app/test/page'));
 const ThankYouPage = lazy(() => import('@/app/thank-you/page'));
 const LonavalaLandingPage = lazy(() => import('@/app/pest-control-in-lonavala/page'));
+const MonsoonPestControlPunePage = lazy(() => import('@/app/monsoon-pest-control-pune/page'));
 const LonavalaThankYouPage = lazy(() => import('@/app/lonavala-thank-you/page'));
 const AreaPage = lazy(() => import('@/app/area/page'));
 
@@ -115,6 +116,7 @@ export default function App() {
             <Route path="test" element={<TestPage />} />
             <Route path="thank-you" element={<ThankYouPage />} />
             <Route path="pest-control-in-lonavala" element={<LonavalaLandingPage />} />
+            <Route path="monsoon-pest-control-pune" element={<MonsoonPestControlPunePage />} />
             <Route path="lonavala-thank-you" element={<LonavalaThankYouPage />} />
             {ALL_AREA_SLUGS.map((slug) => (
               <Route key={slug} path={`pest-control-${slug}`} element={<AreaPage slug={slug} />} />

@@ -5,6 +5,14 @@ export type AreaRichContent = {
   heroSubtitle: string;
   heroImage: string;
   heroImageAlt: string;
+  /** Overrides the default “Pest Control in {area}” pill above the H1. */
+  heroBadge?: string;
+  /** Overrides default section H2s for landing pages with a distinct topic (e.g. monsoon). */
+  introHeading?: string;
+  servicesHeading?: string;
+  servicesSubheading?: string;
+  breadcrumbLabel?: string;
+  faqAreaLabel?: string;
   introParagraphs: string[];
   servicesOffered: string[];
   serviceDescriptions?: Record<string, string>;

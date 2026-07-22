@@ -127,6 +127,7 @@ const ROUTES = [
   { path: '/quote/', title: 'Get a Free Pest Control Quote | Instant Price Estimate', description: 'Get an instant pest control price estimate for your home or office in Mumbai, Thane & Navi Mumbai. Same-day service, no hidden charges. Book your free quote now.' },
   { path: '/blog/', title: 'Pest Control Blog | Tips & Guides | Pest Control 99', description: 'Pest control tips, guides & seasonal advice for Mumbai, Navi Mumbai, Thane & Pune. Expert articles on cockroach, termite, monsoon pests & more. Read free.' },
   { path: '/pest-control-in-lonavala/', title: 'Monsoon Pest Control in Lonavala | Same-Day Service | Pest Control 99', description: 'Trusted pest control for villas, resorts & homestays in Lonavala. Cockroach, mosquito, termite & rodent treatment. Same-day, herbal, warranty-backed. Call +91 80807 48282.', image: `${BASE}/images/pest-control-lonavala.webp` },
+  { path: '/monsoon-pest-control-pune/', title: 'Reliable Monsoon Pest Control Services in Pune | Pest Control 99', description: 'Reliable monsoon pest control in Pune for homes and businesses. Safe cockroach, mosquito fogging, termite, rodent and bed bug treatments with same-day service and 24/7 support.', keywords: 'pest control services in Pune, monsoon pest control in Pune, best pest control service in Pune, cockroach control in Pune, mosquito control and fogging in Pune, termite treatment in Pune, bed bug treatment in Pune, residential and commercial pest control Pune, emergency pest control Pune', image: `${BASE}/images/heroimage.webp` },
   { path: '/pest-control-andheri/', title: 'Professional Pest Control Services in Andheri | Pest Control 99', description: 'Professional pest control in Andheri for homes, offices & shops. Same-day cockroach, termite & rodent treatment with warranty. Call +91 80807 48282.', image: `${BASE}/images/heroimage.webp` },
   { path: '/privacy-policy/', title: 'Privacy Policy | Pest Control 99', description: 'How Pest Control 99 (Multi Pest Care LLP) collects, uses, and protects your personal data.' },
   { path: '/terms-and-conditions/', title: 'Terms & Conditions | Pest Control 99', description: 'Terms and conditions for pest control services provided by Pest Control 99 (Multi Pest Care LLP).' },
@@ -180,6 +181,8 @@ function buildHtml(template, route) {
   let html = template;
   html = setTitle(html, route.title);
   html = setMeta(html, 'name', 'description', route.description);
+  if (route.keywords) html = setMeta(html, 'name', 'keywords', route.keywords);
+  html = setMeta(html, 'name', 'robots', 'index, follow');
   html = setMeta(html, 'property', 'og:title', route.title);
   html = setMeta(html, 'property', 'og:description', route.description);
   html = setMeta(html, 'property', 'og:url', canonical);
