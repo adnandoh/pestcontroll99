@@ -15,6 +15,7 @@ import {
   type ECardRateSection,
 } from '@/config/eCard';
 import { submitContactForm } from '@/services/formSubmit';
+import { trackECardVisit } from '@/lib/api';
 
 function downloadBlob(filename: string, blob: Blob) {
   const url = URL.createObjectURL(blob);
@@ -208,6 +209,12 @@ export default function ECardPage() {
   const [submitting, setSubmitting] = useState(false);
   const [formError, setFormError] = useState('');
   const [formSuccess, setFormSuccess] = useState(false);
+
+  useEffect(() => {
+    // Async background tracking — does not block paint or interactions
+    const t = window.setTimeout(() => trackECardVisit(), 0);
+    return () => window.clearTimeout(t);
+  }, []);
 
   useEffect(() => {
     if (!lightbox) return;

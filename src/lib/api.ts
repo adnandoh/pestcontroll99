@@ -82,3 +82,37 @@ export async function trackView(slug: string) {
     body: JSON.stringify({ slug }),
   });
 }
+
+/** Fire-and-forget E-Card visit tracking — never blocks UI. */
+export function trackECardVisit(): void {
+  try {
+    const params = new URLSearchParams(window.location.search);
+    const payload = {
+      referrer: document.referrer || '',
+      landing_url: window.location.href,
+      utm_source: params.get('utm_source') || '',
+      user_agent: navigator.userAgent || '',
+    };
+    const body = JSON.stringify(payload);
+    const url = apiUrl('/api/e-card/track/');
+
+    if (typeof navigator !== 'undefined' && typeof navigator.sendBeacon === 'function') {
+      const blob = new Blob([body], { type: 'application/json' });
+      const ok = navigator.sendBeacon(url, blob);
+      if (ok) return;
+    }
+
+    void fetch(url, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body,
+      keepalive: true,
+      mode: 'cors',
+      credentials: 'omit',
+    }).catch(() => {
+      /* ignore — tracking must not affect the page */
+    });
+  } catch {
+    /* ignore */
+  }
+}
