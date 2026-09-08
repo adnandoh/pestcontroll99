@@ -31,6 +31,13 @@ const BUSINESS = {
   rating: { ratingValue: '4.8', reviewCount: '150' },
 };
 
+/* Official social profiles (mirror of SOCIAL_LINKS in src/config/business.ts) */
+const SOCIAL_URLS = [
+  'https://www.youtube.com/@pestcontrol-99',
+  'https://www.instagram.com/pestcontrol_99/',
+  'https://www.facebook.com/pestcontrol99IN/',
+];
+
 /* ---------- Shared schema graph (mirror of utils/structuredData.ts) ---------- */
 function baseGraph() {
   return [
@@ -46,7 +53,7 @@ function baseGraph() {
       telephone: BUSINESS.phoneTel,
       logo: `${BASE}/android-chrome-512x512.png`,
       parentOrganization: { '@type': 'Organization', name: BUSINESS.legalName },
-      sameAs: [BASE],
+      sameAs: [BASE, ...SOCIAL_URLS],
     },
     {
       '@context': 'https://schema.org',
@@ -71,6 +78,7 @@ function baseGraph() {
       areaServed: BUSINESS.serviceAreas.map((name) => ({ '@type': 'City', name })),
       aggregateRating: { '@type': 'AggregateRating', ratingValue: BUSINESS.rating.ratingValue, reviewCount: BUSINESS.rating.reviewCount, bestRating: '5', worstRating: '1' },
       priceRange: '₹₹',
+      sameAs: [BASE, ...SOCIAL_URLS],
     },
     {
       '@context': 'https://schema.org',

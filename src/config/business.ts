@@ -38,6 +38,30 @@ export const BUSINESS = {
   },
 } as const;
 
+/**
+ * Official social profiles — footer, e-card, and schema.org `sameAs`.
+ * The YouTube handle is `@pestcontrol-99`; `@pestcontrol99` is another company.
+ */
+export const SOCIAL_LINKS = [
+  {
+    key: 'youtube',
+    label: 'YouTube',
+    url: 'https://www.youtube.com/@pestcontrol-99',
+  },
+  {
+    key: 'instagram',
+    label: 'Instagram',
+    url: 'https://www.instagram.com/pestcontrol_99/',
+  },
+  {
+    key: 'facebook',
+    label: 'Facebook',
+    url: 'https://www.facebook.com/pestcontrol99IN/',
+  },
+] as const;
+
+export const SOCIAL_URLS = SOCIAL_LINKS.map((profile) => profile.url);
+
 /** Physical office locations — shown in footer and contact page. */
 export const OFFICE_LOCATIONS = [
   {

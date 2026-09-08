@@ -1,4 +1,4 @@
-import { BUSINESS, SITE_LOGO } from '@/config/business';
+import { BUSINESS, SITE_LOGO, SOCIAL_URLS } from '@/config/business';
 
 export function getOrganizationSchema() {
   return {
@@ -16,7 +16,7 @@ export function getOrganizationSchema() {
       '@type': 'Organization',
       name: BUSINESS.legalName,
     },
-    sameAs: [BUSINESS.website],
+    sameAs: [BUSINESS.website, ...SOCIAL_URLS],
   };
 }
 
@@ -58,6 +58,7 @@ export function getLocalBusinessSchema() {
       worstRating: '1',
     },
     priceRange: '₹₹',
+    sameAs: [BUSINESS.website, ...SOCIAL_URLS],
   };
 }
 

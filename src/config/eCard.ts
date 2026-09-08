@@ -1,11 +1,14 @@
-import { BUSINESS } from '@/config/business';
+import { BUSINESS, SOCIAL_LINKS } from '@/config/business';
 
 export const ECARD_URL = `${BUSINESS.website}/e-card/`;
 
+const socialUrl = (key: (typeof SOCIAL_LINKS)[number]['key']) =>
+  SOCIAL_LINKS.find((profile) => profile.key === key)!.url;
+
 export const ECARD_SOCIAL = {
-  facebook: 'https://www.facebook.com/pestcontrol99IN',
-  instagram: 'https://www.instagram.com/pestcontrol_99/',
-  youtube: 'https://www.youtube.com/@pestcontrol99',
+  facebook: socialUrl('facebook'),
+  instagram: socialUrl('instagram'),
+  youtube: socialUrl('youtube'),
 } as const;
 
 export const ECARD_ABOUT =
