@@ -86,22 +86,6 @@ export default function Header() {
 
   return (
     <div className="sticky top-0 z-50">
-      {/* Top promo bar */}
-      <div className="bg-navy-dark text-white border-b border-white/10">
-        <div className="container mx-auto px-4 sm:px-6 py-2">
-          <ul className="flex flex-wrap items-center justify-center sm:justify-start gap-x-5 sm:gap-x-8 gap-y-1 text-xs sm:text-sm font-medium">
-            <li className="flex items-center gap-2">
-              <span className="inline-block h-1.5 w-1.5 shrink-0 rounded-sm bg-green-bright" aria-hidden="true" />
-              Free Inspections &amp; Estimates
-            </li>
-            <li className="flex items-center gap-2">
-              <span className="inline-block h-1.5 w-1.5 shrink-0 rounded-sm bg-green-bright" aria-hidden="true" />
-              Same Day Service
-            </li>
-          </ul>
-        </div>
-      </div>
-
       <header
         className="site-header bg-white border-b border-divider shadow-sm"
         ref={menuRef}
