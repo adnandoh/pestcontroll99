@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 import { saveFormData, HomeFormData, decodeFormDataFromURL, getFormData, clearFormData } from '@/utils/formStorage';
 import { submitHomeQuoteForm } from '@/services/formSubmit';
@@ -6,6 +6,42 @@ import MultiSelectPest from './MultiSelectPest';
 import { AddressInput } from './GoogleMaps';
 import { CommercialIcon, ResidentialIcon } from './icons/PremiseTypeIcons';
 import IndiaFlagIcon from './icons/IndiaFlagIcon';
+
+/** Display-only list markup when rate card has no separate MRP (matches ~30% Save badge). */
+const QUOTE_DISPLAY_DISCOUNT = 0.3;
+
+const PREMISE_SIZE_OPTIONS = [
+  { value: '1rk', label: '1 RK' },
+  { value: '1bhk', label: '1 BHK' },
+  { value: '2bhk', label: '2 BHK' },
+  { value: '3bhk', label: '3 BHK' },
+  { value: '4bhk', label: '4 BHK' },
+  { value: '5bhk', label: '5 BHK' },
+] as const;
+
+function formatInr(amount: number): string {
+  return `₹ ${amount.toLocaleString('en-IN', {
+    minimumFractionDigits: 2,
+    maximumFractionDigits: 2,
+  })}`;
+}
+
+/** Sale = computed quote (excl. GST). MRP derived only when sale > 0 for promo strikethrough. */
+function getQuotePriceParts(sale: number): {
+  sale: number;
+  mrp: number | null;
+  savePercent: number | null;
+} {
+  if (!sale || sale <= 0) {
+    return { sale: 0, mrp: null, savePercent: null };
+  }
+  const mrp = Math.round(sale / (1 - QUOTE_DISPLAY_DISCOUNT));
+  if (mrp <= sale) {
+    return { sale, mrp: null, savePercent: null };
+  }
+  const savePercent = Math.round(((mrp - sale) / mrp) * 100);
+  return { sale, mrp, savePercent };
+}
 
 type HomeQuoteFormProps = {
   /** Tighter layout (~30% less vertical footprint) for home hero pairing */
@@ -31,13 +67,13 @@ export default function HomeQuoteForm({
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
   const [formData, setFormData] = useState<HomeFormData>({
-    pestTypes: [],
+    pestTypes: ['cockroach-ants'],
     phone: '',
     address: '',
     streetAddress: '',
     name: '',
     premiseType: 'residential',
-    premiseSize: '1bhk',
+    premiseSize: '',
     serviceType: 'one-time',
     estimatedPrice: 0
   });
@@ -69,17 +105,41 @@ export default function HomeQuoteForm({
   const [errors, setErrors] = useState<Record<string, string>>({});
   const [showSuccessPopup, setShowSuccessPopup] = useState(false);
   const [submitMessage, setSubmitMessage] = useState('');
+  const [premiseSizeOpen, setPremiseSizeOpen] = useState(false);
+  const premiseSizeRef = useRef<HTMLDivElement>(null);
 
-  // Rate card data
+  const priceParts = getQuotePriceParts(formData.estimatedPrice || 0);
+  const selectedPremiseSize = PREMISE_SIZE_OPTIONS.find((o) => o.value === formData.premiseSize);
+
+  useEffect(() => {
+    if (!premiseSizeOpen) return;
+    const onPointerDown = (e: MouseEvent) => {
+      if (premiseSizeRef.current && !premiseSizeRef.current.contains(e.target as Node)) {
+        setPremiseSizeOpen(false);
+      }
+    };
+    const onKeyDown = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') setPremiseSizeOpen(false);
+    };
+    document.addEventListener('mousedown', onPointerDown);
+    document.addEventListener('keydown', onKeyDown);
+    return () => {
+      document.removeEventListener('mousedown', onPointerDown);
+      document.removeEventListener('keydown', onKeyDown);
+    };
+  }, [premiseSizeOpen]);
+
+  // Rate card data (amounts excluding GST — no GST is applied in calculatePrice).
+  // 5bhk amounts from rate_chart_2026.csv (excl. GST `amount`); 1rk–4bhk keep existing quote form rates.
   const RATES: any = {
     'cockroach-ants': {
-      'amc': { '1rk': 1800, '1bhk': 2200, '2bhk': 2500, '3bhk': 3000, '4bhk': 3500 },
-      'one-time': { '1rk': 1000, '1bhk': 1200, '2bhk': 1500, '3bhk': 1800, '4bhk': 2000 }
+      'amc': { '1rk': 1800, '1bhk': 2200, '2bhk': 2500, '3bhk': 3000, '4bhk': 3500, '5bhk': 4900 },
+      'one-time': { '1rk': 1000, '1bhk': 1200, '2bhk': 1500, '3bhk': 1800, '4bhk': 2000, '5bhk': 2700 }
     },
-    'bedbugs': { '1rk': 2000, '1bhk': 2500, '2bhk': 3000, '3bhk': 3500, '4bhk': 4000 },
-    'termite': { '1rk': 2000, '1bhk': 2500, '2bhk': 3000, '3bhk': 3500, '4bhk': 4000 },
+    'bedbugs': { '1rk': 2000, '1bhk': 2500, '2bhk': 3000, '3bhk': 3500, '4bhk': 4000, '5bhk': 5200 },
+    'termite': { '1rk': 2000, '1bhk': 2500, '2bhk': 3000, '3bhk': 3500, '4bhk': 4000, '5bhk': 5900 },
     'rodent': { 'fixed': 1000 },
-    'mosquito': { '1rk': 800, '1bhk': 1000, '2bhk': 1500, '3bhk': 1800, '4bhk': 2000 }
+    'mosquito': { '1rk': 800, '1bhk': 1000, '2bhk': 1500, '3bhk': 1800, '4bhk': 2000, '5bhk': 2800 }
   };
 
   const calculatePrice = (data: HomeFormData) => {
@@ -95,12 +155,13 @@ export default function HomeQuoteForm({
       if (!rate) return;
 
       if (pest === 'cockroach-ants') {
+        if (!data.premiseSize) return;
         const typeRate = rate[data.serviceType || 'one-time'];
-        totalPrice += typeRate[data.premiseSize || '1bhk'] || 0;
+        totalPrice += typeRate?.[data.premiseSize] || 0;
       } else if (pest === 'rodent') {
         totalPrice += rate.fixed;
-      } else if (rate[data.premiseSize || '1bhk']) {
-        totalPrice += rate[data.premiseSize || '1bhk'];
+      } else if (data.premiseSize && rate[data.premiseSize]) {
+        totalPrice += rate[data.premiseSize];
       }
     });
 
@@ -122,6 +183,15 @@ export default function HomeQuoteForm({
 
     if (!formData.name || !formData.name.trim()) {
       newErrors.name = 'Name is required';
+    }
+
+    if (
+      formData.premiseType === 'residential' &&
+      formData.pestTypes.length > 0 &&
+      !formData.pestTypes.includes('hotel-commercial') &&
+      !formData.premiseSize
+    ) {
+      newErrors.premiseSize = 'Please select a premise size';
     }
 
     if (formData.premiseType === 'residential' && !formData.serviceType) {
@@ -217,7 +287,7 @@ export default function HomeQuoteForm({
   return (
     <section
       id="get-quote"
-      className={`pt-0 bg-transparent relative overflow-hidden scroll-mt-24 ${compact ? 'pb-8 sm:pb-10 md:pb-12' : 'pb-12 sm:pb-16 md:pb-20'}`}
+      className={`pt-0 bg-transparent relative overflow-hidden scroll-mt-24 ${compact ? 'pb-6 sm:pb-10 md:pb-12' : 'pb-12 sm:pb-16 md:pb-20'}`}
     >
       {/* Background Decorative Elements */}
       <div className="absolute top-0 left-0 w-full h-full overflow-hidden pointer-events-none">
@@ -229,31 +299,24 @@ export default function HomeQuoteForm({
         <div className={`mx-auto ${compact ? 'max-w-2xl' : 'max-w-3xl'}`}>
           <div
             data-hero-form-card={compact ? '' : undefined}
-            className={`bg-white shadow-xl border border-gray-100 relative overflow-hidden ${compact ? 'p-4 sm:p-6 rounded-xl' : 'p-6 sm:p-10 rounded-2xl'}`}
+            className={`bg-white border border-[#e8f0ea] relative overflow-hidden shadow-[0_4px_6px_-1px_rgb(0_0_0_/_0.05),0_2px_4px_-2px_rgb(0_0_0_/_0.05)] ${compact ? 'p-3 sm:p-6 rounded-xl' : 'p-6 sm:p-10 rounded-2xl'}`}
           >
-            {/* Header moved inside the card for better readability when overlapping hero */}
-            <div className={`text-center ${compact ? 'mb-4 sm:mb-5' : 'mb-6 sm:mb-8'}`}>
-              <h2
-                className={`font-bold text-gray-900 mb-2 sm:mb-3 leading-tight ${compact ? 'text-xl sm:text-2xl md:text-3xl' : 'text-2xl sm:text-3xl md:text-4xl'}`}
-              >
+            {(formTitle || formSubtitle) ? (
+              <div className={`text-center ${compact ? 'mb-3 sm:mb-5' : 'mb-6 sm:mb-8'}`}>
                 {formTitle ? (
-                  formTitle
-                ) : (
-                  <>
-                    Get Your{' '}
-                    <span className="text-green-base">Free Quote</span>{' '}
-                    Today
-                  </>
-                )}
-              </h2>
-              <p className={`text-gray-600 max-w-xl mx-auto ${compact ? 'text-xs sm:text-sm' : 'text-sm sm:text-base'}`}>
-                {formSubtitle ??
-                  "Tell us about your pest problem, and we'll provide a fast, accurate solution."}
-              </p>
-            </div>
-
-            {/* Top Gradient Line */}
-            <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-green-base via-green-bright to-green-base"></div>
+                  <h2
+                    className={`font-bold text-gray-900 mb-1.5 sm:mb-3 leading-tight ${compact ? 'text-lg sm:text-2xl md:text-3xl' : 'text-2xl sm:text-3xl md:text-4xl'}`}
+                  >
+                    {formTitle}
+                  </h2>
+                ) : null}
+                {formSubtitle ? (
+                  <p className={`text-gray-600 max-w-xl mx-auto ${compact ? 'text-xs sm:text-sm' : 'text-sm sm:text-base'}`}>
+                    {formSubtitle}
+                  </p>
+                ) : null}
+              </div>
+            ) : null}
 
             {/* Error Message (inline) */}
             {submitMessage && !showSuccessPopup && (
@@ -267,17 +330,17 @@ export default function HomeQuoteForm({
               </div>
             )}
 
-            <form onSubmit={handleSubmit} className={compact ? 'space-y-3.5' : 'space-y-5'}>
+            <form onSubmit={handleSubmit} className={compact ? 'space-y-3 sm:space-y-3.5' : 'space-y-5'}>
               {/* 1. Premise Type Toggle - HiCare Style */}
               <div>
-                <label className={`block font-bold text-[#1a1a1a] ${compact ? 'text-[13px] mb-2' : 'text-[15px] mb-2.5'}`}>
+                <label className={`block font-bold text-[#1a1a1a] ${compact ? 'text-[13px] mb-1.5 sm:mb-2' : 'text-[15px] mb-2.5'}`}>
                   Premise Type *
                 </label>
                 <div className="quote-field-toggle flex">
                   <button
                     type="button"
                     onClick={() => handleChange('premiseType', 'residential')}
-                    className={`flex-1 flex items-center justify-center gap-1.5 transition-all duration-200 ${compact ? 'py-2 px-3' : 'py-3 px-4'} ${formData.premiseType === 'residential'
+                    className={`flex-1 flex items-center justify-center gap-1.5 transition-all duration-200 ${compact ? 'py-1.5 sm:py-2 px-3' : 'py-3 px-4'} ${formData.premiseType === 'residential'
                         ? 'bg-green-base text-white'
                         : 'bg-white text-green-base'
                       }`}
@@ -288,7 +351,7 @@ export default function HomeQuoteForm({
                   <button
                     type="button"
                     onClick={() => handleChange('premiseType', 'commercial')}
-                    className={`flex-1 flex items-center justify-center gap-1.5 transition-all duration-200 ${compact ? 'py-2 px-3' : 'py-3 px-4'} ${formData.premiseType === 'commercial'
+                    className={`flex-1 flex items-center justify-center gap-1.5 transition-all duration-200 ${compact ? 'py-1.5 sm:py-2 px-3' : 'py-3 px-4'} ${formData.premiseType === 'commercial'
                         ? 'bg-green-base text-white'
                         : 'bg-white text-green-base'
                       }`}
@@ -314,23 +377,42 @@ export default function HomeQuoteForm({
                 )}
               </div>
 
-              {/* 3. Price Display - Fixed Layout */}
-              <div className={`quote-field-panel ${compact ? 'p-4' : 'p-6'}`}>
-                <div className="flex flex-col gap-1">
-                  <span className={`font-bold text-gray-400 uppercase tracking-wide ${compact ? 'text-[11px]' : 'text-[13px]'}`}>Estimated Price</span>
-                  {formData.premiseType === 'commercial' || formData.pestTypes.includes('hotel-commercial') ? (
-                    <div className="mt-1">
-                      <span className={`font-semibold text-[#111827] ${compact ? 'text-lg' : 'text-xl'}`}>Inspection Required</span>
-                      <p className="text-[11px] text-green-base font-bold mt-1 uppercase tracking-widest">Free Consultation & Site Visit</p>
-                    </div>
-                  ) : (
-                    <div className="mt-1">
-                      <span className={`font-semibold text-[#111827] tracking-tight whitespace-nowrap ${compact ? 'text-xl' : 'text-2xl'}`}>
-                        Rs. {formData.estimatedPrice?.toLocaleString('en-IN')}
-                      </span>
-                    </div>
-                  )}
-                </div>
+              {/* 3. Price Display — left-aligned sale + optional MRP / Save badge */}
+              <div className={`quote-price-block ${compact ? 'py-1' : 'py-1.5'}`}>
+                {formData.premiseType === 'commercial' || formData.pestTypes.includes('hotel-commercial') ? (
+                  <div className="flex flex-col gap-0.5">
+                    <span className={`font-medium text-slate-800 ${compact ? 'text-sm' : 'text-[15px]'}`}>
+                      Price (Excluding GST)
+                    </span>
+                    <span className={`font-bold text-slate-900 ${compact ? 'text-lg sm:text-xl' : 'text-2xl'}`}>
+                      Inspection Required
+                    </span>
+                    <p className="text-[11px] text-green-base font-semibold mt-0.5">
+                      Free Consultation & Site Visit
+                    </p>
+                  </div>
+                ) : (
+                  <div className="flex flex-col items-start gap-0.5">
+                    <span className={`font-medium text-slate-800 ${compact ? 'text-sm' : 'text-[15px]'}`}>
+                      Price (Excluding GST)
+                    </span>
+                    <span
+                      className={`font-bold text-slate-900 tracking-tight tabular-nums ${compact ? 'text-[1.65rem] sm:text-[1.85rem] leading-tight' : 'text-[1.85rem] sm:text-[2rem] leading-tight'}`}
+                    >
+                      {formatInr(priceParts.sale)}
+                    </span>
+                    {priceParts.mrp != null && priceParts.savePercent != null && (
+                      <div className="flex flex-wrap items-center gap-2 mt-0.5">
+                        <span className={`text-slate-500 line-through tabular-nums ${compact ? 'text-sm' : 'text-[15px]'}`}>
+                          {formatInr(priceParts.mrp)}
+                        </span>
+                        <span className="inline-flex items-center rounded-full bg-green-50 px-2.5 py-0.5 text-sm font-medium text-green-800">
+                          (Save {priceParts.savePercent}%)
+                        </span>
+                      </div>
+                    )}
+                  </div>
+                )}
               </div>
 
               {/* 4. Residential Specific Options (Size & Type) */}
@@ -338,21 +420,69 @@ export default function HomeQuoteForm({
                 <div className={`grid grid-cols-1 md:grid-cols-2 py-2 animate-in fade-in slide-in-from-top-2 ${compact ? 'gap-3.5' : 'gap-5'}`}>
                   {/* Premise Size Section */}
                   <div className="flex flex-col">
-                    <label className={`block font-bold text-[#1a1a1a] mb-2 ${compact ? 'text-[13px]' : 'text-[15px]'}`}>
+                    <label
+                      id="premise-size-label"
+                      className={`block font-semibold text-slate-800 mb-2 ${compact ? 'text-[13px]' : 'text-[15px]'}`}
+                    >
                       Premise Size *
                     </label>
-                    <select
-                      value={formData.premiseSize || '1bhk'}
-                      onChange={(e) => handleChange('premiseSize', e.target.value)}
-                      className={`quote-field w-full px-4 font-bold text-gray-700 cursor-pointer appearance-none ${compact ? 'py-2.5 text-sm' : 'py-3'}`}
-                      style={{ backgroundImage: 'url("data:image/svg+xml,%3Csvg xmlns=\'http://www.w3.org/2000/svg\' fill=\'none\' viewBox=\'0 0 24 24\' stroke=\'%231E7E34\'%3E%3Cpath stroke-linecap=\'round\' stroke-linejoin=\'round\' stroke-width=\'2.5\' d=\'M19 9l-7 7-7-7\' /%3E%3C/svg%3E")', backgroundRepeat: 'no-repeat', backgroundPosition: 'right 1rem center', backgroundSize: '1.2rem' }}
+                    <div
+                      className={`quote-size-select ${errors.premiseSize ? 'quote-size-select-error' : ''} ${premiseSizeOpen ? 'quote-size-select-open' : ''}`}
+                      ref={premiseSizeRef}
                     >
-                      <option value="1rk">1 RK</option>
-                      <option value="1bhk">1 BHK</option>
-                      <option value="2bhk">2 BHK</option>
-                      <option value="3bhk">3 BHK</option>
-                      <option value="4bhk">4 BHK</option>
-                    </select>
+                      <button
+                        type="button"
+                        id="premise-size-trigger"
+                        aria-haspopup="listbox"
+                        aria-expanded={premiseSizeOpen}
+                        aria-labelledby="premise-size-label premise-size-trigger"
+                        onClick={() => setPremiseSizeOpen((open) => !open)}
+                        className={`quote-size-trigger w-full flex items-center justify-between gap-3 text-left ${compact ? 'px-3.5 py-2.5 text-sm' : 'px-4 py-3 text-[15px]'}`}
+                      >
+                        <span className={`font-bold ${selectedPremiseSize ? 'text-slate-800' : 'text-slate-400'}`}>
+                          {selectedPremiseSize?.label ?? 'Select size'}
+                        </span>
+                        <svg
+                          className={`quote-size-chevron h-5 w-5 shrink-0 transition-transform duration-200 ${premiseSizeOpen ? 'rotate-180' : ''}`}
+                          fill="none"
+                          viewBox="0 0 24 24"
+                          stroke="currentColor"
+                          aria-hidden="true"
+                        >
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+                        </svg>
+                      </button>
+                      {premiseSizeOpen && (
+                        <ul
+                          role="listbox"
+                          aria-labelledby="premise-size-label"
+                          className="quote-size-menu"
+                        >
+                          {PREMISE_SIZE_OPTIONS.map((option) => {
+                            const selected = formData.premiseSize === option.value;
+                            return (
+                              <li key={option.value} role="presentation">
+                                <button
+                                  type="button"
+                                  role="option"
+                                  aria-selected={selected}
+                                  className={`quote-size-option w-full text-left font-bold text-slate-800 ${compact ? 'px-3.5 py-2.5 text-sm' : 'px-4 py-3 text-[15px]'} ${selected ? 'quote-size-option-selected' : ''}`}
+                                  onClick={() => {
+                                    handleChange('premiseSize', option.value);
+                                    setPremiseSizeOpen(false);
+                                  }}
+                                >
+                                  {option.label}
+                                </button>
+                              </li>
+                            );
+                          })}
+                        </ul>
+                      )}
+                    </div>
+                    {errors.premiseSize && (
+                      <p className="mt-1 text-xs text-red-600 font-bold">{errors.premiseSize}</p>
+                    )}
                   </div>
 
                   {/* Select Type Section (One-Time / AMC) */}
@@ -364,12 +494,12 @@ export default function HomeQuoteForm({
                       value={formData.serviceType || ''}
                       onChange={(e) => handleChange('serviceType', e.target.value)}
                       className={`quote-field w-full px-4 font-bold text-gray-700 cursor-pointer appearance-none ${compact ? 'py-2.5 text-sm' : 'py-3'} ${errors.serviceType ? 'quote-field-error' : ''}`}
-                      style={{ backgroundImage: 'url("data:image/svg+xml,%3Csvg xmlns=\'http://www.w3.org/2000/svg\' fill=\'none\' viewBox=\'0 0 24 24\' stroke=\'%231E7E34\'%3E%3Cpath stroke-linecap=\'round\' stroke-linejoin=\'round\' stroke-width=\'2.5\' d=\'M19 9l-7 7-7-7\' /%3E%3C/svg%3E")', backgroundRepeat: 'no-repeat', backgroundPosition: 'right 1rem center', backgroundSize: '1.2rem' }}
+                      style={{ backgroundImage: 'url("data:image/svg+xml,%3Csvg xmlns=\'http://www.w3.org/2000/svg\' fill=\'none\' viewBox=\'0 0 24 24\' stroke=\'%237fbf94\'%3E%3Cpath stroke-linecap=\'round\' stroke-linejoin=\'round\' stroke-width=\'2\' d=\'M19 9l-7 7-7-7\' /%3E%3C/svg%3E")', backgroundRepeat: 'no-repeat', backgroundPosition: 'right 1rem center', backgroundSize: '1.2rem' }}
                     >
                       <option value="" disabled>Select Type</option>
                       <option value="one-time">One Time Service</option>
                       {formData.pestTypes.length > 0 && formData.pestTypes.every(p => p === 'cockroach-ants') && (
-                        <option value="amc">AMC 3 Services</option>
+                        <option value="amc">Annual Maintenance Contract 3 Services</option>
                       )}
                     </select>
                     {formData.pestTypes.some(p => ['rodent', 'bedbugs', 'termite', 'mosquito'].includes(p)) && (

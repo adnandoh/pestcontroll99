@@ -3,7 +3,7 @@ import PageMeta from '@/components/PageMeta';
 import { Suspense } from 'react';
 import HomeQuoteForm from '@/components/HomeQuoteForm';
 import ClientOnly from '@/components/ClientOnly';
-import HomeHeroBackgroundSlider from '@/components/HomeHeroBackgroundSlider';
+import HomeHeroBanner from '@/components/HomeHeroBanner';
 import HomeHeroQuoteSlot from '@/components/HomeHeroQuoteSlot';
 import OurServicesSection from '@/components/OurServicesSection';
 import TrustSection from '@/components/TrustSection';
@@ -19,38 +19,12 @@ export default function Home() {
         canonical="https://www.pestcontrol99.com/"
         ogUrl="https://www.pestcontrol99.com/"
       />
-      {/* Hero + quote form overlap — hero strip unchanged; desktop only shifts form right + left image */}
+      {/* Hero + quote form — single panoramic banner (copy baked into artwork) */}
       <div className="home-hero-block">
-        <div className="hero-container relative w-full shrink-0 overflow-hidden pb-3 sm:pb-4 md:pb-6 bg-gradient-to-br from-[#E6F0E6] to-[#CDE2CD]">
-          <div className="relative z-0 w-full aspect-[4/3] md:aspect-[3/1] lg:aspect-[2241/702] min-h-[250px]">
-            <ClientOnly
-              fallback={
-                <>
-                  <div className="hidden md:block absolute inset-0 h-full w-full">
-                    <AppImage
-                      src="/images/hero-monsoon-wide.webp"
-                      alt={`${BUSINESS.brandName} — don't let monsoon invite pests into your home`}
-                      fill
-                      priority
-                      sizes="100vw"
-                      className="object-cover object-left md:object-center"
-                    />
-                  </div>
-                  <div className="block md:hidden absolute inset-0 h-full w-full">
-                    <AppImage
-                      src="/images/hero-monsoon-mobile.webp"
-                      alt={`${BUSINESS.brandName} — don't let monsoon invite pests into your home`}
-                      fill
-                      priority
-                      sizes="100vw"
-                      className="object-cover object-center"
-                    />
-                  </div>
-                </>
-              }
-            >
-              <HomeHeroBackgroundSlider />
-            </ClientOnly>
+        <div className="hero-container relative w-full shrink-0 bg-[#E8F5EC] pb-2 sm:pb-4 md:pb-6">
+          {/* Natural-height banner: scales to viewport width so baked-in text/icons never crop on mobile */}
+          <div className="relative z-0 w-full">
+            <HomeHeroBanner />
           </div>
           <h1 className="sr-only">
             {BUSINESS.brandName} — Pest Control in Mumbai, Safe, Same-Day &amp; Certified Services

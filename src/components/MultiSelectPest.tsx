@@ -86,19 +86,19 @@ export default function MultiSelectPest({
           {getDisplayText()}
         </span>
         <svg
-          className={`w-5 h-5 text-green-base shrink-0 ml-2 transition-transform duration-200 ${isOpen ? 'rotate-180' : ''}`}
+          className={`w-5 h-5 text-[#7fbf94] shrink-0 ml-2 transition-transform duration-200 ${isOpen ? 'rotate-180' : ''}`}
           fill="none"
           stroke="currentColor"
           viewBox="0 0 24 24"
           aria-hidden
         >
-          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M19 9l-7 7-7-7" />
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
         </svg>
       </button>
 
       {isOpen && (
         <div
-          className="absolute z-30 w-full mt-1 bg-white border border-green-base/40 rounded-lg shadow-lg overflow-hidden animate-in fade-in zoom-in-95 duration-100"
+          className="absolute z-30 w-full mt-1 bg-white border border-[#d1e7dd] rounded-lg shadow-[0_4px_12px_rgb(0_0_0_/_0.06)] overflow-hidden animate-in fade-in zoom-in-95 duration-100"
           role="listbox"
           aria-multiselectable="true"
           aria-labelledby="pest-select-label"
@@ -150,29 +150,6 @@ export default function MultiSelectPest({
         </div>
       )}
 
-      {selectedPests.length > 0 && (
-        <div className="flex flex-wrap gap-1.5 mt-2">
-          {selectedPests.map((value) => {
-            const pest = pestOptions.find((p) => p.value === value);
-            return (
-              <span
-                key={value}
-                className="inline-flex items-center gap-1 rounded-full bg-green-pale border border-green-base/30 px-2.5 py-0.5 text-xs font-semibold text-green-dark"
-              >
-                {pest?.label ?? value}
-                <button
-                  type="button"
-                  onClick={() => handleTogglePest(value)}
-                  className="text-green-base hover:text-green-dark leading-none"
-                  aria-label={`Remove ${pest?.label ?? value}`}
-                >
-                  ×
-                </button>
-              </span>
-            );
-          })}
-        </div>
-      )}
     </div>
   );
 }
