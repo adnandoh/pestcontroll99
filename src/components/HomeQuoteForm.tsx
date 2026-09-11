@@ -111,8 +111,6 @@ export default function HomeQuoteForm({
   const priceParts = getQuotePriceParts(formData.estimatedPrice || 0);
   const isInspectionQuote =
     formData.premiseType === 'commercial' || formData.pestTypes.includes('hotel-commercial');
-  /** GST label only with a real residential ₹ quote — never for commercial / inspection. */
-  const showExclGstLabel = !isInspectionQuote && priceParts.sale > 0;
   const selectedPremiseSize = PREMISE_SIZE_OPTIONS.find((o) => o.value === formData.premiseSize);
 
   useEffect(() => {
@@ -381,10 +379,10 @@ export default function HomeQuoteForm({
                 )}
               </div>
 
-              {/* 3. Price Display — inspection UI has no GST label; residential ₹ keeps it */}
+              {/* 3. Price / inspection — commercial never mounts the GST label element */}
               <div className={`quote-price-block ${compact ? 'py-1' : 'py-1.5'}`}>
                 {isInspectionQuote ? (
-                  <div className="flex flex-col gap-0.5">
+                  <div className="flex flex-col gap-0.5" data-quote-mode="inspection">
                     <span className={`font-bold text-slate-900 ${compact ? 'text-lg sm:text-xl' : 'text-2xl'}`}>
                       Inspection Required
                     </span>
@@ -393,12 +391,12 @@ export default function HomeQuoteForm({
                     </p>
                   </div>
                 ) : (
-                  <div className="flex flex-col items-start gap-0.5">
-                    {showExclGstLabel && (
+                  <div className="flex flex-col items-start gap-0.5" data-quote-mode="priced">
+                    {formData.premiseType === 'residential' && priceParts.sale > 0 ? (
                       <span className={`font-medium text-slate-800 ${compact ? 'text-sm' : 'text-[15px]'}`}>
                         Price (Excluding GST)
                       </span>
-                    )}
+                    ) : null}
                     <span
                       className={`font-bold text-slate-900 tracking-tight tabular-nums ${compact ? 'text-[1.65rem] sm:text-[1.85rem] leading-tight' : 'text-[1.85rem] sm:text-[2rem] leading-tight'}`}
                     >
