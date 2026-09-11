@@ -109,6 +109,10 @@ export default function HomeQuoteForm({
   const premiseSizeRef = useRef<HTMLDivElement>(null);
 
   const priceParts = getQuotePriceParts(formData.estimatedPrice || 0);
+  const isInspectionQuote =
+    formData.premiseType === 'commercial' || formData.pestTypes.includes('hotel-commercial');
+  /** GST label only with a real residential ₹ quote — never for commercial / inspection. */
+  const showExclGstLabel = !isInspectionQuote && priceParts.sale > 0;
   const selectedPremiseSize = PREMISE_SIZE_OPTIONS.find((o) => o.value === formData.premiseSize);
 
   useEffect(() => {
@@ -377,9 +381,9 @@ export default function HomeQuoteForm({
                 )}
               </div>
 
-              {/* 3. Price Display — left-aligned sale + optional MRP / Save badge */}
+              {/* 3. Price Display — inspection UI has no GST label; residential ₹ keeps it */}
               <div className={`quote-price-block ${compact ? 'py-1' : 'py-1.5'}`}>
-                {formData.premiseType === 'commercial' || formData.pestTypes.includes('hotel-commercial') ? (
+                {isInspectionQuote ? (
                   <div className="flex flex-col gap-0.5">
                     <span className={`font-bold text-slate-900 ${compact ? 'text-lg sm:text-xl' : 'text-2xl'}`}>
                       Inspection Required
@@ -390,9 +394,11 @@ export default function HomeQuoteForm({
                   </div>
                 ) : (
                   <div className="flex flex-col items-start gap-0.5">
-                    <span className={`font-medium text-slate-800 ${compact ? 'text-sm' : 'text-[15px]'}`}>
-                      Price (Excluding GST)
-                    </span>
+                    {showExclGstLabel && (
+                      <span className={`font-medium text-slate-800 ${compact ? 'text-sm' : 'text-[15px]'}`}>
+                        Price (Excluding GST)
+                      </span>
+                    )}
                     <span
                       className={`font-bold text-slate-900 tracking-tight tabular-nums ${compact ? 'text-[1.65rem] sm:text-[1.85rem] leading-tight' : 'text-[1.85rem] sm:text-[2rem] leading-tight'}`}
                     >
@@ -602,7 +608,7 @@ export default function HomeQuoteForm({
                     </>
                   ) : (
                     <>
-                      {formData.premiseType === 'commercial' || formData.pestTypes.includes('hotel-commercial') ? 'Request Free Inspection' : 'Get My Free Quote'}
+                      {isInspectionQuote ? 'Request Free Inspection' : 'Get My Free Quote'}
                       <svg className="w-5 h-5 ml-2 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
                       </svg>
