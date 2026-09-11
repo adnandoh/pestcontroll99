@@ -1278,7 +1278,7 @@ html[data-scroll-behavior="smooth"] {
   pointer-events: auto;
 }
 
-/* Single panoramic banner: flow in document so img can use natural height */
+/* Single hero banner: flow in document so img can use natural height */
 .hero-bg-slider--single {
   position: relative;
   inset: auto;
@@ -1298,8 +1298,8 @@ html[data-scroll-behavior="smooth"] {
   width: 100%;
   height: auto;
   max-width: 100%;
-  object-fit: contain;
-  object-position: center;
+  object-fit: cover;
+  object-position: center top;
 }
 
 .hero-bg-slide--contain {

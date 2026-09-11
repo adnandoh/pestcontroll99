@@ -381,9 +381,6 @@ export default function HomeQuoteForm({
               <div className={`quote-price-block ${compact ? 'py-1' : 'py-1.5'}`}>
                 {formData.premiseType === 'commercial' || formData.pestTypes.includes('hotel-commercial') ? (
                   <div className="flex flex-col gap-0.5">
-                    <span className={`font-medium text-slate-800 ${compact ? 'text-sm' : 'text-[15px]'}`}>
-                      Price (Excluding GST)
-                    </span>
                     <span className={`font-bold text-slate-900 ${compact ? 'text-lg sm:text-xl' : 'text-2xl'}`}>
                       Inspection Required
                     </span>

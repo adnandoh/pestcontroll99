@@ -32,7 +32,7 @@ export default function HomeHeroQuoteSlot({ image, form }: HomeHeroQuoteSlotProp
   }, []);
 
   return (
-    <div className="home-hero-quote-slot relative z-30 mt-4 scroll-mt-20 sm:mt-6 md:-mt-8">
+    <div className="home-hero-quote-slot relative z-30 mt-2 scroll-mt-20 sm:mt-3 md:-mt-8">
       <div className="home-hero-promo-image hidden lg:block">
         <div ref={imageFrameRef} className="home-hero-promo-image-frame overflow-hidden rounded-xl shadow-lg">
           {image}

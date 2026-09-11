@@ -4,13 +4,13 @@ import { BUSINESS } from '@/config/business';
 const HERO_BANNER = {
   src: '/images/hero-banner.png',
   alt: `${BUSINESS.brandName} — we keep your home & business pest-free. Cockroaches, bed bugs, mosquitoes, termites, rodents & ants. Licensed, government-approved chemicals, invoice provided.`,
-  width: 2103,
-  height: 748,
+  width: 1230,
+  height: 1037,
 } as const;
 
 /**
  * Single full-width hero banner. Marketing copy is baked into the artwork.
- * Scales with w-full h-auto so mobile never crops the panoramic image.
+ * Scales with w-full h-auto so mobile never crops the near-square artwork.
  */
 export default function HomeHeroBanner() {
   return (
