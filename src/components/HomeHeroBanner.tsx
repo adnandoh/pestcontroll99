@@ -21,7 +21,8 @@ const HERO_BANNER_DESKTOP = {
  * Full-width hero banner. Marketing copy is baked into the artwork.
  * Mobile keeps the near-square banner; md+ swaps to the landscape desktop banner
  * via <picture> so only one asset is requested for the active viewport.
- * Scales with w-full h-auto so neither art gets cropped by empty letterboxing.
+ * Height is capped in CSS (~half the old full-cover desktop feel) with
+ * object-fit: cover so the left content band stays readable.
  */
 export default function HomeHeroBanner() {
   return (

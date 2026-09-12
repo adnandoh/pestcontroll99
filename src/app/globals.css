@@ -1278,12 +1278,23 @@ html[data-scroll-behavior="smooth"] {
   pointer-events: auto;
 }
 
-/* Single hero banner: flow in document so img can use natural height */
+/*
+ * Single hero banner: full-width art with a height cap so it no longer
+ * reads as a full-viewport "cover". Copy is baked into the PNG, so we
+ * crop via object-fit (not letterbox) and bias position toward the
+ * left/center content band.
+ *
+ * Before: natural aspect only (desktop ~1983×793 → ~512–768px tall at
+ * common widths; mobile near-square → ~330px+), often ~full remaining viewport.
+ * After: mobile max ~min(58vh, 28rem); md+ fixed ~min(40vh, 24rem) (~half).
+ */
 .hero-bg-slider--single {
   position: relative;
   inset: auto;
   width: 100%;
   line-height: 0;
+  overflow: hidden;
+  max-height: min(58vh, 28rem);
 }
 
 .hero-bg-slider--single .hero-bg-slide {
@@ -1293,13 +1304,40 @@ html[data-scroll-behavior="smooth"] {
   pointer-events: auto;
 }
 
+.hero-bg-slider--single picture {
+  display: block;
+  width: 100%;
+}
+
 .hero-bg-slider--single img {
   display: block;
   width: 100%;
   height: auto;
   max-width: 100%;
+  max-height: min(58vh, 28rem);
   object-fit: cover;
-  object-position: center top;
+  object-position: center 40%;
+}
+
+@media (min-width: 768px) {
+  .hero-bg-slider--single {
+    /* ~50% of the previous full-cover desktop feel */
+    height: min(40vh, 24rem);
+    max-height: min(40vh, 24rem);
+  }
+
+  .hero-bg-slider--single .hero-bg-slide,
+  .hero-bg-slider--single picture {
+    height: 100%;
+  }
+
+  .hero-bg-slider--single img {
+    height: 100%;
+    max-height: none;
+    object-fit: cover;
+    /* Keep badge + headline + pest row in frame when cropping */
+    object-position: left center;
+  }
 }
 
 .hero-bg-slide--contain {

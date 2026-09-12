@@ -22,7 +22,7 @@ export default function Home() {
       {/* Hero + quote form — single panoramic banner (copy baked into artwork) */}
       <div className="home-hero-block">
         <div className="hero-container relative w-full shrink-0 bg-[#E8F5EC] pb-0">
-          {/* Natural-height banner: scales to viewport width so baked-in text/icons never crop on mobile */}
+          {/* Height-capped banner: full-width art; CSS caps desktop ~half of old full-cover */}
           <div className="relative z-0 w-full leading-none">
             <HomeHeroBanner />
           </div>
