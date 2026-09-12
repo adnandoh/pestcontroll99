@@ -1284,10 +1284,9 @@ html[data-scroll-behavior="smooth"] {
  * Mobile: near-square PNG capped with max-height + object-fit cover so it
  * doesn't dominate the viewport.
  *
- * Desktop (md+): the landscape asset (991×396) is already a short ~50%
- * crop banner — display it at natural aspect ratio (width 100%, height
- * auto). Do not add a fixed height + object-fit: cover, or the baked-in
- * headline gets sliced off.
+ * Desktop (md+): the landscape asset (1870×841) displays at natural
+ * aspect ratio (width 100%, height auto). Do not add a fixed height +
+ * object-fit: cover, or the baked-in headline/icons get sliced off.
  */
 .hero-bg-slider--single {
   position: relative;
@@ -1332,12 +1331,12 @@ html[data-scroll-behavior="smooth"] {
     height: auto;
   }
 
-  /* Intrinsic 991×396 — never force a short box + cover (that crops the badge). */
+  /* Intrinsic 1870×841 — never force a short box + cover (that crops text/icons). */
   .hero-bg-slider--single img {
     width: 100%;
     height: auto;
     max-height: none;
-    aspect-ratio: 991 / 396;
+    aspect-ratio: 1870 / 841;
     object-fit: unset;
     object-position: unset;
   }
