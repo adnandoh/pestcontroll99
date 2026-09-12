@@ -294,7 +294,7 @@ export default function SimpleQuotePage() {
                   disabled={isSubmitting}
                   className="btn btn-cta w-full md:w-auto text-lg shadow-lg disabled:opacity-60 disabled:cursor-not-allowed disabled:hover:transform-none min-w-[200px]"
                 >
-                  {isSubmitting ? 'Sending Request...' : 'Get My Free Quote'}
+                  {isSubmitting ? 'Sending Request...' : 'Book Now'}
                 </button>
               </div>
             </form>

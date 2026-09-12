@@ -180,7 +180,7 @@ export default function ContactForm() {
                     disabled={isSubmitting}
                     className="w-full bg-green-600 text-white py-3 px-6 rounded-lg font-semibold hover:bg-green-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
                   >
-                    {isSubmitting ? 'Sending...' : 'Send Message'}
+                    {isSubmitting ? 'Sending...' : 'Book Now'}
                   </button>
                 </form>
               </div>
