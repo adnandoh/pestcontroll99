@@ -13,8 +13,8 @@ const HERO_BANNER_MOBILE = {
 /** Wide landscape artwork for tablet/desktop (md+ / ≥768px). */
 const HERO_BANNER_DESKTOP = {
   src: '/images/hero-banner-desktop.png',
-  width: 1983,
-  height: 793,
+  width: 991,
+  height: 396,
 } as const;
 
 /**
