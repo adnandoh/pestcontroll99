@@ -1279,14 +1279,15 @@ html[data-scroll-behavior="smooth"] {
 }
 
 /*
- * Single hero banner: full-width art with a height cap so it no longer
- * reads as a full-viewport "cover". Copy is baked into the PNG, so we
- * crop via object-fit (not letterbox) and bias position toward the
- * left/center content band.
+ * Single hero banner: full-width art with baked-in marketing copy.
  *
- * Before: natural aspect only (desktop ~1983×793 → ~512–768px tall at
- * common widths; mobile near-square → ~330px+), often ~full remaining viewport.
- * After: mobile max ~min(58vh, 28rem); md+ fixed ~min(40vh, 24rem) (~half).
+ * Mobile: near-square PNG capped with max-height + object-fit cover so it
+ * doesn't dominate the viewport.
+ *
+ * Desktop (md+): the landscape asset (991×396) is already a short ~50%
+ * crop banner — display it at natural aspect ratio (width 100%, height
+ * auto). Do not add a fixed height + object-fit: cover, or the baked-in
+ * headline gets sliced off.
  */
 .hero-bg-slider--single {
   position: relative;
@@ -1321,22 +1322,24 @@ html[data-scroll-behavior="smooth"] {
 
 @media (min-width: 768px) {
   .hero-bg-slider--single {
-    /* ~50% of the previous full-cover desktop feel */
-    height: min(40vh, 24rem);
-    max-height: min(40vh, 24rem);
+    height: auto;
+    max-height: none;
+    overflow: visible;
   }
 
   .hero-bg-slider--single .hero-bg-slide,
   .hero-bg-slider--single picture {
-    height: 100%;
+    height: auto;
   }
 
+  /* Intrinsic 991×396 — never force a short box + cover (that crops the badge). */
   .hero-bg-slider--single img {
-    height: 100%;
+    width: 100%;
+    height: auto;
     max-height: none;
-    object-fit: cover;
-    /* Keep badge + headline + pest row in frame when cropping */
-    object-position: left center;
+    aspect-ratio: 991 / 396;
+    object-fit: unset;
+    object-position: unset;
   }
 }
 

@@ -10,9 +10,9 @@ const HERO_BANNER_MOBILE = {
   height: 1037,
 } as const;
 
-/** Wide landscape artwork for tablet/desktop (md+ / ≥768px). */
+/** Wide landscape artwork for tablet/desktop (md+ / ≥768px). Cache-bust when asset changes. */
 const HERO_BANNER_DESKTOP = {
-  src: '/images/hero-banner-desktop.png',
+  src: '/images/hero-banner-desktop.png?v=991x396-natural',
   width: 991,
   height: 396,
 } as const;
@@ -21,8 +21,8 @@ const HERO_BANNER_DESKTOP = {
  * Full-width hero banner. Marketing copy is baked into the artwork.
  * Mobile keeps the near-square banner; md+ swaps to the landscape desktop banner
  * via <picture> so only one asset is requested for the active viewport.
- * Height is capped in CSS (~half the old full-cover desktop feel) with
- * object-fit: cover so the left content band stays readable.
+ * Desktop uses the asset's natural aspect ratio (already a short ~50% crop);
+ * mobile keeps a max-height cover crop so the near-square art doesn't dominate.
  */
 export default function HomeHeroBanner() {
   return (
