@@ -2960,8 +2960,16 @@ html[data-scroll-behavior="smooth"] {
   font-variant-numeric: tabular-nums;
 }
 
-/* Fixed viewport overlay so form overflow cannot clip the clock */
+/* Fixed viewport overlay so form overflow cannot clip the clock.
+   Tokens must live here: modal is portaled to document.body, outside
+   .home-booking-viewport / .booking-form-section where --hb-* are defined. */
 .clock-time-overlay {
+  --hb-green: #087b3d;
+  --hb-lime: #25a852;
+  --hb-navy: #092456;
+  --hb-ink: #17202b;
+  --hb-line: #dbe8df;
+  --hb-soft: #effaf3;
   position: fixed;
   inset: 0;
   z-index: 10050;
@@ -2982,11 +2990,13 @@ html[data-scroll-behavior="smooth"] {
   border: 1px solid rgba(8, 123, 61, 0.12);
   border-radius: 1rem;
   box-shadow: 0 18px 48px rgba(9, 36, 86, 0.28);
+  color: var(--hb-navy);
 }
 
 .clock-time-header {
-  background: var(--hb-green);
+  background: #fff;
   padding: 0.7rem 0.85rem 0.75rem;
+  border-bottom: 1px solid var(--hb-line);
 }
 
 .clock-time-display {
@@ -3000,7 +3010,7 @@ html[data-scroll-behavior="smooth"] {
 .clock-time-digit {
   border: none;
   background: transparent;
-  color: rgba(255, 255, 255, 0.55);
+  color: rgba(9, 36, 86, 0.4);
   font-size: 2.15rem;
   font-weight: 900;
   line-height: 1;
@@ -3010,11 +3020,11 @@ html[data-scroll-behavior="smooth"] {
 }
 
 .clock-time-digit.is-active {
-  color: #fff;
+  color: var(--hb-green);
 }
 
 .clock-time-colon {
-  color: rgba(255, 255, 255, 0.55);
+  color: rgba(9, 36, 86, 0.35);
   font-size: 1.85rem;
   font-weight: 900;
   line-height: 1;
@@ -3030,9 +3040,9 @@ html[data-scroll-behavior="smooth"] {
   min-width: 3.25rem;
   padding: 0.28rem 0.7rem;
   border-radius: 999px;
-  border: 1.5px solid rgba(255, 255, 255, 0.45);
+  border: 1.5px solid var(--hb-line);
   background: transparent;
-  color: rgba(255, 255, 255, 0.75);
+  color: var(--hb-navy);
   font-size: 0.7rem;
   font-weight: 800;
   letter-spacing: 0.08em;
@@ -3040,9 +3050,9 @@ html[data-scroll-behavior="smooth"] {
 }
 
 .clock-ampm-btn.is-active {
-  background: #fff;
-  border-color: #fff;
-  color: var(--hb-navy);
+  background: var(--hb-green);
+  border-color: var(--hb-green);
+  color: #fff;
 }
 
 .clock-time-face {
