@@ -3274,6 +3274,14 @@ html[data-scroll-behavior="smooth"] {
   cursor: not-allowed;
 }
 
+.booking-otp-sheet .booking-otp-whatsapp-note {
+  margin: -4px 0 12px;
+  font-size: 13px;
+  font-weight: 600;
+  line-height: 1.4;
+  color: #3d6b52;
+}
+
 .booking-otp-sheet .booking-otp-hint {
   margin: 0 0 10px;
   font-size: 13px;

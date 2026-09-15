@@ -348,7 +348,7 @@ export default function HomeQuoteForm({
       setOtpHint(
         otpSend.devOtp
           ? `Local DEBUG OTP: ${otpSend.devOtp}`
-          : `OTP sent to +91 ${otpSend.mobile}`,
+          : `OTP sent on WhatsApp to +91 ${otpSend.mobile}`,
       );
       setOtpModalOpen(true);
       setOtpValue('');
@@ -397,7 +397,7 @@ export default function HomeQuoteForm({
       setOtpHint(
         otpSend.devOtp
           ? `Local DEBUG OTP: ${otpSend.devOtp}`
-          : `OTP resent to +91 ${otpSend.mobile}`,
+          : `OTP resent on WhatsApp to +91 ${otpSend.mobile}`,
       );
       setOtpValue('');
     } catch (error) {
@@ -977,6 +977,9 @@ export default function HomeQuoteForm({
               Enter the 4-digit OTP sent to{' '}
               <strong>+91 {otpMobile || formData.phone.replace(/\D/g, '')}</strong> to confirm your
               booking.
+            </p>
+            <p className="booking-otp-whatsapp-note">
+              You&apos;ll receive the OTP on WhatsApp.
             </p>
             {otpHint ? <p className="booking-otp-hint">{otpHint}</p> : null}
             <label className="booking-otp-label" htmlFor="booking-otp-input">
