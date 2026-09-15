@@ -2973,19 +2973,19 @@ html[data-scroll-behavior="smooth"] {
   white-space: nowrap;
 }
 
-/* Mobile: keep date+time side-by-side; readable 12px type with ellipsis if needed */
+/* Mobile: keep date+time side-by-side; ~13px to match other booking inputs, ellipsis if needed */
 @media (max-width: 767px) {
   .booking-grid-schedule {
     grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
   }
 
   .booking-date-display {
-    font-size: 12px;
+    font-size: 13px;
     padding: 0 5px;
   }
 
   .booking-time-trigger {
-    font-size: 12px;
+    font-size: 13px;
     padding: 0 26px 0 26px;
   }
 
