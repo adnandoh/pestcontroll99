@@ -777,7 +777,15 @@ export default function HomeQuoteForm({
                 </label>
                 <div className="booking-date-field">
                   <span className="booking-date-display" aria-hidden="true">
-                    {formatFriendlyPreferredDate(formData.preferredDate) || 'Select date'}
+                    <span
+                      className={
+                        formatFriendlyPreferredDate(formData.preferredDate)
+                          ? 'booking-date-value'
+                          : 'booking-date-placeholder'
+                      }
+                    >
+                      {formatFriendlyPreferredDate(formData.preferredDate) || 'Select date'}
+                    </span>
                   </span>
                   <input
                     id="preferred-date"

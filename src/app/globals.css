@@ -2841,7 +2841,11 @@ html[data-scroll-behavior="smooth"] {
   cursor: not-allowed;
 }
 
-/* Preferred date — friendly label over native date input */
+/* Preferred date — friendly label over native date input.
+   Mirror .booking-time-trigger layout/type so date matches time visually.
+   Display sits ABOVE the transparent native input (z-index) so WebKit date
+   compositing cannot wash out weight/size; pointer-events:none keeps clicks
+   hitting the input underneath. */
 .booking-date-field {
   position: relative;
   min-width: 0;
@@ -2851,18 +2855,43 @@ html[data-scroll-behavior="smooth"] {
 .booking-date-display {
   position: absolute;
   inset: 0;
-  z-index: 1;
-  display: block;
+  z-index: 3;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
   box-sizing: border-box;
-  padding: 0 6px;
+  padding: 0 8px;
   border-radius: 8px;
-  font: 700 12px/34px inherit;
+  /* Same computed type as .booking-time-trigger */
+  font: 700 12px inherit;
   color: #1b2a22;
+  line-height: normal;
   pointer-events: none;
-  white-space: nowrap;
+  min-width: 0;
+  overflow: hidden;
+}
+
+.booking-date-value,
+.booking-time-value {
+  color: #1b2a22;
+  font-size: inherit;
+  font-weight: 700;
+  line-height: normal;
+  min-width: 0;
   overflow: hidden;
   text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.booking-date-placeholder {
+  color: #9daaa3;
+  font-size: inherit;
+  font-weight: 500;
+  line-height: normal;
   min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 .booking-date-native.booking-input {
@@ -2954,15 +2983,6 @@ html[data-scroll-behavior="smooth"] {
   box-shadow: 0 0 0 3px #087b3d13;
 }
 
-.booking-time-value {
-  color: #1b2a22;
-  font-weight: 700;
-  min-width: 0;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-}
-
 .booking-time-placeholder {
   color: #9daaa3;
   font-weight: 500;
@@ -2973,19 +2993,22 @@ html[data-scroll-behavior="smooth"] {
   white-space: nowrap;
 }
 
-/* Mobile: keep date+time side-by-side; ~13px to match other booking inputs, ellipsis if needed */
+/* Mobile: keep date+time side-by-side; match type exactly; ellipsis if needed */
 @media (max-width: 767px) {
   .booking-grid-schedule {
     grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
   }
 
-  .booking-date-display {
+  .booking-date-display,
+  .booking-time-trigger {
     font-size: 13px;
-    padding: 0 5px;
+  }
+
+  .booking-date-display {
+    padding: 0 8px;
   }
 
   .booking-time-trigger {
-    font-size: 13px;
     padding: 0 26px 0 26px;
   }
 
@@ -3460,10 +3483,6 @@ html[data-scroll-behavior="smooth"] {
   .booking-time-trigger,
   .booking-phone-field {
     height: 32px;
-  }
-
-  .booking-date-display {
-    line-height: 32px;
   }
 
   .booking-select-trigger {
