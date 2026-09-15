@@ -1,52 +1,61 @@
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect, useRef, useCallback } from 'react';
 import { useNavigate, useSearchParams } from 'react-router-dom';
-import { saveFormData, HomeFormData, decodeFormDataFromURL, getFormData, clearFormData } from '@/utils/formStorage';
-import { submitHomeQuoteForm } from '@/services/formSubmit';
+import {
+  HomeFormData,
+  createEmptyHomeFormData,
+  decodeFormDataFromURL,
+  clearFormData,
+} from '@/utils/formStorage';
+import {
+  submitHomeBookingForm,
+  sendHomeBookingOtp,
+  verifyHomeBookingOtp,
+  silentUpsertWebsiteInquiry,
+  isValidBookingMobile,
+} from '@/services/formSubmit';
+import { customerBookingApi } from '@/services/customerBookingApi';
+import { getBookingSessionId } from '@/utils/bookingSession';
+import {
+  calculateCatalogQuotePrice,
+  type CatalogRate,
+} from '@/utils/catalogPricing';
 import MultiSelectPest from './MultiSelectPest';
+import ClockTimePicker from './ClockTimePicker';
 import { AddressInput } from './GoogleMaps';
-import { CommercialIcon, ResidentialIcon } from './icons/PremiseTypeIcons';
 import IndiaFlagIcon from './icons/IndiaFlagIcon';
-
-/** Display-only list markup when rate card has no separate MRP (matches ~30% Save badge). */
-const QUOTE_DISPLAY_DISCOUNT = 0.3;
+import { BUSINESS, whatsAppUrl } from '@/config/business';
+import {
+  formatFriendlyPreferredDate,
+  formatLocalDateYYYYMMDD,
+  toPreferredTime,
+} from '@/utils/clockTime';
 
 const PREMISE_SIZE_OPTIONS = [
-  { value: '1rk', label: '1 RK' },
   { value: '1bhk', label: '1 BHK' },
+  { value: '1rk', label: '1 RK' },
   { value: '2bhk', label: '2 BHK' },
   { value: '3bhk', label: '3 BHK' },
   { value: '4bhk', label: '4 BHK' },
   { value: '5bhk', label: '5 BHK' },
 ] as const;
 
-function formatInr(amount: number): string {
-  return `₹ ${amount.toLocaleString('en-IN', {
-    minimumFractionDigits: 2,
-    maximumFractionDigits: 2,
-  })}`;
-}
+const TREATMENT_DETAILS: Record<'standard' | 'premium', [string, string]> = {
+  standard: [
+    'Standard Treatment',
+    'Gel + spray treatment for effective cockroach and ant control. Utensils must be removed before spray treatment.',
+  ],
+  premium: [
+    'Premium Treatment',
+    'Premium gel treatment with no bad smell and no need to remove utensils. Odourless spray and monitoring trap can be used when required.',
+  ],
+};
 
-/** Sale = computed quote (excl. GST). MRP derived only when sale > 0 for promo strikethrough. */
-function getQuotePriceParts(sale: number): {
-  sale: number;
-  mrp: number | null;
-  savePercent: number | null;
-} {
-  if (!sale || sale <= 0) {
-    return { sale: 0, mrp: null, savePercent: null };
-  }
-  const mrp = Math.round(sale / (1 - QUOTE_DISPLAY_DISCOUNT));
-  if (mrp <= sale) {
-    return { sale, mrp: null, savePercent: null };
-  }
-  const savePercent = Math.round(((mrp - sale) / mrp) * 100);
-  return { sale, mrp, savePercent };
+function formatInrWhole(amount: number): string {
+  return `₹${amount.toLocaleString('en-IN')}`;
 }
 
 type HomeQuoteFormProps = {
-  /** Tighter layout (~30% less vertical footprint) for home hero pairing */
   compact?: boolean;
-  /** CRM remark + message tag for campaign landing pages */
   leadSource?: string;
   thankYouPath?: string;
   defaultCity?: string;
@@ -56,7 +65,6 @@ type HomeQuoteFormProps = {
 };
 
 export default function HomeQuoteForm({
-  compact = false,
   leadSource,
   thankYouPath = '/thank-you/',
   defaultCity,
@@ -66,52 +74,156 @@ export default function HomeQuoteForm({
 }: HomeQuoteFormProps) {
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
-  const [formData, setFormData] = useState<HomeFormData>({
-    pestTypes: ['cockroach-ants'],
-    phone: '',
-    address: '',
-    streetAddress: '',
-    name: '',
-    premiseType: 'residential',
-    premiseSize: '',
-    serviceType: 'one-time',
-    estimatedPrice: 0
-  });
+  const [formData, setFormData] = useState<HomeFormData>(() => createEmptyHomeFormData());
+  const [catalogRates, setCatalogRates] = useState<CatalogRate[]>([]);
+  const [catalogLoading, setCatalogLoading] = useState(true);
+  const [catalogError, setCatalogError] = useState('');
 
-  // Load pre-filled data on component mount
+  const priceFromCatalog = useCallback(
+    (data: HomeFormData, rates: CatalogRate[] = catalogRates) =>
+      calculateCatalogQuotePrice({
+        rates,
+        pestTypes: data.pestTypes,
+        premiseType: data.premiseType,
+        premiseSize: data.premiseSize,
+        serviceType: data.serviceType,
+        treatmentQuality: data.treatmentQuality,
+      }),
+    [catalogRates],
+  );
+
   useEffect(() => {
-    const urlData = decodeFormDataFromURL(searchParams);
-    const storageData = getFormData();
-    
-    if (Object.keys(urlData).length > 0 || storageData) {
-      setFormData(prev => {
-        const nextData = {
+    let cancelled = false;
+    (async () => {
+      setCatalogLoading(true);
+      const res = await customerBookingApi.fetchCatalog(defaultCity);
+      if (cancelled) return;
+      if (res.success && res.data) {
+        setCatalogRates(res.data.results);
+        setCatalogError('');
+        setFormData((prev) => ({
           ...prev,
-          ...storageData,
-          ...urlData
-        };
-        // Re-calculate price for pre-filled data
-        nextData.estimatedPrice = calculatePrice(nextData);
-        return nextData;
-      });
-    }
-    
-    if (storageData) {
-      clearFormData();
-    }
-  }, [searchParams]);
+          estimatedPrice: calculateCatalogQuotePrice({
+            rates: res.data!.results,
+            pestTypes: prev.pestTypes,
+            premiseType: prev.premiseType,
+            premiseSize: prev.premiseSize,
+            serviceType: prev.serviceType,
+            treatmentQuality: prev.treatmentQuality,
+          }).offerPrice,
+        }));
+      } else {
+        setCatalogError(res.error || 'Could not load live prices');
+      }
+      setCatalogLoading(false);
+    })();
+    return () => {
+      cancelled = true;
+    };
+  }, [defaultCity]);
+
+  useEffect(() => {
+    // Drop stale localStorage so it cannot overwrite defaults (e.g. Commercial / plans / hotel pest).
+    clearFormData();
+
+    const urlData = decodeFormDataFromURL(searchParams);
+    // Contact fields only from URL — keep Residential + Cockroach + fresh schedule defaults.
+    // Run once on mount only — re-running on searchParams identity churn would wipe phone/name
+    // mid-OTP and surface a bogus "Missing required fields" on verify.
+    const defaults = createEmptyHomeFormData();
+    setFormData((prev) => ({
+      ...defaults,
+      estimatedPrice: prev.estimatedPrice,
+      name: urlData.name || '',
+      phone: urlData.phone || '',
+      address: urlData.address || '',
+      streetAddress: urlData.streetAddress || urlData.address || '',
+    }));
+    // eslint-disable-next-line react-hooks/exhaustive-deps -- intentional mount-only hydrate
+  }, []);
 
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [errors, setErrors] = useState<Record<string, string>>({});
   const [showSuccessPopup, setShowSuccessPopup] = useState(false);
   const [submitMessage, setSubmitMessage] = useState('');
   const [premiseSizeOpen, setPremiseSizeOpen] = useState(false);
+  const [infoModal, setInfoModal] = useState<'standard' | 'premium' | null>(null);
   const premiseSizeRef = useRef<HTMLDivElement>(null);
 
-  const priceParts = getQuotePriceParts(formData.estimatedPrice || 0);
+  const [otpModalOpen, setOtpModalOpen] = useState(false);
+  const [otpValue, setOtpValue] = useState('');
+  const [otpError, setOtpError] = useState('');
+  const [otpHint, setOtpHint] = useState('');
+  const [otpMobile, setOtpMobile] = useState('');
+  const [otpSending, setOtpSending] = useState(false);
+  const [otpVerifying, setOtpVerifying] = useState(false);
+  const [resendCooldown, setResendCooldown] = useState(0);
+  const otpInputRef = useRef<HTMLInputElement>(null);
+  /** Snapshot of the validated form at OTP-send time — create booking must use this. */
+  const bookingDraftRef = useRef<HomeFormData | null>(null);
+  const inquiryInFlightRef = useRef(false);
+  const lastInquiryFingerprintRef = useRef('');
+
+  // Ensure booking session id exists for this browser tab.
+  useEffect(() => {
+    getBookingSessionId();
+  }, []);
+
+  const queueSilentInquiry = useCallback(
+    (data: HomeFormData) => {
+      if (!isValidBookingMobile(data.phone)) return;
+
+      const fingerprint = [
+        data.phone,
+        data.name,
+        data.streetAddress || data.address,
+        data.premiseType,
+        data.premiseSize,
+        data.treatmentQuality,
+        data.serviceType,
+        (data.pestTypes || []).join(','),
+        data.preferredDate,
+        data.preferredTime,
+        String(data.estimatedPrice || 0),
+      ].join('|');
+
+      if (fingerprint === lastInquiryFingerprintRef.current) return;
+      if (inquiryInFlightRef.current) return;
+
+      inquiryInFlightRef.current = true;
+      void silentUpsertWebsiteInquiry(data as unknown as Record<string, unknown>, {
+        leadSource: leadSource || 'Website Booking Form',
+        defaultCity,
+        defaultState,
+      })
+        .then((res) => {
+          if (res.ok) {
+            lastInquiryFingerprintRef.current = fingerprint;
+          }
+        })
+        .finally(() => {
+          inquiryInFlightRef.current = false;
+        });
+    },
+    [leadSource, defaultCity, defaultState],
+  );
+
+  // Debounced silent CRM capture once mobile is a valid 10-digit number.
+  useEffect(() => {
+    if (!isValidBookingMobile(formData.phone)) return;
+    const timer = window.setTimeout(() => {
+      queueSilentInquiry(formData);
+    }, 1000);
+    return () => window.clearTimeout(timer);
+  }, [formData, queueSilentInquiry]);
+
   const isInspectionQuote =
     formData.premiseType === 'commercial' || formData.pestTypes.includes('hotel-commercial');
   const selectedPremiseSize = PREMISE_SIZE_OPTIONS.find((o) => o.value === formData.premiseSize);
+  const amcAvailable =
+    formData.pestTypes.length > 0 && formData.pestTypes.every((p) => p === 'cockroach-ants');
+
+  const dateMin = formatLocalDateYYYYMMDD(new Date());
 
   useEffect(() => {
     if (!premiseSizeOpen) return;
@@ -131,47 +243,30 @@ export default function HomeQuoteForm({
     };
   }, [premiseSizeOpen]);
 
-  // Rate card data (amounts excluding GST — no GST is applied in calculatePrice).
-  // 5bhk amounts from rate_chart_2026.csv (excl. GST `amount`); 1rk–4bhk keep existing quote form rates.
-  const RATES: any = {
-    'cockroach-ants': {
-      'amc': { '1rk': 1800, '1bhk': 2200, '2bhk': 2500, '3bhk': 3000, '4bhk': 3500, '5bhk': 4900 },
-      'one-time': { '1rk': 1000, '1bhk': 1200, '2bhk': 1500, '3bhk': 1800, '4bhk': 2000, '5bhk': 2700 }
-    },
-    'bedbugs': { '1rk': 2000, '1bhk': 2500, '2bhk': 3000, '3bhk': 3500, '4bhk': 4000, '5bhk': 5200 },
-    'termite': { '1rk': 2000, '1bhk': 2500, '2bhk': 3000, '3bhk': 3500, '4bhk': 4000, '5bhk': 5900 },
-    'rodent': { 'fixed': 1000 },
-    'mosquito': { '1rk': 800, '1bhk': 1000, '2bhk': 1500, '3bhk': 1800, '4bhk': 2000, '5bhk': 2800 }
-  };
+  useEffect(() => {
+    if (resendCooldown <= 0) return;
+    const timer = window.setTimeout(() => setResendCooldown((s) => Math.max(0, s - 1)), 1000);
+    return () => window.clearTimeout(timer);
+  }, [resendCooldown]);
 
-  const calculatePrice = (data: HomeFormData) => {
-    if (data.premiseType === 'commercial' || data.pestTypes.includes('hotel-commercial')) {
-      return 0; // Inspection required
-    }
+  useEffect(() => {
+    if (!otpModalOpen) return;
+    const t = window.setTimeout(() => otpInputRef.current?.focus(), 50);
+    return () => window.clearTimeout(t);
+  }, [otpModalOpen]);
 
-    if (data.pestTypes.length === 0) return 0;
-
-    let totalPrice = 0;
-    data.pestTypes.forEach(pest => {
-      const rate = RATES[pest];
-      if (!rate) return;
-
-      if (pest === 'cockroach-ants') {
-        if (!data.premiseSize) return;
-        const typeRate = rate[data.serviceType || 'one-time'];
-        totalPrice += typeRate?.[data.premiseSize] || 0;
-      } else if (pest === 'rodent') {
-        totalPrice += rate.fixed;
-      } else if (data.premiseSize && rate[data.premiseSize]) {
-        totalPrice += rate[data.premiseSize];
-      }
-    });
-
-    return totalPrice;
-  };
+  const quotePrice = priceFromCatalog(formData);
+  const offerPrice = quotePrice.offerPrice;
+  const listPrice = quotePrice.listPrice;
+  const discountPercent = quotePrice.discountPercent;
+  const pricePending = quotePrice.pricePending;
 
   const validateForm = (): boolean => {
     const newErrors: Record<string, string> = {};
+
+    if (!formData.premiseType) {
+      newErrors.premiseType = 'Please select Residential or Commercial';
+    }
 
     if (formData.pestTypes.length === 0) {
       newErrors.pestTypes = 'Please select at least one pest type';
@@ -187,6 +282,19 @@ export default function HomeQuoteForm({
       newErrors.name = 'Name is required';
     }
 
+    const address = (formData.streetAddress || formData.address || '').trim();
+    if (address.length < 5) {
+      newErrors.streetAddress = 'Please enter your service address';
+    }
+
+    if (!formData.preferredDate) {
+      newErrors.preferredDate = 'Please select a preferred date';
+    }
+
+    if (!toPreferredTime(formData.preferredTime || '')) {
+      newErrors.preferredTime = 'Please select a preferred time';
+    }
+
     if (
       formData.premiseType === 'residential' &&
       formData.pestTypes.length > 0 &&
@@ -196,489 +304,770 @@ export default function HomeQuoteForm({
       newErrors.premiseSize = 'Please select a premise size';
     }
 
-    if (formData.premiseType === 'residential' && !formData.serviceType) {
-      newErrors.serviceType = 'Please select a service type';
+    if (formData.premiseType === 'residential' && !isInspectionQuote) {
+      if (!formData.treatmentQuality) {
+        newErrors.treatmentQuality = 'Please select treatment quality';
+      }
+      if (!formData.serviceType) {
+        newErrors.serviceType = 'Please select a service plan';
+      }
     }
 
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
   };
 
+  const closeOtpModal = () => {
+    setOtpModalOpen(false);
+    setOtpValue('');
+    setOtpError('');
+    setOtpHint('');
+    setOtpSending(false);
+    setOtpVerifying(false);
+    bookingDraftRef.current = null;
+  };
+
+  const startOtpFlow = async () => {
+    setOtpSending(true);
+    setOtpError('');
+    setSubmitMessage('');
+    try {
+      const draft = { ...formData, pestTypes: [...formData.pestTypes] };
+      const otpSend = await sendHomeBookingOtp(draft as unknown as Record<string, unknown>);
+      if (!otpSend.ok) {
+        // Hourly cap: show server message on the form banner (no short "wait Xs" cooldown).
+        setSubmitMessage(otpSend.error);
+        setOtpModalOpen(false);
+        bookingDraftRef.current = null;
+        return false;
+      }
+      bookingDraftRef.current = draft;
+      setOtpMobile(otpSend.mobile);
+      // Soft button debounce only — website booking has no short server cooldown.
+      setResendCooldown(otpSend.resendAfter > 0 ? otpSend.resendAfter : 2);
+      setOtpHint(
+        otpSend.devOtp
+          ? `Local DEBUG OTP: ${otpSend.devOtp}`
+          : `OTP sent to +91 ${otpSend.mobile}`,
+      );
+      setOtpModalOpen(true);
+      setOtpValue('');
+      return true;
+    } catch (error) {
+      console.error('Error sending booking OTP:', error);
+      setSubmitMessage('Network error sending OTP. Please try again.');
+      bookingDraftRef.current = null;
+      return false;
+    } finally {
+      setOtpSending(false);
+    }
+  };
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-
-    if (!validateForm()) {
-      return;
-    }
+    if (!validateForm()) return;
 
     setIsSubmitting(true);
     setShowSuccessPopup(false);
     setSubmitMessage('');
 
     try {
-      // Submit to the backend API which handles both CRM and Email
-      const result = await submitHomeQuoteForm(formData as unknown as Record<string, unknown>, {
-        leadSource,
-        defaultCity,
-        defaultState,
-      });
-
-      if (result.ok) {
-        clearFormData();
-        setErrors({});
-        navigate(thankYouPath, { replace: true });
-        return;
-      } else {
-        setShowSuccessPopup(false);
-        setSubmitMessage(result.error || 'Failed to submit quote request. Please try again or contact us directly.');
-      }
-    } catch (error) {
-      console.error('Error submitting form:', error);
-      setShowSuccessPopup(false);
-      setSubmitMessage('Network error. Please check your connection and try again.');
+      await startOtpFlow();
     } finally {
       setIsSubmitting(false);
     }
   };
 
-  const handleChange = (field: keyof HomeFormData, value: any) => {
-    setFormData(prev => {
-      const nextData = {
-        ...prev,
-        [field]: value
-      };
+  const handleResendOtp = async () => {
+    if (resendCooldown > 0 || otpSending || otpVerifying) return;
+    setOtpError('');
+    setOtpSending(true);
+    try {
+      const draft =
+        bookingDraftRef.current ??
+        ({ ...formData, pestTypes: [...formData.pestTypes] } as HomeFormData);
+      const otpSend = await sendHomeBookingOtp(draft as unknown as Record<string, unknown>);
+      if (!otpSend.ok) {
+        setOtpError(otpSend.error);
+        return;
+      }
+      bookingDraftRef.current = draft;
+      setOtpMobile(otpSend.mobile);
+      setResendCooldown(otpSend.resendAfter > 0 ? otpSend.resendAfter : 2);
+      setOtpHint(
+        otpSend.devOtp
+          ? `Local DEBUG OTP: ${otpSend.devOtp}`
+          : `OTP resent to +91 ${otpSend.mobile}`,
+      );
+      setOtpValue('');
+    } catch (error) {
+      console.error('Error resending booking OTP:', error);
+      setOtpError('Network error. Please try again.');
+    } finally {
+      setOtpSending(false);
+    }
+  };
 
-      // Check if any selected pest restricts the service to One-Time
-      // Only 'cockroach-ants' currently supports AMC in the CRM pricing
-      const hasAmcSupport = nextData.pestTypes.length > 0 && 
-                           nextData.pestTypes.every(p => p === 'cockroach-ants');
-      
+  const handleVerifyOtpAndBook = async () => {
+    if (otpVerifying || otpSending) return;
+    const cleanOtp = otpValue.replace(/\D/g, '');
+    if (cleanOtp.length !== 4) {
+      setOtpError('Enter the 4-digit OTP');
+      return;
+    }
+
+    setOtpVerifying(true);
+    setOtpError('');
+    try {
+      const draft =
+        bookingDraftRef.current ??
+        ({ ...formData, pestTypes: [...formData.pestTypes] } as HomeFormData);
+      const mobileForVerify = otpMobile || draft.phone || formData.phone;
+      const verified = await verifyHomeBookingOtp(mobileForVerify, cleanOtp);
+      if (!verified.ok) {
+        setOtpError(verified.error);
+        return;
+      }
+
+      const result = await submitHomeBookingForm(
+        draft as unknown as Record<string, unknown>,
+        {
+          leadSource,
+          defaultCity,
+          defaultState,
+        },
+        catalogRates,
+        verified.otpVerificationToken,
+      );
+
+      if (result.ok) {
+        bookingDraftRef.current = null;
+        clearFormData();
+        setErrors({});
+        closeOtpModal();
+        const params = new URLSearchParams();
+        if (result.bookingCode) params.set('code', result.bookingCode);
+        if (result.bookingId) params.set('id', String(result.bookingId));
+        if (result.priceConfirmationPending) params.set('pending', '1');
+        const qs = params.toString();
+        navigate(qs ? `${thankYouPath}?${qs}` : thankYouPath, { replace: true });
+        return;
+      }
+      setOtpError(
+        result.error || 'Failed to confirm booking. Please try again or contact us directly.',
+      );
+    } catch (error) {
+      console.error('Error verifying OTP / booking:', error);
+      setOtpError('Network error. Please check your connection and try again.');
+    } finally {
+      setOtpVerifying(false);
+    }
+  };
+
+  const handleChange = (field: keyof HomeFormData, value: unknown) => {
+    setFormData((prev) => {
+      const nextData = { ...prev, [field]: value } as HomeFormData;
+
+      // Strip removed Hotel / Commercial pest slug if it ever appears (legacy storage).
+      nextData.pestTypes = nextData.pestTypes.filter((p) => p !== 'hotel-commercial');
+
+      const hasAmcSupport =
+        nextData.pestTypes.length > 0 && nextData.pestTypes.every((p) => p === 'cockroach-ants');
+
+      // Clear invalid AMC only — do not auto-select One-Time or Residential.
       if (!hasAmcSupport && nextData.serviceType === 'amc') {
-        nextData.serviceType = 'one-time';
+        nextData.serviceType = '';
       }
 
-      // If specific pests are selected that are known to be One-Time only
-      const oneTimeOnlyPests = ['rodent', 'bedbugs', 'termite', 'mosquito'];
-      const isForcedOneTime = nextData.pestTypes.some(p => oneTimeOnlyPests.includes(p));
-      
-      if (isForcedOneTime) {
-        nextData.serviceType = 'one-time';
+      // Commercial / inspection: clear residential-only selections.
+      if (nextData.premiseType === 'commercial') {
+        nextData.treatmentQuality = '';
+        nextData.serviceType = '';
+        nextData.premiseSize = '';
       }
-      
-      // Re-calculate price on any relevant change
-      nextData.estimatedPrice = calculatePrice(nextData);
-      
+
+      nextData.estimatedPrice = priceFromCatalog(nextData).offerPrice;
       return nextData;
     });
 
-    // Clear error when user starts typing
-    if (errors[field]) {
-      setErrors(prev => ({
-        ...prev,
-        [field]: ''
-      }));
+    if (errors[field as string]) {
+      setErrors((prev) => ({ ...prev, [field]: '' }));
     }
-
-    // Clear success popup when user starts editing
     if (showSuccessPopup) {
       setShowSuccessPopup(false);
       setSubmitMessage('');
     }
   };
 
+  const selectionsComplete =
+    Boolean(formData.premiseType) &&
+    formData.pestTypes.length > 0 &&
+    (isInspectionQuote ||
+      (Boolean(formData.premiseSize) &&
+        Boolean(formData.treatmentQuality) &&
+        Boolean(formData.serviceType)));
+
+  const showPromoPricing =
+    selectionsComplete &&
+    !isInspectionQuote &&
+    !pricePending &&
+    !catalogLoading &&
+    offerPrice > 0 &&
+    listPrice > offerPrice &&
+    discountPercent > 0;
+
+  const priceSummaryLabel = (() => {
+    if (!selectionsComplete) return 'Select options for price';
+    if (isInspectionQuote) return 'Site inspection';
+    const quality = formData.treatmentQuality === 'premium' ? 'Premium' : 'Standard';
+    if (formData.serviceType === 'amc') return `${quality} AMC • 3 visits`;
+    if (formData.serviceType === 'one-time') return `${quality} • One-Time`;
+    return 'Select options for price';
+  })();
+
+  const title = formTitle || 'Confirm Your Booking';
+
   return (
-    <section
-      id="get-quote"
-      className={`pt-0 bg-transparent relative overflow-hidden scroll-mt-24 ${compact ? 'pb-6 sm:pb-10 md:pb-12' : 'pb-12 sm:pb-16 md:pb-20'}`}
-    >
-      {/* Background Decorative Elements */}
-      <div className="absolute top-0 left-0 w-full h-full overflow-hidden pointer-events-none">
-        <div className="absolute -top-[20%] -right-[10%] w-[50%] h-[50%] bg-green-50 rounded-full blur-3xl opacity-60"></div>
-        <div className="absolute top-[40%] -left-[10%] w-[40%] h-[40%] bg-blue-50 rounded-full blur-3xl opacity-60"></div>
-      </div>
+    <section id="get-quote" className="booking-form-section scroll-mt-24">
+      <div data-hero-form-card="" className="booking-form-card">
+        <div className="booking-form-header">
+          <h2 className="booking-form-title">{title}</h2>
+          <span className="booking-required-hint">* Required</span>
+        </div>
+        {formSubtitle ? <p className="booking-form-subtitle">{formSubtitle}</p> : null}
 
-      <div className="container mx-auto px-4 sm:px-6 relative z-10">
-        <div className={`mx-auto ${compact ? 'max-w-2xl' : 'max-w-3xl'}`}>
-          <div
-            data-hero-form-card={compact ? '' : undefined}
-            className={`bg-white border border-[#e8f0ea] relative overflow-hidden shadow-[0_4px_6px_-1px_rgb(0_0_0_/_0.05),0_2px_4px_-2px_rgb(0_0_0_/_0.05)] ${compact ? 'p-3 sm:p-6 rounded-xl' : 'p-6 sm:p-10 rounded-2xl'}`}
-          >
-            {(formTitle || formSubtitle) ? (
-              <div className={`text-center ${compact ? 'mb-3 sm:mb-5' : 'mb-6 sm:mb-8'}`}>
-                {formTitle ? (
-                  <h2
-                    className={`font-bold text-gray-900 mb-1.5 sm:mb-3 leading-tight ${compact ? 'text-lg sm:text-2xl md:text-3xl' : 'text-2xl sm:text-3xl md:text-4xl'}`}
-                  >
-                    {formTitle}
-                  </h2>
-                ) : null}
-                {formSubtitle ? (
-                  <p className={`text-gray-600 max-w-xl mx-auto ${compact ? 'text-xs sm:text-sm' : 'text-sm sm:text-base'}`}>
-                    {formSubtitle}
-                  </p>
-                ) : null}
+        {catalogError ? (
+          <div className="mb-2 rounded-[10px] border border-amber-200 bg-amber-50 p-2.5 text-xs font-semibold text-amber-900">
+            Live prices unavailable — booking may need staff price confirmation. {catalogError}
+          </div>
+        ) : null}
+
+        {submitMessage && !showSuccessPopup && (
+          <div className="mb-2 rounded-[10px] border border-red-200 bg-red-50 p-2.5 text-xs font-semibold text-red-800">
+            {submitMessage}
+          </div>
+        )}
+
+        <form onSubmit={handleSubmit} className="booking-form-fields">
+          <div className="booking-form-body">
+            <div>
+              <div className="booking-prop-toggle" role="group" aria-label="Property type">
+                <button
+                  type="button"
+                  onClick={() => handleChange('premiseType', 'residential')}
+                  className={`booking-prop-btn${formData.premiseType === 'residential' ? ' is-active' : ''}`}
+                  aria-pressed={formData.premiseType === 'residential'}
+                >
+                  🏠 Residential
+                </button>
+                <button
+                  type="button"
+                  onClick={() => handleChange('premiseType', 'commercial')}
+                  className={`booking-prop-btn${formData.premiseType === 'commercial' ? ' is-active' : ''}`}
+                  aria-pressed={formData.premiseType === 'commercial'}
+                >
+                  🏢 Commercial
+                </button>
               </div>
-            ) : null}
+              {errors.premiseType && (
+                <p className="mt-1 text-[10px] font-semibold text-red-600">{errors.premiseType}</p>
+              )}
+            </div>
 
-            {/* Error Message (inline) */}
-            {submitMessage && !showSuccessPopup && (
-              <div className="mb-6 p-4 rounded-lg bg-red-50 border border-red-200 text-red-800 animate-in fade-in slide-in-from-top-2">
-                <div className="flex items-center">
-                  <svg className="w-5 h-5 mr-2 text-red-600 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
-                    <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clipRule="evenodd" />
-                  </svg>
-                  <span className="font-medium">{submitMessage}</span>
-                </div>
-              </div>
-            )}
-
-            <form onSubmit={handleSubmit} className={compact ? 'space-y-3 sm:space-y-3.5' : 'space-y-5'}>
-              {/* 1. Premise Type Toggle - HiCare Style */}
+            <div className="booking-grid-2 booking-grid-service">
               <div>
-                <label className={`block font-bold text-[#1a1a1a] ${compact ? 'text-[13px] mb-1.5 sm:mb-2' : 'text-[15px] mb-2.5'}`}>
-                  Premise Type *
-                </label>
-                <div className="quote-field-toggle flex">
-                  <button
-                    type="button"
-                    onClick={() => handleChange('premiseType', 'residential')}
-                    className={`flex-1 flex items-center justify-center gap-1.5 transition-all duration-200 ${compact ? 'py-1.5 sm:py-2 px-3' : 'py-3 px-4'} ${formData.premiseType === 'residential'
-                        ? 'bg-green-base text-white'
-                        : 'bg-white text-green-base'
-                      }`}
-                  >
-                    <ResidentialIcon className={compact ? 'h-4 w-4' : 'h-5 w-5'} />
-                    <span className={`font-bold ${compact ? 'text-sm' : 'text-[15px]'}`}>Residential</span>
-                  </button>
-                  <button
-                    type="button"
-                    onClick={() => handleChange('premiseType', 'commercial')}
-                    className={`flex-1 flex items-center justify-center gap-1.5 transition-all duration-200 ${compact ? 'py-1.5 sm:py-2 px-3' : 'py-3 px-4'} ${formData.premiseType === 'commercial'
-                        ? 'bg-green-base text-white'
-                        : 'bg-white text-green-base'
-                      }`}
-                  >
-                    <CommercialIcon className={compact ? 'h-4 w-4' : 'h-5 w-5'} />
-                    <span className={`font-bold ${compact ? 'text-sm' : 'text-[15px]'}`}>Commercial</span>
-                  </button>
-                </div>
-              </div>
-
-              {/* 2. Type of Pest Problem */}
-              <div className="relative">
                 <MultiSelectPest
                   selectedPests={formData.pestTypes}
                   onChange={(pests) => handleChange('pestTypes', pests)}
-                  compact={compact}
+                  compact
                 />
                 {errors.pestTypes && (
-                  <p className="mt-1 text-sm text-red-600 flex items-center">
-                    <svg className="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
-                    {errors.pestTypes}
+                  <p className="mt-1 text-[10px] font-semibold text-red-600">{errors.pestTypes}</p>
+                )}
+              </div>
+
+              {formData.premiseType === 'residential' &&
+              formData.pestTypes.length > 0 &&
+              !formData.pestTypes.includes('hotel-commercial') ? (
+                <div ref={premiseSizeRef}>
+                  <label id="premise-size-label" className="booking-field-label">
+                    Premise Size *
+                  </label>
+                  <div
+                    className={`booking-select${errors.premiseSize ? ' booking-select-error' : ''}${premiseSizeOpen ? ' is-open' : ''}`}
+                  >
+                    <button
+                      type="button"
+                      id="premise-size-trigger"
+                      aria-haspopup="listbox"
+                      aria-expanded={premiseSizeOpen}
+                      aria-labelledby="premise-size-label premise-size-trigger"
+                      onClick={() => setPremiseSizeOpen((o) => !o)}
+                      className="booking-select-trigger"
+                    >
+                      <span className={selectedPremiseSize ? '' : 'is-placeholder'}>
+                        {selectedPremiseSize?.label ?? 'Select size'}
+                      </span>
+                      <svg
+                        className="h-4 w-4"
+                        fill="none"
+                        viewBox="0 0 24 24"
+                        stroke="currentColor"
+                        aria-hidden
+                      >
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          strokeWidth={2}
+                          d="M19 9l-7 7-7-7"
+                        />
+                      </svg>
+                    </button>
+                    {premiseSizeOpen && (
+                      <ul
+                        role="listbox"
+                        aria-labelledby="premise-size-label"
+                        className="booking-select-menu"
+                      >
+                        {PREMISE_SIZE_OPTIONS.map((option) => (
+                          <li key={option.value} role="presentation">
+                            <button
+                              type="button"
+                              role="option"
+                              aria-selected={formData.premiseSize === option.value}
+                              className={`booking-select-option${formData.premiseSize === option.value ? ' is-selected' : ''}`}
+                              onClick={() => {
+                                handleChange('premiseSize', option.value);
+                                setPremiseSizeOpen(false);
+                              }}
+                            >
+                              {option.label}
+                            </button>
+                          </li>
+                        ))}
+                      </ul>
+                    )}
+                  </div>
+                  {errors.premiseSize && (
+                    <p className="mt-1 text-[10px] font-semibold text-red-600">{errors.premiseSize}</p>
+                  )}
+                </div>
+              ) : (
+                <div className="hidden sm:block" aria-hidden />
+              )}
+            </div>
+
+            {formData.premiseType === 'residential' && !isInspectionQuote && (
+              <div>
+                <p className="booking-field-label">Treatment Quality *</p>
+                <div className="booking-choice-grid">
+                  <button
+                    type="button"
+                    onClick={() => handleChange('treatmentQuality', 'standard')}
+                    className={`booking-choice-card${formData.treatmentQuality === 'standard' ? ' is-selected' : ''}`}
+                  >
+                    <strong className="booking-choice-title">Standard</strong>
+                    <small className="booking-choice-sub">Gel + spray</small>
+                    <i
+                      className="booking-info-icon"
+                      role="button"
+                      tabIndex={0}
+                      aria-label="Standard treatment info"
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        e.preventDefault();
+                        setInfoModal('standard');
+                      }}
+                      onKeyDown={(e) => {
+                        if (e.key === 'Enter' || e.key === ' ') {
+                          e.stopPropagation();
+                          e.preventDefault();
+                          setInfoModal('standard');
+                        }
+                      }}
+                    >
+                      i
+                    </i>
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => handleChange('treatmentQuality', 'premium')}
+                    className={`booking-choice-card booking-choice-recommended${formData.treatmentQuality === 'premium' ? ' is-selected' : ''}`}
+                  >
+                    <strong className="booking-choice-title">Premium</strong>
+                    <small className="booking-choice-sub">No-smell treatment</small>
+                    <i
+                      className="booking-info-icon"
+                      role="button"
+                      tabIndex={0}
+                      aria-label="Premium treatment info"
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        e.preventDefault();
+                        setInfoModal('premium');
+                      }}
+                      onKeyDown={(e) => {
+                        if (e.key === 'Enter' || e.key === ' ') {
+                          e.stopPropagation();
+                          e.preventDefault();
+                          setInfoModal('premium');
+                        }
+                      }}
+                    >
+                      i
+                    </i>
+                  </button>
+                </div>
+                {errors.treatmentQuality && (
+                  <p className="mt-1 text-[10px] font-semibold text-red-600">
+                    {errors.treatmentQuality}
                   </p>
                 )}
               </div>
+            )}
 
-              {/* 3. Price / inspection — commercial never mounts the GST label element */}
-              <div className={`quote-price-block ${compact ? 'py-1' : 'py-1.5'}`}>
-                {isInspectionQuote ? (
-                  <div className="flex flex-col gap-0.5" data-quote-mode="inspection">
-                    <span className={`font-bold text-slate-900 ${compact ? 'text-lg sm:text-xl' : 'text-2xl'}`}>
-                      Inspection Required
-                    </span>
-                    <p className="text-[11px] text-green-base font-semibold mt-0.5">
-                      Free Consultation & Site Visit
-                    </p>
-                  </div>
-                ) : (
-                  <div className="flex flex-col items-start gap-0.5" data-quote-mode="priced">
-                    {formData.premiseType === 'residential' && priceParts.sale > 0 ? (
-                      <span className={`font-medium text-slate-800 ${compact ? 'text-sm' : 'text-[15px]'}`}>
-                        Price (Excluding GST)
-                      </span>
-                    ) : null}
-                    <span
-                      className={`font-bold text-slate-900 tracking-tight tabular-nums ${compact ? 'text-[1.65rem] sm:text-[1.85rem] leading-tight' : 'text-[1.85rem] sm:text-[2rem] leading-tight'}`}
-                    >
-                      {formatInr(priceParts.sale)}
-                    </span>
-                    {priceParts.mrp != null && priceParts.savePercent != null && (
-                      <div className="flex flex-wrap items-center gap-2 mt-0.5">
-                        <span className={`text-slate-500 line-through tabular-nums ${compact ? 'text-sm' : 'text-[15px]'}`}>
-                          {formatInr(priceParts.mrp)}
-                        </span>
-                        <span className="inline-flex items-center rounded-full bg-green-50 px-2.5 py-0.5 text-sm font-medium text-green-800">
-                          (Save {priceParts.savePercent}%)
-                        </span>
-                      </div>
-                    )}
-                  </div>
+            {formData.premiseType === 'residential' && !isInspectionQuote && (
+              <div>
+                <p className="booking-field-label">Service Plan *</p>
+                <div className="booking-choice-grid">
+                  <button
+                    type="button"
+                    onClick={() => handleChange('serviceType', 'one-time')}
+                    className={`booking-choice-card${formData.serviceType === 'one-time' ? ' is-selected' : ''}`}
+                  >
+                    <strong className="booking-choice-title">One-Time</strong>
+                    <small className="booking-choice-sub">Single service</small>
+                  </button>
+                  <button
+                    type="button"
+                    disabled={!amcAvailable}
+                    onClick={() => amcAvailable && handleChange('serviceType', 'amc')}
+                    className={`booking-choice-card booking-choice-recommended${formData.serviceType === 'amc' ? ' is-selected' : ''}${!amcAvailable ? ' is-disabled' : ''}`}
+                    title={amcAvailable ? undefined : 'AMC available for Cockroach / Ants only'}
+                  >
+                    <strong className="booking-choice-title">AMC — 3 Visits</strong>
+                    <small className="booking-choice-sub">12-month protection</small>
+                  </button>
+                </div>
+                {!amcAvailable && (
+                  <p className="mt-1 text-[10px] font-medium italic text-orange-600">
+                    * Selected service(s) available only as One-Time treatment
+                  </p>
+                )}
+                {errors.serviceType && (
+                  <p className="mt-1 text-[10px] font-semibold text-red-600">{errors.serviceType}</p>
                 )}
               </div>
+            )}
 
-              {/* 4. Residential Specific Options (Size & Type) */}
-              {formData.premiseType === 'residential' && formData.pestTypes.length > 0 && !formData.pestTypes.includes('hotel-commercial') && (
-                <div className={`grid grid-cols-1 md:grid-cols-2 py-2 animate-in fade-in slide-in-from-top-2 ${compact ? 'gap-3.5' : 'gap-5'}`}>
-                  {/* Premise Size Section */}
-                  <div className="flex flex-col">
-                    <label
-                      id="premise-size-label"
-                      className={`block font-semibold text-slate-800 mb-2 ${compact ? 'text-[13px]' : 'text-[15px]'}`}
-                    >
-                      Premise Size *
-                    </label>
-                    <div
-                      className={`quote-size-select ${errors.premiseSize ? 'quote-size-select-error' : ''} ${premiseSizeOpen ? 'quote-size-select-open' : ''}`}
-                      ref={premiseSizeRef}
-                    >
-                      <button
-                        type="button"
-                        id="premise-size-trigger"
-                        aria-haspopup="listbox"
-                        aria-expanded={premiseSizeOpen}
-                        aria-labelledby="premise-size-label premise-size-trigger"
-                        onClick={() => setPremiseSizeOpen((open) => !open)}
-                        className={`quote-size-trigger w-full flex items-center justify-between gap-3 text-left ${compact ? 'px-3.5 py-2.5 text-sm' : 'px-4 py-3 text-[15px]'}`}
-                      >
-                        <span className={`font-bold ${selectedPremiseSize ? 'text-slate-800' : 'text-slate-400'}`}>
-                          {selectedPremiseSize?.label ?? 'Select size'}
-                        </span>
-                        <svg
-                          className={`quote-size-chevron h-5 w-5 shrink-0 transition-transform duration-200 ${premiseSizeOpen ? 'rotate-180' : ''}`}
-                          fill="none"
-                          viewBox="0 0 24 24"
-                          stroke="currentColor"
-                          aria-hidden="true"
-                        >
-                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
-                        </svg>
-                      </button>
-                      {premiseSizeOpen && (
-                        <ul
-                          role="listbox"
-                          aria-labelledby="premise-size-label"
-                          className="quote-size-menu"
-                        >
-                          {PREMISE_SIZE_OPTIONS.map((option) => {
-                            const selected = formData.premiseSize === option.value;
-                            return (
-                              <li key={option.value} role="presentation">
-                                <button
-                                  type="button"
-                                  role="option"
-                                  aria-selected={selected}
-                                  className={`quote-size-option w-full text-left font-bold text-slate-800 ${compact ? 'px-3.5 py-2.5 text-sm' : 'px-4 py-3 text-[15px]'} ${selected ? 'quote-size-option-selected' : ''}`}
-                                  onClick={() => {
-                                    handleChange('premiseSize', option.value);
-                                    setPremiseSizeOpen(false);
-                                  }}
-                                >
-                                  {option.label}
-                                </button>
-                              </li>
-                            );
-                          })}
-                        </ul>
-                      )}
-                    </div>
-                    {errors.premiseSize && (
-                      <p className="mt-1 text-xs text-red-600 font-bold">{errors.premiseSize}</p>
-                    )}
-                  </div>
+            <AddressInput
+              label="Service Address *"
+              value={formData.streetAddress}
+              onChange={(value) => handleChange('streetAddress', value)}
+              placeholder="Area, building or full address"
+              inlineLocate
+              className=""
+              error={errors.streetAddress}
+            />
 
-                  {/* Select Type Section (One-Time / AMC) */}
-                  <div className="flex flex-col">
-                    <label className={`block font-bold text-[#1a1a1a] mb-2 ${compact ? 'text-[13px]' : 'text-[15px]'}`}>
-                      Select Type *
-                    </label>
-                    <select
-                      value={formData.serviceType || ''}
-                      onChange={(e) => handleChange('serviceType', e.target.value)}
-                      className={`quote-field w-full px-4 font-bold text-gray-700 cursor-pointer appearance-none ${compact ? 'py-2.5 text-sm' : 'py-3'} ${errors.serviceType ? 'quote-field-error' : ''}`}
-                      style={{ backgroundImage: 'url("data:image/svg+xml,%3Csvg xmlns=\'http://www.w3.org/2000/svg\' fill=\'none\' viewBox=\'0 0 24 24\' stroke=\'%237fbf94\'%3E%3Cpath stroke-linecap=\'round\' stroke-linejoin=\'round\' stroke-width=\'2\' d=\'M19 9l-7 7-7-7\' /%3E%3C/svg%3E")', backgroundRepeat: 'no-repeat', backgroundPosition: 'right 1rem center', backgroundSize: '1.2rem' }}
-                    >
-                      <option value="" disabled>Select Type</option>
-                      <option value="one-time">One Time Service</option>
-                      {formData.pestTypes.length > 0 && formData.pestTypes.every(p => p === 'cockroach-ants') && (
-                        <option value="amc">Annual Maintenance Contract 3 Services</option>
-                      )}
-                    </select>
-                    {formData.pestTypes.some(p => ['rodent', 'bedbugs', 'termite', 'mosquito'].includes(p)) && (
-                      <p className="mt-1 text-[10px] text-orange-600 font-bold italic">* Selected service(s) available only as One-Time treatment</p>
-                    )}
-                    {errors.serviceType && (
-                      <p className="mt-1 text-xs text-red-600 font-bold">{errors.serviceType}</p>
-                    )}
-                  </div>
-                </div>
-              )}
-
-              <div className={`grid grid-cols-1 md:grid-cols-2 ${compact ? 'gap-3.5' : 'gap-5'}`}>
-                {/* 5. Your Name */}
-                <div>
-                  <label className={`block font-bold text-[#1a1a1a] mb-2 ${compact ? 'text-[13px]' : 'text-[15px]'}`}>
-                    Your Name *
-                  </label>
-                  <div className="relative group">
-                    <input
-                      type="text"
-                      value={formData.name}
-                      onChange={(e) => handleChange('name', e.target.value)}
-                      placeholder="Enter your full name"
-                      className={`quote-field w-full px-4 font-medium ${compact ? 'py-2.5 text-sm' : 'py-3'} ${errors.name ? 'quote-field-error' : ''}`}
-                    />
-                  </div>
-                  {errors.name && (
-                    <p className="mt-1 text-xs text-red-600 font-bold">{errors.name}</p>
-                  )}
-                </div>
-
-                {/* 6. Phone Number */}
-                <div>
-                  <label
-                    htmlFor="quote-phone"
-                    className={`block font-bold text-[#1a1a1a] mb-2 ${compact ? 'text-[13px]' : 'text-[15px]'}`}
-                  >
-                    Phone Number *
-                  </label>
-                  <div className={`quote-phone-field${errors.phone ? ' quote-phone-field-error' : ''}`}>
-                    <div className="quote-phone-prefix" aria-hidden="true">
-                      <IndiaFlagIcon className="quote-phone-flag" />
-                      <span className="quote-phone-prefix-code">+91</span>
-                    </div>
-                    <input
-                      id="quote-phone"
-                      type="tel"
-                      inputMode="numeric"
-                      autoComplete="tel-national"
-                      value={formData.phone}
-                      onChange={(e) => {
-                        const value = e.target.value.replace(/\D/g, '').slice(0, 10);
-                        handleChange('phone', value);
-                      }}
-                      placeholder="10-digit mobile number"
-                      maxLength={10}
-                      className={`quote-phone-input font-medium ${compact ? 'text-sm' : 'text-base'}`}
-                      aria-invalid={Boolean(errors.phone)}
-                      aria-describedby={errors.phone ? 'quote-phone-error' : undefined}
-                    />
-                  </div>
-                  {errors.phone && (
-                    <p id="quote-phone-error" className="mt-1 text-xs text-red-600 font-bold">
-                      {errors.phone}
-                    </p>
-                  )}
+            <div className="booking-grid-2 booking-grid-schedule">
+              <div>
+                <label htmlFor="preferred-date" className="booking-field-label">
+                  Preferred Date *
+                </label>
+                <div className="booking-date-field">
+                  <span className="booking-date-display" aria-hidden="true">
+                    {formatFriendlyPreferredDate(formData.preferredDate) || 'Select date'}
+                  </span>
+                  <input
+                    id="preferred-date"
+                    type="date"
+                    min={dateMin}
+                    value={formData.preferredDate || ''}
+                    onChange={(e) => handleChange('preferredDate', e.target.value)}
+                    className="booking-input booking-date-native"
+                    aria-label={
+                      formatFriendlyPreferredDate(formData.preferredDate) || 'Preferred date'
+                    }
+                  />
                 </div>
               </div>
-
-              {/* 7. Street Address (optional) — Google Places autocomplete + current location */}
               <div>
-                <label
-                  htmlFor="streetAddress"
-                  className={`block font-bold text-[#1a1a1a] mb-2 ${compact ? 'text-[13px]' : 'text-[15px]'}`}
-                >
-                  Street Address <span className="font-normal text-gray-500">(optional)</span>
+                <label htmlFor="preferred-time" className="booking-field-label">
+                  Preferred Time *
                 </label>
-                <AddressInput
-                  label=""
-                  value={formData.streetAddress}
-                  onChange={(value) => handleChange('streetAddress', value)}
-                  placeholder="Enter your street address (optional)"
-                  className={`${compact ? 'py-2.5 text-sm' : 'py-3'} ${errors.streetAddress ? 'quote-field-error' : ''}`}
-                  error={errors.streetAddress}
+                <ClockTimePicker
+                  id="preferred-time"
+                  value={formData.preferredTime || ''}
+                  onChange={(val) => handleChange('preferredTime', toPreferredTime(val))}
                 />
               </div>
+            </div>
 
-              {/* Submit Button */}
-              <div className={compact ? 'pt-2' : 'pt-4'}>
-                <button
-                  type="submit"
-                  disabled={isSubmitting}
-                  className={`btn-cta w-full rounded-lg font-bold transition-all duration-300 hover:-translate-y-0.5 disabled:cursor-not-allowed disabled:opacity-70 disabled:transform-none flex items-center justify-center group ${compact ? 'py-3 px-5 text-sm' : 'py-4 px-8'}`}
-                >
-                  {isSubmitting ? (
-                    <>
-                      <svg className="animate-spin -ml-1 mr-2 h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-                        <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
-                        <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
-                      </svg>
-                      Processing Request...
-                    </>
-                  ) : (
-                    <>
-                      Book Now
-                      <svg className="w-5 h-5 ml-2 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
-                      </svg>
-                    </>
-                  )}
-                </button>
+            <div className="booking-grid-2 booking-grid-phone">
+              <div>
+                <label htmlFor="booking-name" className="booking-field-label">
+                  Your Name *
+                </label>
+                <input
+                  id="booking-name"
+                  type="text"
+                  value={formData.name}
+                  onChange={(e) => handleChange('name', e.target.value)}
+                  placeholder="Full name"
+                  className={`booking-input${errors.name ? ' booking-input-error' : ''}`}
+                  autoComplete="name"
+                />
+                {errors.name && (
+                  <p className="mt-1 text-[10px] font-semibold text-red-600">{errors.name}</p>
+                )}
               </div>
-            </form>
+              <div>
+                <label htmlFor="booking-phone" className="booking-field-label">
+                  Mobile Number *
+                </label>
+                <div
+                  className={`booking-phone-field${errors.phone ? ' booking-phone-field-error' : ''}`}
+                >
+                  <div className="booking-phone-prefix" aria-hidden="true">
+                    <IndiaFlagIcon className="booking-phone-flag" />
+                    <span className="booking-phone-prefix-code">+91</span>
+                  </div>
+                  <input
+                    id="booking-phone"
+                    type="tel"
+                    inputMode="numeric"
+                    autoComplete="tel-national"
+                    value={formData.phone}
+                    onChange={(e) => {
+                      const value = e.target.value.replace(/\D/g, '').slice(0, 10);
+                      handleChange('phone', value);
+                    }}
+                    onBlur={() => {
+                      if (isValidBookingMobile(formData.phone)) {
+                        queueSilentInquiry(formData);
+                      }
+                    }}
+                    placeholder="10 digits"
+                    maxLength={10}
+                    className="booking-phone-input"
+                    aria-invalid={Boolean(errors.phone)}
+                    aria-describedby={errors.phone ? 'booking-phone-error' : undefined}
+                  />
+                </div>
+                {errors.phone && (
+                  <p
+                    id="booking-phone-error"
+                    className="mt-1 text-[10px] font-semibold text-red-600"
+                  >
+                    {errors.phone}
+                  </p>
+                )}
+              </div>
+            </div>
           </div>
-        </div>
+
+          <div className="booking-form-cta">
+            <div className="booking-price-bar">
+              <div className="booking-price-rate-copy">
+                <span>{priceSummaryLabel}</span>
+                {selectionsComplete && !isInspectionQuote && !pricePending && offerPrice > 0 ? (
+                  <b>Price (Excluding GST)</b>
+                ) : null}
+                {selectionsComplete && pricePending && !isInspectionQuote ? (
+                  <b>Price confirmation pending</b>
+                ) : null}
+              </div>
+              <div className="booking-price-amounts">
+                {catalogLoading ? (
+                  <strong className="booking-price-discounted">…</strong>
+                ) : isInspectionQuote ? (
+                  <strong className="booking-price-discounted">Free visit</strong>
+                ) : showPromoPricing ? (
+                  <>
+                    <span className="booking-price-actual">{formatInrWhole(listPrice)}</span>
+                    <span className="booking-price-off">{discountPercent}% OFF</span>
+                    <strong className="booking-price-discounted">{formatInrWhole(offerPrice)}</strong>
+                  </>
+                ) : selectionsComplete && !pricePending && offerPrice > 0 ? (
+                  <strong className="booking-price-discounted">{formatInrWhole(offerPrice)}</strong>
+                ) : selectionsComplete && pricePending ? (
+                  <strong className="booking-price-discounted">On request</strong>
+                ) : (
+                  <strong className="booking-price-discounted">₹0</strong>
+                )}
+              </div>
+            </div>
+
+            <button type="submit" disabled={isSubmitting || otpSending} className="booking-submit-btn">
+              {isSubmitting || otpSending ? (
+                <>
+                  <svg className="mr-2 h-5 w-5 animate-spin" viewBox="0 0 24 24" fill="none" aria-hidden>
+                    <circle
+                      className="opacity-25"
+                      cx="12"
+                      cy="12"
+                      r="10"
+                      stroke="currentColor"
+                      strokeWidth="4"
+                    />
+                    <path
+                      className="opacity-75"
+                      fill="currentColor"
+                      d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z"
+                    />
+                  </svg>
+                  Sending OTP…
+                </>
+              ) : (
+                <>Confirm Booking →</>
+              )}
+            </button>
+          </div>
+        </form>
       </div>
 
-      {/* Success Popup Modal */}
-      {showSuccessPopup && (
-        <div className="fixed inset-0 bg-gray-900/60 backdrop-blur-sm flex items-center justify-center z-50 p-4 animate-in fade-in duration-300">
-          <div className="bg-white rounded-2xl p-6 sm:p-8 max-w-md w-full mx-4 relative transform transition-all duration-300 scale-100 shadow-2xl">
-            {/* Close Button */}
+      {infoModal && (
+        <div
+          className="booking-info-modal open"
+          role="dialog"
+          aria-modal="true"
+          aria-labelledby="booking-info-title"
+          onClick={(e) => {
+            if (e.target === e.currentTarget) setInfoModal(null);
+          }}
+        >
+          <div className="booking-info-sheet">
+            <h3 id="booking-info-title">{TREATMENT_DETAILS[infoModal][0]}</h3>
+            <p>{TREATMENT_DETAILS[infoModal][1]}</p>
+            <button type="button" onClick={() => setInfoModal(null)}>
+              Got it
+            </button>
+          </div>
+        </div>
+      )}
+
+      {otpModalOpen && (
+        <div
+          className="booking-info-modal open"
+          role="dialog"
+          aria-modal="true"
+          aria-labelledby="booking-otp-title"
+          onClick={(e) => {
+            if (e.target === e.currentTarget && !otpVerifying) closeOtpModal();
+          }}
+        >
+          <div className="booking-info-sheet booking-otp-sheet">
+            <div className="booking-otp-header">
+              <h3 id="booking-otp-title">Verify mobile number</h3>
+              <button
+                type="button"
+                className="booking-otp-close"
+                onClick={closeOtpModal}
+                disabled={otpVerifying}
+                aria-label="Close"
+                title="Close"
+              >
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.25" aria-hidden="true">
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
+                </svg>
+              </button>
+            </div>
+            <p>
+              Enter the 4-digit OTP sent to{' '}
+              <strong>+91 {otpMobile || formData.phone.replace(/\D/g, '')}</strong> to confirm your
+              booking.
+            </p>
+            {otpHint ? <p className="booking-otp-hint">{otpHint}</p> : null}
+            <label className="booking-otp-label" htmlFor="booking-otp-input">
+              OTP
+            </label>
+            <input
+              ref={otpInputRef}
+              id="booking-otp-input"
+              type="text"
+              inputMode="numeric"
+              autoComplete="one-time-code"
+              maxLength={4}
+              value={otpValue}
+              onChange={(e) => {
+                const next = e.target.value.replace(/\D/g, '').slice(0, 4);
+                setOtpValue(next);
+                if (otpError) setOtpError('');
+              }}
+              onKeyDown={(e) => {
+                if (e.key === 'Enter') {
+                  e.preventDefault();
+                  void handleVerifyOtpAndBook();
+                }
+              }}
+              className="booking-otp-input"
+              placeholder="••••"
+              disabled={otpVerifying}
+              aria-invalid={Boolean(otpError)}
+            />
+            {otpError ? <p className="booking-otp-error">{otpError}</p> : null}
             <button
+              type="button"
+              className="booking-otp-verify-btn"
+              onClick={() => void handleVerifyOtpAndBook()}
+              disabled={otpVerifying || otpSending || otpValue.replace(/\D/g, '').length !== 4}
+            >
+              {otpVerifying ? 'Confirming booking…' : 'Verify & Confirm Booking'}
+            </button>
+            <div className="booking-otp-actions">
+              <button
+                type="button"
+                className="booking-otp-resend"
+                onClick={() => void handleResendOtp()}
+                disabled={resendCooldown > 0 || otpSending || otpVerifying}
+              >
+                {otpSending
+                  ? 'Sending…'
+                  : resendCooldown > 3
+                    ? `Resend OTP in ${resendCooldown}s`
+                    : 'Resend OTP'}
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {showSuccessPopup && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-gray-900/60 p-4 backdrop-blur-sm">
+          <div className="relative mx-4 w-full max-w-md rounded-2xl bg-white p-6 shadow-2xl sm:p-8">
+            <button
+              type="button"
               onClick={() => {
                 setShowSuccessPopup(false);
                 setSubmitMessage('');
               }}
-              className="absolute top-4 right-4 text-gray-400 hover:text-gray-600 transition-colors bg-gray-100 rounded-full p-1"
+              className="absolute right-4 top-4 rounded-full bg-gray-100 p-1 text-gray-400 hover:text-gray-600"
+              aria-label="Close"
             >
-              <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <svg className="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
               </svg>
             </button>
-
-            {/* Success Icon */}
-            <div className="text-center mb-6">
-              <div className="mx-auto w-20 h-20 bg-green-pale rounded-full flex items-center justify-center mb-4 relative">
-                <div className="absolute inset-0 bg-green-pale rounded-full animate-ping opacity-25"></div>
-                <svg className="w-10 h-10 text-green-base" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M5 13l4 4L19 7" />
-                </svg>
-              </div>
-              <h3 className="text-2xl font-bold text-gray-900 mb-2">Request Received!</h3>
-              <p className="text-gray-600 leading-relaxed">{submitMessage}</p>
+            <div className="mb-6 text-center">
+              <h3 className="mb-2 text-2xl font-bold text-gray-900">Request Received!</h3>
+              <p className="leading-relaxed text-gray-600">{submitMessage}</p>
             </div>
-
-            {/* Contact Options */}
-            <div className="space-y-3 bg-gray-50 p-4 rounded-xl border border-gray-100">
-              <p className="text-center text-sm text-gray-500 mb-3 font-medium">
-                Want a faster response?
-              </p>
-
-              <div className="grid grid-cols-2 gap-3">
-                {/* WhatsApp Button */}
-                <a
-                  href="https://wa.me/918080748282?text=Hi%2C%20I%20just%20submitted%20a%20quote%20request%20on%20your%20website.%20Can%20you%20please%20provide%20me%20with%20a%20detailed%20quote%3F"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="bg-[#25D366] text-white py-2.5 px-4 rounded-lg font-semibold hover:bg-[#20bd5a] transition-colors flex items-center justify-center gap-2 text-sm"
-                >
-                  <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
-                    <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893A11.821 11.821 0 0020.885 3.382" />
-                  </svg>
-                  WhatsApp
-                </a>
-
-                {/* Call Button */}
-                <a
-                  href="tel:+918080748282"
-                  className="bg-blue-600 text-white py-2.5 px-4 rounded-lg font-semibold hover:bg-blue-700 transition-colors flex items-center justify-center gap-2 text-sm"
-                >
-                  <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z" />
-                  </svg>
-                  Call Now
-                </a>
-              </div>
+            <div className="grid grid-cols-2 gap-3">
+              <a
+                href={whatsAppUrl('Hi, I just submitted a booking request on your website.')}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="flex items-center justify-center gap-2 rounded-lg bg-[#25D366] py-2.5 text-sm font-semibold text-white"
+              >
+                WhatsApp
+              </a>
+              <a
+                href={`tel:${BUSINESS.phoneTel}`}
+                className="flex items-center justify-center gap-2 rounded-lg bg-[#092456] py-2.5 text-sm font-semibold text-white"
+              >
+                Call Now
+              </a>
             </div>
           </div>
         </div>

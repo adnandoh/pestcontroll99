@@ -1,4 +1,4 @@
-import { Link } from 'react-router-dom';
+import { Link, useSearchParams } from 'react-router-dom';
 import { useEffect, useLayoutEffect } from 'react';
 import PageMeta from '@/components/PageMeta';
 import { scrollToTopInstant } from '@/utils/scroll';
@@ -17,13 +17,19 @@ export type ThankYouContentProps = {
 
 export default function ThankYouContent({
   pageTitle = 'Thank You | Pest Control 99',
-  metaDescription = 'Your pest control quote request was received. Our team will contact you shortly.',
+  metaDescription = 'Your pest control booking was received. Our team will contact you shortly.',
   conversionSendTo = 'AW-17687478045/submit_lead',
   analyticsEventName,
   backLink = '/',
   backLabel = 'Back to Home',
   noindex = true,
 }: ThankYouContentProps) {
+  const [searchParams] = useSearchParams();
+  const bookingCode = searchParams.get('code') || '';
+  const bookingId = searchParams.get('id') || '';
+  const pricePending = searchParams.get('pending') === '1';
+  const isBooking = Boolean(bookingCode || bookingId);
+
   useLayoutEffect(() => {
     scrollToTopInstant();
   }, []);
@@ -38,12 +44,12 @@ export default function ThankYouContent({
       });
       if (analyticsEventName) {
         gtag('event', analyticsEventName, {
-          event_category: 'lead',
+          event_category: isBooking ? 'booking' : 'lead',
           event_label: conversionSendTo,
         });
       }
     }
-  }, [conversionSendTo, analyticsEventName]);
+  }, [conversionSendTo, analyticsEventName, isBooking]);
 
   return (
     <>
@@ -62,12 +68,36 @@ export default function ThankYouContent({
           </div>
 
           <h1 className="text-4xl md:text-5xl font-extrabold text-gray-900 mb-6 tracking-tight">
-            Thank You! <span className="text-green-600">Request Received.</span>
+            {isBooking ? (
+              <>
+                Booking Confirmed. <span className="text-green-600">Thank You!</span>
+              </>
+            ) : (
+              <>
+                Thank You! <span className="text-green-600">Request Received.</span>
+              </>
+            )}
           </h1>
 
-          <p className="text-xl text-gray-600 mb-10 leading-relaxed max-w-xl mx-auto">
-            Our team will contact you shortly to provide your personalized quote and discuss the next steps.
-          </p>
+          {isBooking ? (
+            <div className="mb-8 rounded-2xl border border-green-100 bg-white p-5 text-left shadow-sm">
+              <p className="text-sm font-semibold uppercase tracking-wide text-green-700">
+                Booking reference
+              </p>
+              <p className="mt-1 text-2xl font-extrabold text-gray-900">
+                {bookingCode || `#${bookingId}`}
+              </p>
+              <p className="mt-3 text-base text-gray-600 leading-relaxed">
+                {pricePending
+                  ? 'Our team will confirm the final price and schedule with you shortly.'
+                  : 'Our team will confirm your schedule shortly. A technician will be assigned from the partner app.'}
+              </p>
+            </div>
+          ) : (
+            <p className="text-xl text-gray-600 mb-10 leading-relaxed max-w-xl mx-auto">
+              Our team will contact you shortly to provide your personalized quote and discuss the next steps.
+            </p>
+          )}
 
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-12">
             <div className="bg-white p-6 rounded-2xl shadow-sm border border-gray-100">
@@ -81,7 +111,11 @@ export default function ThankYouContent({
               <h3 className="font-bold text-gray-900 mb-1">WhatsApp Us</h3>
               <p className="text-sm text-gray-500 mb-3">Fast responses</p>
               <a
-                href="https://wa.me/918080748282?text=Hi%2C%20I%20just%20submitted%20a%20quote%20request%20on%20your%20website."
+                href={`https://wa.me/918080748282?text=${encodeURIComponent(
+                  isBooking
+                    ? `Hi, I just booked online${bookingCode ? ` (${bookingCode})` : ''}.`
+                    : 'Hi, I just submitted a quote request on your website.',
+                )}`}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="text-green-600 font-bold hover:underline"

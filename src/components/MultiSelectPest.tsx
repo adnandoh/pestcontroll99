@@ -54,7 +54,7 @@ export default function MultiSelectPest({
   };
 
   const getDisplayText = () => {
-    if (selectedPests.length === 0) return 'Select one or more services';
+    if (selectedPests.length === 0) return compact ? 'Select service' : 'Select one or more services';
     if (selectedPests.length === 1) {
       const pest = pestOptions.find((p) => p.value === selectedPests[0]);
       return pest ? pest.label : selectedPests[0];
@@ -63,38 +63,62 @@ export default function MultiSelectPest({
   };
 
   const labelClass = compact
-    ? 'block text-[13px] font-bold text-[#1a1a1a] mb-2'
+    ? 'booking-field-label'
     : 'block text-[15px] font-bold text-[#1a1a1a] mb-2.5';
 
   return (
     <div className={`relative ${className}`} ref={dropdownRef}>
       <label className={labelClass} id="pest-select-label">
-        Select Service *
+        {compact ? 'Select Service *' : 'Select Service *'}
       </label>
 
-      <button
-        type="button"
-        onClick={() => setIsOpen((open) => !open)}
-        aria-expanded={isOpen}
-        aria-haspopup="listbox"
-        aria-labelledby="pest-select-label"
-        className={`quote-field w-full px-4 text-left flex items-center justify-between ${
-          compact ? 'py-2.5 text-sm' : 'py-3 text-base'
-        }`}
-      >
-        <span className={`truncate ${selectedPests.length > 0 ? 'font-bold text-gray-900' : 'text-gray-400'}`}>
-          {getDisplayText()}
-        </span>
-        <svg
-          className={`w-5 h-5 text-[#7fbf94] shrink-0 ml-2 transition-transform duration-200 ${isOpen ? 'rotate-180' : ''}`}
-          fill="none"
-          stroke="currentColor"
-          viewBox="0 0 24 24"
-          aria-hidden
+      {compact ? (
+        <div className={`booking-select${isOpen ? ' is-open' : ''}`}>
+          <button
+            type="button"
+            onClick={() => setIsOpen((open) => !open)}
+            aria-expanded={isOpen}
+            aria-haspopup="listbox"
+            aria-labelledby="pest-select-label"
+            className="booking-select-trigger w-full"
+          >
+            <span className={selectedPests.length > 0 ? 'text-[#0D2167]' : 'text-slate-400'}>
+              {getDisplayText()}
+            </span>
+            <svg
+              className={`h-3.5 w-3.5 text-[#0E8345] shrink-0 transition-transform duration-200 ${isOpen ? 'rotate-180' : ''}`}
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+              aria-hidden
+            >
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+            </svg>
+          </button>
+        </div>
+      ) : (
+        <button
+          type="button"
+          onClick={() => setIsOpen((open) => !open)}
+          aria-expanded={isOpen}
+          aria-haspopup="listbox"
+          aria-labelledby="pest-select-label"
+          className="quote-field w-full px-4 text-left flex items-center justify-between py-3 text-base"
         >
-          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
-        </svg>
-      </button>
+          <span className={`truncate ${selectedPests.length > 0 ? 'font-bold text-gray-900' : 'text-gray-400'}`}>
+            {getDisplayText()}
+          </span>
+          <svg
+            className={`w-5 h-5 text-[#7fbf94] shrink-0 ml-2 transition-transform duration-200 ${isOpen ? 'rotate-180' : ''}`}
+            fill="none"
+            stroke="currentColor"
+            viewBox="0 0 24 24"
+            aria-hidden
+          >
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+          </svg>
+        </button>
+      )}
 
       {isOpen && (
         <div

@@ -1,16 +1,61 @@
 // Utility functions for storing and retrieving form data
 
+import { getDefaultPreferredSchedule } from '@/utils/clockTime';
+
 export interface HomeFormData {
   pestTypes: string[];
   phone: string;
   address?: string;
   streetAddress: string;
   name: string;
-  premiseType: 'residential' | 'commercial';
+  /** Defaults to Residential on the home booking form */
+  premiseType?: 'residential' | 'commercial' | '';
   premiseSize?: string;
-  serviceType?: 'amc' | 'one-time';
+  serviceType?: 'amc' | 'one-time' | '';
+  /** Standard (gel+spray) vs Premium (no-smell) — maps to booking package_tier */
+  treatmentQuality?: 'standard' | 'premium' | '';
+  preferredDate?: string;
+  preferredTime?: string;
   estimatedPrice?: number;
 }
+
+/**
+ * Fresh home booking defaults (Residential + Cockroach / Ants).
+ * Preferred date/time are computed at call time (today / now+1h).
+ */
+export function createEmptyHomeFormData(): HomeFormData {
+  const { preferredDate, preferredTime } = getDefaultPreferredSchedule();
+  return {
+    pestTypes: ['cockroach-ants'],
+    phone: '',
+    address: '',
+    streetAddress: '',
+    name: '',
+    premiseType: 'residential',
+    premiseSize: '',
+    serviceType: '',
+    treatmentQuality: '',
+    preferredDate,
+    preferredTime,
+    estimatedPrice: 0,
+  };
+}
+
+/** Structural empty shape — use createEmptyHomeFormData() for mount defaults */
+export const EMPTY_HOME_FORM_DATA: HomeFormData = {
+  pestTypes: ['cockroach-ants'],
+  phone: '',
+  address: '',
+  streetAddress: '',
+  name: '',
+  premiseType: 'residential',
+  premiseSize: '',
+  serviceType: '',
+  treatmentQuality: '',
+  preferredDate: '',
+  preferredTime: '',
+  estimatedPrice: 0,
+};
 
 export interface QuoteFormData {
   name?: string;

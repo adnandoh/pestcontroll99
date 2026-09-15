@@ -2,7 +2,7 @@ import { Link } from 'react-router-dom';
 import { Suspense, useEffect } from 'react';
 import AppImage from '@/components/AppImage';
 import PageMeta from '@/components/PageMeta';
-import HomeQuoteForm from '@/components/HomeQuoteForm';
+import HomeInquiryForm from '@/components/HomeInquiryForm';
 import ClientOnly from '@/components/ClientOnly';
 import OurServicesSection from '@/components/OurServicesSection';
 import TrustSection from '@/components/TrustSection';
@@ -54,7 +54,7 @@ export default function HomeLandingTemplate({ config }: HomeLandingTemplateProps
       >
         <Suspense fallback={null}>
           <div className="relative z-30 mt-4 sm:mt-6 scroll-mt-20 md:-mt-8 lg:-mt-10 xl:-mt-12">
-            <HomeQuoteForm
+            <HomeInquiryForm
               compact
               leadSource={config.leadSource}
               thankYouPath={config.thankYouPath}

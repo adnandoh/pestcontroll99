@@ -34,18 +34,14 @@ export const QUOTE_FORM_SERVICE_OPTIONS: ServiceOption[] = [
 /** Feedback page */
 export const FEEDBACK_SERVICE_OPTIONS: ServiceOption[] = PEST_SERVICE_OPTIONS;
 
-/** Home / quote-simple multi-select — value slugs used for pricing */
+/** Home / quote-simple multi-select — value slugs used for pricing.
+ *  Commercial is chosen via Residential/Commercial toggle, not as a pest option. */
 export const MULTI_SELECT_PEST_OPTIONS: ServiceOption[] = [
   { value: 'cockroach-ants', label: 'Cockroach / Ants' },
-  { value: 'mosquito', label: 'Mosquito' },
   { value: 'termite', label: 'Termite' },
-  { value: 'rodent', label: 'Rodent' },
   { value: 'bedbugs', label: 'Bed Bugs' },
-  { value: 'honey-bee', label: 'Honey Bee' },
-  { value: 'wood-borer', label: 'Wood Borer' },
-  { value: 'house-fly', label: 'House Flies' },
-  { value: 'hotel-commercial', label: 'Hotel / Commercial' },
-  { value: 'other', label: 'Other' },
+  { value: 'rodent', label: 'Rodent' },
+  { value: 'mosquito', label: 'Mosquito' },
 ];
 
 /** Services that only support one-time treatment (no AMC) in QuoteForm */

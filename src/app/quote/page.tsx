@@ -1,5 +1,5 @@
 import { Suspense } from 'react';
-import HomeQuoteForm from '@/components/HomeQuoteForm';
+import HomeInquiryForm from '@/components/HomeInquiryForm';
 import Breadcrumb from '@/components/Breadcrumb';
 import PageMeta from '@/components/PageMeta';
 
@@ -15,7 +15,7 @@ function QuotePageContent() {
       <Breadcrumb items={[{ label: 'Get Quote' }]} />
       <h1 className="sr-only">Get a Free Pest Control Quote</h1>
       <div className="-mt-8 md:-mt-12">
-        <HomeQuoteForm />
+        <HomeInquiryForm />
       </div>
       
       {/* Additional Quote Page Content if needed */}

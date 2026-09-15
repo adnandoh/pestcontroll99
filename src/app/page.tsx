@@ -1,13 +1,25 @@
-import AppImage from '@/components/AppImage';
 import PageMeta from '@/components/PageMeta';
 import { Suspense } from 'react';
 import HomeQuoteForm from '@/components/HomeQuoteForm';
 import ClientOnly from '@/components/ClientOnly';
-import HomeHeroBanner from '@/components/HomeHeroBanner';
-import HomeHeroQuoteSlot from '@/components/HomeHeroQuoteSlot';
+import HomeBookingHero from '@/components/HomeBookingHero';
 import OurServicesSection from '@/components/OurServicesSection';
 import TrustSection from '@/components/TrustSection';
-import { BUSINESS } from '@/config/business';
+
+function BookingFormFallback() {
+  return (
+    <div className="booking-form-card animate-pulse space-y-4 p-5">
+      <div className="h-6 w-48 rounded bg-gray-200" />
+      <div className="h-11 rounded bg-gray-200" />
+      <div className="grid grid-cols-2 gap-3">
+        <div className="h-11 rounded bg-gray-200" />
+        <div className="h-11 rounded bg-gray-200" />
+      </div>
+      <div className="h-20 rounded bg-gray-200" />
+      <div className="h-12 rounded bg-gray-200" />
+    </div>
+  );
+}
 
 export default function Home() {
   return (
@@ -19,62 +31,17 @@ export default function Home() {
         canonical="https://www.pestcontrol99.com/"
         ogUrl="https://www.pestcontrol99.com/"
       />
-      {/* Hero + quote form — single panoramic banner (copy baked into artwork) */}
-      <div className="home-hero-block">
-        <div className="hero-container relative w-full shrink-0 bg-[#E8F5EC] pb-0">
-          {/* Height-capped banner: full-width art; CSS caps desktop ~half of old full-cover */}
-          <div className="relative z-0 w-full leading-none">
-            <HomeHeroBanner />
-          </div>
-          <h1 className="sr-only">
-            {BUSINESS.brandName} — Pest Control in Mumbai, Safe, Same-Day &amp; Certified Services
-          </h1>
-        </div>
 
-        <ClientOnly fallback={
-          <section className="py-12 sm:py-16 md:py-20 bg-gradient-to-br from-gray-50 to-gray-100">
-            <div className="container mx-auto px-4 sm:px-6">
-              <div className="text-center mb-8 sm:mb-12">
-                <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-gray-900 mb-4">
-                  Choose Your Pest & Property – Get Quotation the Same Day
-                </h2>
-                <div className="animate-pulse">
-                  <div className="h-4 bg-gray-300 rounded w-3/4 mx-auto"></div>
-                </div>
-              </div>
-              <div className="max-w-4xl mx-auto bg-white rounded-2xl sm:rounded-3xl p-6 sm:p-8 shadow-lg sm:shadow-xl">
-                <div className="animate-pulse space-y-6">
-                  <div className="h-12 bg-gray-300 rounded"></div>
-                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
-                    <div className="h-12 bg-gray-300 rounded"></div>
-                    <div className="h-12 bg-gray-300 rounded"></div>
-                  </div>
-                  <div className="h-12 bg-gray-300 rounded"></div>
-                </div>
-              </div>
-            </div>
-          </section>
-        }>
-          <Suspense fallback={null}>
-            <HomeHeroQuoteSlot
-              image={
-                <AppImage
-                  src="/images/hero-quote-left.webp"
-                  alt={`${BUSINESS.brandName} technician providing safe, eco-friendly pest control treatment at home`}
-                  fill
-                  sizes="(min-width: 1024px) 42vw"
-                  className="object-cover object-center"
-                />
-              }
-              form={<HomeQuoteForm compact />}
-            />
+      <div className="home-hero-block home-booking-viewport">
+        <ClientOnly fallback={<HomeBookingHero form={<BookingFormFallback />} />}>
+          <Suspense fallback={<HomeBookingHero form={<BookingFormFallback />} />}>
+            <HomeBookingHero form={<HomeQuoteForm />} />
           </Suspense>
         </ClientOnly>
       </div>
 
       <OurServicesSection />
 
-      {/* Credibility Knockout */}
       <section className="section-dark py-10 sm:py-12 md:py-16">
         <div className="container mx-auto px-4 sm:px-6">
           <div className="text-center mb-8 sm:mb-12">

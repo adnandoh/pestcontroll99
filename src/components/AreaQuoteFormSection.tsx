@@ -1,6 +1,6 @@
 import { Suspense } from 'react';
 import ClientOnly from '@/components/ClientOnly';
-import HomeQuoteForm from '@/components/HomeQuoteForm';
+import HomeInquiryForm from '@/components/HomeInquiryForm';
 
 type AreaQuoteFormSectionProps = {
   areaName: string;
@@ -27,7 +27,7 @@ export default function AreaQuoteFormSection({
     >
       <section id={sectionId} className={className}>
         <Suspense fallback={null}>
-          <HomeQuoteForm
+          <HomeInquiryForm
             compact
             leadSource={`Area Page | ${areaPath} | Organic`}
             defaultCity={areaName}

@@ -16,6 +16,11 @@ export interface InquiryData {
   service_frequency?: string;
   /** Stored as website-lead remark in CRM when provided */
   remark?: string;
+  booking_session_id?: string;
+  page_url?: string;
+  utm_source?: string;
+  utm_medium?: string;
+  utm_campaign?: string;
 }
 
 export type InquiryTrackingOptions = {
@@ -96,8 +101,9 @@ class CRMApiService {
   private async postInquiry(
     baseUrl: string,
     inquiryData: InquiryData,
+    path = '/api/inquiries/',
   ): Promise<ApiResponse<InquiryResponse>> {
-    const response = await fetch(this.apiPath(baseUrl, '/api/inquiries/'), {
+    const response = await fetch(this.apiPath(baseUrl, path), {
       method: 'POST',
       headers: this.getAuthHeaders(),
       body: JSON.stringify(inquiryData),
@@ -156,6 +162,35 @@ class CRMApiService {
     };
   }
 
+  /** Silent upsert for home booking form — POST /api/inquiries/upsert/ */
+  async upsertWebsiteInquiry(inquiryData: InquiryData): Promise<ApiResponse<InquiryResponse>> {
+    const bases = getCrmSubmitBases();
+    let lastError = 'Failed to upsert inquiry';
+
+    for (const baseUrl of bases) {
+      try {
+        const result = await this.postInquiry(baseUrl, inquiryData, '/api/inquiries/upsert/');
+        if (result.success) {
+          return result;
+        }
+        lastError = result.error || lastError;
+        if (import.meta.env.DEV) {
+          console.warn(`[CRM] Upsert failed via ${baseUrl || 'vite-proxy'}:`, lastError);
+        }
+      } catch (error) {
+        if (import.meta.env.DEV) {
+          console.warn(`[CRM] Upsert network error via ${baseUrl || 'vite-proxy'}:`, error);
+        }
+        lastError = 'Network error occurred.';
+      }
+    }
+
+    return {
+      success: false,
+      error: lastError,
+    };
+  }
+
   validateInquiryData(data: Partial<InquiryData>): { isValid: boolean; errors: Record<string, string> } {
     const errors: Record<string, string> = {};
 
@@ -202,6 +237,9 @@ class CRMApiService {
       premiseSize?: string;
       estimatedPrice?: number;
       serviceType?: string;
+      treatmentQuality?: string;
+      preferredDate?: string;
+      preferredTime?: string;
       message?: string;
     },
     formType: 'home' | 'quote',
@@ -339,6 +377,9 @@ class CRMApiService {
       premiseType?: string;
       premiseSize?: string;
       estimatedPrice?: number;
+      treatmentQuality?: string;
+      preferredDate?: string;
+      preferredTime?: string;
       message?: string;
     },
     formType: 'home' | 'quote',
@@ -369,10 +410,23 @@ class CRMApiService {
       parts.push(`Service type: ${label}.`);
     }
 
+    if (formData.treatmentQuality) {
+      const quality =
+        formData.treatmentQuality === 'premium'
+          ? 'Premium (no-smell treatment)'
+          : 'Standard (gel + spray)';
+      parts.push(`Treatment quality: ${quality}.`);
+    }
+
     if (formData.premiseType) {
       parts.push(
         `Premise: ${formData.premiseType}${formData.premiseSize ? ` (${formData.premiseSize.toUpperCase()})` : ''}.`,
       );
+    }
+
+    if (formData.preferredDate || formData.preferredTime) {
+      const when = [formData.preferredDate, formData.preferredTime].filter(Boolean).join(' ');
+      parts.push(`Preferred schedule: ${when}.`);
     }
 
     if (formData.estimatedPrice && formData.estimatedPrice > 0) {

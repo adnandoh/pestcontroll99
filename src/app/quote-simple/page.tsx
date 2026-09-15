@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import MultiSelectPest from '@/components/MultiSelectPest';
-import { submitHomeQuoteForm } from '@/services/formSubmit';
+import { submitHomeInquiryForm } from '@/services/formSubmit';
 import PageMeta from '@/components/PageMeta';
 
 export default function SimpleQuotePage() {
@@ -63,7 +63,7 @@ export default function SimpleQuotePage() {
     setSubmitError('');
 
     try {
-      const result = await submitHomeQuoteForm({
+      const result = await submitHomeInquiryForm({
         name: formData.name.trim(),
         phone: formData.phone.replace(/\D/g, ''),
         email: formData.email,
@@ -294,7 +294,7 @@ export default function SimpleQuotePage() {
                   disabled={isSubmitting}
                   className="btn btn-cta w-full md:w-auto text-lg shadow-lg disabled:opacity-60 disabled:cursor-not-allowed disabled:hover:transform-none min-w-[200px]"
                 >
-                  {isSubmitting ? 'Sending Request...' : 'Book Now'}
+                  {isSubmitting ? 'Sending Request...' : 'Submit Inquiry'}
                 </button>
               </div>
             </form>

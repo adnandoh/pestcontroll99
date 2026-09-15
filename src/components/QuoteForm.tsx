@@ -209,7 +209,7 @@ export default function QuoteForm({ service, className = '' }: QuoteFormProps) {
         disabled={isSubmitting}
         className="w-full mt-8 bg-green-600 text-white py-4 px-6 rounded-lg font-semibold hover:bg-green-700 transition-colors duration-300 disabled:opacity-50 disabled:cursor-not-allowed"
       >
-        {isSubmitting ? 'Submitting...' : 'Book Now'}
+        {isSubmitting ? 'Submitting...' : 'Submit Inquiry'}
       </button>
       
       <p className="text-xs text-gray-500 text-center mt-4">
