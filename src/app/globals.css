@@ -2844,22 +2844,25 @@ html[data-scroll-behavior="smooth"] {
 /* Preferred date — friendly label over native date input */
 .booking-date-field {
   position: relative;
+  min-width: 0;
+  overflow: hidden;
 }
 
 .booking-date-display {
   position: absolute;
   inset: 0;
   z-index: 1;
-  display: flex;
-  align-items: center;
-  padding: 0 8px;
-  border-radius: 9px;
-  font: 700 11px inherit;
+  display: block;
+  box-sizing: border-box;
+  padding: 0 6px;
+  border-radius: 8px;
+  font: 700 11px/34px inherit;
   color: #1b2a22;
   pointer-events: none;
   white-space: nowrap;
-  overflow: visible;
-  text-overflow: clip;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  min-width: 0;
 }
 
 .booking-date-native.booking-input {
@@ -2909,7 +2912,9 @@ html[data-scroll-behavior="smooth"] {
   text-align: left;
   cursor: pointer;
   width: 100%;
+  min-width: 0;
   box-shadow: none;
+  overflow: hidden;
 }
 
 .booking-time-trigger.booking-input {
@@ -2952,12 +2957,62 @@ html[data-scroll-behavior="smooth"] {
 .booking-time-value {
   color: #1b2a22;
   font-weight: 700;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 .booking-time-placeholder {
   color: #9daaa3;
   font-weight: 500;
   font-variant-numeric: tabular-nums;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* Mobile: keep date/time text inside half-width boxes; stack only when too narrow */
+@media (max-width: 767px) {
+  .booking-date-display {
+    font-size: 10px;
+    padding: 0 5px;
+  }
+
+  .booking-time-trigger {
+    font-size: 11px;
+    padding: 0 28px 0 28px;
+  }
+
+  .booking-time-trigger .booking-input-icon--clock {
+    left: 7px;
+  }
+
+  .booking-time-trigger .booking-input-icon--chevron {
+    right: 8px;
+  }
+
+  .booking-time-trigger .booking-input-icon svg {
+    width: 14px;
+    height: 14px;
+  }
+}
+
+@media (max-width: 360px) {
+  .booking-grid-schedule {
+    grid-template-columns: 1fr;
+  }
+
+  .booking-date-display {
+    font-size: 11px;
+    padding: 0 8px;
+  }
+
+  .booking-time-trigger {
+    font-size: 12px;
+    padding: 0 34px 0 32px;
+  }
 }
 
 /* Fixed viewport overlay so form overflow cannot clip the clock.
@@ -3417,6 +3472,10 @@ html[data-scroll-behavior="smooth"] {
   .booking-time-trigger,
   .booking-phone-field {
     height: 32px;
+  }
+
+  .booking-date-display {
+    line-height: 32px;
   }
 
   .booking-select-trigger {
