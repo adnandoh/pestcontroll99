@@ -2856,7 +2856,7 @@ html[data-scroll-behavior="smooth"] {
   box-sizing: border-box;
   padding: 0 6px;
   border-radius: 8px;
-  font: 700 11px/34px inherit;
+  font: 700 12px/34px inherit;
   color: #1b2a22;
   pointer-events: none;
   white-space: nowrap;
@@ -2973,45 +2973,33 @@ html[data-scroll-behavior="smooth"] {
   white-space: nowrap;
 }
 
-/* Mobile: keep date/time text inside half-width boxes; stack only when too narrow */
+/* Mobile: keep date+time side-by-side; readable 12px type with ellipsis if needed */
 @media (max-width: 767px) {
+  .booking-grid-schedule {
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  }
+
   .booking-date-display {
-    font-size: 10px;
+    font-size: 12px;
     padding: 0 5px;
   }
 
   .booking-time-trigger {
-    font-size: 11px;
-    padding: 0 28px 0 28px;
+    font-size: 12px;
+    padding: 0 26px 0 26px;
   }
 
   .booking-time-trigger .booking-input-icon--clock {
-    left: 7px;
+    left: 6px;
   }
 
   .booking-time-trigger .booking-input-icon--chevron {
-    right: 8px;
+    right: 6px;
   }
 
   .booking-time-trigger .booking-input-icon svg {
     width: 14px;
     height: 14px;
-  }
-}
-
-@media (max-width: 360px) {
-  .booking-grid-schedule {
-    grid-template-columns: 1fr;
-  }
-
-  .booking-date-display {
-    font-size: 11px;
-    padding: 0 8px;
-  }
-
-  .booking-time-trigger {
-    font-size: 12px;
-    padding: 0 34px 0 32px;
   }
 }
 

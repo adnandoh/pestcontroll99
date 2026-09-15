@@ -18,7 +18,7 @@ const MONTH_SHORT = [
   'Jun',
   'Jul',
   'Aug',
-  'Sept',
+  'Sep',
   'Oct',
   'Nov',
   'Dec',
@@ -54,8 +54,8 @@ export function formatFriendlyTime(value: string | null | undefined): string {
 }
 
 /**
- * Friendly date label for the booking field, e.g. `Today • 15 Sept` (compact)
- * or `16 Sept 2026` for other dates. Value remains `YYYY-MM-DD` for the API.
+ * Friendly date label for the booking field, e.g. `Today • 15 Sep` (compact)
+ * or `16 Sep 2026` for other dates. Value remains `YYYY-MM-DD` for the API.
  */
 export function formatFriendlyPreferredDate(
   value: string | null | undefined,
