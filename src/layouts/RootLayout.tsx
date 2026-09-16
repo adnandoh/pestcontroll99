@@ -28,14 +28,7 @@ export default function RootLayout() {
     window.dataLayer = window.dataLayer || [];
     window.dataLayer.push({ 'gtm.start': new Date().getTime(), event: 'gtm.js' });
 
-    loadScript('gtag-js', 'https://www.googletagmanager.com/gtag/js?id=AW-17687478045');
-    window.dataLayer = window.dataLayer || [];
-    function gtag(...args: unknown[]) {
-      window.dataLayer.push(args);
-    }
-    window.gtag = gtag;
-    gtag('js', new Date());
-    gtag('config', 'AW-17687478045');
+    // Google Ads AW gtag + conversion fire only on thank-you pages (see ThankYouContent).
 
     if (!googleMapsApiKey) {
       if (import.meta.env.DEV) {

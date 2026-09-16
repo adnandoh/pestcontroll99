@@ -2,6 +2,10 @@ import { Link, useSearchParams } from 'react-router-dom';
 import { useEffect, useLayoutEffect } from 'react';
 import PageMeta from '@/components/PageMeta';
 import { scrollToTopInstant } from '@/utils/scroll';
+import {
+  fireGoogleAdsLeadConversion,
+  GOOGLE_ADS_LEAD_CONVERSION_SEND_TO,
+} from '@/utils/googleAdsConversion';
 
 export type ThankYouContentProps = {
   pageTitle?: string;
@@ -18,7 +22,7 @@ export type ThankYouContentProps = {
 export default function ThankYouContent({
   pageTitle = 'Thank You | Pest Control 99',
   metaDescription = 'Your pest control booking was received. Our team will contact you shortly.',
-  conversionSendTo = 'AW-17687478045/submit_lead',
+  conversionSendTo = GOOGLE_ADS_LEAD_CONVERSION_SEND_TO,
   analyticsEventName,
   backLink = '/',
   backLabel = 'Back to Home',
@@ -34,21 +38,13 @@ export default function ThankYouContent({
     scrollToTopInstant();
   }, []);
 
+  // Google Ads gtag + lead conversion — thank-you routes only (inquiry + booking).
   useEffect(() => {
-    const gtag = (window as Window & { gtag?: (...args: unknown[]) => void }).gtag;
-    if (typeof gtag === 'function') {
-      gtag('event', 'conversion', {
-        send_to: conversionSendTo,
-        value: 1.0,
-        currency: 'INR',
-      });
-      if (analyticsEventName) {
-        gtag('event', analyticsEventName, {
-          event_category: isBooking ? 'booking' : 'lead',
-          event_label: conversionSendTo,
-        });
-      }
-    }
+    fireGoogleAdsLeadConversion({
+      sendTo: conversionSendTo,
+      analyticsEventName,
+      eventCategory: isBooking ? 'booking' : 'lead',
+    });
   }, [conversionSendTo, analyticsEventName, isBooking]);
 
   return (
