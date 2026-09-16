@@ -10,7 +10,7 @@ import {
   bookingPlanLabelForNotes,
   showTreatmentQualityForPests,
 } from '@/config/serviceOptions';
-import { isBookablePreferredTime, resolveCityFromAddress, toBookingTime24, toPreferredTime } from '@/utils/clockTime';
+import { resolveCityFromAddress, toBookingTime24, toPreferredTime } from '@/utils/clockTime';
 import type { HomeFormData } from '@/utils/formStorage';
 import {
   getBookingSessionId,
@@ -331,12 +331,6 @@ export async function submitHomeBookingForm(
   }
   if (!bookingTime24) {
     return { ok: false, error: 'Please select a preferred time' };
-  }
-  if (!isBookablePreferredTime(preferredTime)) {
-    return {
-      ok: false,
-      error: 'Preferred time must be 8:00 AM or later. Overnight slots are not available.',
-    };
   }
 
   const premiseType = home.premiseType;

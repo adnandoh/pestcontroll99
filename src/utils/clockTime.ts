@@ -9,12 +9,6 @@ const STORED_24H = /^(\d{1,2}):(\d{2})(?::\d{2})?$/;
 /** Matches ClockTimePicker minute dial (0, 5, …, 55). */
 export const CLOCK_MINUTE_STEP = 5;
 
-/**
- * Earliest bookable preferred start in the customer's local timezone.
- * Slots from 12:00 AM through 7:59 AM are not offered; defaults land on 8:00 AM.
- */
-export const EARLIEST_BOOKABLE_HOUR = 8;
-
 const MONTH_SHORT = [
   'Jan',
   'Feb',
@@ -81,73 +75,29 @@ export function formatFriendlyPreferredDate(
   return absolute;
 }
 
-/** Minutes from local midnight for a Date. */
-export function localMinutesSinceMidnight(date: Date): number {
-  return date.getHours() * 60 + date.getMinutes();
-}
-
-/** True when local wall-clock is before the earliest bookable hour (08:00). */
-export function isBeforeEarliestBookable(date: Date): boolean {
-  return localMinutesSinceMidnight(date) < EARLIEST_BOOKABLE_HOUR * 60;
-}
-
-/** 12h clock hour + AM/PM → whether that wall time is bookable (≥ 08:00). */
-export function isBookableClockHour(hour12: number, ampm: 'AM' | 'PM'): boolean {
-  if (ampm === 'PM') return true;
-  // AM: 12 (midnight) and 1–7 are blocked; 8–11 are allowed.
-  return hour12 >= EARLIEST_BOOKABLE_HOUR && hour12 <= 11;
-}
-
-/** Display/12h/24h string → bookable (≥ 08:00 local). Empty/invalid → false. */
-export function isBookablePreferredTime(value: string | null | undefined): boolean {
-  const t24 = toBookingTime24(value);
-  if (!t24) return false;
-  const [h, m] = t24.split(':').map(Number);
-  return h * 60 + m >= EARLIEST_BOOKABLE_HOUR * 60;
-}
-
-function formatPreferredTimeFromParts(hour24: number, minute: number): string {
-  const period = hour24 >= 12 ? 'PM' : 'AM';
-  const hour12 = hour24 % 12 || 12;
-  return `${String(hour12).padStart(2, '0')}:${String(minute).padStart(2, '0')} ${period}`;
-}
-
 /**
- * Preferred booking defaults (customer local timezone):
- * - 12:00 AM–7:59 AM → 8:00 AM same day
- * - 8:00 AM onward → now + 1 hour, rounded up to the clock picker's 5-minute step
- * If now+1h lands before 08:00 (e.g. 11:30 PM → 12:30 AM), bump to 8:00 AM on that date.
+ * Preferred booking defaults: local today, and local now + 1 hour rounded up to
+ * the clock picker's 5-minute step. Crossing midnight rolls the date forward.
  * Example: 10:00 am → 11:00 AM (shown as "11:00 am").
  */
 export function getDefaultPreferredSchedule(now: Date = new Date()): {
   preferredDate: string;
   preferredTime: string;
 } {
-  let target: Date;
+  const target = new Date(now.getTime() + 60 * 60 * 1000);
+  const roundedMinutes =
+    Math.ceil(target.getMinutes() / CLOCK_MINUTE_STEP) * CLOCK_MINUTE_STEP;
+  target.setMinutes(roundedMinutes, 0, 0);
 
-  if (isBeforeEarliestBookable(now)) {
-    target = new Date(now.getFullYear(), now.getMonth(), now.getDate(), EARLIEST_BOOKABLE_HOUR, 0, 0, 0);
-  } else {
-    target = new Date(now.getTime() + 60 * 60 * 1000);
-    const roundedMinutes =
-      Math.ceil(target.getMinutes() / CLOCK_MINUTE_STEP) * CLOCK_MINUTE_STEP;
-    target.setMinutes(roundedMinutes, 0, 0);
-    if (isBeforeEarliestBookable(target)) {
-      target = new Date(
-        target.getFullYear(),
-        target.getMonth(),
-        target.getDate(),
-        EARLIEST_BOOKABLE_HOUR,
-        0,
-        0,
-        0,
-      );
-    }
-  }
+  const hour24 = target.getHours();
+  const minute = target.getMinutes();
+  const period = hour24 >= 12 ? 'PM' : 'AM';
+  const hour12 = hour24 % 12 || 12;
+  const preferredTime = `${String(hour12).padStart(2, '0')}:${String(minute).padStart(2, '0')} ${period}`;
 
   return {
     preferredDate: formatLocalDateYYYYMMDD(target),
-    preferredTime: formatPreferredTimeFromParts(target.getHours(), target.getMinutes()),
+    preferredTime,
   };
 }
 

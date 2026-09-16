@@ -37,7 +37,6 @@ import {
 import {
   formatFriendlyPreferredDate,
   formatLocalDateYYYYMMDD,
-  isBookablePreferredTime,
   toPreferredTime,
 } from '@/utils/clockTime';
 
@@ -341,8 +340,6 @@ export default function HomeQuoteForm({
 
     if (!toPreferredTime(formData.preferredTime || '')) {
       newErrors.preferredTime = 'Please select a preferred time';
-    } else if (!isBookablePreferredTime(formData.preferredTime)) {
-      newErrors.preferredTime = 'Please choose 8:00 AM or later';
     }
 
     if (

@@ -1,11 +1,6 @@
 import { useCallback, useEffect, useId, useRef, useState } from 'react';
 import { createPortal } from 'react-dom';
-import {
-  EARLIEST_BOOKABLE_HOUR,
-  formatFriendlyTime,
-  isBookableClockHour,
-  toClockDisplay,
-} from '@/utils/clockTime';
+import { formatFriendlyTime, toClockDisplay } from '@/utils/clockTime';
 
 type ClockTimePickerProps = {
   id?: string;
@@ -30,18 +25,14 @@ function parseTime(val: string) {
   if (display) {
     const m = display.match(/^(\d{2}):(\d{2})\s*(AM|PM)$/);
     if (m) {
-      let h = parseInt(m[1], 10);
-      const min = parseInt(m[2], 10);
-      let ampm = m[3] as 'AM' | 'PM';
-      // Night values (12:00–7:59 AM) are not bookable — snap to earliest slot.
-      if (!isBookableClockHour(h, ampm)) {
-        h = EARLIEST_BOOKABLE_HOUR;
-        ampm = 'AM';
-      }
-      return { h, min, ampm };
+      return {
+        h: parseInt(m[1], 10),
+        min: parseInt(m[2], 10),
+        ampm: m[3] as 'AM' | 'PM',
+      };
     }
   }
-  return { h: EARLIEST_BOOKABLE_HOUR, min: 0, ampm: 'AM' as const };
+  return { h: 10, min: 0, ampm: 'AM' as const };
 }
 
 function ClockIcon() {
@@ -116,12 +107,8 @@ export default function ClockTimePicker({
 
   const confirm = useCallback(
     (nextHour = hour, nextMinute = minute, nextAmpm = ampm) => {
-      const safeHour = isBookableClockHour(nextHour, nextAmpm)
-        ? nextHour
-        : EARLIEST_BOOKABLE_HOUR;
-      const safeAmpm = isBookableClockHour(nextHour, nextAmpm) ? nextAmpm : 'AM';
       onChange(
-        `${String(safeHour).padStart(2, '0')}:${String(nextMinute).padStart(2, '0')} ${safeAmpm}`
+        `${String(nextHour).padStart(2, '0')}:${String(nextMinute).padStart(2, '0')} ${nextAmpm}`
       );
       setOpen(false);
     },
@@ -188,12 +175,7 @@ export default function ClockTimePicker({
                 <div className="clock-time-ampm">
                   <button
                     type="button"
-                    onClick={() => {
-                      setAmpm('AM');
-                      if (!isBookableClockHour(hour, 'AM')) {
-                        setHour(EARLIEST_BOOKABLE_HOUR);
-                      }
-                    }}
+                    onClick={() => setAmpm('AM')}
                     className={`clock-ampm-btn${ampm === 'AM' ? ' is-active' : ''}`}
                   >
                     AM
@@ -228,15 +210,11 @@ export default function ClockTimePicker({
                   {items.map((num, idx) => {
                     const { x, y } = numCoords(idx, R);
                     const active = num === selItem;
-                    const hourBlocked =
-                      mode === 'hour' && !isBookableClockHour(num, ampm);
                     return (
                       <g
                         key={`${mode}-${num}`}
-                        className={hourBlocked ? 'cursor-not-allowed' : 'cursor-pointer'}
-                        opacity={hourBlocked ? 0.28 : 1}
+                        className="cursor-pointer"
                         onClick={() => {
-                          if (hourBlocked) return;
                           if (mode === 'hour') {
                             setHour(num);
                             window.setTimeout(() => setMode('minute'), 160);
