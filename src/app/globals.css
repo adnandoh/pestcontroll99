@@ -3685,8 +3685,8 @@ html[data-scroll-behavior="smooth"] {
 
   .home-booking-viewport {
     --home-header-h: 4.75rem;
-    /* Match header shell: container + sm:px-6 — fill content width, no narrow card gutters */
-    padding: 1rem 1.5rem calc(1.5rem + var(--hb-action-bar-h));
+    /* Full-bleed under header — only a slim safe gutter (~16–24px) */
+    padding: 1rem 1rem calc(1.5rem + var(--hb-action-bar-h));
     /* Desktop: natural document flow — no forced first-viewport shell */
     min-height: 0;
     height: auto;
@@ -3703,10 +3703,10 @@ html[data-scroll-behavior="smooth"] {
     display: block;
     min-height: 0;
     padding: 0;
-    /* Align with header `.container mx-auto` (Tailwind default ~1280px) */
-    max-width: 1280px;
+    /* Span full viewport content width — no 1280px gutters on wide screens */
+    max-width: none;
     width: 100%;
-    margin: 0 auto;
+    margin: 0;
   }
 
   /* Mobile-only marketing band — keep on small screens; form sits higher on desktop */
@@ -3890,12 +3890,13 @@ html[data-scroll-behavior="smooth"] {
 
 @media (min-width: 1024px) {
   .home-booking-viewport {
-    /* Match header `sm:px-6` (1.5rem) so hero edges align with logo/nav */
+    /* Keep ~24px side gutter; hero stays full-bleed within it */
     padding: 1rem 1.5rem calc(1.5rem + var(--hb-action-bar-h));
   }
 
   .home-booking-hero {
-    max-width: 1280px;
+    max-width: none;
+    width: 100%;
     background: transparent;
   }
 

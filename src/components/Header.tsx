@@ -93,7 +93,7 @@ export default function Header() {
         role="navigation"
         aria-label="Main"
       >
-      <div className="container mx-auto px-4 sm:px-6">
+      <div className="w-full max-w-none mx-auto px-4 sm:px-6">
         <div className="site-header-bar flex justify-between items-center min-h-[3.15rem] py-1.5 sm:min-h-[4.75rem] sm:py-3">
           <Link
             to="/"
