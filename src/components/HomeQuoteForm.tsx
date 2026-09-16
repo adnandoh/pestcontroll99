@@ -35,15 +35,39 @@ const PREMISE_SIZE_OPTIONS = RESIDENTIAL_PREMISE_SIZE_OPTIONS;
 const OTHER_PREMISE_WHATSAPP_MESSAGE =
   'Hi Pest Control 99, I selected Other for premise size on the website booking form and need a custom quote.';
 
-const TREATMENT_DETAILS: Record<'standard' | 'premium', [string, string]> = {
-  standard: [
-    'Standard Treatment',
-    'Gel + spray treatment for effective cockroach and ant control. Utensils must be removed before spray treatment.',
-  ],
-  premium: [
-    'Premium Treatment',
-    'Premium gel treatment with no bad smell and no need to remove utensils. Odourless spray and monitoring trap can be used when required.',
-  ],
+type TreatmentDetail = {
+  title: string;
+  bullets: string[];
+  whyChooseTitle?: string;
+  whyChooseBody?: string;
+};
+
+const TREATMENT_DETAILS: Record<'standard' | 'premium', TreatmentDetail> = {
+  standard: {
+    title: 'Standard Treatment',
+    bullets: [
+      'Strong chemical spray with standard gel treatment.',
+      'Kitchen utensils and food items must be removed before treatment.',
+      'Our technician can assist with utensil removal for an additional charge of ₹300.',
+      'Keep children and pets away from the treated area.',
+      'Do not use the treated area for at least 3 hours after treatment.',
+    ],
+  },
+  premium: {
+    title: 'Premium Treatment — Recommended',
+    bullets: [
+      'Advanced premium gel treatment for complete-home cockroach control.',
+      'Premium gel remains active and continuously targets hidden cockroaches.',
+      'No need to remove kitchen utensils for gel-only treatment.',
+      'Odourless spray with no unpleasant smell with premium gel is also available if spray treatment is required.',
+      'Cockroach monitoring pads/traps will be provided wherever necessary.',
+      'Tried-and-tested treatment method for effective and long-lasting control.',
+      'Ideal for families looking for minimum preparation, less inconvenience and better protection.',
+    ],
+    whyChooseTitle: 'Why Choose Premium?',
+    whyChooseBody:
+      'Choose Premium Treatment for hassle-free service, no utensil removal and long-lasting cockroach control.',
+  },
 };
 
 function formatInrWhole(amount: number): string {
@@ -981,9 +1005,20 @@ export default function HomeQuoteForm({
             if (e.target === e.currentTarget) setInfoModal(null);
           }}
         >
-          <div className="booking-info-sheet">
-            <h3 id="booking-info-title">{TREATMENT_DETAILS[infoModal][0]}</h3>
-            <p>{TREATMENT_DETAILS[infoModal][1]}</p>
+          <div className="booking-info-sheet booking-treatment-info-sheet">
+            <h3 id="booking-info-title">{TREATMENT_DETAILS[infoModal].title}</h3>
+            <ul className="booking-treatment-info-list">
+              {TREATMENT_DETAILS[infoModal].bullets.map((item) => (
+                <li key={item}>{item}</li>
+              ))}
+            </ul>
+            {TREATMENT_DETAILS[infoModal].whyChooseTitle &&
+              TREATMENT_DETAILS[infoModal].whyChooseBody && (
+                <div className="booking-treatment-why">
+                  <h4>{TREATMENT_DETAILS[infoModal].whyChooseTitle}</h4>
+                  <p>{TREATMENT_DETAILS[infoModal].whyChooseBody}</p>
+                </div>
+              )}
             <button type="button" onClick={() => setInfoModal(null)}>
               Got it
             </button>

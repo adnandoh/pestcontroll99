@@ -3375,6 +3375,63 @@ html[data-scroll-behavior="smooth"] {
   color: #435a4d;
 }
 
+.booking-treatment-info-sheet {
+  max-height: min(78vh, 640px);
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+  padding-bottom: calc(18px + env(safe-area-inset-bottom, 0px));
+}
+
+.booking-treatment-info-list {
+  margin: 0 0 14px;
+  padding: 0 0 0 18px;
+  list-style: disc;
+}
+
+.booking-treatment-info-list li {
+  font-size: 14px;
+  line-height: 1.5;
+  color: #435a4d;
+  margin: 0 0 8px;
+}
+
+.booking-treatment-info-list li:last-child {
+  margin-bottom: 0;
+}
+
+.booking-treatment-why {
+  margin: 0 0 14px;
+  padding: 12px 14px;
+  border-radius: 12px;
+  background: #f3faf5;
+  border: 1px solid #d7edd9;
+}
+
+.booking-treatment-why h4 {
+  margin: 0 0 6px;
+  color: var(--hb-navy);
+  font-size: 0.95rem;
+  font-weight: 800;
+}
+
+.booking-treatment-why p {
+  margin: 0;
+  font-size: 13px;
+  line-height: 1.45;
+  color: #435a4d;
+}
+
+@media (min-width: 640px) {
+  .booking-info-modal {
+    align-items: center;
+    padding: 24px;
+  }
+
+  .booking-info-sheet {
+    border-radius: 18px;
+  }
+}
+
 .booking-info-sheet button {
   width: 100%;
   height: 43px;
