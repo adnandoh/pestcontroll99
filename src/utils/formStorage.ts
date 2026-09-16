@@ -21,7 +21,8 @@ export interface HomeFormData {
 
 /**
  * Fresh home booking defaults (Residential + Cockroach / Ants).
- * Preferred date/time are computed at call time (today / now+1h).
+ * Preferred date/time are computed at call time (today; early morning → 8:00 AM,
+ * otherwise now+1h).
  */
 export function createEmptyHomeFormData(): HomeFormData {
   const { preferredDate, preferredTime } = getDefaultPreferredSchedule();
