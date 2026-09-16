@@ -128,15 +128,15 @@ export default function MultiSelectPest({
           aria-labelledby="pest-select-label"
           onPointerDown={(event) => event.stopPropagation()}
         >
-          <div className="flex justify-between items-center px-4 py-2 border-b border-gray-100 bg-gray-50">
-            <span className="text-[10px] font-bold text-gray-500 uppercase tracking-widest">
-              Select multiple (checkboxes)
+          <div className="booking-multiselect-header flex items-center justify-between gap-2 px-3 py-1 border-b border-gray-100 bg-gray-50">
+            <span className="booking-multiselect-hint whitespace-nowrap text-[9px] font-semibold text-gray-500 tracking-wide">
+              Select multiple
             </span>
             {selectedPests.length > 0 && (
               <button
                 type="button"
                 onClick={() => onChange([])}
-                className="text-[10px] text-green-base hover:underline font-bold uppercase"
+                className="booking-multiselect-clear shrink-0 whitespace-nowrap text-[9px] font-semibold text-green-base hover:underline"
               >
                 Clear all
               </button>

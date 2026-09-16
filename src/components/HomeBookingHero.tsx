@@ -1,3 +1,4 @@
+import AppImage from '@/components/AppImage';
 import { BUSINESS } from '@/config/business';
 import type { ReactNode } from 'react';
 import { Link } from 'react-router-dom';
@@ -6,6 +7,15 @@ const HERO_BUGS = ['🪳', '🐜', '🦟', '🐀'] as const;
 
 const PLAY_STORE_URL =
   'https://play.google.com/store/apps/details?id=com.pestcontrol99.pest_99_customer_app';
+
+/** Real technician service photo already used site-wide (OG / landing). */
+const HERO_MEDIA = {
+  src: '/images/hero-home.webp',
+  width: 1706,
+  height: 922,
+} as const;
+
+const HERO_MEDIA_ALT = `${BUSINESS.brandName} technician treating a home — licensed pest control in Mumbai`;
 
 type HomeBookingHeroProps = {
   form: ReactNode;
@@ -43,58 +53,72 @@ function MessageGlyph() {
   );
 }
 
-/** Mobile booking composition matching PestControl99_Mobile_Booking_Developer.html */
+/** Mobile booking composition + desktop image-left / form-right hero */
 export default function HomeBookingHero({ form }: HomeBookingHeroProps) {
   return (
     <section className="home-booking-hero" aria-labelledby="home-booking-headline">
       <div className="home-booking-app">
-        <div className="home-booking-hero-band">
-          <span className="home-booking-badge">LICENSED PEST CONTROL</span>
-          <h1 id="home-booking-headline" className="home-booking-headline">
-            Book Pest Control <span className="home-booking-headline-accent">in 60 Seconds</span>
-          </h1>
-          <div className="home-booking-trust">
-            <span>Verified Experts</span>
-            <i aria-hidden />
-            <span>Branded Chemicals</span>
-            <i aria-hidden />
-            <span>Invoice</span>
-          </div>
-          <div className="home-booking-bugline" aria-hidden="true">
-            {HERO_BUGS.map((bug) => (
-              <div key={bug} className="home-booking-bug">
-                {bug}
-              </div>
-            ))}
-          </div>
-          <div className="home-booking-leaf" aria-hidden="true" />
-          <p className="sr-only">
-            {BUSINESS.brandName} — Pest Control in Mumbai, Safe, Same-Day &amp; Certified Services
-          </p>
+        <div className="home-booking-media">
+          <AppImage
+            src={HERO_MEDIA.src}
+            alt={HERO_MEDIA_ALT}
+            width={HERO_MEDIA.width}
+            height={HERO_MEDIA.height}
+            priority
+            sizes="(min-width: 1024px) 55vw, (min-width: 768px) 50vw, 100vw"
+            className="home-booking-media-img"
+          />
         </div>
 
-        <div className="home-booking-form-col">
-          {form}
-          <nav className="home-booking-action-bar" aria-label="Quick actions">
-            <a
-              href={PLAY_STORE_URL}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="home-booking-action home-booking-action-play"
-            >
-              <PlayStoreGlyph />
-              Download App
-            </a>
-            <Link to="/quote/" className="home-booking-action home-booking-action-inquiry">
-              <MessageGlyph />
-              Send Inquiry
-            </Link>
-            <a href={`tel:${BUSINESS.phoneTel}`} className="home-booking-action home-booking-action-call">
-              ☎ Call Now
-            </a>
-          </nav>
+        <div className="home-booking-panel">
+          <div className="home-booking-hero-band">
+            <span className="home-booking-badge">LICENSED PEST CONTROL</span>
+            <h1 id="home-booking-headline" className="home-booking-headline">
+              Book Pest Control <span className="home-booking-headline-accent">in 60 Seconds</span>
+            </h1>
+            <div className="home-booking-trust">
+              <span>Verified Experts</span>
+              <i aria-hidden />
+              <span>Branded Chemicals</span>
+              <i aria-hidden />
+              <span>Invoice</span>
+            </div>
+            <div className="home-booking-bugline" aria-hidden="true">
+              {HERO_BUGS.map((bug) => (
+                <div key={bug} className="home-booking-bug">
+                  {bug}
+                </div>
+              ))}
+            </div>
+            <div className="home-booking-leaf" aria-hidden="true" />
+            <p className="sr-only">
+              {BUSINESS.brandName} — Pest Control in Mumbai, Safe, Same-Day &amp; Certified Services
+            </p>
+          </div>
+
+          <div className="home-booking-form-col">{form}</div>
         </div>
       </div>
+
+      {/* Fixed to viewport — kept outside .home-booking-app so layout/overflow never traps it */}
+      <nav className="home-booking-action-bar" aria-label="Quick actions">
+        <a
+          href={PLAY_STORE_URL}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="home-booking-action home-booking-action-play"
+        >
+          <PlayStoreGlyph />
+          Download App
+        </a>
+        <Link to="/quote/" className="home-booking-action home-booking-action-inquiry">
+          <MessageGlyph />
+          Send Inquiry
+        </Link>
+        <a href={`tel:${BUSINESS.phoneTel}`} className="home-booking-action home-booking-action-call">
+          ☎ Call Now
+        </a>
+      </nav>
     </section>
   );
 }

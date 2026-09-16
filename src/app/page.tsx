@@ -23,7 +23,7 @@ function BookingFormFallback() {
 
 export default function Home() {
   return (
-    <div>
+    <div className="home-page-with-sticky-cta">
       <PageMeta
         title="Pest Control in Mumbai | Safe, Same-Day & Certified Services"
         description="Trusted pest control in Mumbai, Navi Mumbai, Thane, Pune & Lonavala. 100% safe, herbal treatments for homes & offices. Same-day service, 365-day warranty. Book now!"

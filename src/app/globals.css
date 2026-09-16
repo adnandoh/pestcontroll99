@@ -2027,6 +2027,13 @@ html[data-scroll-behavior="smooth"] {
   --hb-soft: #effaf3;
   /* Match sticky site-header: min-h-[3.15rem] bar + 1px border-b */
   --home-header-h: calc(3.15rem + 1px);
+  /* Mobile sticky CTA bar height (buttons + padding + iOS safe area) */
+  --hb-action-bar-pad-top: 2px;
+  --hb-action-bar-pad-bottom: max(6px, env(safe-area-inset-bottom, 0px));
+  --hb-action-bar-btn-h: 34px;
+  --hb-action-bar-h: calc(
+    var(--hb-action-bar-pad-top) + var(--hb-action-bar-btn-h) + var(--hb-action-bar-pad-bottom)
+  );
   background: #f4f7f5;
   /*
    * Prefer filling the first screen under the sticky header, but never lock
@@ -2078,6 +2085,21 @@ html[data-scroll-behavior="smooth"] {
   box-shadow: 0 0 30px #0b492019;
   display: flex;
   flex-direction: column;
+  /* Clearance so Confirm Booking isn’t hidden behind the fixed CTA bar */
+  padding-bottom: calc(var(--hb-action-bar-h, 48px) + 10px);
+}
+
+/* Desktop-only hero media — hidden on mobile so booking UI stays single-column */
+.home-booking-media {
+  display: none;
+}
+
+.home-booking-panel {
+  display: flex;
+  flex-direction: column;
+  flex: 1 1 auto;
+  min-height: 0;
+  width: 100%;
 }
 
 .home-booking-hero-band {
@@ -2464,6 +2486,45 @@ html[data-scroll-behavior="smooth"] {
   overflow-y: auto;
 }
 
+/* Compact multi-select dropdown header (MultiSelectPest) */
+.booking-multiselect-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  min-height: 0;
+  padding: 4px 10px;
+  border-bottom: 1px solid #f3f4f6;
+  background: #f9fafb;
+}
+
+.booking-multiselect-hint,
+.booking-multiselect-clear {
+  margin: 0;
+  padding: 0;
+  white-space: nowrap;
+  line-height: 1.2;
+  font-size: 9px;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  text-transform: none;
+}
+
+.booking-multiselect-hint {
+  color: #6b7280;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.booking-multiselect-clear {
+  flex-shrink: 0;
+  border: none;
+  background: transparent;
+  color: var(--hb-green, #0e8345);
+  cursor: pointer;
+}
+
 .booking-select-option {
   display: block;
   width: 100%;
@@ -2576,13 +2637,13 @@ html[data-scroll-behavior="smooth"] {
 .booking-input,
 .booking-address-input {
   width: 100%;
-  height: 34px;
-  min-height: 34px;
+  height: 42px;
+  min-height: 42px;
   border: 1.5px solid var(--hb-line);
   border-radius: 8px;
-  padding: 0 8px;
+  padding: 0 10px;
   background: #fff;
-  font: 700 12px inherit;
+  font: 700 13px inherit;
   color: #1b2a22;
   outline: none;
   box-shadow: none;
@@ -2613,8 +2674,8 @@ html[data-scroll-behavior="smooth"] {
   display: flex;
   align-items: stretch;
   width: 100%;
-  height: 34px;
-  min-height: 34px;
+  height: 42px;
+  min-height: 42px;
   border: 1.5px solid var(--hb-line);
   border-radius: 8px;
   background: #fff;
@@ -2635,23 +2696,23 @@ html[data-scroll-behavior="smooth"] {
 .booking-phone-prefix {
   display: flex;
   align-items: center;
-  gap: 3px;
+  gap: 4px;
   flex-shrink: 0;
-  padding: 0 6px;
+  padding: 0 8px;
   border-right: 1.5px solid var(--hb-line);
   background: #f4faf6;
   color: #1b2a22;
 }
 
 .booking-phone-flag {
-  width: 14px;
-  height: 10px;
+  width: 16px;
+  height: 11px;
   flex-shrink: 0;
   border-radius: 1px;
 }
 
 .booking-phone-prefix-code {
-  font-size: 10px;
+  font-size: 12px;
   font-weight: 700;
   line-height: 1;
   white-space: nowrap;
@@ -2665,8 +2726,8 @@ html[data-scroll-behavior="smooth"] {
   border: none;
   outline: none;
   background: transparent;
-  padding: 0 6px;
-  font: 700 11px/1.2 ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+  padding: 0 10px;
+  font: 700 13px/1.2 ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
   letter-spacing: 0.04em;
   font-variant-numeric: tabular-nums;
   color: #1b2a22;
@@ -2934,13 +2995,13 @@ html[data-scroll-behavior="smooth"] {
   display: flex;
   align-items: center;
   justify-content: flex-start;
-  height: 34px;
-  min-height: 34px;
+  height: 42px;
+  min-height: 42px;
   padding: 0 34px 0 32px;
   border: 1.5px solid var(--hb-line);
   border-radius: 8px;
   background: #fff;
-  font: 700 12px inherit;
+  font: 700 13px inherit;
   color: #1b2a22;
   text-align: left;
   cursor: pointer;
@@ -3184,21 +3245,51 @@ html[data-scroll-behavior="smooth"] {
   margin-left: auto;
 }
 
-/* In-flow bottom actions under Confirm Booking (HTML .bottom) */
+/*
+ * Sticky CTA footer — ALWAYS fixed to the viewport bottom on the home page.
+ * Do not switch to position:static at tablet/desktop breakpoints; that was
+ * why the bar scrolled away on ≥768px. Keep outside overflow/transform shells.
+ */
 .home-booking-action-bar {
-  position: static;
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  z-index: 60;
   display: grid;
   grid-template-columns: 1fr 1.35fr 1fr;
   align-items: center;
   gap: 6px;
   width: 100%;
-  margin: 0;
-  /* Pull up under Confirm Booking — less dead air above the 3-button row */
-  padding: 2px 10px max(6px, env(safe-area-inset-bottom, 0px));
+  max-width: 480px;
+  margin: 0 auto;
+  padding: var(--hb-action-bar-pad-top, 2px) 10px var(--hb-action-bar-pad-bottom, 6px);
   background: #fff;
   border-top: 1px solid #e6eee8;
-  box-shadow: none;
+  box-shadow: 0 -4px 18px rgba(9, 36, 86, 0.08);
   flex: 0 0 auto;
+  /* Avoid being trapped by ancestor transforms / filters */
+  transform: none;
+  -webkit-transform: none;
+}
+
+/* Page sections below the booking hero also clear the fixed bar */
+.home-page-with-sticky-cta {
+  /* Same tokens as .home-booking-viewport so padding works on this ancestor */
+  --hb-action-bar-pad-top: 2px;
+  --hb-action-bar-pad-bottom: max(6px, env(safe-area-inset-bottom, 0px));
+  --hb-action-bar-btn-h: 34px;
+  --hb-action-bar-h: calc(
+    var(--hb-action-bar-pad-top) + var(--hb-action-bar-btn-h) + var(--hb-action-bar-pad-bottom)
+  );
+  padding-bottom: calc(var(--hb-action-bar-h) + 8px);
+}
+
+/* Keep floating WA/Call FABs above the sticky CTA on tablet+ (hidden on mobile) */
+@media (min-width: 768px) {
+  body:has(.home-page-with-sticky-cta) .floating-widgets-wrap {
+    bottom: calc(56px + 1rem + env(safe-area-inset-bottom, 0px));
+  }
 }
 
 .home-booking-action {
@@ -3516,21 +3607,17 @@ html[data-scroll-behavior="smooth"] {
   }
 
   .booking-select,
-  .booking-select-trigger,
-  .booking-input,
-  .booking-address-input,
-  .booking-time-trigger,
-  .booking-phone-field {
+  .booking-select-trigger {
     min-height: 34px;
+    height: 34px;
   }
 
-  .booking-select,
-  .booking-select-trigger,
   .booking-input,
   .booking-address-input,
   .booking-time-trigger,
   .booking-phone-field {
-    height: 34px;
+    min-height: 40px;
+    height: 40px;
   }
 
   .booking-choice-card {
@@ -3556,9 +3643,16 @@ html[data-scroll-behavior="smooth"] {
     font-size: 13px;
   }
 
+  .home-booking-viewport,
+  .home-page-with-sticky-cta {
+    --hb-action-bar-pad-bottom: max(4px, env(safe-area-inset-bottom, 0px));
+    --hb-action-bar-btn-h: 30px;
+  }
+
   .home-booking-action-bar {
     gap: 5px;
-    padding: 2px 8px max(4px, env(safe-area-inset-bottom, 0px));
+    padding-left: 8px;
+    padding-right: 8px;
   }
 
   .home-booking-action {
@@ -3578,9 +3672,20 @@ html[data-scroll-behavior="smooth"] {
 }
 
 @media (min-width: 768px) {
+  .home-booking-viewport,
+  .home-page-with-sticky-cta {
+    /* Keep sticky bar height tokens so content clears the fixed footer */
+    --hb-action-bar-pad-top: 6px;
+    --hb-action-bar-pad-bottom: max(10px, env(safe-area-inset-bottom, 0px));
+    --hb-action-bar-btn-h: 40px;
+    --hb-action-bar-h: calc(
+      var(--hb-action-bar-pad-top) + var(--hb-action-bar-btn-h) + var(--hb-action-bar-pad-bottom)
+    );
+  }
+
   .home-booking-viewport {
     --home-header-h: 4.75rem;
-    padding: 1.25rem 0 2rem;
+    padding: 1.25rem 1rem calc(1.5rem + var(--hb-action-bar-h));
     /* Desktop: natural document flow — no forced first-viewport shell */
     min-height: 0;
     height: auto;
@@ -3588,21 +3693,57 @@ html[data-scroll-behavior="smooth"] {
     overflow: visible;
   }
 
+  .home-page-with-sticky-cta {
+    padding-bottom: calc(var(--hb-action-bar-h) + 12px);
+  }
+
   .home-booking-hero {
     flex: none;
     display: block;
     min-height: 0;
-    padding: 0 0 1.25rem;
+    padding: 0;
+    max-width: 1100px;
+    margin: 0 auto;
   }
 
   .home-booking-app {
-    max-width: 520px;
-    border-radius: 0 0 18px 18px;
+    max-width: none;
+    width: 100%;
+    border-radius: 18px;
     flex: none;
     height: auto;
     min-height: 0;
     max-height: none;
-    overflow: visible;
+    overflow: hidden;
+    display: grid;
+    grid-template-columns: minmax(0, 1.05fr) minmax(320px, 0.95fr);
+    align-items: stretch;
+    background: #fff;
+    box-shadow: 0 12px 40px #0b49201f;
+    /* Bar is fixed to viewport; keep modest in-card padding only */
+    padding-bottom: 0;
+  }
+
+  .home-booking-media {
+    display: block;
+    position: relative;
+    min-height: 100%;
+    background: #e8f3ec;
+  }
+
+  .home-booking-media-img {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center;
+  }
+
+  .home-booking-panel {
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+    background: #fff;
   }
 
   .home-booking-form-col {
@@ -3629,7 +3770,7 @@ html[data-scroll-behavior="smooth"] {
   }
 
   .booking-form-card {
-    margin: -1px 14px 0;
+    margin: -1px 14px 16px;
     padding: 14px 16px 16px;
   }
 
@@ -3659,23 +3800,55 @@ html[data-scroll-behavior="smooth"] {
     right: 18px;
   }
 
+  /* Stay fixed on tablet/desktop — do NOT reset to static */
   .home-booking-action-bar {
-    padding: 12px 14px 16px;
-    margin-top: 8px;
+    position: fixed;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 60;
+    max-width: 720px;
+    margin: 0 auto;
+    padding: var(--hb-action-bar-pad-top) 14px var(--hb-action-bar-pad-bottom);
+    gap: 8px;
+    box-shadow: 0 -6px 24px rgba(9, 36, 86, 0.1);
+  }
+
+  .home-booking-action {
+    height: 40px;
+    min-height: 40px;
+    font-size: 12px;
+    border-radius: 10px;
+  }
+
+  .home-booking-action-inquiry {
+    font-size: 13px;
+  }
+
+  .home-booking-action svg {
+    width: 16px;
+    height: 16px;
   }
 }
 
 @media (min-width: 1024px) {
   .home-booking-viewport {
-    padding: 1.5rem 0 2.5rem;
+    padding: 1.5rem 1.25rem calc(2rem + var(--hb-action-bar-h));
   }
 
   .home-booking-hero {
-    background: #f4f7f5;
+    max-width: 1180px;
+    background: transparent;
   }
 
   .home-booking-app {
-    max-width: 560px;
-    box-shadow: 0 0 40px #0b49201f;
+    max-width: none;
+    grid-template-columns: minmax(0, 1.15fr) minmax(360px, 0.85fr);
+    min-height: 560px;
+    box-shadow: 0 16px 48px #0b492024;
+  }
+
+  .home-booking-action-bar {
+    max-width: 800px;
   }
 }
