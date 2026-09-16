@@ -3285,10 +3285,14 @@ html[data-scroll-behavior="smooth"] {
   padding-bottom: calc(var(--hb-action-bar-h) + 8px);
 }
 
-/* Keep floating WA/Call FABs above the sticky CTA on tablet+ (hidden on mobile) */
+/*
+ * Home sticky CTA is centered (max-width 720–800px). Tuck Call/WA FABs into the
+ * bottom-right corner beside that bar so the Call FAB clears Confirm Booking.
+ * (Previous 56px+1rem offset stacked them too high over the form CTA.)
+ */
 @media (min-width: 768px) {
   body:has(.home-page-with-sticky-cta) .floating-widgets-wrap {
-    bottom: calc(56px + 1rem + env(safe-area-inset-bottom, 0px));
+    bottom: max(0.5rem, env(safe-area-inset-bottom, 0px));
   }
 }
 
