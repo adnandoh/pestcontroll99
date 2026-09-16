@@ -70,9 +70,37 @@ export type ApiResult<T> = {
   errors?: Record<string, string[] | string>;
 };
 
+const CATALOG_TIMEOUT_MS = 12_000;
+const OTP_TIMEOUT_MS = 15_000;
+const BOOKING_TIMEOUT_MS = 20_000;
+const CATALOG_RETRIES = 3;
+
 function apiPath(baseUrl: string, path: string): string {
   if (!baseUrl) return path;
   return `${baseUrl}${path}`;
+}
+
+function abortSignalTimeout(ms: number): AbortSignal {
+  if (typeof AbortSignal !== 'undefined' && typeof AbortSignal.timeout === 'function') {
+    return AbortSignal.timeout(ms);
+  }
+  const controller = new AbortController();
+  globalThis.setTimeout(() => controller.abort(), ms);
+  return controller.signal;
+}
+
+function formatNetworkError(err: unknown, fallback: string): string {
+  if (err instanceof DOMException && err.name === 'AbortError') {
+    return 'Request timed out. Please try again.';
+  }
+  if (err instanceof Error) {
+    const msg = err.message || fallback;
+    if (/failed to fetch|networkerror|load failed/i.test(msg)) {
+      return 'Network error. Check your connection and try again.';
+    }
+    return msg;
+  }
+  return fallback;
 }
 
 function formatError(result: unknown, status: number, fallback: string): string {
@@ -97,32 +125,66 @@ function formatError(result: unknown, status: number, fallback: string): string 
   );
 }
 
+async function fetchJson(
+  url: string,
+  init: RequestInit,
+  timeoutMs: number,
+): Promise<{ response: Response; result: Record<string, unknown> }> {
+  const response = await fetch(url, {
+    ...init,
+    signal: abortSignalTimeout(timeoutMs),
+  });
+  const result = (await response.json().catch(() => ({}))) as Record<string, unknown>;
+  return { response, result };
+}
+
+function sleep(ms: number): Promise<void> {
+  return new Promise((resolve) => {
+    globalThis.setTimeout(resolve, ms);
+  });
+}
+
 class CustomerBookingApiService {
   async fetchCatalog(city?: string): Promise<ApiResult<CatalogResponse>> {
     const bases = getCrmSubmitBases();
     let lastError = 'Failed to load pricing catalog';
 
     for (const base of bases) {
-      try {
-        const qs = city ? `?city=${encodeURIComponent(city)}` : '';
-        const response = await fetch(apiPath(base, `/api/customer/catalog/${qs}`), {
-          method: 'GET',
-          headers: { Accept: 'application/json' },
-        });
-        const result = await response.json().catch(() => ({}));
-        if (!response.ok) {
-          lastError = formatError(result, response.status, 'Failed to load pricing catalog');
-          continue;
+      for (let attempt = 1; attempt <= CATALOG_RETRIES; attempt += 1) {
+        try {
+          const qs = city ? `?city=${encodeURIComponent(city)}` : '';
+          const { response, result } = await fetchJson(
+            apiPath(base, `/api/customer/catalog/${qs}`),
+            {
+              method: 'GET',
+              headers: { Accept: 'application/json' },
+            },
+            CATALOG_TIMEOUT_MS,
+          );
+          if (!response.ok) {
+            lastError = formatError(result, response.status, 'Failed to load pricing catalog');
+            // Retry transient 5xx; skip immediately on 4xx.
+            if (response.status < 500 || attempt === CATALOG_RETRIES) {
+              break;
+            }
+          } else {
+            return {
+              success: true,
+              data: {
+                regions: (result.regions as CatalogResponse['regions']) || [],
+                results: Array.isArray(result.results)
+                  ? (result.results as CatalogResponse['results'])
+                  : [],
+              },
+            };
+          }
+        } catch (err) {
+          lastError = formatNetworkError(err, 'Network error loading catalog');
         }
-        return {
-          success: true,
-          data: {
-            regions: result.regions || [],
-            results: Array.isArray(result.results) ? result.results : [],
-          },
-        };
-      } catch (err) {
-        lastError = err instanceof Error ? err.message : 'Network error loading catalog';
+
+        if (attempt < CATALOG_RETRIES) {
+          await sleep(350 * attempt);
+        }
       }
     }
 
@@ -139,19 +201,22 @@ class CustomerBookingApiService {
 
     for (const base of bases) {
       try {
-        const response = await fetch(apiPath(base, '/api/customer/otp/send/'), {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-            Accept: 'application/json',
+        const { response, result } = await fetchJson(
+          apiPath(base, '/api/customer/otp/send/'),
+          {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+              Accept: 'application/json',
+            },
+            body: JSON.stringify({
+              mobile,
+              purpose: 'website_booking',
+              full_name: fullName || '',
+            }),
           },
-          body: JSON.stringify({
-            mobile,
-            purpose: 'website_booking',
-            full_name: fullName || '',
-          }),
-        });
-        const result = await response.json().catch(() => ({}));
+          OTP_TIMEOUT_MS,
+        );
         if (!response.ok) {
           lastError = formatError(result, response.status, 'Failed to send OTP');
           return {
@@ -160,24 +225,24 @@ class CustomerBookingApiService {
             code: typeof result.code === 'string' ? result.code : undefined,
             retry_after:
               typeof result.retry_after === 'number' ? result.retry_after : undefined,
-            errors: result.errors,
+            errors: result.errors as ApiResult<BookingOtpSendResult>['errors'],
           };
         }
         return {
           success: true,
           data: {
-            message: result.message || 'OTP sent successfully.',
-            mobile: result.mobile || mobile,
-            purpose: result.purpose || 'website_booking',
+            message: (result.message as string) || 'OTP sent successfully.',
+            mobile: (result.mobile as string) || mobile,
+            purpose: (result.purpose as string) || 'website_booking',
             expires_in: Number(result.expires_in) || 300,
-            delivery: result.delivery || 'queued',
+            delivery: (result.delivery as string) || 'queued',
             resend_after:
               typeof result.resend_after === 'number' ? result.resend_after : undefined,
             dev_otp: typeof result.dev_otp === 'string' ? result.dev_otp : undefined,
           },
         };
       } catch (err) {
-        lastError = err instanceof Error ? err.message : 'Network error sending OTP';
+        lastError = formatNetworkError(err, 'Network error sending OTP');
       }
     }
 
@@ -194,26 +259,29 @@ class CustomerBookingApiService {
 
     for (const base of bases) {
       try {
-        const response = await fetch(apiPath(base, '/api/customer/otp/verify/'), {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-            Accept: 'application/json',
+        const { response, result } = await fetchJson(
+          apiPath(base, '/api/customer/otp/verify/'),
+          {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+              Accept: 'application/json',
+            },
+            body: JSON.stringify({
+              mobile,
+              otp,
+              purpose: 'website_booking',
+            }),
           },
-          body: JSON.stringify({
-            mobile,
-            otp,
-            purpose: 'website_booking',
-          }),
-        });
-        const result = await response.json().catch(() => ({}));
+          OTP_TIMEOUT_MS,
+        );
         if (!response.ok) {
           lastError = formatError(result, response.status, 'Failed to verify OTP');
           return {
             success: false,
             error: lastError,
             code: typeof result.code === 'string' ? result.code : undefined,
-            errors: result.errors,
+            errors: result.errors as ApiResult<BookingOtpVerifyResult>['errors'],
           };
         }
         if (!result.otp_verification_token) {
@@ -225,15 +293,15 @@ class CustomerBookingApiService {
         return {
           success: true,
           data: {
-            message: result.message || 'Mobile verified.',
-            mobile: result.mobile || mobile,
-            purpose: result.purpose || 'website_booking',
-            otp_verification_token: result.otp_verification_token,
+            message: (result.message as string) || 'Mobile verified.',
+            mobile: (result.mobile as string) || mobile,
+            purpose: (result.purpose as string) || 'website_booking',
+            otp_verification_token: result.otp_verification_token as string,
             expires_in: Number(result.expires_in) || 600,
           },
         };
       } catch (err) {
-        lastError = err instanceof Error ? err.message : 'Network error verifying OTP';
+        lastError = formatNetworkError(err, 'Network error verifying OTP');
       }
     }
 
@@ -250,15 +318,18 @@ class CustomerBookingApiService {
 
     for (const base of bases) {
       try {
-        const response = await fetch(apiPath(base, '/api/customer/website-bookings/'), {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-            Accept: 'application/json',
+        const { response, result } = await fetchJson(
+          apiPath(base, '/api/customer/website-bookings/'),
+          {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+              Accept: 'application/json',
+            },
+            body: JSON.stringify(payload),
           },
-          body: JSON.stringify(payload),
-        });
-        const result = await response.json().catch(() => ({}));
+          BOOKING_TIMEOUT_MS,
+        );
         if (!response.ok) {
           lastError = formatError(result, response.status, 'Failed to create booking');
           if (result.errors || result.code) {
@@ -266,7 +337,7 @@ class CustomerBookingApiService {
               success: false,
               error: lastError,
               code: typeof result.code === 'string' ? result.code : undefined,
-              errors: result.errors,
+              errors: result.errors as ApiResult<unknown>['errors'],
             };
           }
           continue;
@@ -274,12 +345,12 @@ class CustomerBookingApiService {
         return {
           success: true,
           data: {
-            message: result.message || 'Booking created.',
-            booking: result.booking,
+            message: (result.message as string) || 'Booking created.',
+            booking: result.booking as WebsiteBookingResult,
           },
         };
       } catch (err) {
-        lastError = err instanceof Error ? err.message : 'Network error creating booking';
+        lastError = formatNetworkError(err, 'Network error creating booking');
       }
     }
 

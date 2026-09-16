@@ -107,6 +107,7 @@ export default function HomeQuoteForm({
   const [catalogRates, setCatalogRates] = useState<CatalogRate[]>([]);
   const [catalogLoading, setCatalogLoading] = useState(true);
   const [catalogError, setCatalogError] = useState('');
+  const [catalogReloadKey, setCatalogReloadKey] = useState(0);
 
   const priceFromCatalog = useCallback(
     (data: HomeFormData, rates: CatalogRate[] = catalogRates) =>
@@ -125,31 +126,41 @@ export default function HomeQuoteForm({
     let cancelled = false;
     (async () => {
       setCatalogLoading(true);
-      const res = await customerBookingApi.fetchCatalog(defaultCity);
-      if (cancelled) return;
-      if (res.success && res.data) {
-        setCatalogRates(res.data.results);
-        setCatalogError('');
-        setFormData((prev) => ({
-          ...prev,
-          estimatedPrice: calculateCatalogQuotePrice({
-            rates: res.data!.results,
-            pestTypes: prev.pestTypes,
-            premiseType: prev.premiseType,
-            premiseSize: prev.premiseSize,
-            serviceType: prev.serviceType,
-            treatmentQuality: prev.treatmentQuality,
-          }).offerPrice,
-        }));
-      } else {
-        setCatalogError(res.error || 'Could not load live prices');
+      setCatalogError('');
+      try {
+        const res = await customerBookingApi.fetchCatalog(defaultCity);
+        if (cancelled) return;
+        if (res.success && res.data) {
+          setCatalogRates(res.data.results);
+          setCatalogError('');
+          setFormData((prev) => ({
+            ...prev,
+            estimatedPrice: calculateCatalogQuotePrice({
+              rates: res.data!.results,
+              pestTypes: prev.pestTypes,
+              premiseType: prev.premiseType,
+              premiseSize: prev.premiseSize,
+              serviceType: prev.serviceType,
+              treatmentQuality: prev.treatmentQuality,
+            }).offerPrice,
+          }));
+        } else {
+          setCatalogError(res.error || 'Could not load live prices');
+        }
+      } catch (err) {
+        if (cancelled) return;
+        console.error('Catalog load failed:', err);
+        setCatalogError(
+          err instanceof Error ? err.message : 'Could not load live prices',
+        );
+      } finally {
+        if (!cancelled) setCatalogLoading(false);
       }
-      setCatalogLoading(false);
     })();
     return () => {
       cancelled = true;
     };
-  }, [defaultCity]);
+  }, [defaultCity, catalogReloadKey]);
 
   useEffect(() => {
     // Drop stale localStorage so it cannot overwrite defaults (e.g. Commercial / plans / hotel pest).
@@ -623,7 +634,17 @@ export default function HomeQuoteForm({
 
         {catalogError ? (
           <div className="mb-2 rounded-[10px] border border-amber-200 bg-amber-50 p-2.5 text-xs font-semibold text-amber-900">
-            Live prices unavailable — booking may need staff price confirmation. {catalogError}
+            <div>
+              Live prices unavailable — booking may need staff price confirmation. {catalogError}
+            </div>
+            <button
+              type="button"
+              className="mt-1.5 text-[11px] font-bold underline underline-offset-2"
+              disabled={catalogLoading}
+              onClick={() => setCatalogReloadKey((k) => k + 1)}
+            >
+              {catalogLoading ? 'Retrying prices…' : 'Retry live prices'}
+            </button>
           </div>
         ) : null}
 
