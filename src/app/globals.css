@@ -3685,7 +3685,8 @@ html[data-scroll-behavior="smooth"] {
 
   .home-booking-viewport {
     --home-header-h: 4.75rem;
-    padding: 1.25rem 1rem calc(1.5rem + var(--hb-action-bar-h));
+    /* Match header shell: container + sm:px-6 — fill content width, no narrow card gutters */
+    padding: 1rem 1.5rem calc(1.5rem + var(--hb-action-bar-h));
     /* Desktop: natural document flow — no forced first-viewport shell */
     min-height: 0;
     height: auto;
@@ -3702,8 +3703,15 @@ html[data-scroll-behavior="smooth"] {
     display: block;
     min-height: 0;
     padding: 0;
-    max-width: 1100px;
+    /* Align with header `.container mx-auto` (Tailwind default ~1280px) */
+    max-width: 1280px;
+    width: 100%;
     margin: 0 auto;
+  }
+
+  /* Mobile-only marketing band — keep on small screens; form sits higher on desktop */
+  .home-booking-hero-band {
+    display: none;
   }
 
   .home-booking-app {
@@ -3729,6 +3737,7 @@ html[data-scroll-behavior="smooth"] {
     position: relative;
     min-height: 100%;
     background: #e8f3ec;
+    overflow: hidden;
   }
 
   .home-booking-media-img {
@@ -3737,6 +3746,76 @@ html[data-scroll-behavior="smooth"] {
     height: 100%;
     object-fit: cover;
     object-position: center;
+  }
+
+  /* Bottom-left marketing overlay on desktop hero photo */
+  .home-booking-media-copy {
+    position: absolute;
+    inset: auto 0 0 0;
+    z-index: 2;
+    padding: 1.75rem 1.5rem 1.5rem;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.55rem;
+    background: linear-gradient(
+      180deg,
+      rgba(8, 20, 40, 0) 0%,
+      rgba(8, 20, 40, 0.45) 42%,
+      rgba(8, 20, 40, 0.72) 100%
+    );
+    pointer-events: none;
+  }
+
+  .home-booking-media-badge {
+    display: inline-block;
+    background: #fff;
+    color: #087b3d;
+    padding: 0.28rem 0.65rem;
+    border-radius: 999px;
+    font-size: 0.65rem;
+    font-weight: 800;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    line-height: 1.2;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.18);
+  }
+
+  .home-booking-media-headline {
+    margin: 0;
+    max-width: 16ch;
+    font-family: Inter, system-ui, -apple-system, "Segoe UI", sans-serif;
+    font-size: clamp(1.55rem, 2.4vw, 2.15rem);
+    font-weight: 800;
+    line-height: 1.1;
+    letter-spacing: -0.03em;
+    color: #fff;
+    text-shadow: 0 2px 12px rgba(0, 0, 0, 0.35);
+  }
+
+  .home-booking-media-headline-accent {
+    color: #9fe3b8;
+  }
+
+  .home-booking-media-trust {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.4rem 0.55rem;
+    align-items: center;
+    font-size: 0.8rem;
+    font-weight: 700;
+    line-height: 1.3;
+    color: #fff;
+    text-shadow: 0 1px 8px rgba(0, 0, 0, 0.35);
+  }
+
+  .home-booking-media-trust i {
+    width: 4px;
+    height: 4px;
+    background: #9fe3b8;
+    border-radius: 50%;
+    display: inline-block;
+    flex-shrink: 0;
   }
 
   .home-booking-panel {
@@ -3770,34 +3849,12 @@ html[data-scroll-behavior="smooth"] {
   }
 
   .booking-form-card {
-    margin: -1px 14px 16px;
+    margin: 12px 14px 16px;
     padding: 14px 16px 16px;
   }
 
   .booking-form-title {
     font-size: 19px;
-  }
-
-  .home-booking-hero-band {
-    min-height: 120px;
-    height: auto;
-    padding: 16px 22px 18px;
-  }
-
-  .home-booking-headline {
-    font-size: 28px;
-    max-width: 340px;
-  }
-
-  .home-booking-bug {
-    width: 44px;
-    height: 44px;
-    font-size: 22px;
-  }
-
-  .home-booking-bugline {
-    grid-template-columns: repeat(2, 44px);
-    right: 18px;
   }
 
   /* Stay fixed on tablet/desktop — do NOT reset to static */
@@ -3833,11 +3890,12 @@ html[data-scroll-behavior="smooth"] {
 
 @media (min-width: 1024px) {
   .home-booking-viewport {
-    padding: 1.5rem 1.25rem calc(2rem + var(--hb-action-bar-h));
+    /* Match header `sm:px-6` (1.5rem) so hero edges align with logo/nav */
+    padding: 1rem 1.5rem calc(1.5rem + var(--hb-action-bar-h));
   }
 
   .home-booking-hero {
-    max-width: 1180px;
+    max-width: 1280px;
     background: transparent;
   }
 
@@ -3846,6 +3904,19 @@ html[data-scroll-behavior="smooth"] {
     grid-template-columns: minmax(0, 1.15fr) minmax(360px, 0.85fr);
     min-height: 560px;
     box-shadow: 0 16px 48px #0b492024;
+  }
+
+  .home-booking-media-copy {
+    padding: 2.25rem 1.75rem 1.85rem;
+  }
+
+  .home-booking-media-headline {
+    font-size: clamp(1.85rem, 2.6vw, 2.45rem);
+    max-width: 14ch;
+  }
+
+  .home-booking-media-trust {
+    font-size: 0.9rem;
   }
 
   .home-booking-action-bar {

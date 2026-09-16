@@ -53,10 +53,27 @@ function MessageGlyph() {
   );
 }
 
+function HeroTrustLine({ className }: { className?: string }) {
+  return (
+    <div className={className ?? 'home-booking-trust'}>
+      <span>Verified Experts</span>
+      <i aria-hidden />
+      <span>Branded Chemicals</span>
+      <i aria-hidden />
+      <span>Invoice</span>
+    </div>
+  );
+}
+
 /** Mobile booking composition + desktop image-left / form-right hero */
 export default function HomeBookingHero({ form }: HomeBookingHeroProps) {
   return (
     <section className="home-booking-hero" aria-labelledby="home-booking-headline">
+      {/* Single document h1 — visual copies below are aria-hidden to avoid duplicates */}
+      <h1 id="home-booking-headline" className="sr-only">
+        Book Pest Control in 60 Seconds
+      </h1>
+
       <div className="home-booking-app">
         <div className="home-booking-media">
           <AppImage
@@ -68,32 +85,32 @@ export default function HomeBookingHero({ form }: HomeBookingHeroProps) {
             sizes="(min-width: 1024px) 55vw, (min-width: 768px) 50vw, 100vw"
             className="home-booking-media-img"
           />
+          {/* Desktop-only: marketing copy overlaid on hero photo (bottom-left) */}
+          <div className="home-booking-media-copy" aria-hidden="true">
+            <span className="home-booking-media-badge">LICENSED PEST CONTROL</span>
+            <p className="home-booking-media-headline">
+              Book Pest Control <span className="home-booking-media-headline-accent">in 60 Seconds</span>
+            </p>
+            <HeroTrustLine className="home-booking-media-trust" />
+          </div>
         </div>
 
         <div className="home-booking-panel">
-          <div className="home-booking-hero-band">
+          {/* Mobile-only mint band — hidden on desktop so the form sits higher */}
+          <div className="home-booking-hero-band" aria-hidden="true">
             <span className="home-booking-badge">LICENSED PEST CONTROL</span>
-            <h1 id="home-booking-headline" className="home-booking-headline">
+            <p className="home-booking-headline">
               Book Pest Control <span className="home-booking-headline-accent">in 60 Seconds</span>
-            </h1>
-            <div className="home-booking-trust">
-              <span>Verified Experts</span>
-              <i aria-hidden />
-              <span>Branded Chemicals</span>
-              <i aria-hidden />
-              <span>Invoice</span>
-            </div>
-            <div className="home-booking-bugline" aria-hidden="true">
+            </p>
+            <HeroTrustLine />
+            <div className="home-booking-bugline">
               {HERO_BUGS.map((bug) => (
                 <div key={bug} className="home-booking-bug">
                   {bug}
                 </div>
               ))}
             </div>
-            <div className="home-booking-leaf" aria-hidden="true" />
-            <p className="sr-only">
-              {BUSINESS.brandName} — Pest Control in Mumbai, Safe, Same-Day &amp; Certified Services
-            </p>
+            <div className="home-booking-leaf" />
           </div>
 
           <div className="home-booking-form-col">{form}</div>
