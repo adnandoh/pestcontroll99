@@ -288,7 +288,7 @@ export default function HomeInquiryForm({
   return (
     <section
       id="get-quote"
-      className={`pt-0 bg-transparent relative overflow-hidden scroll-mt-24 ${compact ? 'pb-6 sm:pb-10 md:pb-12' : 'pb-12 sm:pb-16 md:pb-20'}`}
+      className={`pt-0 bg-transparent relative overflow-hidden scroll-mt-24 ${compact ? 'pb-4 sm:pb-6 md:pb-8' : 'pb-12 sm:pb-16 md:pb-20'}`}
     >
       {/* Background Decorative Elements */}
       <div className="absolute top-0 left-0 w-full h-full overflow-hidden pointer-events-none">
@@ -296,23 +296,23 @@ export default function HomeInquiryForm({
         <div className="absolute top-[40%] -left-[10%] w-[40%] h-[40%] bg-blue-50 rounded-full blur-3xl opacity-60"></div>
       </div>
 
-      <div className="container mx-auto px-4 sm:px-6 relative z-10">
+      <div className={`container mx-auto relative z-10 ${compact ? 'px-3 sm:px-6' : 'px-4 sm:px-6'}`}>
         <div className={`mx-auto ${compact ? 'max-w-2xl' : 'max-w-3xl'}`}>
           <div
             data-hero-form-card={compact ? '' : undefined}
-            className={`bg-white border border-[#e8f0ea] relative overflow-hidden shadow-[0_4px_6px_-1px_rgb(0_0_0_/_0.05),0_2px_4px_-2px_rgb(0_0_0_/_0.05)] ${compact ? 'p-3 sm:p-6 rounded-xl' : 'p-6 sm:p-10 rounded-2xl'}`}
+            className={`bg-white border border-[#e8f0ea] relative overflow-hidden shadow-[0_4px_6px_-1px_rgb(0_0_0_/_0.05),0_2px_4px_-2px_rgb(0_0_0_/_0.05)] ${compact ? 'inquiry-form-compact p-3 sm:p-4 rounded-xl' : 'p-6 sm:p-10 rounded-2xl'}`}
           >
             {(formTitle || formSubtitle) ? (
-              <div className={`text-center ${compact ? 'mb-3 sm:mb-5' : 'mb-6 sm:mb-8'}`}>
+              <div className={`text-center ${compact ? 'mb-2.5 sm:mb-3.5' : 'mb-6 sm:mb-8'}`}>
                 {formTitle ? (
                   <h2
-                    className={`font-bold text-gray-900 mb-1.5 sm:mb-3 leading-tight ${compact ? 'text-lg sm:text-2xl md:text-3xl' : 'text-2xl sm:text-3xl md:text-4xl'}`}
+                    className={`font-bold text-gray-900 leading-tight ${compact ? 'text-base sm:text-xl md:text-2xl mb-1' : 'text-2xl sm:text-3xl md:text-4xl mb-1.5 sm:mb-3'}`}
                   >
                     {formTitle}
                   </h2>
                 ) : null}
                 {formSubtitle ? (
-                  <p className={`text-gray-600 max-w-xl mx-auto ${compact ? 'text-xs sm:text-sm' : 'text-sm sm:text-base'}`}>
+                  <p className={`text-gray-600 max-w-xl mx-auto ${compact ? 'text-[11px] sm:text-xs leading-snug' : 'text-sm sm:text-base'}`}>
                     {formSubtitle}
                   </p>
                 ) : null}
@@ -321,7 +321,7 @@ export default function HomeInquiryForm({
 
             {/* Error Message (inline) */}
             {submitMessage && !showSuccessPopup && (
-              <div className="mb-6 p-4 rounded-lg bg-red-50 border border-red-200 text-red-800 animate-in fade-in slide-in-from-top-2">
+              <div className={`rounded-lg bg-red-50 border border-red-200 text-red-800 animate-in fade-in slide-in-from-top-2 ${compact ? 'mb-3 p-2.5 text-sm' : 'mb-6 p-4'}`}>
                 <div className="flex items-center">
                   <svg className="w-5 h-5 mr-2 text-red-600 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
                     <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clipRule="evenodd" />
@@ -331,34 +331,34 @@ export default function HomeInquiryForm({
               </div>
             )}
 
-            <form onSubmit={handleSubmit} className={compact ? 'space-y-3 sm:space-y-3.5' : 'space-y-5'}>
+            <form onSubmit={handleSubmit} className={compact ? 'space-y-2.5 sm:space-y-3' : 'space-y-5'}>
               {/* 1. Premise Type Toggle - HiCare Style */}
               <div>
-                <label className={`block font-bold text-[#1a1a1a] ${compact ? 'text-[13px] mb-1.5 sm:mb-2' : 'text-[15px] mb-2.5'}`}>
+                <label className={`block font-bold text-[#1a1a1a] ${compact ? 'text-xs mb-1' : 'text-[15px] mb-2.5'}`}>
                   Premise Type *
                 </label>
                 <div className="quote-field-toggle flex">
                   <button
                     type="button"
                     onClick={() => handleChange('premiseType', 'residential')}
-                    className={`flex-1 flex items-center justify-center gap-1.5 transition-all duration-200 ${compact ? 'py-1.5 sm:py-2 px-3' : 'py-3 px-4'} ${formData.premiseType === 'residential'
+                    className={`flex-1 flex items-center justify-center gap-1.5 transition-all duration-200 ${compact ? 'py-1.5 px-2.5' : 'py-3 px-4'} ${formData.premiseType === 'residential'
                         ? 'bg-green-base text-white'
                         : 'bg-white text-green-base'
                       }`}
                   >
-                    <ResidentialIcon className={compact ? 'h-4 w-4' : 'h-5 w-5'} />
-                    <span className={`font-bold ${compact ? 'text-sm' : 'text-[15px]'}`}>Residential</span>
+                    <ResidentialIcon className={compact ? 'h-3.5 w-3.5' : 'h-5 w-5'} />
+                    <span className={`font-bold ${compact ? 'text-xs sm:text-sm' : 'text-[15px]'}`}>Residential</span>
                   </button>
                   <button
                     type="button"
                     onClick={() => handleChange('premiseType', 'commercial')}
-                    className={`flex-1 flex items-center justify-center gap-1.5 transition-all duration-200 ${compact ? 'py-1.5 sm:py-2 px-3' : 'py-3 px-4'} ${formData.premiseType === 'commercial'
+                    className={`flex-1 flex items-center justify-center gap-1.5 transition-all duration-200 ${compact ? 'py-1.5 px-2.5' : 'py-3 px-4'} ${formData.premiseType === 'commercial'
                         ? 'bg-green-base text-white'
                         : 'bg-white text-green-base'
                       }`}
                   >
-                    <CommercialIcon className={compact ? 'h-4 w-4' : 'h-5 w-5'} />
-                    <span className={`font-bold ${compact ? 'text-sm' : 'text-[15px]'}`}>Commercial</span>
+                    <CommercialIcon className={compact ? 'h-3.5 w-3.5' : 'h-5 w-5'} />
+                    <span className={`font-bold ${compact ? 'text-xs sm:text-sm' : 'text-[15px]'}`}>Commercial</span>
                   </button>
                 </div>
               </div>
@@ -379,34 +379,34 @@ export default function HomeInquiryForm({
               </div>
 
               {/* 3. Price / inspection — commercial never mounts the GST label element */}
-              <div className={`quote-price-block ${compact ? 'py-1' : 'py-1.5'}`}>
+              <div className={`quote-price-block ${compact ? 'py-0.5' : 'py-1.5'}`}>
                 {isInspectionQuote ? (
                   <div className="flex flex-col gap-0.5" data-quote-mode="inspection">
-                    <span className={`font-bold text-slate-900 ${compact ? 'text-lg sm:text-xl' : 'text-2xl'}`}>
+                    <span className={`font-bold text-slate-900 ${compact ? 'text-base sm:text-lg' : 'text-2xl'}`}>
                       Inspection Required
                     </span>
-                    <p className="text-[11px] text-green-base font-semibold mt-0.5">
+                    <p className={`text-green-base font-semibold ${compact ? 'text-[10px] mt-0' : 'text-[11px] mt-0.5'}`}>
                       Free Consultation & Site Visit
                     </p>
                   </div>
                 ) : (
                   <div className="flex flex-col items-start gap-0.5" data-quote-mode="priced">
                     {formData.premiseType === 'residential' && priceParts.sale > 0 ? (
-                      <span className={`font-medium text-slate-800 ${compact ? 'text-sm' : 'text-[15px]'}`}>
+                      <span className={`font-medium text-slate-800 ${compact ? 'text-xs' : 'text-[15px]'}`}>
                         Price (Excluding GST)
                       </span>
                     ) : null}
                     <span
-                      className={`font-bold text-slate-900 tracking-tight tabular-nums ${compact ? 'text-[1.65rem] sm:text-[1.85rem] leading-tight' : 'text-[1.85rem] sm:text-[2rem] leading-tight'}`}
+                      className={`font-bold text-slate-900 tracking-tight tabular-nums ${compact ? 'text-[1.4rem] sm:text-[1.65rem] leading-tight' : 'text-[1.85rem] sm:text-[2rem] leading-tight'}`}
                     >
                       {formatInr(priceParts.sale)}
                     </span>
                     {priceParts.mrp != null && priceParts.savePercent != null && (
-                      <div className="flex flex-wrap items-center gap-2 mt-0.5">
-                        <span className={`text-slate-500 line-through tabular-nums ${compact ? 'text-sm' : 'text-[15px]'}`}>
+                      <div className={`flex flex-wrap items-center gap-2 ${compact ? 'mt-0' : 'mt-0.5'}`}>
+                        <span className={`text-slate-500 line-through tabular-nums ${compact ? 'text-xs' : 'text-[15px]'}`}>
                           {formatInr(priceParts.mrp)}
                         </span>
-                        <span className="inline-flex items-center rounded-full bg-green-50 px-2.5 py-0.5 text-sm font-medium text-green-800">
+                        <span className={`inline-flex items-center rounded-full bg-green-50 font-medium text-green-800 ${compact ? 'px-2 py-0.5 text-xs' : 'px-2.5 py-0.5 text-sm'}`}>
                           (Save {priceParts.savePercent}%)
                         </span>
                       </div>
@@ -417,12 +417,12 @@ export default function HomeInquiryForm({
 
               {/* 4. Residential Specific Options (Size & Type) */}
               {formData.premiseType === 'residential' && formData.pestTypes.length > 0 && !formData.pestTypes.includes('hotel-commercial') && (
-                <div className={`grid grid-cols-1 md:grid-cols-2 py-2 animate-in fade-in slide-in-from-top-2 ${compact ? 'gap-3.5' : 'gap-5'}`}>
+                <div className={`grid grid-cols-1 md:grid-cols-2 animate-in fade-in slide-in-from-top-2 ${compact ? 'gap-2.5' : 'gap-5 py-2'}`}>
                   {/* Premise Size Section */}
                   <div className="flex flex-col">
                     <label
                       id="premise-size-label"
-                      className={`block font-semibold text-slate-800 mb-2 ${compact ? 'text-[13px]' : 'text-[15px]'}`}
+                      className={`block font-semibold text-slate-800 ${compact ? 'text-xs mb-1' : 'text-[15px] mb-2'}`}
                     >
                       Premise Size *
                     </label>
@@ -437,13 +437,13 @@ export default function HomeInquiryForm({
                         aria-expanded={premiseSizeOpen}
                         aria-labelledby="premise-size-label premise-size-trigger"
                         onClick={() => setPremiseSizeOpen((open) => !open)}
-                        className={`quote-size-trigger w-full flex items-center justify-between gap-3 text-left ${compact ? 'px-3.5 py-2.5 text-sm' : 'px-4 py-3 text-[15px]'}`}
+                        className={`quote-size-trigger w-full flex items-center justify-between gap-3 text-left ${compact ? 'px-3 py-2 text-sm' : 'px-4 py-3 text-[15px]'}`}
                       >
                         <span className={`font-bold ${selectedPremiseSize ? 'text-slate-800' : 'text-slate-400'}`}>
                           {selectedPremiseSize?.label ?? 'Select size'}
                         </span>
                         <svg
-                          className={`quote-size-chevron h-5 w-5 shrink-0 transition-transform duration-200 ${premiseSizeOpen ? 'rotate-180' : ''}`}
+                          className={`quote-size-chevron shrink-0 transition-transform duration-200 ${compact ? 'h-4 w-4' : 'h-5 w-5'} ${premiseSizeOpen ? 'rotate-180' : ''}`}
                           fill="none"
                           viewBox="0 0 24 24"
                           stroke="currentColor"
@@ -466,7 +466,7 @@ export default function HomeInquiryForm({
                                   type="button"
                                   role="option"
                                   aria-selected={selected}
-                                  className={`quote-size-option w-full text-left font-bold text-slate-800 ${compact ? 'px-3.5 py-2.5 text-sm' : 'px-4 py-3 text-[15px]'} ${selected ? 'quote-size-option-selected' : ''}`}
+                                  className={`quote-size-option w-full text-left font-bold text-slate-800 ${compact ? 'px-3 py-2 text-sm' : 'px-4 py-3 text-[15px]'} ${selected ? 'quote-size-option-selected' : ''}`}
                                   onClick={() => {
                                     handleChange('premiseSize', option.value);
                                     setPremiseSizeOpen(false);
@@ -487,13 +487,13 @@ export default function HomeInquiryForm({
 
                   {/* Select Type Section (One-Time / AMC) */}
                   <div className="flex flex-col">
-                    <label className={`block font-bold text-[#1a1a1a] mb-2 ${compact ? 'text-[13px]' : 'text-[15px]'}`}>
+                    <label className={`block font-bold text-[#1a1a1a] ${compact ? 'text-xs mb-1' : 'text-[15px] mb-2'}`}>
                       Select Type *
                     </label>
                     <select
                       value={formData.serviceType || ''}
                       onChange={(e) => handleChange('serviceType', e.target.value)}
-                      className={`quote-field w-full px-4 font-bold text-gray-700 cursor-pointer appearance-none ${compact ? 'py-2.5 text-sm' : 'py-3'} ${errors.serviceType ? 'quote-field-error' : ''}`}
+                      className={`quote-field w-full font-bold text-gray-700 cursor-pointer appearance-none ${compact ? 'px-3 py-2 text-sm' : 'px-4 py-3'} ${errors.serviceType ? 'quote-field-error' : ''}`}
                       style={{ backgroundImage: 'url("data:image/svg+xml,%3Csvg xmlns=\'http://www.w3.org/2000/svg\' fill=\'none\' viewBox=\'0 0 24 24\' stroke=\'%237fbf94\'%3E%3Cpath stroke-linecap=\'round\' stroke-linejoin=\'round\' stroke-width=\'2\' d=\'M19 9l-7 7-7-7\' /%3E%3C/svg%3E")', backgroundRepeat: 'no-repeat', backgroundPosition: 'right 1rem center', backgroundSize: '1.2rem' }}
                     >
                       <option value="" disabled>Select Type</option>
@@ -512,10 +512,10 @@ export default function HomeInquiryForm({
                 </div>
               )}
 
-              <div className={`grid grid-cols-1 md:grid-cols-2 ${compact ? 'gap-3.5' : 'gap-5'}`}>
+              <div className={`grid grid-cols-1 md:grid-cols-2 ${compact ? 'gap-2.5' : 'gap-5'}`}>
                 {/* 5. Your Name */}
                 <div>
-                  <label className={`block font-bold text-[#1a1a1a] mb-2 ${compact ? 'text-[13px]' : 'text-[15px]'}`}>
+                  <label className={`block font-bold text-[#1a1a1a] ${compact ? 'text-xs mb-1' : 'text-[15px] mb-2'}`}>
                     Your Name *
                   </label>
                   <div className="relative group">
@@ -524,7 +524,7 @@ export default function HomeInquiryForm({
                       value={formData.name}
                       onChange={(e) => handleChange('name', e.target.value)}
                       placeholder="Enter your full name"
-                      className={`quote-field w-full px-4 font-medium ${compact ? 'py-2.5 text-sm' : 'py-3'} ${errors.name ? 'quote-field-error' : ''}`}
+                      className={`quote-field w-full font-medium ${compact ? 'px-3 py-2 text-sm' : 'px-4 py-3'} ${errors.name ? 'quote-field-error' : ''}`}
                     />
                   </div>
                   {errors.name && (
@@ -536,7 +536,7 @@ export default function HomeInquiryForm({
                 <div>
                   <label
                     htmlFor="quote-phone"
-                    className={`block font-bold text-[#1a1a1a] mb-2 ${compact ? 'text-[13px]' : 'text-[15px]'}`}
+                    className={`block font-bold text-[#1a1a1a] ${compact ? 'text-xs mb-1' : 'text-[15px] mb-2'}`}
                   >
                     Phone Number *
                   </label>
@@ -571,29 +571,41 @@ export default function HomeInquiryForm({
               </div>
 
               {/* 7. Street Address (optional) — Google Places autocomplete + current location */}
-              <div>
-                <label
-                  htmlFor="streetAddress"
-                  className={`block font-bold text-[#1a1a1a] mb-2 ${compact ? 'text-[13px]' : 'text-[15px]'}`}
-                >
-                  Street Address <span className="font-normal text-gray-500">(optional)</span>
-                </label>
+              {compact ? (
                 <AddressInput
-                  label=""
+                  label="Street Address (optional)"
                   value={formData.streetAddress}
                   onChange={(value) => handleChange('streetAddress', value)}
                   placeholder="Enter your street address (optional)"
-                  className={`${compact ? 'py-2.5 text-sm' : 'py-3'} ${errors.streetAddress ? 'quote-field-error' : ''}`}
+                  inlineLocate
+                  className=""
                   error={errors.streetAddress}
                 />
-              </div>
+              ) : (
+                <div>
+                  <label
+                    htmlFor="streetAddress"
+                    className="block font-bold text-[#1a1a1a] mb-2 text-[15px]"
+                  >
+                    Street Address <span className="font-normal text-gray-500">(optional)</span>
+                  </label>
+                  <AddressInput
+                    label=""
+                    value={formData.streetAddress}
+                    onChange={(value) => handleChange('streetAddress', value)}
+                    placeholder="Enter your street address (optional)"
+                    className={`py-3 ${errors.streetAddress ? 'quote-field-error' : ''}`}
+                    error={errors.streetAddress}
+                  />
+                </div>
+              )}
 
               {/* Submit Button */}
-              <div className={compact ? 'pt-2' : 'pt-4'}>
+              <div className={compact ? 'pt-1' : 'pt-4'}>
                 <button
                   type="submit"
                   disabled={isSubmitting}
-                  className={`btn-cta w-full rounded-lg font-bold transition-all duration-300 hover:-translate-y-0.5 disabled:cursor-not-allowed disabled:opacity-70 disabled:transform-none flex items-center justify-center group ${compact ? 'py-3 px-5 text-sm' : 'py-4 px-8'}`}
+                  className={`btn-cta w-full rounded-lg font-bold transition-all duration-300 hover:-translate-y-0.5 disabled:cursor-not-allowed disabled:opacity-70 disabled:transform-none flex items-center justify-center group ${compact ? 'py-2.5 px-4 text-sm' : 'py-4 px-8'}`}
                 >
                   {isSubmitting ? (
                     <>

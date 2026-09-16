@@ -13,7 +13,7 @@ export default function AreaQuoteFormSection({
   areaName,
   areaPath,
   sectionId = 'free-quote',
-  className = 'py-10 sm:py-12 bg-gradient-to-br from-gray-50 to-gray-100',
+  className = 'py-6 sm:py-8 bg-gradient-to-br from-gray-50 to-gray-100',
 }: AreaQuoteFormSectionProps) {
   return (
     <ClientOnly

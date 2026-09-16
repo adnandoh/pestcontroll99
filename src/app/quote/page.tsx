@@ -14,14 +14,16 @@ function QuotePageContent() {
       />
       <Breadcrumb items={[{ label: 'Get Quote' }]} />
       <h1 className="sr-only">Get a Free Pest Control Quote</h1>
-      <div className="-mt-8 md:-mt-12">
-        <HomeInquiryForm />
+      <div className="-mt-6 md:-mt-10">
+        <HomeInquiryForm
+          compact
+          formTitle="Send Inquiry"
+          formSubtitle="Tell us about your pest problem — we respond the same day with an accurate quote."
+        />
       </div>
-      
-      {/* Additional Quote Page Content if needed */}
-      <div className="container mx-auto px-4 pb-16 -mt-8">
-        <div className="max-w-3xl mx-auto text-center">
-          <p className="text-gray-500 text-sm">
+      <div className="container mx-auto px-4 pb-8 -mt-4">
+        <div className="max-w-2xl mx-auto text-center">
+          <p className="text-gray-500 text-xs sm:text-sm">
             Our experts will analyze your requirements and provide the most competitive pricing in the industry.
           </p>
         </div>

@@ -1009,6 +1009,28 @@ textarea:focus-visible {
   transition: border-color var(--transition-base), box-shadow var(--transition-base);
 }
 
+/* Compact inquiry form — denser fields to reduce scroll (mobile-first) */
+.inquiry-form-compact .quote-phone-field {
+  min-height: 38px;
+}
+
+.inquiry-form-compact .quote-phone-input {
+  padding: 7px 12px;
+}
+
+.inquiry-form-compact .quote-phone-prefix {
+  padding: 0 8px;
+  gap: 5px;
+}
+
+.inquiry-form-compact .quote-phone-prefix-code {
+  font-size: 0.8125rem;
+}
+
+.inquiry-form-compact .quote-field-toggle > button {
+  min-height: 36px;
+}
+
 .quote-phone-field:hover {
   border-color: #b7dbc6;
 }
