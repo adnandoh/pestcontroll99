@@ -25,7 +25,9 @@ export function isValidBookingMobile(phone: string | undefined | null): boolean 
 
 /**
  * Silent Website Lead upsert from the home booking form.
- * Failures are swallowed — never blocks Confirm Booking.
+ * Fires as soon as mobile is a valid 10-digit number (name optional) so CRM +
+ * Telegram capture the lead immediately. Failures are swallowed — never blocks
+ * Confirm Booking.
  */
 export async function silentUpsertWebsiteInquiry(
   formData: Record<string, unknown>,

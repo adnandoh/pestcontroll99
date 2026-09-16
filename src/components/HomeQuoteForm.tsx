@@ -265,6 +265,8 @@ export default function HomeQuoteForm({
   );
 
   // Debounced silent CRM capture once mobile is a valid 10-digit number.
+  // Name is optional — backend creates "Website Lead" and notifies staff ASAP;
+  // later name edits update the same session lead without duplicate alerts.
   useEffect(() => {
     if (!isValidBookingMobile(formData.phone)) return;
     const timer = window.setTimeout(() => {
