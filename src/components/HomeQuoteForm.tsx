@@ -24,7 +24,16 @@ import ClockTimePicker from './ClockTimePicker';
 import { AddressInput } from './GoogleMaps';
 import IndiaFlagIcon from './icons/IndiaFlagIcon';
 import { BUSINESS, whatsAppUrl } from '@/config/business';
-import { RESIDENTIAL_PREMISE_SIZE_OPTIONS } from '@/config/serviceOptions';
+import {
+  RESIDENTIAL_PREMISE_SIZE_OPTIONS,
+  AMC_UNAVAILABLE_BADGE,
+  AMC_UNAVAILABLE_LABEL,
+  amcAvailableForPests,
+  isBedBugsPrimaryPlan,
+  oneTimePlanSub,
+  oneTimePlanTitle,
+  showTreatmentQualityForPests,
+} from '@/config/serviceOptions';
 import {
   formatFriendlyPreferredDate,
   formatLocalDateYYYYMMDD,
@@ -257,8 +266,9 @@ export default function HomeQuoteForm({
     formData.premiseType === 'commercial' || formData.pestTypes.includes('hotel-commercial');
   const isOtherPremiseSize = formData.premiseSize === 'other';
   const selectedPremiseSize = PREMISE_SIZE_OPTIONS.find((o) => o.value === formData.premiseSize);
-  const amcAvailable =
-    formData.pestTypes.length > 0 && formData.pestTypes.every((p) => p === 'cockroach-ants');
+  const amcAvailable = amcAvailableForPests(formData.pestTypes);
+  const showTreatmentQuality = showTreatmentQualityForPests(formData.pestTypes);
+  const bedBugsPrimaryPlan = isBedBugsPrimaryPlan(formData.pestTypes);
 
   const dateMin = formatLocalDateYYYYMMDD(new Date());
 
@@ -346,7 +356,7 @@ export default function HomeQuoteForm({
     }
 
     if (formData.premiseType === 'residential' && !isInspectionQuote) {
-      if (!formData.treatmentQuality) {
+      if (showTreatmentQuality && !formData.treatmentQuality) {
         newErrors.treatmentQuality = 'Please select treatment quality';
       }
       if (!formData.serviceType) {
@@ -514,18 +524,36 @@ export default function HomeQuoteForm({
   };
 
   const handleChange = (field: keyof HomeFormData, value: unknown) => {
+    if (field === 'pestTypes') {
+      const pests = (Array.isArray(value) ? value : []).filter(
+        (p): p is string => typeof p === 'string' && p !== 'hotel-commercial',
+      );
+      if (!showTreatmentQualityForPests(pests)) setInfoModal(null);
+    }
+    if (field === 'premiseType' && value === 'commercial') {
+      setInfoModal(null);
+    }
+
     setFormData((prev) => {
       const nextData = { ...prev, [field]: value } as HomeFormData;
 
       // Strip removed Hotel / Commercial pest slug if it ever appears (legacy storage).
       nextData.pestTypes = nextData.pestTypes.filter((p) => p !== 'hotel-commercial');
 
-      const hasAmcSupport =
-        nextData.pestTypes.length > 0 && nextData.pestTypes.every((p) => p === 'cockroach-ants');
+      const hasAmcSupport = amcAvailableForPests(nextData.pestTypes);
+      const needsTreatmentQuality = showTreatmentQualityForPests(nextData.pestTypes);
 
       // Clear invalid AMC only — do not auto-select One-Time or Residential.
       if (!hasAmcSupport && nextData.serviceType === 'amc') {
         nextData.serviceType = '';
+      }
+
+      // Standard/Premium only for Cockroach / Ants; otherwise catalog default = standard.
+      if (!needsTreatmentQuality) {
+        nextData.treatmentQuality = 'standard';
+      } else if (field === 'pestTypes' && !showTreatmentQualityForPests(prev.pestTypes)) {
+        // Switching onto cockroach — ask the customer to pick quality again.
+        nextData.treatmentQuality = '';
       }
 
       // Commercial / inspection: clear residential-only selections.
@@ -542,6 +570,9 @@ export default function HomeQuoteForm({
     if (errors[field as string]) {
       setErrors((prev) => ({ ...prev, [field]: '' }));
     }
+    if (field === 'pestTypes') {
+      setErrors((prev) => ({ ...prev, treatmentQuality: '', serviceType: '' }));
+    }
     if (showSuccessPopup) {
       setShowSuccessPopup(false);
       setSubmitMessage('');
@@ -553,8 +584,8 @@ export default function HomeQuoteForm({
     formData.pestTypes.length > 0 &&
     (isInspectionQuote ||
       (Boolean(formData.premiseSize) &&
-        Boolean(formData.treatmentQuality) &&
-        Boolean(formData.serviceType)));
+        Boolean(formData.serviceType) &&
+        (!showTreatmentQuality || Boolean(formData.treatmentQuality))));
 
   const showPromoPricing =
     selectionsComplete &&
@@ -569,9 +600,18 @@ export default function HomeQuoteForm({
     if (!selectionsComplete) return 'Select options for price';
     if (isOtherPremiseSize) return 'Custom quote — call / WhatsApp';
     if (isInspectionQuote) return 'Site inspection';
-    const quality = formData.treatmentQuality === 'premium' ? 'Premium' : 'Standard';
-    if (formData.serviceType === 'amc') return `${quality} AMC • 3 visits`;
-    if (formData.serviceType === 'one-time') return `${quality} • One-Time`;
+    if (formData.serviceType === 'amc') {
+      const quality = formData.treatmentQuality === 'premium' ? 'Premium' : 'Standard';
+      return `${quality} AMC • 3 visits`;
+    }
+    if (formData.serviceType === 'one-time') {
+      if (bedBugsPrimaryPlan) return '2-Service Package • 2 visits';
+      if (showTreatmentQuality) {
+        const quality = formData.treatmentQuality === 'premium' ? 'Premium' : 'Standard';
+        return `${quality} • One-Time`;
+      }
+      return 'One-Time service';
+    }
     return 'Select options for price';
   })();
 
@@ -710,7 +750,7 @@ export default function HomeQuoteForm({
               )}
             </div>
 
-            {formData.premiseType === 'residential' && !isInspectionQuote && (
+            {formData.premiseType === 'residential' && !isInspectionQuote && showTreatmentQuality && (
               <div>
                 <p className="booking-field-label">Treatment Quality *</p>
                 <div className="booking-choice-grid">
@@ -786,27 +826,52 @@ export default function HomeQuoteForm({
                   <button
                     type="button"
                     onClick={() => handleChange('serviceType', 'one-time')}
-                    className={`booking-choice-card${formData.serviceType === 'one-time' ? ' is-selected' : ''}`}
+                    className={`booking-choice-card${formData.serviceType === 'one-time' ? ' is-selected' : ''}${bedBugsPrimaryPlan ? ' booking-choice-tall' : ''}`}
                   >
-                    <strong className="booking-choice-title">One-Time</strong>
-                    <small className="booking-choice-sub">Single service</small>
+                    <strong className="booking-choice-title">
+                      {oneTimePlanTitle(formData.pestTypes)}
+                    </strong>
+                    <small className="booking-choice-sub">
+                      {oneTimePlanSub(formData.pestTypes)}
+                    </small>
                   </button>
                   <button
                     type="button"
                     disabled={!amcAvailable}
                     onClick={() => amcAvailable && handleChange('serviceType', 'amc')}
-                    className={`booking-choice-card booking-choice-recommended${formData.serviceType === 'amc' ? ' is-selected' : ''}${!amcAvailable ? ' is-disabled' : ''}`}
-                    title={amcAvailable ? undefined : 'AMC available for Cockroach / Ants only'}
+                    className={`booking-choice-card booking-choice-recommended${formData.serviceType === 'amc' ? ' is-selected' : ''}${!amcAvailable ? ' is-disabled booking-choice-unavailable' : ''}${bedBugsPrimaryPlan && !amcAvailable ? ' booking-choice-tall' : ''}`}
+                    title={amcAvailable ? undefined : AMC_UNAVAILABLE_LABEL}
+                    aria-disabled={!amcAvailable}
                   >
-                    <strong className="booking-choice-title">AMC — 3 Visits</strong>
-                    <small className="booking-choice-sub">12-month protection</small>
+                    <strong className="booking-choice-title">
+                      {amcAvailable ? (
+                        'AMC — 3 Visits'
+                      ) : (
+                        <span className="booking-choice-title-row">
+                          <svg
+                            className="booking-lock-icon"
+                            viewBox="0 0 16 16"
+                            width="11"
+                            height="11"
+                            aria-hidden
+                          >
+                            <path
+                              fill="currentColor"
+                              d="M4.5 7V5.5a3.5 3.5 0 1 1 7 0V7h.75A1.75 1.75 0 0 1 14 8.75v4.5A1.75 1.75 0 0 1 12.25 15h-8.5A1.75 1.75 0 0 1 2 13.25v-4.5A1.75 1.75 0 0 1 3.75 7H4.5Zm1.5 0h4V5.5a2 2 0 1 0-4 0V7Z"
+                            />
+                          </svg>
+                          AMC — 3 Visits
+                        </span>
+                      )}
+                    </strong>
+                    <small className="booking-choice-sub">
+                      {amcAvailable ? '12-month protection' : AMC_UNAVAILABLE_LABEL}
+                    </small>
+                    {!amcAvailable && (
+                      <span className="booking-unavailable-badge">{AMC_UNAVAILABLE_BADGE}</span>
+                    )}
                   </button>
                 </div>
-                {!amcAvailable && (
-                  <p className="mt-1 text-[10px] font-medium italic text-orange-600">
-                    * Selected service(s) available only as One-Time treatment
-                  </p>
-                )}
                 {errors.serviceType && (
                   <p className="mt-1 text-[10px] font-semibold text-red-600">{errors.serviceType}</p>
                 )}

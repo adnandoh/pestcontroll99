@@ -2575,8 +2575,42 @@ html[data-scroll-behavior="smooth"] {
 }
 
 .booking-choice-card.is-disabled {
-  opacity: 0.45;
+  opacity: 0.72;
   cursor: not-allowed;
+  background: #f5f7f6;
+  border-color: #d5ddd8;
+  color: #6c7f74;
+}
+
+.booking-choice-card.booking-choice-tall {
+  height: 44px;
+  min-height: 44px;
+}
+
+.booking-choice-title-row {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.booking-lock-icon {
+  flex-shrink: 0;
+  color: #6c7f74;
+}
+
+.booking-unavailable-badge {
+  position: absolute;
+  right: 4px;
+  top: 3px;
+  font-size: 6px;
+  font-weight: 900;
+  letter-spacing: 0.02em;
+  color: #fff;
+  background: #6c7f74;
+  padding: 1px 4px;
+  border-radius: 3px;
+  line-height: 1.1;
+  text-transform: uppercase;
 }
 
 .booking-choice-recommended.is-selected::after,

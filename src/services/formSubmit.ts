@@ -6,6 +6,10 @@ import {
   type CatalogRate,
   PEST_SERVICE_LABELS,
 } from '@/utils/catalogPricing';
+import {
+  bookingPlanLabelForNotes,
+  showTreatmentQualityForPests,
+} from '@/config/serviceOptions';
 import { resolveCityFromAddress, toBookingTime24, toPreferredTime } from '@/utils/clockTime';
 import type { HomeFormData } from '@/utils/formStorage';
 import {
@@ -339,12 +343,17 @@ export async function submitHomeBookingForm(
 
   const serviceType = home.serviceType;
   const treatmentQuality = home.treatmentQuality;
+  const needsTreatmentQuality = showTreatmentQualityForPests(pestTypes);
 
   if (!isInspection) {
     if (!home.premiseSize) {
       return { ok: false, error: 'Please select a premise size' };
     }
-    if (treatmentQuality !== 'standard' && treatmentQuality !== 'premium') {
+    if (
+      needsTreatmentQuality &&
+      treatmentQuality !== 'standard' &&
+      treatmentQuality !== 'premium'
+    ) {
       return { ok: false, error: 'Please select treatment quality' };
     }
     if (serviceType !== 'amc' && serviceType !== 'one-time') {
@@ -353,7 +362,13 @@ export async function submitHomeBookingForm(
   }
 
   const planType = isInspection ? 'one-time' : serviceType!;
-  const quality = isInspection ? 'standard' : treatmentQuality!;
+  // Non-cockroach path uses catalog default (standard); cockroach requires an explicit pick.
+  const quality: 'standard' | 'premium' =
+    isInspection || !needsTreatmentQuality
+      ? treatmentQuality === 'premium'
+        ? 'premium'
+        : 'standard'
+      : (treatmentQuality as 'standard' | 'premium');
 
   const quote = calculateCatalogQuotePrice({
     rates: catalogRates,
@@ -369,8 +384,12 @@ export async function submitHomeBookingForm(
   const propertyType =
     premiseType === 'commercial' ? 'Commercial Space' : 'Home / Flat';
   const bookingType = planType === 'amc' ? 'amc' : 'one_time';
-  const qualityLabel = quality === 'premium' ? 'Premium' : 'Standard';
-  const planLabel = bookingType === 'amc' ? 'AMC · 3 visits' : 'One-Time';
+  const qualityLabel = needsTreatmentQuality
+    ? quality === 'premium'
+      ? 'Premium'
+      : 'Standard'
+    : 'Standard';
+  const planLabel = bookingPlanLabelForNotes(pestTypes, planType);
   const priceNote = quote.pricePending
     ? 'Inspection / on-request pricing'
     : `CRM ₹${quote.offerPrice} excl. GST`;

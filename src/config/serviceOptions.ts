@@ -67,3 +67,50 @@ export const RESIDENTIAL_PREMISE_SIZE_OPTIONS: ServiceOption[] = [
   { value: '6bhk', label: '6 BHK' },
   { value: 'other', label: 'Other' },
 ];
+
+/** Home booking pest slug for cockroach / ants (only pest with Standard/Premium + AMC). */
+export const COCKROACH_ANTS_PEST = 'cockroach-ants';
+/** Home booking pest slug for bed bugs (CRM 2-service package). */
+export const BEDBUGS_PEST = 'bedbugs';
+
+/** CRM-aligned customer copy for Bed Bugs (catalog plan_type stays One Time Service). */
+export const BED_BUG_PLAN_TITLE = '2-Service Package';
+export const BED_BUG_PLAN_SUB = '1 month • 2 services • 15 days apart';
+
+export const AMC_UNAVAILABLE_LABEL = 'Not available for this service';
+export const AMC_UNAVAILABLE_BADGE = 'Unavailable';
+
+/** Standard/Premium treatment UI — only when Cockroach / Ants is in the selection. */
+export function showTreatmentQualityForPests(pestTypes: string[]): boolean {
+  return pestTypes.includes(COCKROACH_ANTS_PEST);
+}
+
+/** AMC selectable only when every selected pest is Cockroach / Ants. */
+export function amcAvailableForPests(pestTypes: string[]): boolean {
+  return pestTypes.length > 0 && pestTypes.every((p) => p === COCKROACH_ANTS_PEST);
+}
+
+/**
+ * Bed Bugs plan messaging when Bed Bugs is alone or listed first (primary).
+ * Catalog still prices as non-AMC / one_time; backend schedules the 2nd visit.
+ */
+export function isBedBugsPrimaryPlan(pestTypes: string[]): boolean {
+  return (
+    pestTypes.includes(BEDBUGS_PEST) &&
+    (pestTypes.length === 1 || pestTypes[0] === BEDBUGS_PEST)
+  );
+}
+
+export function oneTimePlanTitle(pestTypes: string[]): string {
+  return isBedBugsPrimaryPlan(pestTypes) ? BED_BUG_PLAN_TITLE : 'One-Time';
+}
+
+export function oneTimePlanSub(pestTypes: string[]): string {
+  return isBedBugsPrimaryPlan(pestTypes) ? BED_BUG_PLAN_SUB : 'Single service';
+}
+
+export function bookingPlanLabelForNotes(pestTypes: string[], serviceType: string): string {
+  if (serviceType === 'amc') return 'AMC · 3 visits';
+  if (isBedBugsPrimaryPlan(pestTypes)) return BED_BUG_PLAN_TITLE;
+  return 'One-Time';
+}

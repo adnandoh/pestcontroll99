@@ -14,7 +14,15 @@ import {
   PREMISE_SIZE_TO_AREA,
   type CatalogRate,
 } from './catalogPricing.ts';
-import { RESIDENTIAL_PREMISE_SIZE_OPTIONS } from '../config/serviceOptions.ts';
+import {
+  RESIDENTIAL_PREMISE_SIZE_OPTIONS,
+  BED_BUG_PLAN_TITLE,
+  amcAvailableForPests,
+  isBedBugsPrimaryPlan,
+  oneTimePlanSub,
+  oneTimePlanTitle,
+  showTreatmentQualityForPests,
+} from '../config/serviceOptions.ts';
 
 function rate(partial: Partial<CatalogRate> & Pick<CatalogRate, 'id' | 'service_package'>): CatalogRate {
   return {
@@ -100,6 +108,16 @@ const fixtureRates: CatalogRate[] = [
     base_amount: '3300',
     total_with_gst: '3894',
     package_tiers: { standard: '3894', premium: '4478.1' },
+  }),
+  rate({
+    id: 8,
+    service_package: 'Bed Bugs',
+    plan_type: 'One Time Service',
+    area_key: '2 BHK',
+    amount: '3400',
+    base_amount: '3400',
+    total_with_gst: '4012',
+    package_tiers: { standard: '4012', premium: '4613.8' },
   }),
 ];
 
@@ -248,5 +266,46 @@ describe('matchRateForPest home guards', () => {
     });
     assert.equal(quote.pricePending, true);
     assert.equal(quote.offerPrice, 0);
+  });
+
+  it('bed bugs 2 BHK prices as one-time catalog row without treatment quality', () => {
+    const quote = calculateCatalogQuotePrice({
+      rates: fixtureRates,
+      pestTypes: ['bedbugs'],
+      premiseType: 'residential',
+      premiseSize: '2bhk',
+      serviceType: 'one-time',
+      treatmentQuality: '',
+    });
+    assert.equal(quote.pricePending, false);
+    assert.equal(quote.offerPrice, 3400);
+    assert.equal(quote.pricingRateId, 8);
+    assert.equal(quote.matchedRate?.service_package, 'Bed Bugs');
+  });
+});
+
+describe('booking plan / treatment visibility helpers', () => {
+  it('shows treatment quality only for cockroach-ants', () => {
+    assert.equal(showTreatmentQualityForPests(['cockroach-ants']), true);
+    assert.equal(showTreatmentQualityForPests(['bedbugs']), false);
+    assert.equal(showTreatmentQualityForPests(['rodent']), false);
+    assert.equal(showTreatmentQualityForPests(['termite', 'mosquito']), false);
+    assert.equal(showTreatmentQualityForPests(['cockroach-ants', 'rodent']), true);
+  });
+
+  it('AMC only when every pest is cockroach-ants', () => {
+    assert.equal(amcAvailableForPests(['cockroach-ants']), true);
+    assert.equal(amcAvailableForPests(['bedbugs']), false);
+    assert.equal(amcAvailableForPests(['cockroach-ants', 'bedbugs']), false);
+  });
+
+  it('bed bugs primary plan copy matches CRM 2-service package', () => {
+    assert.equal(isBedBugsPrimaryPlan(['bedbugs']), true);
+    assert.equal(isBedBugsPrimaryPlan(['bedbugs', 'rodent']), true);
+    assert.equal(isBedBugsPrimaryPlan(['rodent', 'bedbugs']), false);
+    assert.equal(oneTimePlanTitle(['bedbugs']), BED_BUG_PLAN_TITLE);
+    assert.equal(oneTimePlanSub(['bedbugs']), '1 month • 2 services • 15 days apart');
+    assert.equal(oneTimePlanTitle(['rodent']), 'One-Time');
+    assert.equal(oneTimePlanSub(['rodent']), 'Single service');
   });
 });

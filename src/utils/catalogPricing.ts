@@ -376,12 +376,14 @@ export function calculateCatalogQuotePrice(input: {
     return pending();
   }
 
-  // Residential quote needs size, plan, and treatment quality before pricing.
-  if (!premiseSize || !serviceType || !treatmentQuality) {
+  // Residential quote needs size + plan. Treatment quality defaults to standard
+  // when the form hides Standard/Premium (non-cockroach pests).
+  if (!premiseSize || !serviceType) {
     return pending(treatmentQuality === 'premium' ? 'premium' : 'standard');
   }
 
-  const quality = treatmentQuality;
+  const quality: 'standard' | 'premium' =
+    treatmentQuality === 'premium' ? 'premium' : 'standard';
   const isAmc = serviceType === 'amc';
   let total = 0;
   let anyMissing = false;
