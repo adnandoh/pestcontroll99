@@ -101,22 +101,46 @@ export default function HomeInquiryForm({
   const [showSuccessPopup, setShowSuccessPopup] = useState(false);
   const [submitMessage, setSubmitMessage] = useState('');
   const [premiseSizeOpen, setPremiseSizeOpen] = useState(false);
+  const [serviceTypeOpen, setServiceTypeOpen] = useState(false);
   const premiseSizeRef = useRef<HTMLDivElement>(null);
+  const serviceTypeRef = useRef<HTMLDivElement>(null);
 
   const priceParts = getQuotePriceParts(formData.estimatedPrice || 0);
   const isInspectionQuote =
     formData.premiseType === 'commercial' || formData.pestTypes.includes('hotel-commercial');
+  const showPremiseSize =
+    formData.premiseType === 'residential' &&
+    formData.pestTypes.length > 0 &&
+    !formData.pestTypes.includes('hotel-commercial');
+  const showServiceType = formData.premiseType === 'residential';
+  const amcAvailable =
+    formData.pestTypes.length > 0 && formData.pestTypes.every((p) => p === 'cockroach-ants');
+  const oneTimeOnlyHint = formData.pestTypes.some((p) =>
+    ['rodent', 'bedbugs', 'termite', 'mosquito'].includes(p),
+  );
   const selectedPremiseSize = PREMISE_SIZE_OPTIONS.find((o) => o.value === formData.premiseSize);
+  const serviceTypeLabel =
+    formData.serviceType === 'amc'
+      ? 'AMC — 3 Services'
+      : formData.serviceType === 'one-time'
+        ? 'One Time Service'
+        : 'Select type';
 
   useEffect(() => {
-    if (!premiseSizeOpen) return;
+    if (!premiseSizeOpen && !serviceTypeOpen) return;
     const onPointerDown = (e: MouseEvent) => {
       if (premiseSizeRef.current && !premiseSizeRef.current.contains(e.target as Node)) {
         setPremiseSizeOpen(false);
       }
+      if (serviceTypeRef.current && !serviceTypeRef.current.contains(e.target as Node)) {
+        setServiceTypeOpen(false);
+      }
     };
     const onKeyDown = (e: KeyboardEvent) => {
-      if (e.key === 'Escape') setPremiseSizeOpen(false);
+      if (e.key === 'Escape') {
+        setPremiseSizeOpen(false);
+        setServiceTypeOpen(false);
+      }
     };
     document.addEventListener('mousedown', onPointerDown);
     document.addEventListener('keydown', onKeyDown);
@@ -124,7 +148,7 @@ export default function HomeInquiryForm({
       document.removeEventListener('mousedown', onPointerDown);
       document.removeEventListener('keydown', onKeyDown);
     };
-  }, [premiseSizeOpen]);
+  }, [premiseSizeOpen, serviceTypeOpen]);
 
   // Rate card data (amounts excluding GST — no GST is applied in calculatePrice).
   // 5bhk amounts from rate_chart_2026.csv; 6bhk/other fall through to 0 (custom quote).
@@ -300,28 +324,27 @@ export default function HomeInquiryForm({
         <div className={`mx-auto ${compact ? 'max-w-2xl' : 'max-w-3xl'}`}>
           <div
             data-hero-form-card={compact ? '' : undefined}
-            className={`bg-white border border-[#e8f0ea] relative overflow-hidden shadow-[0_4px_6px_-1px_rgb(0_0_0_/_0.05),0_2px_4px_-2px_rgb(0_0_0_/_0.05)] ${compact ? 'inquiry-form-compact p-3 sm:p-4 rounded-xl' : 'p-6 sm:p-10 rounded-2xl'}`}
+            className={`bg-white border border-[#e8f0ea] relative overflow-hidden shadow-[0_4px_6px_-1px_rgb(0_0_0_/_0.05),0_2px_4px_-2px_rgb(0_0_0_/_0.05)] ${compact ? 'inquiry-form-compact p-2.5 sm:p-4 rounded-xl' : 'p-6 sm:p-10 rounded-2xl'}`}
           >
             {(formTitle || formSubtitle) ? (
-              <div className={`text-center ${compact ? 'mb-2.5 sm:mb-3.5' : 'mb-6 sm:mb-8'}`}>
+              <div className={`text-center ${compact ? 'mb-1.5 sm:mb-2.5' : 'mb-6 sm:mb-8'}`}>
                 {formTitle ? (
                   <h2
-                    className={`font-bold text-gray-900 leading-tight ${compact ? 'text-base sm:text-xl md:text-2xl mb-1' : 'text-2xl sm:text-3xl md:text-4xl mb-1.5 sm:mb-3'}`}
+                    className={`font-bold text-gray-900 leading-tight ${compact ? 'text-base sm:text-xl md:text-2xl mb-0.5' : 'text-2xl sm:text-3xl md:text-4xl mb-1.5 sm:mb-3'}`}
                   >
                     {formTitle}
                   </h2>
                 ) : null}
                 {formSubtitle ? (
-                  <p className={`text-gray-600 max-w-xl mx-auto ${compact ? 'text-[11px] sm:text-xs leading-snug' : 'text-sm sm:text-base'}`}>
+                  <p className={`text-gray-600 max-w-xl mx-auto ${compact ? 'text-[10px] sm:text-xs leading-snug' : 'text-sm sm:text-base'}`}>
                     {formSubtitle}
                   </p>
                 ) : null}
               </div>
             ) : null}
 
-            {/* Error Message (inline) */}
             {submitMessage && !showSuccessPopup && (
-              <div className={`rounded-lg bg-red-50 border border-red-200 text-red-800 animate-in fade-in slide-in-from-top-2 ${compact ? 'mb-3 p-2.5 text-sm' : 'mb-6 p-4'}`}>
+              <div className={`rounded-lg bg-red-50 border border-red-200 text-red-800 animate-in fade-in slide-in-from-top-2 ${compact ? 'mb-2 p-2 text-xs' : 'mb-6 p-4'}`}>
                 <div className="flex items-center">
                   <svg className="w-5 h-5 mr-2 text-red-600 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
                     <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clipRule="evenodd" />
@@ -331,142 +354,105 @@ export default function HomeInquiryForm({
               </div>
             )}
 
-            <form onSubmit={handleSubmit} className={compact ? 'space-y-2.5 sm:space-y-3' : 'space-y-5'}>
-              {/* 1. Premise Type Toggle - HiCare Style */}
-              <div>
-                <label className={`block font-bold text-[#1a1a1a] ${compact ? 'text-xs mb-1' : 'text-[15px] mb-2.5'}`}>
-                  Premise Type *
-                </label>
-                <div className="quote-field-toggle flex">
+            <form onSubmit={handleSubmit} className={compact ? 'inquiry-form-body' : 'space-y-5'}>
+              {/* Premise Type */}
+              {compact ? (
+                <div className="booking-prop-toggle" role="group" aria-label="Premise type">
                   <button
                     type="button"
                     onClick={() => handleChange('premiseType', 'residential')}
-                    className={`flex-1 flex items-center justify-center gap-1.5 transition-all duration-200 ${compact ? 'py-1.5 px-2.5' : 'py-3 px-4'} ${formData.premiseType === 'residential'
-                        ? 'bg-green-base text-white'
-                        : 'bg-white text-green-base'
-                      }`}
+                    className={`booking-prop-btn${formData.premiseType === 'residential' ? ' is-active' : ''}`}
+                    aria-pressed={formData.premiseType === 'residential'}
                   >
-                    <ResidentialIcon className={compact ? 'h-3.5 w-3.5' : 'h-5 w-5'} />
-                    <span className={`font-bold ${compact ? 'text-xs sm:text-sm' : 'text-[15px]'}`}>Residential</span>
+                    <ResidentialIcon className="h-3.5 w-3.5" />
+                    Residential
                   </button>
                   <button
                     type="button"
                     onClick={() => handleChange('premiseType', 'commercial')}
-                    className={`flex-1 flex items-center justify-center gap-1.5 transition-all duration-200 ${compact ? 'py-1.5 px-2.5' : 'py-3 px-4'} ${formData.premiseType === 'commercial'
-                        ? 'bg-green-base text-white'
-                        : 'bg-white text-green-base'
-                      }`}
+                    className={`booking-prop-btn${formData.premiseType === 'commercial' ? ' is-active' : ''}`}
+                    aria-pressed={formData.premiseType === 'commercial'}
                   >
-                    <CommercialIcon className={compact ? 'h-3.5 w-3.5' : 'h-5 w-5'} />
-                    <span className={`font-bold ${compact ? 'text-xs sm:text-sm' : 'text-[15px]'}`}>Commercial</span>
+                    <CommercialIcon className="h-3.5 w-3.5" />
+                    Commercial
                   </button>
                 </div>
-              </div>
-
-              {/* 2. Type of Pest Problem */}
-              <div className="relative">
-                <MultiSelectPest
-                  selectedPests={formData.pestTypes}
-                  onChange={(pests) => handleChange('pestTypes', pests)}
-                  compact={compact}
-                />
-                {errors.pestTypes && (
-                  <p className="mt-1 text-sm text-red-600 flex items-center">
-                    <svg className="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
-                    {errors.pestTypes}
-                  </p>
-                )}
-              </div>
-
-              {/* 3. Price / inspection — commercial never mounts the GST label element */}
-              <div className={`quote-price-block ${compact ? 'py-0.5' : 'py-1.5'}`}>
-                {isInspectionQuote ? (
-                  <div className="flex flex-col gap-0.5" data-quote-mode="inspection">
-                    <span className={`font-bold text-slate-900 ${compact ? 'text-base sm:text-lg' : 'text-2xl'}`}>
-                      Inspection Required
-                    </span>
-                    <p className={`text-green-base font-semibold ${compact ? 'text-[10px] mt-0' : 'text-[11px] mt-0.5'}`}>
-                      Free Consultation & Site Visit
-                    </p>
-                  </div>
-                ) : (
-                  <div className="flex flex-col items-start gap-0.5" data-quote-mode="priced">
-                    {formData.premiseType === 'residential' && priceParts.sale > 0 ? (
-                      <span className={`font-medium text-slate-800 ${compact ? 'text-xs' : 'text-[15px]'}`}>
-                        Price (Excluding GST)
-                      </span>
-                    ) : null}
-                    <span
-                      className={`font-bold text-slate-900 tracking-tight tabular-nums ${compact ? 'text-[1.4rem] sm:text-[1.65rem] leading-tight' : 'text-[1.85rem] sm:text-[2rem] leading-tight'}`}
+              ) : (
+                <div>
+                  <label className="block font-bold text-[#1a1a1a] text-[15px] mb-2.5">
+                    Premise Type *
+                  </label>
+                  <div className="quote-field-toggle flex">
+                    <button
+                      type="button"
+                      onClick={() => handleChange('premiseType', 'residential')}
+                      className={`flex-1 flex items-center justify-center gap-1.5 py-3 px-4 transition-all duration-200 ${formData.premiseType === 'residential' ? 'bg-green-base text-white' : 'bg-white text-green-base'}`}
                     >
-                      {formatInr(priceParts.sale)}
-                    </span>
-                    {priceParts.mrp != null && priceParts.savePercent != null && (
-                      <div className={`flex flex-wrap items-center gap-2 ${compact ? 'mt-0' : 'mt-0.5'}`}>
-                        <span className={`text-slate-500 line-through tabular-nums ${compact ? 'text-xs' : 'text-[15px]'}`}>
-                          {formatInr(priceParts.mrp)}
-                        </span>
-                        <span className={`inline-flex items-center rounded-full bg-green-50 font-medium text-green-800 ${compact ? 'px-2 py-0.5 text-xs' : 'px-2.5 py-0.5 text-sm'}`}>
-                          (Save {priceParts.savePercent}%)
-                        </span>
-                      </div>
+                      <ResidentialIcon className="h-5 w-5" />
+                      <span className="font-bold text-[15px]">Residential</span>
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => handleChange('premiseType', 'commercial')}
+                      className={`flex-1 flex items-center justify-center gap-1.5 py-3 px-4 transition-all duration-200 ${formData.premiseType === 'commercial' ? 'bg-green-base text-white' : 'bg-white text-green-base'}`}
+                    >
+                      <CommercialIcon className="h-5 w-5" />
+                      <span className="font-bold text-[15px]">Commercial</span>
+                    </button>
+                  </div>
+                </div>
+              )}
+
+              {/* Service + Premise Size (side-by-side on compact / mobile) */}
+              {compact ? (
+                <div className="booking-grid-2 booking-grid-service">
+                  <div>
+                    <MultiSelectPest
+                      selectedPests={formData.pestTypes}
+                      onChange={(pests) => handleChange('pestTypes', pests)}
+                      compact
+                    />
+                    {errors.pestTypes && (
+                      <p className="mt-1 text-[10px] font-semibold text-red-600">{errors.pestTypes}</p>
                     )}
                   </div>
-                )}
-              </div>
 
-              {/* 4. Residential Specific Options (Size & Type) */}
-              {formData.premiseType === 'residential' && formData.pestTypes.length > 0 && !formData.pestTypes.includes('hotel-commercial') && (
-                <div className={`grid grid-cols-1 md:grid-cols-2 animate-in fade-in slide-in-from-top-2 ${compact ? 'gap-2.5' : 'gap-5 py-2'}`}>
-                  {/* Premise Size Section */}
-                  <div className="flex flex-col">
-                    <label
-                      id="premise-size-label"
-                      className={`block font-semibold text-slate-800 ${compact ? 'text-xs mb-1' : 'text-[15px] mb-2'}`}
-                    >
-                      Premise Size *
-                    </label>
-                    <div
-                      className={`quote-size-select ${errors.premiseSize ? 'quote-size-select-error' : ''} ${premiseSizeOpen ? 'quote-size-select-open' : ''}`}
-                      ref={premiseSizeRef}
-                    >
-                      <button
-                        type="button"
-                        id="premise-size-trigger"
-                        aria-haspopup="listbox"
-                        aria-expanded={premiseSizeOpen}
-                        aria-labelledby="premise-size-label premise-size-trigger"
-                        onClick={() => setPremiseSizeOpen((open) => !open)}
-                        className={`quote-size-trigger w-full flex items-center justify-between gap-3 text-left ${compact ? 'px-3 py-2 text-sm' : 'px-4 py-3 text-[15px]'}`}
+                  {showPremiseSize ? (
+                    <div ref={premiseSizeRef}>
+                      <label id="premise-size-label" className="booking-field-label">
+                        Premise Size *
+                      </label>
+                      <div
+                        className={`booking-select${errors.premiseSize ? ' booking-select-error' : ''}${premiseSizeOpen ? ' is-open' : ''}`}
                       >
-                        <span className={`font-bold ${selectedPremiseSize ? 'text-slate-800' : 'text-slate-400'}`}>
-                          {selectedPremiseSize?.label ?? 'Select size'}
-                        </span>
-                        <svg
-                          className={`quote-size-chevron shrink-0 transition-transform duration-200 ${compact ? 'h-4 w-4' : 'h-5 w-5'} ${premiseSizeOpen ? 'rotate-180' : ''}`}
-                          fill="none"
-                          viewBox="0 0 24 24"
-                          stroke="currentColor"
-                          aria-hidden="true"
+                        <button
+                          type="button"
+                          id="premise-size-trigger"
+                          aria-haspopup="listbox"
+                          aria-expanded={premiseSizeOpen}
+                          aria-labelledby="premise-size-label premise-size-trigger"
+                          onClick={() => {
+                            setServiceTypeOpen(false);
+                            setPremiseSizeOpen((open) => !open);
+                          }}
+                          className="booking-select-trigger"
                         >
-                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
-                        </svg>
-                      </button>
-                      {premiseSizeOpen && (
-                        <ul
-                          role="listbox"
-                          aria-labelledby="premise-size-label"
-                          className="quote-size-menu"
-                        >
-                          {PREMISE_SIZE_OPTIONS.map((option) => {
-                            const selected = formData.premiseSize === option.value;
-                            return (
+                          <span className={selectedPremiseSize ? '' : 'is-placeholder'}>
+                            {selectedPremiseSize?.label ?? 'Select size'}
+                          </span>
+                          <svg className="h-3.5 w-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden>
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+                          </svg>
+                        </button>
+                        {premiseSizeOpen && (
+                          <ul role="listbox" aria-labelledby="premise-size-label" className="booking-select-menu">
+                            {PREMISE_SIZE_OPTIONS.map((option) => (
                               <li key={option.value} role="presentation">
                                 <button
                                   type="button"
                                   role="option"
-                                  aria-selected={selected}
-                                  className={`quote-size-option w-full text-left font-bold text-slate-800 ${compact ? 'px-3 py-2 text-sm' : 'px-4 py-3 text-[15px]'} ${selected ? 'quote-size-option-selected' : ''}`}
+                                  aria-selected={formData.premiseSize === option.value}
+                                  className={`booking-select-option${formData.premiseSize === option.value ? ' is-selected' : ''}`}
                                   onClick={() => {
                                     handleChange('premiseSize', option.value);
                                     setPremiseSizeOpen(false);
@@ -475,118 +461,392 @@ export default function HomeInquiryForm({
                                   {option.label}
                                 </button>
                               </li>
-                            );
-                          })}
-                        </ul>
+                            ))}
+                          </ul>
+                        )}
+                      </div>
+                      {errors.premiseSize && (
+                        <p className="mt-1 text-[10px] font-semibold text-red-600">{errors.premiseSize}</p>
                       )}
                     </div>
-                    {errors.premiseSize && (
-                      <p className="mt-1 text-xs text-red-600 font-bold">{errors.premiseSize}</p>
-                    )}
-                  </div>
-
-                  {/* Select Type Section (One-Time / AMC) */}
-                  <div className="flex flex-col">
-                    <label className={`block font-bold text-[#1a1a1a] ${compact ? 'text-xs mb-1' : 'text-[15px] mb-2'}`}>
-                      Select Type *
-                    </label>
-                    <select
-                      value={formData.serviceType || ''}
-                      onChange={(e) => handleChange('serviceType', e.target.value)}
-                      className={`quote-field w-full font-bold text-gray-700 cursor-pointer appearance-none ${compact ? 'px-3 py-2 text-sm' : 'px-4 py-3'} ${errors.serviceType ? 'quote-field-error' : ''}`}
-                      style={{ backgroundImage: 'url("data:image/svg+xml,%3Csvg xmlns=\'http://www.w3.org/2000/svg\' fill=\'none\' viewBox=\'0 0 24 24\' stroke=\'%237fbf94\'%3E%3Cpath stroke-linecap=\'round\' stroke-linejoin=\'round\' stroke-width=\'2\' d=\'M19 9l-7 7-7-7\' /%3E%3C/svg%3E")', backgroundRepeat: 'no-repeat', backgroundPosition: 'right 1rem center', backgroundSize: '1.2rem' }}
-                    >
-                      <option value="" disabled>Select Type</option>
-                      <option value="one-time">One Time Service</option>
-                      {formData.pestTypes.length > 0 && formData.pestTypes.every(p => p === 'cockroach-ants') && (
-                        <option value="amc">Annual Maintenance Contract 3 Services</option>
-                      )}
-                    </select>
-                    {formData.pestTypes.some(p => ['rodent', 'bedbugs', 'termite', 'mosquito'].includes(p)) && (
-                      <p className="mt-1 text-[10px] text-orange-600 font-bold italic">* Selected service(s) available only as One-Time treatment</p>
-                    )}
-                    {errors.serviceType && (
-                      <p className="mt-1 text-xs text-red-600 font-bold">{errors.serviceType}</p>
-                    )}
-                  </div>
+                  ) : (
+                    <div>
+                      <span className="booking-field-label">Est. Price</span>
+                      <div className="inquiry-price-inline" data-quote-mode={isInspectionQuote ? 'inspection' : 'priced'}>
+                        {isInspectionQuote ? (
+                          <>
+                            <strong className="inquiry-price-inline-amount">Inspection</strong>
+                            <span className="inquiry-price-inline-sub">Free site visit</span>
+                          </>
+                        ) : (
+                          <strong className="inquiry-price-inline-amount">{formatInr(priceParts.sale)}</strong>
+                        )}
+                      </div>
+                    </div>
+                  )}
+                </div>
+              ) : (
+                <div className="relative">
+                  <MultiSelectPest
+                    selectedPests={formData.pestTypes}
+                    onChange={(pests) => handleChange('pestTypes', pests)}
+                  />
+                  {errors.pestTypes && (
+                    <p className="mt-1 text-sm text-red-600 flex items-center">
+                      <svg className="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
+                      {errors.pestTypes}
+                    </p>
+                  )}
                 </div>
               )}
 
-              <div className={`grid grid-cols-1 md:grid-cols-2 ${compact ? 'gap-2.5' : 'gap-5'}`}>
-                {/* 5. Your Name */}
-                <div>
-                  <label className={`block font-bold text-[#1a1a1a] ${compact ? 'text-xs mb-1' : 'text-[15px] mb-2'}`}>
-                    Your Name *
-                  </label>
-                  <div className="relative group">
+              {/* Select Type + Price (compact) or full price + residential options */}
+              {compact ? (
+                <>
+                  {showServiceType || showPremiseSize ? (
+                    <div className="booking-grid-2">
+                      {showServiceType ? (
+                        <div ref={serviceTypeRef}>
+                          <label id="service-type-label" className="booking-field-label">
+                            Select Type *
+                          </label>
+                          <div
+                            className={`booking-select${errors.serviceType ? ' booking-select-error' : ''}${serviceTypeOpen ? ' is-open' : ''}`}
+                          >
+                            <button
+                              type="button"
+                              id="service-type-trigger"
+                              aria-haspopup="listbox"
+                              aria-expanded={serviceTypeOpen}
+                              aria-labelledby="service-type-label service-type-trigger"
+                              onClick={() => {
+                                setPremiseSizeOpen(false);
+                                setServiceTypeOpen((open) => !open);
+                              }}
+                              className="booking-select-trigger"
+                            >
+                              <span className={formData.serviceType ? '' : 'is-placeholder'}>
+                                {serviceTypeLabel}
+                              </span>
+                              <svg className="h-3.5 w-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden>
+                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+                              </svg>
+                            </button>
+                            {serviceTypeOpen && (
+                              <ul role="listbox" aria-labelledby="service-type-label" className="booking-select-menu">
+                                <li role="presentation">
+                                  <button
+                                    type="button"
+                                    role="option"
+                                    aria-selected={formData.serviceType === 'one-time'}
+                                    className={`booking-select-option${formData.serviceType === 'one-time' ? ' is-selected' : ''}`}
+                                    onClick={() => {
+                                      handleChange('serviceType', 'one-time');
+                                      setServiceTypeOpen(false);
+                                    }}
+                                  >
+                                    One Time Service
+                                  </button>
+                                </li>
+                                {amcAvailable ? (
+                                  <li role="presentation">
+                                    <button
+                                      type="button"
+                                      role="option"
+                                      aria-selected={formData.serviceType === 'amc'}
+                                      className={`booking-select-option${formData.serviceType === 'amc' ? ' is-selected' : ''}`}
+                                      onClick={() => {
+                                        handleChange('serviceType', 'amc');
+                                        setServiceTypeOpen(false);
+                                      }}
+                                    >
+                                      AMC — 3 Services
+                                    </button>
+                                  </li>
+                                ) : null}
+                              </ul>
+                            )}
+                          </div>
+                          {oneTimeOnlyHint ? (
+                            <p className="mt-0.5 text-[9px] font-semibold italic text-orange-600">
+                              * One-Time only for selected service(s)
+                            </p>
+                          ) : null}
+                          {errors.serviceType && (
+                            <p className="mt-1 text-[10px] font-semibold text-red-600">{errors.serviceType}</p>
+                          )}
+                        </div>
+                      ) : (
+                        <div className="hidden sm:block" aria-hidden />
+                      )}
+
+                      {showPremiseSize ? (
+                        <div>
+                          <span className="booking-field-label">Est. Price</span>
+                          <div className="inquiry-price-inline" data-quote-mode={isInspectionQuote ? 'inspection' : 'priced'}>
+                            {isInspectionQuote ? (
+                              <>
+                                <strong className="inquiry-price-inline-amount">Inspection</strong>
+                                <span className="inquiry-price-inline-sub">Free site visit</span>
+                              </>
+                            ) : (
+                              <>
+                                <strong className="inquiry-price-inline-amount">{formatInr(priceParts.sale)}</strong>
+                                {priceParts.mrp != null && priceParts.savePercent != null ? (
+                                  <span className="inquiry-price-inline-promo">
+                                    <span className="line-through">{formatInr(priceParts.mrp)}</span>
+                                    <span className="inquiry-price-save">Save {priceParts.savePercent}%</span>
+                                  </span>
+                                ) : priceParts.sale > 0 ? (
+                                  <span className="inquiry-price-inline-sub">Excl. GST</span>
+                                ) : null}
+                              </>
+                            )}
+                          </div>
+                        </div>
+                      ) : null}
+                    </div>
+                  ) : null}
+                </>
+              ) : (
+                <>
+                  <div className="quote-price-block py-1.5">
+                    {isInspectionQuote ? (
+                      <div className="flex flex-col gap-0.5" data-quote-mode="inspection">
+                        <span className="font-bold text-slate-900 text-2xl">Inspection Required</span>
+                        <p className="text-green-base font-semibold text-[11px] mt-0.5">
+                          Free Consultation & Site Visit
+                        </p>
+                      </div>
+                    ) : (
+                      <div className="flex flex-col items-start gap-0.5" data-quote-mode="priced">
+                        {formData.premiseType === 'residential' && priceParts.sale > 0 ? (
+                          <span className="font-medium text-slate-800 text-[15px]">Price (Excluding GST)</span>
+                        ) : null}
+                        <span className="font-bold text-slate-900 tracking-tight tabular-nums text-[1.85rem] sm:text-[2rem] leading-tight">
+                          {formatInr(priceParts.sale)}
+                        </span>
+                        {priceParts.mrp != null && priceParts.savePercent != null && (
+                          <div className="flex flex-wrap items-center gap-2 mt-0.5">
+                            <span className="text-slate-500 line-through tabular-nums text-[15px]">
+                              {formatInr(priceParts.mrp)}
+                            </span>
+                            <span className="inline-flex items-center rounded-full bg-green-50 px-2.5 py-0.5 text-sm font-medium text-green-800">
+                              (Save {priceParts.savePercent}%)
+                            </span>
+                          </div>
+                        )}
+                      </div>
+                    )}
+                  </div>
+
+                  {showPremiseSize && (
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-5 py-2 animate-in fade-in slide-in-from-top-2">
+                      <div className="flex flex-col">
+                        <label id="premise-size-label" className="block font-semibold text-slate-800 text-[15px] mb-2">
+                          Premise Size *
+                        </label>
+                        <div
+                          className={`quote-size-select ${errors.premiseSize ? 'quote-size-select-error' : ''} ${premiseSizeOpen ? 'quote-size-select-open' : ''}`}
+                          ref={premiseSizeRef}
+                        >
+                          <button
+                            type="button"
+                            id="premise-size-trigger"
+                            aria-haspopup="listbox"
+                            aria-expanded={premiseSizeOpen}
+                            aria-labelledby="premise-size-label premise-size-trigger"
+                            onClick={() => setPremiseSizeOpen((open) => !open)}
+                            className="quote-size-trigger w-full flex items-center justify-between gap-3 text-left px-4 py-3 text-[15px]"
+                          >
+                            <span className={`font-bold ${selectedPremiseSize ? 'text-slate-800' : 'text-slate-400'}`}>
+                              {selectedPremiseSize?.label ?? 'Select size'}
+                            </span>
+                            <svg
+                              className={`quote-size-chevron shrink-0 h-5 w-5 transition-transform duration-200 ${premiseSizeOpen ? 'rotate-180' : ''}`}
+                              fill="none"
+                              viewBox="0 0 24 24"
+                              stroke="currentColor"
+                              aria-hidden="true"
+                            >
+                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+                            </svg>
+                          </button>
+                          {premiseSizeOpen && (
+                            <ul role="listbox" aria-labelledby="premise-size-label" className="quote-size-menu">
+                              {PREMISE_SIZE_OPTIONS.map((option) => {
+                                const selected = formData.premiseSize === option.value;
+                                return (
+                                  <li key={option.value} role="presentation">
+                                    <button
+                                      type="button"
+                                      role="option"
+                                      aria-selected={selected}
+                                      className={`quote-size-option w-full text-left font-bold text-slate-800 px-4 py-3 text-[15px] ${selected ? 'quote-size-option-selected' : ''}`}
+                                      onClick={() => {
+                                        handleChange('premiseSize', option.value);
+                                        setPremiseSizeOpen(false);
+                                      }}
+                                    >
+                                      {option.label}
+                                    </button>
+                                  </li>
+                                );
+                              })}
+                            </ul>
+                          )}
+                        </div>
+                        {errors.premiseSize && (
+                          <p className="mt-1 text-xs text-red-600 font-bold">{errors.premiseSize}</p>
+                        )}
+                      </div>
+
+                      <div className="flex flex-col">
+                        <label className="block font-bold text-[#1a1a1a] text-[15px] mb-2">
+                          Select Type *
+                        </label>
+                        <select
+                          value={formData.serviceType || ''}
+                          onChange={(e) => handleChange('serviceType', e.target.value)}
+                          className={`quote-field w-full font-bold text-gray-700 cursor-pointer appearance-none px-4 py-3 ${errors.serviceType ? 'quote-field-error' : ''}`}
+                          style={{ backgroundImage: 'url("data:image/svg+xml,%3Csvg xmlns=\'http://www.w3.org/2000/svg\' fill=\'none\' viewBox=\'0 0 24 24\' stroke=\'%237fbf94\'%3E%3Cpath stroke-linecap=\'round\' stroke-linejoin=\'round\' stroke-width=\'2\' d=\'M19 9l-7 7-7-7\' /%3E%3C/svg%3E")', backgroundRepeat: 'no-repeat', backgroundPosition: 'right 1rem center', backgroundSize: '1.2rem' }}
+                        >
+                          <option value="" disabled>Select Type</option>
+                          <option value="one-time">One Time Service</option>
+                          {amcAvailable && (
+                            <option value="amc">Annual Maintenance Contract 3 Services</option>
+                          )}
+                        </select>
+                        {oneTimeOnlyHint && (
+                          <p className="mt-1 text-[10px] text-orange-600 font-bold italic">* Selected service(s) available only as One-Time treatment</p>
+                        )}
+                        {errors.serviceType && (
+                          <p className="mt-1 text-xs text-red-600 font-bold">{errors.serviceType}</p>
+                        )}
+                      </div>
+                    </div>
+                  )}
+                </>
+              )}
+
+              {/* Name + Phone — always 2-col on compact (incl. ~360px) */}
+              {compact ? (
+                <div className="booking-grid-2 booking-grid-phone">
+                  <div>
+                    <label htmlFor="quote-name" className="booking-field-label">
+                      Your Name *
+                    </label>
+                    <input
+                      id="quote-name"
+                      type="text"
+                      value={formData.name}
+                      onChange={(e) => handleChange('name', e.target.value)}
+                      placeholder="Full name"
+                      className={`booking-input${errors.name ? ' booking-input-error' : ''}`}
+                      autoComplete="name"
+                    />
+                    {errors.name && (
+                      <p className="mt-1 text-[10px] font-semibold text-red-600">{errors.name}</p>
+                    )}
+                  </div>
+                  <div>
+                    <label htmlFor="quote-phone" className="booking-field-label">
+                      Mobile *
+                    </label>
+                    <div className={`booking-phone-field${errors.phone ? ' booking-phone-field-error' : ''}`}>
+                      <div className="booking-phone-prefix" aria-hidden="true">
+                        <IndiaFlagIcon className="booking-phone-flag" />
+                        <span className="booking-phone-prefix-code">+91</span>
+                      </div>
+                      <input
+                        id="quote-phone"
+                        type="tel"
+                        inputMode="numeric"
+                        autoComplete="tel-national"
+                        value={formData.phone}
+                        onChange={(e) => {
+                          const value = e.target.value.replace(/\D/g, '').slice(0, 10);
+                          handleChange('phone', value);
+                        }}
+                        placeholder="10 digits"
+                        maxLength={10}
+                        className="booking-phone-input"
+                        aria-invalid={Boolean(errors.phone)}
+                        aria-describedby={errors.phone ? 'quote-phone-error' : undefined}
+                      />
+                    </div>
+                    {errors.phone && (
+                      <p id="quote-phone-error" className="mt-1 text-[10px] font-semibold text-red-600">
+                        {errors.phone}
+                      </p>
+                    )}
+                  </div>
+                </div>
+              ) : (
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
+                  <div>
+                    <label className="block font-bold text-[#1a1a1a] text-[15px] mb-2">
+                      Your Name *
+                    </label>
                     <input
                       type="text"
                       value={formData.name}
                       onChange={(e) => handleChange('name', e.target.value)}
                       placeholder="Enter your full name"
-                      className={`quote-field w-full font-medium ${compact ? 'px-3 py-2 text-sm' : 'px-4 py-3'} ${errors.name ? 'quote-field-error' : ''}`}
+                      className={`quote-field w-full font-medium px-4 py-3 ${errors.name ? 'quote-field-error' : ''}`}
                     />
+                    {errors.name && (
+                      <p className="mt-1 text-xs text-red-600 font-bold">{errors.name}</p>
+                    )}
                   </div>
-                  {errors.name && (
-                    <p className="mt-1 text-xs text-red-600 font-bold">{errors.name}</p>
-                  )}
-                </div>
-
-                {/* 6. Phone Number */}
-                <div>
-                  <label
-                    htmlFor="quote-phone"
-                    className={`block font-bold text-[#1a1a1a] ${compact ? 'text-xs mb-1' : 'text-[15px] mb-2'}`}
-                  >
-                    Phone Number *
-                  </label>
-                  <div className={`quote-phone-field${errors.phone ? ' quote-phone-field-error' : ''}`}>
-                    <div className="quote-phone-prefix" aria-hidden="true">
-                      <IndiaFlagIcon className="quote-phone-flag" />
-                      <span className="quote-phone-prefix-code">+91</span>
+                  <div>
+                    <label htmlFor="quote-phone" className="block font-bold text-[#1a1a1a] text-[15px] mb-2">
+                      Phone Number *
+                    </label>
+                    <div className={`quote-phone-field${errors.phone ? ' quote-phone-field-error' : ''}`}>
+                      <div className="quote-phone-prefix" aria-hidden="true">
+                        <IndiaFlagIcon className="quote-phone-flag" />
+                        <span className="quote-phone-prefix-code">+91</span>
+                      </div>
+                      <input
+                        id="quote-phone"
+                        type="tel"
+                        inputMode="numeric"
+                        autoComplete="tel-national"
+                        value={formData.phone}
+                        onChange={(e) => {
+                          const value = e.target.value.replace(/\D/g, '').slice(0, 10);
+                          handleChange('phone', value);
+                        }}
+                        placeholder="10-digit mobile number"
+                        maxLength={10}
+                        className="quote-phone-input font-medium text-base"
+                        aria-invalid={Boolean(errors.phone)}
+                        aria-describedby={errors.phone ? 'quote-phone-error' : undefined}
+                      />
                     </div>
-                    <input
-                      id="quote-phone"
-                      type="tel"
-                      inputMode="numeric"
-                      autoComplete="tel-national"
-                      value={formData.phone}
-                      onChange={(e) => {
-                        const value = e.target.value.replace(/\D/g, '').slice(0, 10);
-                        handleChange('phone', value);
-                      }}
-                      placeholder="10-digit mobile number"
-                      maxLength={10}
-                      className={`quote-phone-input font-medium ${compact ? 'text-sm' : 'text-base'}`}
-                      aria-invalid={Boolean(errors.phone)}
-                      aria-describedby={errors.phone ? 'quote-phone-error' : undefined}
-                    />
+                    {errors.phone && (
+                      <p id="quote-phone-error" className="mt-1 text-xs text-red-600 font-bold">
+                        {errors.phone}
+                      </p>
+                    )}
                   </div>
-                  {errors.phone && (
-                    <p id="quote-phone-error" className="mt-1 text-xs text-red-600 font-bold">
-                      {errors.phone}
-                    </p>
-                  )}
                 </div>
-              </div>
+              )}
 
-              {/* 7. Street Address (optional) — Google Places autocomplete + current location */}
               {compact ? (
                 <AddressInput
                   label="Street Address (optional)"
                   value={formData.streetAddress}
                   onChange={(value) => handleChange('streetAddress', value)}
-                  placeholder="Enter your street address (optional)"
+                  placeholder="Area, building or street (optional)"
                   inlineLocate
                   className=""
                   error={errors.streetAddress}
                 />
               ) : (
                 <div>
-                  <label
-                    htmlFor="streetAddress"
-                    className="block font-bold text-[#1a1a1a] mb-2 text-[15px]"
-                  >
+                  <label htmlFor="streetAddress" className="block font-bold text-[#1a1a1a] mb-2 text-[15px]">
                     Street Address <span className="font-normal text-gray-500">(optional)</span>
                   </label>
                   <AddressInput
@@ -600,8 +860,7 @@ export default function HomeInquiryForm({
                 </div>
               )}
 
-              {/* Submit Button */}
-              <div className={compact ? 'pt-1' : 'pt-4'}>
+              <div className={compact ? 'pt-0.5' : 'pt-4'}>
                 <button
                   type="submit"
                   disabled={isSubmitting}

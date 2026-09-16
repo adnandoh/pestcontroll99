@@ -1009,7 +1009,76 @@ textarea:focus-visible {
   transition: border-color var(--transition-base), box-shadow var(--transition-base);
 }
 
-/* Compact inquiry form — denser fields to reduce scroll (mobile-first) */
+/* Compact inquiry form — booking-parity layout on ~360px */
+.inquiry-form-compact {
+  --hb-green: #087b3d;
+  --hb-lime: #25a852;
+  --hb-navy: #092456;
+  --hb-ink: #17202b;
+  --hb-line: #dbe8df;
+  --hb-soft: #effaf3;
+}
+
+.inquiry-form-body {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.inquiry-form-body > * {
+  min-width: 0;
+}
+
+.inquiry-price-inline {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 1px;
+  min-height: 38px;
+  padding: 4px 8px;
+  border-radius: 8px;
+  border: 1.5px solid var(--hb-line);
+  background: var(--hb-soft);
+}
+
+.inquiry-price-inline-label {
+  font-size: 9px;
+  font-weight: 800;
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+  color: #4b6255;
+  line-height: 1.1;
+}
+
+.inquiry-price-inline-amount {
+  font: 800 13px/1.15 inherit;
+  color: var(--hb-ink);
+  font-variant-numeric: tabular-nums;
+}
+
+.inquiry-price-inline-sub {
+  font-size: 9px;
+  font-weight: 600;
+  color: var(--hb-green);
+  line-height: 1.1;
+}
+
+.inquiry-price-inline-promo {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 4px;
+  font-size: 9px;
+  font-weight: 600;
+  color: #6b7280;
+  line-height: 1.1;
+}
+
+.inquiry-price-save {
+  color: var(--hb-green);
+  font-weight: 800;
+}
+
 .inquiry-form-compact .quote-phone-field {
   min-height: 38px;
 }
@@ -1029,6 +1098,43 @@ textarea:focus-visible {
 
 .inquiry-form-compact .quote-field-toggle > button {
   min-height: 36px;
+}
+
+.inquiry-form-compact .booking-input,
+.inquiry-form-compact .booking-address-input,
+.inquiry-form-compact .booking-phone-field {
+  min-height: 34px;
+  height: 34px;
+}
+
+.inquiry-form-compact .booking-select,
+.inquiry-form-compact .booking-select-trigger {
+  min-height: 34px;
+  height: 34px;
+}
+
+.inquiry-form-compact .inquiry-price-inline {
+  min-height: 34px;
+}
+
+@media (max-width: 390px) {
+  .inquiry-form-body {
+    gap: 6px;
+  }
+
+  .inquiry-form-compact .booking-input,
+  .inquiry-form-compact .booking-address-input,
+  .inquiry-form-compact .booking-phone-field,
+  .inquiry-form-compact .booking-select,
+  .inquiry-form-compact .booking-select-trigger,
+  .inquiry-form-compact .inquiry-price-inline {
+    min-height: 32px;
+    height: 32px;
+  }
+
+  .inquiry-price-inline-amount {
+    font-size: 12px;
+  }
 }
 
 .quote-phone-field:hover {

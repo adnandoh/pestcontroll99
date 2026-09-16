@@ -18,13 +18,13 @@ function QuotePageContent() {
         <HomeInquiryForm
           compact
           formTitle="Send Inquiry"
-          formSubtitle="Tell us about your pest problem — we respond the same day with an accurate quote."
+          formSubtitle="Same-day response with an accurate quote."
         />
       </div>
-      <div className="container mx-auto px-4 pb-8 -mt-4">
+      <div className="container mx-auto px-4 pb-6 -mt-2">
         <div className="max-w-2xl mx-auto text-center">
-          <p className="text-gray-500 text-xs sm:text-sm">
-            Our experts will analyze your requirements and provide the most competitive pricing in the industry.
+          <p className="text-gray-500 text-[11px] sm:text-sm">
+            Competitive pricing after our experts review your requirements.
           </p>
         </div>
       </div>
