@@ -38,11 +38,15 @@ export async function silentUpsertWebsiteInquiry(
     const pageUrl =
       typeof window !== 'undefined' ? window.location.href.split('#')[0] : undefined;
 
+    // Send the real name when known; omit placeholder so the backend can keep
+    // an earlier real name and upgrade "Website Lead" once the customer types it.
+    const customerName = String(formData.name || '').trim();
+
     const mapped = crmApi.mapFormDataToInquiry(
       {
         ...(formData as Parameters<typeof crmApi.mapFormDataToInquiry>[0]),
         phone: cleanPhone,
-        name: String(formData.name || '').trim() || 'Website Lead',
+        name: customerName,
       },
       'home',
       {

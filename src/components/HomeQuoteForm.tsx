@@ -160,6 +160,8 @@ export default function HomeQuoteForm({
   const bookingDraftRef = useRef<HomeFormData | null>(null);
   const inquiryInFlightRef = useRef(false);
   const lastInquiryFingerprintRef = useRef('');
+  /** Latest form snapshot to retry after an in-flight upsert (avoids dropping name). */
+  const pendingInquiryDataRef = useRef<HomeFormData | null>(null);
 
   // Ensure booking session id exists for this browser tab.
   useEffect(() => {
@@ -185,9 +187,17 @@ export default function HomeQuoteForm({
       ].join('|');
 
       if (fingerprint === lastInquiryFingerprintRef.current) return;
-      if (inquiryInFlightRef.current) return;
+
+      // If an upsert is already running, queue the latest snapshot and retry after.
+      // Without this, typing the name during the first mobile-blur upsert permanently
+      // leaves CRM/Telegram stuck on "Website Lead".
+      if (inquiryInFlightRef.current) {
+        pendingInquiryDataRef.current = data;
+        return;
+      }
 
       inquiryInFlightRef.current = true;
+      pendingInquiryDataRef.current = null;
       void silentUpsertWebsiteInquiry(data as unknown as Record<string, unknown>, {
         leadSource: leadSource || 'Website Booking Form',
         defaultCity,
@@ -200,6 +210,11 @@ export default function HomeQuoteForm({
         })
         .finally(() => {
           inquiryInFlightRef.current = false;
+          const pending = pendingInquiryDataRef.current;
+          if (pending) {
+            pendingInquiryDataRef.current = null;
+            queueSilentInquiry(pending);
+          }
         });
     },
     [leadSource, defaultCity, defaultState],
@@ -836,6 +851,11 @@ export default function HomeQuoteForm({
                   type="text"
                   value={formData.name}
                   onChange={(e) => handleChange('name', e.target.value)}
+                  onBlur={() => {
+                    if (isValidBookingMobile(formData.phone) && formData.name.trim()) {
+                      queueSilentInquiry(formData);
+                    }
+                  }}
                   placeholder="Full name"
                   className={`booking-input${errors.name ? ' booking-input-error' : ''}`}
                   autoComplete="name"
