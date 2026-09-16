@@ -2410,9 +2410,12 @@ html[data-scroll-behavior="smooth"] {
 
 .booking-form-heading {
   display: flex;
-  flex-direction: column;
-  gap: 2px;
+  flex-direction: row;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 0 6px;
   min-width: 0;
+  flex: 1;
 }
 
 .booking-form-title {
@@ -2425,12 +2428,13 @@ html[data-scroll-behavior="smooth"] {
 }
 
 .booking-form-warranty {
-  font-size: 11px;
+  font-size: 10px;
   font-weight: 700;
   color: var(--hb-navy);
-  line-height: 1.2;
+  line-height: 1.15;
   letter-spacing: 0.01em;
   opacity: 0.85;
+  white-space: nowrap;
 }
 
 .booking-required-hint {
