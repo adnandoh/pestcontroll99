@@ -3624,67 +3624,75 @@ html[data-scroll-behavior="smooth"] {
   cursor: pointer;
 }
 
-@media (max-height: 700px) {
+@media (max-width: 767px) {
+  /* Typical phones: compress so header + hero + form + CTA fit first screen */
+  .home-booking-viewport {
+    --hb-action-bar-pad-top: 2px;
+    --hb-action-bar-btn-h: 32px;
+  }
+
   .home-booking-hero-band {
-    min-height: 78px;
-    height: auto;
+    min-height: 72px;
     padding: 6px 12px 6px;
   }
 
+  .home-booking-badge {
+    font-size: 7.5px;
+    padding: 2px 6px;
+  }
+
   .home-booking-headline {
-    font-size: 18px;
+    font-size: 17px;
     margin: 3px 0 1px;
+    max-width: 240px;
   }
 
   .home-booking-trust {
-    font-size: 9px;
+    font-size: 8.5px;
   }
 
   .home-booking-bugline {
-    top: 8px;
+    top: 6px;
     right: 8px;
-    grid-template-columns: repeat(2, 26px);
+    grid-template-columns: repeat(2, 24px);
     gap: 3px;
   }
 
   .home-booking-bug {
-    width: 26px;
-    height: 26px;
-    font-size: 13px;
+    width: 24px;
+    height: 24px;
+    font-size: 12px;
+  }
+
+  .home-booking-app {
+    padding-bottom: calc(var(--hb-action-bar-h, 44px) + 6px);
   }
 
   .booking-form-card {
-    padding-top: 6px;
-    padding-bottom: 4px;
+    padding: 6px 10px 6px;
+  }
+
+  .booking-form-title {
+    font-size: 14px;
   }
 
   .booking-form-body {
-    gap: 7px;
+    gap: 5px;
+  }
+
+  .booking-form-cta {
+    gap: 5px;
+    padding-top: 2px;
   }
 
   .booking-grid-2,
   .booking-choice-grid {
-    gap: 7px;
+    gap: 5px;
   }
 
-  .booking-select,
-  .booking-select-trigger {
-    min-height: 34px;
-    height: 34px;
-  }
-
-  .booking-input,
-  .booking-address-input,
-  .booking-time-trigger,
-  .booking-phone-field {
-    min-height: 40px;
-    height: 40px;
-  }
-
-  .booking-choice-card {
-    height: 34px;
-    min-height: 34px;
-    padding: 2px 6px;
+  .booking-field-label {
+    margin: 0 0 1px;
+    font-size: 8.5px;
   }
 
   .booking-prop-btn {
@@ -3693,21 +3701,130 @@ html[data-scroll-behavior="smooth"] {
     font-size: 10px;
   }
 
+  .booking-select,
+  .booking-select-trigger,
+  .booking-input,
+  .booking-address-input,
+  .booking-time-trigger,
+  .booking-phone-field {
+    min-height: 34px;
+    height: 34px;
+  }
+
+  .booking-choice-card {
+    height: 36px;
+    min-height: 36px;
+    padding: 2px 6px;
+  }
+
+  .booking-choice-title {
+    font-size: 11px;
+  }
+
+  .booking-choice-sub {
+    font-size: 8px;
+  }
+
   .booking-price-bar {
-    height: 32px;
-    min-height: 32px;
+    height: 34px;
+    min-height: 34px;
+  }
+
+  .booking-price-discounted {
+    font-size: 16px;
   }
 
   .booking-submit-btn {
-    height: 38px;
-    min-height: 38px;
+    height: 40px;
+    min-height: 40px;
+    font-size: 14px;
+  }
+}
+
+@media (max-height: 700px) {
+  .home-booking-hero-band {
+    min-height: 64px;
+    height: auto;
+    padding: 5px 10px 4px;
+  }
+
+  .home-booking-headline {
+    font-size: 16px;
+    margin: 2px 0 0;
+  }
+
+  .home-booking-trust {
+    display: none;
+  }
+
+  .home-booking-bugline {
+    top: 6px;
+    right: 6px;
+    grid-template-columns: repeat(2, 22px);
+    gap: 2px;
+  }
+
+  .home-booking-bug {
+    width: 22px;
+    height: 22px;
+    font-size: 11px;
+  }
+
+  .booking-form-card {
+    padding-top: 4px;
+    padding-bottom: 2px;
+  }
+
+  .booking-form-body {
+    gap: 4px;
+  }
+
+  .booking-grid-2,
+  .booking-choice-grid {
+    gap: 4px;
+  }
+
+  .booking-select,
+  .booking-select-trigger {
+    min-height: 32px;
+    height: 32px;
+  }
+
+  .booking-input,
+  .booking-address-input,
+  .booking-time-trigger,
+  .booking-phone-field {
+    min-height: 32px;
+    height: 32px;
+  }
+
+  .booking-choice-card {
+    height: 32px;
+    min-height: 32px;
+    padding: 1px 5px;
+  }
+
+  .booking-prop-btn {
+    height: 24px;
+    min-height: 24px;
+    font-size: 9.5px;
+  }
+
+  .booking-price-bar {
+    height: 30px;
+    min-height: 30px;
+  }
+
+  .booking-submit-btn {
+    height: 36px;
+    min-height: 36px;
     font-size: 13px;
   }
 
   .home-booking-viewport,
   .home-page-with-sticky-cta {
     --hb-action-bar-pad-bottom: max(4px, env(safe-area-inset-bottom, 0px));
-    --hb-action-bar-btn-h: 30px;
+    --hb-action-bar-btn-h: 28px;
   }
 
   .home-booking-action-bar {
@@ -3717,8 +3834,8 @@ html[data-scroll-behavior="smooth"] {
   }
 
   .home-booking-action {
-    height: 30px;
-    min-height: 30px;
+    height: 28px;
+    min-height: 28px;
     font-size: 9px;
   }
 
