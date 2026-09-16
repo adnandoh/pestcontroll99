@@ -613,7 +613,10 @@ export default function HomeQuoteForm({
     <section id="get-quote" className="booking-form-section scroll-mt-24">
       <div data-hero-form-card="" className="booking-form-card">
         <div className="booking-form-header">
-          <h2 className="booking-form-title">{title}</h2>
+          <div className="booking-form-heading">
+            <h2 className="booking-form-title">{title}</h2>
+            <span className="booking-form-warranty">100% Service Warranty</span>
+          </div>
           <span className="booking-required-hint">* Required</span>
         </div>
         {formSubtitle ? <p className="booking-form-subtitle">{formSubtitle}</p> : null}
