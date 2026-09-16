@@ -396,11 +396,7 @@ export default function HomeQuoteForm({
       setOtpMobile(otpSend.mobile);
       // Soft button debounce only — website booking has no short server cooldown.
       setResendCooldown(otpSend.resendAfter > 0 ? otpSend.resendAfter : 2);
-      setOtpHint(
-        otpSend.devOtp
-          ? `Local DEBUG OTP: ${otpSend.devOtp}`
-          : `OTP sent on WhatsApp to +91 ${otpSend.mobile}`,
-      );
+      setOtpHint(otpSend.devOtp ? `Local DEBUG OTP: ${otpSend.devOtp}` : '');
       setOtpModalOpen(true);
       setOtpValue('');
       return true;
@@ -453,11 +449,7 @@ export default function HomeQuoteForm({
       bookingDraftRef.current = draft;
       setOtpMobile(otpSend.mobile);
       setResendCooldown(otpSend.resendAfter > 0 ? otpSend.resendAfter : 2);
-      setOtpHint(
-        otpSend.devOtp
-          ? `Local DEBUG OTP: ${otpSend.devOtp}`
-          : `OTP resent on WhatsApp to +91 ${otpSend.mobile}`,
-      );
+      setOtpHint(otpSend.devOtp ? `Local DEBUG OTP: ${otpSend.devOtp}` : '');
       setOtpValue('');
     } catch (error) {
       console.error('Error resending booking OTP:', error);
@@ -1118,12 +1110,11 @@ export default function HomeQuoteForm({
               </button>
             </div>
             <p>
-              Enter the 4-digit OTP sent to{' '}
-              <strong>+91 {otpMobile || formData.phone.replace(/\D/g, '')}</strong> to confirm your
+              OTP sent to +91 {otpMobile || formData.phone.replace(/\D/g, '')} to confirm your
               booking.
             </p>
             <p className="booking-otp-whatsapp-note">
-              You&apos;ll receive the OTP on WhatsApp.
+              OTP will be sent to your WhatsApp number. Please check WhatsApp only.
             </p>
             {otpHint ? <p className="booking-otp-hint">{otpHint}</p> : null}
             <label className="booking-otp-label" htmlFor="booking-otp-input">
