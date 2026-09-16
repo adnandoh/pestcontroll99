@@ -6,12 +6,15 @@ import assert from 'node:assert/strict';
 import { describe, it } from 'node:test';
 
 import {
+  areaKeyForForm,
   calculateCatalogQuotePrice,
   isHomeExcludedRate,
   matchRateForPest,
   packageTokenMatches,
+  PREMISE_SIZE_TO_AREA,
   type CatalogRate,
 } from './catalogPricing.ts';
+import { RESIDENTIAL_PREMISE_SIZE_OPTIONS } from '../config/serviceOptions.ts';
 
 function rate(partial: Partial<CatalogRate> & Pick<CatalogRate, 'id' | 'service_package'>): CatalogRate {
   return {
@@ -207,5 +210,43 @@ describe('matchRateForPest home guards', () => {
     assert.equal(quote.discountPercent, 30);
     assert.equal(quote.packageTier, 'standard'); // named Premium → no extra +15%
     assert.equal(quote.pricingRateId, 7);
+  });
+
+  it('residential premise options are 1 RK → 1–6 BHK → Other', () => {
+    assert.deepEqual(
+      RESIDENTIAL_PREMISE_SIZE_OPTIONS.map((o) => o.value),
+      ['1rk', '1bhk', '2bhk', '3bhk', '4bhk', '5bhk', '6bhk', 'other'],
+    );
+    assert.equal(PREMISE_SIZE_TO_AREA['6bhk'], '6 BHK');
+    assert.equal(PREMISE_SIZE_TO_AREA.other, 'Other');
+    assert.equal(areaKeyForForm('residential', '6bhk'), '6 BHK');
+    assert.equal(areaKeyForForm('residential', 'other'), 'Other');
+  });
+
+  it('premise size Other stays price-pending (custom quote)', () => {
+    const quote = calculateCatalogQuotePrice({
+      rates: fixtureRates,
+      pestTypes: ['cockroach-ants'],
+      premiseType: 'residential',
+      premiseSize: 'other',
+      serviceType: 'one-time',
+      treatmentQuality: 'standard',
+    });
+    assert.equal(quote.pricePending, true);
+    assert.equal(quote.offerPrice, 0);
+    assert.equal(quote.pricingRateId, null);
+  });
+
+  it('6 BHK without catalog row stays price-pending', () => {
+    const quote = calculateCatalogQuotePrice({
+      rates: fixtureRates,
+      pestTypes: ['cockroach-ants'],
+      premiseType: 'residential',
+      premiseSize: '6bhk',
+      serviceType: 'one-time',
+      treatmentQuality: 'standard',
+    });
+    assert.equal(quote.pricePending, true);
+    assert.equal(quote.offerPrice, 0);
   });
 });

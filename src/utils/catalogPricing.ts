@@ -95,6 +95,8 @@ export const PREMISE_SIZE_TO_AREA: Record<string, string> = {
   '3bhk': '3 BHK',
   '4bhk': '4 BHK',
   '5bhk': '5 BHK',
+  '6bhk': '6 BHK',
+  other: 'Other',
 };
 
 /** Categories that must never price a residential home booking unless explicitly commercial. */
@@ -223,6 +225,8 @@ export function matchRateForPest(
       return key.includes(area) || area.includes(key);
     });
     if (soft.length > 0) return soft[0];
+    // Explicit size requested but no catalog row — do not price a different BHK/RK.
+    if (isHome) return null;
   }
 
   if (isHome) {

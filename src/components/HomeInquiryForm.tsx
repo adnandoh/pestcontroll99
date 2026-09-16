@@ -7,18 +7,12 @@ import { AddressInput } from './GoogleMaps';
 import { CommercialIcon, ResidentialIcon } from './icons/PremiseTypeIcons';
 import IndiaFlagIcon from './icons/IndiaFlagIcon';
 import { BUSINESS, whatsAppUrl } from '@/config/business';
+import { RESIDENTIAL_PREMISE_SIZE_OPTIONS } from '@/config/serviceOptions';
 
 /** Display-only list markup when rate card has no separate MRP (matches ~30% Save badge). */
 const QUOTE_DISPLAY_DISCOUNT = 0.3;
 
-const PREMISE_SIZE_OPTIONS = [
-  { value: '1rk', label: '1 RK' },
-  { value: '1bhk', label: '1 BHK' },
-  { value: '2bhk', label: '2 BHK' },
-  { value: '3bhk', label: '3 BHK' },
-  { value: '4bhk', label: '4 BHK' },
-  { value: '5bhk', label: '5 BHK' },
-] as const;
+const PREMISE_SIZE_OPTIONS = RESIDENTIAL_PREMISE_SIZE_OPTIONS;
 
 function formatInr(amount: number): string {
   return `₹ ${amount.toLocaleString('en-IN', {
@@ -133,8 +127,8 @@ export default function HomeInquiryForm({
   }, [premiseSizeOpen]);
 
   // Rate card data (amounts excluding GST — no GST is applied in calculatePrice).
-  // 5bhk amounts from rate_chart_2026.csv (excl. GST `amount`); 1rk–4bhk keep existing quote form rates.
-  const RATES = {
+  // 5bhk amounts from rate_chart_2026.csv; 6bhk/other fall through to 0 (custom quote).
+  const RATES: Record<string, unknown> = {
     'cockroach-ants': {
       amc: { '1rk': 1800, '1bhk': 2200, '2bhk': 2500, '3bhk': 3000, '4bhk': 3500, '5bhk': 4900 },
       'one-time': { '1rk': 1000, '1bhk': 1200, '2bhk': 1500, '3bhk': 1800, '4bhk': 2000, '5bhk': 2700 },
@@ -143,32 +137,32 @@ export default function HomeInquiryForm({
     termite: { '1rk': 2000, '1bhk': 2500, '2bhk': 3000, '3bhk': 3500, '4bhk': 4000, '5bhk': 5900 },
     rodent: { fixed: 1000 },
     mosquito: { '1rk': 800, '1bhk': 1000, '2bhk': 1500, '3bhk': 1800, '4bhk': 2000, '5bhk': 2800 },
-  } as const;
+  };
 
   const calculatePrice = (data: HomeFormData) => {
     if (data.premiseType === 'commercial' || data.pestTypes.includes('hotel-commercial')) {
       return 0; // Inspection required
     }
 
-    if (data.pestTypes.length === 0) return 0;
+    if (data.pestTypes.length === 0 || data.premiseSize === 'other') return 0;
 
     let totalPrice = 0;
     data.pestTypes.forEach((pest) => {
       if (pest === 'cockroach-ants') {
         if (!data.premiseSize) return;
-        const size = data.premiseSize as keyof (typeof RATES)['cockroach-ants']['one-time'];
         const plan = data.serviceType === 'amc' ? 'amc' : 'one-time';
-        totalPrice += RATES['cockroach-ants'][plan][size] || 0;
+        const planRates = (RATES['cockroach-ants'] as Record<string, Record<string, number>>)[plan];
+        totalPrice += planRates[data.premiseSize] || 0;
         return;
       }
       if (pest === 'rodent') {
-        totalPrice += RATES.rodent.fixed;
+        totalPrice += (RATES.rodent as { fixed: number }).fixed;
         return;
       }
       if (pest === 'bedbugs' || pest === 'termite' || pest === 'mosquito') {
         if (!data.premiseSize) return;
-        const size = data.premiseSize as keyof (typeof RATES)['bedbugs'];
-        totalPrice += RATES[pest][size] || 0;
+        const pestRates = RATES[pest] as Record<string, number>;
+        totalPrice += pestRates[data.premiseSize] || 0;
       }
     });
 

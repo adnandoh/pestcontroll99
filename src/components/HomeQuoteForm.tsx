@@ -24,20 +24,16 @@ import ClockTimePicker from './ClockTimePicker';
 import { AddressInput } from './GoogleMaps';
 import IndiaFlagIcon from './icons/IndiaFlagIcon';
 import { BUSINESS, whatsAppUrl } from '@/config/business';
+import { RESIDENTIAL_PREMISE_SIZE_OPTIONS } from '@/config/serviceOptions';
 import {
   formatFriendlyPreferredDate,
   formatLocalDateYYYYMMDD,
   toPreferredTime,
 } from '@/utils/clockTime';
 
-const PREMISE_SIZE_OPTIONS = [
-  { value: '1bhk', label: '1 BHK' },
-  { value: '1rk', label: '1 RK' },
-  { value: '2bhk', label: '2 BHK' },
-  { value: '3bhk', label: '3 BHK' },
-  { value: '4bhk', label: '4 BHK' },
-  { value: '5bhk', label: '5 BHK' },
-] as const;
+const PREMISE_SIZE_OPTIONS = RESIDENTIAL_PREMISE_SIZE_OPTIONS;
+const OTHER_PREMISE_WHATSAPP_MESSAGE =
+  'Hi Pest Control 99, I selected Other for premise size on the website booking form and need a custom quote.';
 
 const TREATMENT_DETAILS: Record<'standard' | 'premium', [string, string]> = {
   standard: [
@@ -148,6 +144,7 @@ export default function HomeQuoteForm({
   const [submitMessage, setSubmitMessage] = useState('');
   const [premiseSizeOpen, setPremiseSizeOpen] = useState(false);
   const [infoModal, setInfoModal] = useState<'standard' | 'premium' | null>(null);
+  const [otherSizeModalOpen, setOtherSizeModalOpen] = useState(false);
   const premiseSizeRef = useRef<HTMLDivElement>(null);
 
   const [otpModalOpen, setOtpModalOpen] = useState(false);
@@ -219,6 +216,7 @@ export default function HomeQuoteForm({
 
   const isInspectionQuote =
     formData.premiseType === 'commercial' || formData.pestTypes.includes('hotel-commercial');
+  const isOtherPremiseSize = formData.premiseSize === 'other';
   const selectedPremiseSize = PREMISE_SIZE_OPTIONS.find((o) => o.value === formData.premiseSize);
   const amcAvailable =
     formData.pestTypes.length > 0 && formData.pestTypes.every((p) => p === 'cockroach-ants');
@@ -304,6 +302,10 @@ export default function HomeQuoteForm({
       newErrors.premiseSize = 'Please select a premise size';
     }
 
+    if (formData.premiseSize === 'other') {
+      newErrors.premiseSize = 'Please call or WhatsApp us for a custom quote';
+    }
+
     if (formData.premiseType === 'residential' && !isInspectionQuote) {
       if (!formData.treatmentQuality) {
         newErrors.treatmentQuality = 'Please select treatment quality';
@@ -365,6 +367,14 @@ export default function HomeQuoteForm({
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    if (formData.premiseSize === 'other') {
+      setOtherSizeModalOpen(true);
+      setErrors((prev) => ({
+        ...prev,
+        premiseSize: 'Please call or WhatsApp us for a custom quote',
+      }));
+      return;
+    }
     if (!validateForm()) return;
 
     setIsSubmitting(true);
@@ -518,6 +528,7 @@ export default function HomeQuoteForm({
 
   const priceSummaryLabel = (() => {
     if (!selectionsComplete) return 'Select options for price';
+    if (isOtherPremiseSize) return 'Custom quote — call / WhatsApp';
     if (isInspectionQuote) return 'Site inspection';
     const quality = formData.treatmentQuality === 'premium' ? 'Premium' : 'Standard';
     if (formData.serviceType === 'amc') return `${quality} AMC • 3 visits`;
@@ -639,6 +650,9 @@ export default function HomeQuoteForm({
                               onClick={() => {
                                 handleChange('premiseSize', option.value);
                                 setPremiseSizeOpen(false);
+                                if (option.value === 'other') {
+                                  setOtherSizeModalOpen(true);
+                                }
                               }}
                             >
                               {option.label}
@@ -927,6 +941,8 @@ export default function HomeQuoteForm({
                   </svg>
                   Sending OTP…
                 </>
+              ) : isOtherPremiseSize ? (
+                <>Call / WhatsApp for Quote →</>
               ) : (
                 <>Confirm Booking →</>
               )}
@@ -1040,6 +1056,55 @@ export default function HomeQuoteForm({
                     : 'Resend OTP'}
               </button>
             </div>
+          </div>
+        </div>
+      )}
+
+      {otherSizeModalOpen && (
+        <div
+          className="booking-info-modal open"
+          role="dialog"
+          aria-modal="true"
+          aria-labelledby="booking-other-size-title"
+          onClick={(e) => {
+            if (e.target === e.currentTarget) setOtherSizeModalOpen(false);
+          }}
+        >
+          <div className="booking-info-sheet booking-other-size-sheet">
+            <div className="booking-otp-header">
+              <h3 id="booking-other-size-title">Need a custom quote?</h3>
+              <button
+                type="button"
+                className="booking-otp-close"
+                onClick={() => setOtherSizeModalOpen(false)}
+                aria-label="Close"
+                title="Close"
+              >
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.25" aria-hidden="true">
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
+                </svg>
+              </button>
+            </div>
+            <p>
+              For premise sizes outside our standard 1 RK–6 BHK list, talk to an agent for pricing.
+              Online booking stays on hold until you get a quote.
+            </p>
+            <div className="booking-other-size-actions">
+              <a
+                href={whatsAppUrl(OTHER_PREMISE_WHATSAPP_MESSAGE)}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="booking-other-size-whatsapp"
+              >
+                WhatsApp
+              </a>
+              <a href={`tel:${BUSINESS.phoneTel}`} className="booking-other-size-call">
+                Call {BUSINESS.phoneDisplay}
+              </a>
+            </div>
+            <button type="button" className="booking-other-size-dismiss" onClick={() => setOtherSizeModalOpen(false)}>
+              Keep browsing
+            </button>
           </div>
         </div>
       )}

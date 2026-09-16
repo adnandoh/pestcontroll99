@@ -2388,6 +2388,8 @@ html[data-scroll-behavior="smooth"] {
 
 .booking-select {
   position: relative;
+  height: 38px;
+  min-height: 38px;
   border: 1.5px solid var(--hb-line);
   border-radius: 8px;
   background: #fff;
@@ -2397,7 +2399,8 @@ html[data-scroll-behavior="smooth"] {
 .booking-select.is-open,
 .booking-select:focus-within {
   border-color: var(--hb-green);
-  box-shadow: 0 0 0 3px #087b3d13;
+  box-shadow: inset 0 0 0 1px var(--hb-green);
+  background: var(--hb-soft);
 }
 
 .booking-select-error {
@@ -2407,16 +2410,17 @@ html[data-scroll-behavior="smooth"] {
 .booking-select-trigger {
   display: flex;
   width: 100%;
+  height: 100%;
+  min-height: 38px;
   align-items: center;
   justify-content: space-between;
   gap: 6px;
-  height: auto;
-  min-height: 34px;
-  padding: 4px 8px;
+  padding: 3px 7px;
   border: none;
   background: transparent;
-  font: 700 11px inherit;
-  color: #1b2a22;
+  font: 800 11px inherit;
+  color: var(--hb-ink);
+  line-height: 1.1;
   text-align: left;
   cursor: pointer;
 }
@@ -2424,11 +2428,11 @@ html[data-scroll-behavior="smooth"] {
 .booking-select-trigger > span:first-child {
   flex: 1 1 auto;
   min-width: 0;
-  white-space: normal;
-  overflow: visible;
-  text-overflow: unset;
-  line-height: 1.2;
-  word-break: break-word;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  line-height: 1.1;
+  word-break: normal;
 }
 
 .booking-select-trigger .is-placeholder {
@@ -3427,6 +3431,47 @@ html[data-scroll-behavior="smooth"] {
   cursor: not-allowed;
 }
 
+.booking-other-size-sheet .booking-other-size-actions {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+  margin: 12px 0 8px;
+}
+
+.booking-other-size-whatsapp,
+.booking-other-size-call {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 42px;
+  border-radius: 10px;
+  font-size: 13px;
+  font-weight: 800;
+  text-decoration: none;
+  color: #fff;
+}
+
+.booking-other-size-whatsapp {
+  background: #25d366;
+}
+
+.booking-other-size-call {
+  background: var(--hb-navy);
+}
+
+.booking-other-size-dismiss {
+  display: block;
+  width: 100%;
+  margin-top: 4px;
+  padding: 10px;
+  border: none;
+  background: transparent;
+  color: #5a6f63;
+  font-size: 13px;
+  font-weight: 700;
+  cursor: pointer;
+}
+
 @media (max-height: 700px) {
   .home-booking-hero-band {
     min-height: 78px;
@@ -3470,23 +3515,22 @@ html[data-scroll-behavior="smooth"] {
     gap: 7px;
   }
 
+  .booking-select,
   .booking-select-trigger,
   .booking-input,
   .booking-address-input,
   .booking-time-trigger,
   .booking-phone-field {
-    min-height: 32px;
+    min-height: 34px;
   }
 
+  .booking-select,
+  .booking-select-trigger,
   .booking-input,
   .booking-address-input,
   .booking-time-trigger,
   .booking-phone-field {
-    height: 32px;
-  }
-
-  .booking-select-trigger {
-    height: auto;
+    height: 34px;
   }
 
   .booking-choice-card {

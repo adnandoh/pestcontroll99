@@ -55,3 +55,15 @@ export const ONE_TIME_ONLY_QUOTE_SERVICES = [
   'House Fly Control',
   'Other',
 ] as const;
+
+/** Residential booking / quote premise sizes — 1 RK first, then 1–6 BHK, Other last. */
+export const RESIDENTIAL_PREMISE_SIZE_OPTIONS: ServiceOption[] = [
+  { value: '1rk', label: '1 RK' },
+  { value: '1bhk', label: '1 BHK' },
+  { value: '2bhk', label: '2 BHK' },
+  { value: '3bhk', label: '3 BHK' },
+  { value: '4bhk', label: '4 BHK' },
+  { value: '5bhk', label: '5 BHK' },
+  { value: '6bhk', label: '6 BHK' },
+  { value: 'other', label: 'Other' },
+];

@@ -82,7 +82,7 @@ export default function MultiSelectPest({
             aria-labelledby="pest-select-label"
             className="booking-select-trigger w-full"
           >
-            <span className={selectedPests.length > 0 ? 'text-[#0D2167]' : 'text-slate-400'}>
+            <span className={selectedPests.length > 0 ? '' : 'is-placeholder'}>
               {getDisplayText()}
             </span>
             <svg
