@@ -172,7 +172,7 @@ export function getAreaPageTitle(areaName: string): string {
 }
 
 export function getAreaMetaDescription(areaName: string): string {
-  return `Looking for pest control in ${areaName}? Pest Control 99 offers same-day cockroach, termite, mosquito & rodent treatment with CIB&RC-approved, family-safe products and a written warranty. Call +91 80807 48282 for a free quote.`;
+  return `Looking for pest control in ${areaName}? Pest Control 99 offers same-day cockroach, termite, mosquito & rodent treatment with CIB&RC-approved, family-safe products and a written warranty. Call +91 77100 32627 for a free quote.`;
 }
 
 export function getAreaLocalBusinessSchema(area: ServiceArea) {
@@ -202,7 +202,7 @@ export function getAreaLocalBusinessSchema(area: ServiceArea) {
       ...address,
     },
     areaServed: `${area.name}, Maharashtra`,
-    telephone: '+918080748282',
+    telephone: '+917710032627',
     url: getAreaCanonical(area.slug),
   };
 }
@@ -233,7 +233,7 @@ export function getAreaFaqItems(areaName: string) {
     {
       id: 'same-day',
       question: `Do you offer same-day pest control in ${areaName}?`,
-      answer: `Yes. In most parts of ${areaName} we offer same-day pest control when you book before noon, subject to technician availability. Call +91 80807 48282 to confirm a slot.`,
+      answer: `Yes. In most parts of ${areaName} we offer same-day pest control when you book before noon, subject to technician availability. Call +91 77100 32627 to confirm a slot.`,
     },
     {
       id: 'safe',

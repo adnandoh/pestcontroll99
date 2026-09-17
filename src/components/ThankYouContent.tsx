@@ -1,6 +1,7 @@
 import { Link, useSearchParams } from 'react-router-dom';
 import { useEffect, useLayoutEffect } from 'react';
 import PageMeta from '@/components/PageMeta';
+import { BUSINESS, whatsAppUrl } from '@/config/business';
 import { scrollToTopInstant } from '@/utils/scroll';
 import {
   fireGoogleAdsLeadConversion,
@@ -99,19 +100,19 @@ export default function ThankYouContent({
             <div className="bg-white p-6 rounded-2xl shadow-sm border border-gray-100">
               <h3 className="font-bold text-gray-900 mb-1">Call Us Now</h3>
               <p className="text-sm text-gray-500 mb-3">For emergency service</p>
-              <a href="tel:+918080748282" className="text-green-600 font-bold hover:underline">
-                +91 80807 48282
+              <a href={`tel:${BUSINESS.phoneTel}`} className="text-green-600 font-bold hover:underline">
+                {BUSINESS.phoneDisplay}
               </a>
             </div>
             <div className="bg-white p-6 rounded-2xl shadow-sm border border-gray-100">
               <h3 className="font-bold text-gray-900 mb-1">WhatsApp Us</h3>
               <p className="text-sm text-gray-500 mb-3">Fast responses</p>
               <a
-                href={`https://wa.me/918080748282?text=${encodeURIComponent(
+                href={whatsAppUrl(
                   isBooking
                     ? `Hi, I just booked online${bookingCode ? ` (${bookingCode})` : ''}.`
                     : 'Hi, I just submitted a quote request on your website.',
-                )}`}
+                )}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="text-green-600 font-bold hover:underline"

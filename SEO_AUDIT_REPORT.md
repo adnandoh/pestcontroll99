@@ -192,7 +192,7 @@ No pages found with multiple `<h1>` elements in the same view (404 uses H1+H2 wh
 ### Strengths
 
 - Strong local intent keywords on service and area pages
-- Phone number (+91 80807 48282) in descriptions — good for local CTR
+- Phone number (+91 77100 32627) in descriptions — good for local CTR
 - Warranty and safety claims (CIB&RC, herbal, same-day) repeated consistently
 - Lonavala monsoon angle is differentiated for hill-station market
 

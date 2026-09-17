@@ -62,7 +62,7 @@ export default function ContactForm() {
     <div className="min-h-screen bg-white">
       <PageMeta
         title="Contact Pest Control 99 | Book Pest Control in Mumbai"
-        description="Contact Pest Control 99 for same-day pest control in Mumbai, Thane & Navi Mumbai. Call +91 80807 48282, WhatsApp, or request a free quote online."
+        description="Contact Pest Control 99 for same-day pest control in Mumbai, Thane & Navi Mumbai. Call +91 77100 32627, WhatsApp, or request a free quote online."
         canonical="https://www.pestcontrol99.com/contact/"
         ogUrl="https://www.pestcontrol99.com/contact/"
       />

@@ -3,7 +3,7 @@ import type { AreaRichContent } from './types';
 export const KALYAN_AREA_CONTENT: AreaRichContent = {
   pageTitle: 'Trusted Pest Control Services in Kalyan | Pest Control 99',
   metaDescription:
-    'Trusted pest control in Kalyan for homes, offices & shops. Same-day cockroach, termite, rodent & mosquito treatment with warranty. Call +91 80807 48282.',
+    'Trusted pest control in Kalyan for homes, offices & shops. Same-day cockroach, termite, rodent & mosquito treatment with warranty. Call +91 77100 32627.',
   heroTitle: 'Trusted Pest Control Services in Kalyan',
   heroSubtitle:
     'Reliable, affordable pest management for homes, offices, restaurants, hospitals and commercial properties across Kalyan',
@@ -32,7 +32,7 @@ export const KALYAN_AREA_CONTENT: AreaRichContent = {
     'Pest Control 99 offers reliable and affordable pest control services in Kalyan for homes, offices, restaurants, hospitals, retail shops, warehouses, and commercial properties. Our experienced technicians use safe, effective, and eco-friendly methods to ensure maximum protection while upholding hygiene and safety standards.',
   closingParagraph:
     'Whether you need rodent treatment or comprehensive pest management solutions, Pest Control 99 is committed to keeping your property pest-free year-round. Book a free inspection today for same-day, warranty-backed pest control across Kalyan.',
-  phoneCta: '+91 80807 48282',
+  phoneCta: '+91 77100 32627',
   keywords:
     'best pest control services in Kalyan, affordable pest control in Kalyan, professional pest control in Kalyan, termite treatment in Kalyan, cockroach control services in Kalyan, rodent control in Kalyan, mosquito control services in Kalyan, residential pest control in Kalyan, commercial pest control in Kalyan, pest control 99 Kalyan services',
   faq: [
@@ -52,7 +52,7 @@ export const KALYAN_AREA_CONTENT: AreaRichContent = {
       id: 'same-day',
       question: 'Do you offer same-day pest control in Kalyan?',
       answer:
-        'Yes. Pest Control 99 offers same-day service and emergency support in Kalyan. Call +91 80807 48282 to confirm a slot.',
+        'Yes. Pest Control 99 offers same-day service and emergency support in Kalyan. Call +91 77100 32627 to confirm a slot.',
     },
     {
       id: 'commercial',

@@ -3,7 +3,7 @@ import type { AreaRichContent } from './types';
 export const BADLAPUR_AREA_CONTENT: AreaRichContent = {
   pageTitle: 'Trusted Pest Control Services in Badlapur | Pest Control 99',
   metaDescription:
-    'Trusted pest control in Badlapur for homes, offices & factories. Cockroach, termite, rodent & mosquito treatment — child & pet safe. Call +91 80807 48282.',
+    'Trusted pest control in Badlapur for homes, offices & factories. Cockroach, termite, rodent & mosquito treatment — child & pet safe. Call +91 77100 32627.',
   heroTitle: 'Trusted Pest Control Services in Badlapur',
   heroSubtitle:
     'Safe, eco-friendly pest management for homes, offices, restaurants, hospitals, warehouses and commercial properties in Badlapur',
@@ -31,7 +31,7 @@ export const BADLAPUR_AREA_CONTENT: AreaRichContent = {
     'Pest Control 99 provides reliable, safe, and affordable pest control services in Badlapur for homes, offices, restaurants, hospitals, warehouses, retail shops, factories, and all types of commercial properties. Our trained technicians use safe, advanced, and eco-friendly methods to ensure maximum protection. It is a child- and pet-friendly pest control service.',
   closingParagraph:
     'Whether you need termite control, cockroach removal, mosquito treatment, rodent control, or comprehensive pest management, Pest Control 99 is dedicated to keeping your property safe, hygienic, and pest-free year-round. Book a free inspection today for the best pest control services in Badlapur.',
-  phoneCta: '+91 80807 48282',
+  phoneCta: '+91 77100 32627',
   keywords:
     'best pest control services in Badlapur, affordable pest control in Badlapur, professional pest control in Badlapur, termite treatment in Badlapur, cockroach control services in Badlapur, rodent control in Badlapur, mosquito control services in Badlapur, residential pest control in Badlapur, commercial pest control in Badlapur, pest control 99 Badlapur services',
   faq: [
@@ -63,7 +63,7 @@ export const BADLAPUR_AREA_CONTENT: AreaRichContent = {
       id: 'same-day',
       question: 'Do you offer same-day pest control in Badlapur?',
       answer:
-        'Yes. Call +91 80807 48282 to confirm a same-day slot for urgent pest problems in Badlapur.',
+        'Yes. Call +91 77100 32627 to confirm a same-day slot for urgent pest problems in Badlapur.',
     },
   ],
 };
