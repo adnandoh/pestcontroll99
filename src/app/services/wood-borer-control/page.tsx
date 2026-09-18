@@ -10,7 +10,7 @@ export default function WoodBorerControlPage() {
     <div className="min-h-screen bg-white">
       <PageMeta
         title="Wood Borer Control in Mumbai | Save Your Furniture"
-        description="Professional wood borer treatment in Mumbai, Navi Mumbai, Thane, Pune & Lonavala. Protect furniture from powder-post beetles. Warranty-backed — call +91 77100 32627."
+        description="Professional wood borer treatment in Mumbai, Navi Mumbai, Thane, Pune & Lonavala. Protect furniture from powder-post beetles. Warranty-backed — call +91 80807 48282."
         keywords="wood borer control mumbai, wood borer treatment, furniture borer control, powder post beetle treatment"
         canonical="https://www.pestcontrol99.com/services/wood-borer-control/"
         ogUrl="https://www.pestcontrol99.com/services/wood-borer-control/"
@@ -43,10 +43,10 @@ export default function WoodBorerControlPage() {
                   Get My Inspection Slot →
                 </Link>
                 <a
-                  href="https://wa.me/917710032627?text=Hello%20Pest%20Control%2099,%20can%20you%20share%20details%20and%20pricing%20for%20your%20wood%20borer%20control%20services?"
+                  href="https://wa.me/918080748282?text=Hello%20Pest%20Control%2099,%20can%20you%20share%20details%20and%20pricing%20for%20your%20wood%20borer%20control%20services?"
                   className="inline-flex items-center justify-center px-8 py-4 bg-white text-green-600 font-semibold rounded-full border-2 border-green-600 hover:bg-green-50 transition-colors duration-300"
                 >
-                  💬 WhatsApp 24 × 7: +91 77100 32627
+                  💬 WhatsApp 24 × 7: +91 80807 48282
                 </a>
               </div>
             </div>
@@ -353,10 +353,10 @@ export default function WoodBorerControlPage() {
                 Schedule My Inspection →
               </Link>
               <a
-                href="https://wa.me/917710032627?text=Hello%20Pest%20Control%2099,%20can%20you%20share%20details%20and%20pricing%20for%20your%20wood%20borer%20control%20services?"
+                href="https://wa.me/918080748282?text=Hello%20Pest%20Control%2099,%20can%20you%20share%20details%20and%20pricing%20for%20your%20wood%20borer%20control%20services?"
                 className="inline-flex items-center justify-center px-8 py-4 bg-transparent text-white font-semibold rounded-full border-2 border-white hover:bg-white hover:text-green-600 transition-colors duration-300"
               >
-                💬 WhatsApp 24 × 7: +91 77100 32627
+                💬 WhatsApp 24 × 7: +91 80807 48282
               </a>
             </div>
             <p className="text-sm mt-6 opacity-75">
@@ -385,7 +385,7 @@ export default function WoodBorerControlPage() {
                 "postalCode": "401107",
                 "addressCountry": "IN"
               },
-              "telephone": "+917710032627"
+              "telephone": "+918080748282"
             },
             "areaServed": [
               { "@type": "City", "name": "Mumbai" },

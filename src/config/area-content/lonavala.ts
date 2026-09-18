@@ -3,7 +3,7 @@ import type { AreaRichContent } from './types';
 export const LONAVALA_AREA_CONTENT: AreaRichContent = {
   pageTitle: 'Reliable Monsoon Pest Control Services in Lonavala | Pest Control 99',
   metaDescription:
-    'Professional monsoon pest control in Lonavala for villas, resorts, hotels & homestays. Cockroach, mosquito, termite & rodent treatment. Same-day service. Call 7710032627 for a free quote.',
+    'Professional monsoon pest control in Lonavala for villas, resorts, hotels & homestays. Cockroach, mosquito, termite & rodent treatment. Same-day service. Call 8080748282 for a free quote.',
   heroTitle: 'Reliable Monsoon Pest Control Services in Lonavala',
   heroSubtitle: 'Professional pest management for villas, resorts, hotels & homestays across Lonavala',
   heroImage: '/images/pest-control-lonavala.webp',
@@ -29,7 +29,7 @@ export const LONAVALA_AREA_CONTENT: AreaRichContent = {
     'Pest Control 99 is committed to providing the best pest control services with professional treatment, quick response, and long-lasting protection. Whether it is villas, resorts, hotels, restaurants, offices, or residential properties, the expert team ensures safe and effective pest management solutions for every customer. From cockroach control and termite treatment to mosquito and rodent control, every service is performed using modern techniques and quality products.',
   closingParagraph:
     'Pest Control 99 provides the best pest control services in Lonavala for urgent pest problems in hotels, villas, resorts, and homestays. The trained professionals use modern equipment and safe treatment methods suitable for residential as well as commercial properties. This monsoon, protect your property from unwanted pests with trusted pest control services in Lonavala by Pest Control 99.',
-  phoneCta: '7710032627',
+  phoneCta: '8080748282',
   keywords:
     'pest control services in Lonavala, monsoon pest control in Lonavala, best pest control service in Lonavala, villa pest control in Lonavala, resort pest control in Lonavala, hotel pest control in Lonavala, cockroach control in Lonavala, mosquito control service in Lonavala, termite treatment in Lonavala, emergency pest control in Lonavala',
   faq: [
@@ -61,7 +61,7 @@ export const LONAVALA_AREA_CONTENT: AreaRichContent = {
       id: 'quote',
       question: 'How can I get a free quote for pest control in Lonavala?',
       answer:
-        'Fill in the free quote form on this page or call 7710032627. Our team responds the same day with an accurate quote for your property.',
+        'Fill in the free quote form on this page or call 8080748282. Our team responds the same day with an accurate quote for your property.',
     },
   ],
 };

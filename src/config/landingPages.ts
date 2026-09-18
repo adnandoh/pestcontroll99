@@ -46,7 +46,7 @@ export const LONAVALA_LANDING: LandingPageConfig = {
   seo: {
     title: 'Monsoon Pest Control in Lonavala | Same-Day Service | Pest Control 99',
     description:
-      'Trusted pest control for villas, resorts & homestays in Lonavala. Cockroach, mosquito, termite & rodent treatment. Same-day, herbal, warranty-backed. Call +91 77100 32627.',
+      'Trusted pest control for villas, resorts & homestays in Lonavala. Cockroach, mosquito, termite & rodent treatment. Same-day, herbal, warranty-backed. Call +91 80807 48282.',
     keywords:
       'pest control services in Lonavala, monsoon pest control in Lonavala, best pest control service in Lonavala, villa pest control in Lonavala, resort pest control in Lonavala, hotel pest control in Lonavala, cockroach control in Lonavala, mosquito control service in Lonavala, termite treatment in Lonavala, emergency pest control in Lonavala',
     canonical: `${SITE}/pest-control-in-lonavala/`,

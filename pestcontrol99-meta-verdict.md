@@ -41,13 +41,13 @@ treatments for homes & offices. Same-day service, 365-day warranty. Book now!
 | Field | Current | Grade | Issue |
 |---|---|---|---|
 | Title | Cockroach Pest Control in Mumbai \| Odourless Gel Treatment | ✅ Excellent (58c) | None — "Odourless Gel" is a strong USP |
-| Description | Same-day cockroach control in Mumbai, Thane & Navi Mumbai. Odourless, child & pet-safe gel treatment with a 365-day warranty. Free quote — call +91 77100 32627. | ✅ Good | Missing Pune + Lonavala |
+| Description | Same-day cockroach control in Mumbai, Thane & Navi Mumbai. Odourless, child & pet-safe gel treatment with a 365-day warranty. Free quote — call +91 80807 48282. | ✅ Good | Missing Pune + Lonavala |
 | Can rank now? | ❌ NO | — | SPA rendering blocker |
 
 **Description fix (add cities):**
 ```
 Same-day cockroach control in Mumbai, Navi Mumbai, Thane, Pune & Lonavala. Odourless,
-child & pet-safe gel treatment with a 365-day warranty. Free quote — call +91 77100 32627.
+child & pet-safe gel treatment with a 365-day warranty. Free quote — call +91 80807 48282.
 ```
 
 ---
@@ -161,7 +161,7 @@ Pest Control Services in Mumbai | Pest Control 99
 | Field | Current | Grade | Issue |
 |---|---|---|---|
 | Title | Contact Pest Control 99 \| Book Pest Control in Mumbai | ✅ Good (54c) | None |
-| Description | Contact Pest Control 99 for same-day pest control in Mumbai, Thane & Navi Mumbai. Call +91 77100 32627, WhatsApp, or request a free quote online. | ✅ Excellent | Phone number in desc = higher local CTR |
+| Description | Contact Pest Control 99 for same-day pest control in Mumbai, Thane & Navi Mumbai. Call +91 80807 48282, WhatsApp, or request a free quote online. | ✅ Excellent | Phone number in desc = higher local CTR |
 | Can rank now? | ❌ NO | — | SPA rendering blocker |
 
 ---
@@ -188,7 +188,7 @@ Expert articles on cockroach, termite, monsoon pests & more. Read free.
 | Field | Current | Grade | Issue |
 |---|---|---|---|
 | Title | Reliable Monsoon Pest Control Services in Lonavala \| Pest Control 99 | ❌ 68 chars | **Truncates in Google** — fix immediately |
-| Description | Professional monsoon pest control in Lonavala for villas, resorts, hotels & homestays. Cockroach, mosquito, termite & rodent treatment. Same-day service. Call 7710032627 for a free quote. | ❌ 186 chars | **26 chars over limit** — Google truncates |
+| Description | Professional monsoon pest control in Lonavala for villas, resorts, hotels & homestays. Cockroach, mosquito, termite & rodent treatment. Same-day service. Call 8080748282 for a free quote. | ❌ 186 chars | **26 chars over limit** — Google truncates |
 | Can rank now? | ⚠️ PARTIALLY | — | Has real content. But title + desc need fixing |
 
 **This is your highest priority fix — it's the only page that CAN rank right now.**
@@ -201,7 +201,7 @@ Monsoon Pest Control in Lonavala | Same-Day Service | Pest Control 99
 **Fixed description (158c):**
 ```
 Trusted pest control for villas, resorts & homestays in Lonavala. Cockroach, mosquito,
-termite & rodent treatment. Same-day, herbal, warranty-backed. Call +91 77100 32627.
+termite & rodent treatment. Same-day, herbal, warranty-backed. Call +91 80807 48282.
 ```
 
 ---
@@ -246,7 +246,7 @@ termite & rodent treatment. Same-day, herbal, warranty-backed. Call +91 77100 32
 - [ ] **sitemap.xml still serving HTML** — live crawl confirmed this. Vercel catch-all rewrite overrides it.
   - Fix: add to `vercel.json` rewrites — ensure `/sitemap.xml` is excluded from the SPA catch-all
 - [ ] **Broken phone number** — "98 XXX XX 990" placeholder on service pages = direct lead loss
-  - Fix: `src/config/business.ts` → phone: "+917710032627"
+  - Fix: `src/config/business.ts` → phone: "+918080748282"
 - [ ] **Hero image 1.9MB PNG** — mobile LCP 5–9 seconds, killing conversions
   - Fix: convert `public/images/hero-home.png` to WebP/AVIF (target < 200KB)
 - [ ] **46 area pages have [PLACEHOLDER] text** in visible copy AND FAQ schema
@@ -275,7 +275,7 @@ This is the ONE page that can rank RIGHT NOW. Fix the title and description:
 // src/app/pest-control-in-lonavala/page.tsx
 <PageMeta
   title="Monsoon Pest Control in Lonavala | Same-Day Service | Pest Control 99"
-  description="Trusted pest control for villas, resorts & homestays in Lonavala. Cockroach, mosquito, termite & rodent treatment. Same-day, herbal, warranty-backed. Call +91 77100 32627."
+  description="Trusted pest control for villas, resorts & homestays in Lonavala. Cockroach, mosquito, termite & rodent treatment. Same-day, herbal, warranty-backed. Call +91 80807 48282."
   canonical="https://www.pestcontrol99.com/pest-control-in-lonavala/"
 />
 ```
@@ -284,8 +284,8 @@ This is the ONE page that can rank RIGHT NOW. Fix the title and description:
 
 ```ts
 // src/config/business.ts
-phone: "+91 77100 32627",  // was: "98 XXX XX 990"
-whatsapp: "+917710032627",
+phone: "+91 80807 48282",  // was: "98 XXX XX 990"
+whatsapp: "+918080748282",
 ```
 
 ---

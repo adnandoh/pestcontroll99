@@ -47,7 +47,7 @@ export const PUNE_AREA_CONTENT: AreaRichContent = {
     'We understand that time matters. Whether it’s a 1BHK in Pimpri, a restaurant in Viman Nagar, a cafe in Koregaon Park, or a corporate office in Magarpatta or Kharadi, we provide same-day service and 24/7 emergency support. Our technicians arrive on time, explain the process clearly and ensure complete cleanup after treatment.',
   closingParagraph:
     'Pest problems don’t go away on their own. Early action protects your health, saves money and keeps your home or workplace hygienic and safe. Choose Pest Control 99 for reliable, professional and eco-friendly pest management across Pune. We proudly serve Pune, Pimpri-Chinchwad, Hinjewadi, Baner, Wakad, Kothrud, Hadapsar, Kharadi, Viman Nagar, Koregaon Park, Aundh, Bavdhan and all nearby areas.',
-  phoneCta: '+91 77100 32627',
+  phoneCta: '+91 80807 48282',
   keywords:
     'pest control services in Pune, best pest control service in Pune, cockroach control in Pune, mosquito control in Pune, termite treatment in Pune, bed bug treatment in Pune, residential pest control Pune, commercial pest control Pune, emergency pest control Pune',
   faq: [

@@ -355,7 +355,7 @@ export default function ECardPage() {
         <header className="w-full overflow-hidden bg-white">
           <AppImage
             src="/images/ecard/banner-brand.webp"
-            alt="PestControl99.com — Complete pest control. Safe. Effective. Reliable. Call 77100 32627"
+            alt="PestControl99.com — Complete pest control. Safe. Effective. Reliable. Call 80807 48282"
             width={1600}
             height={640}
             priority

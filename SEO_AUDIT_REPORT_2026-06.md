@@ -165,7 +165,7 @@ Generated from `src/config/areasWeServe.ts`. Zones: Western Suburbs (andheri, bo
 
 **NAP (single source `src/config/business.ts`):**
 - Name: **Pest Control 99** (legal: Multi Pest Care LLP)
-- Phone: **+91 77100 32627** (`tel:+917710032627`)
+- Phone: **+91 80807 48282** (`tel:+918080748282`)
 - Email: accounts@pestcontrol99.com
 - Address: 503 Sai Rushabh CHS Ltd, Geeta Nagar Phase 1, **Mira Road, Thane, Maharashtra 401107**
 
@@ -221,8 +221,8 @@ Generated from `src/config/areasWeServe.ts`. Zones: Western Suburbs (andheri, bo
 
 | Area | Problem | Fix |
 |---|---|---|
-| Service-page CTAs | Phone shows **placeholder `98 XXX XX 990`** on termite, honey-bee, wood-borer | Use `+91 77100 32627` from `business.ts` everywhere |
-| WhatsApp on service pages | Links use `wa.me/7710032627` — **missing `91` country code → broken** | Fix to `wa.me/917710032627` |
+| Service-page CTAs | Phone shows **placeholder `98 XXX XX 990`** on termite, honey-bee, wood-borer | Use `+91 80807 48282` from `business.ts` everywhere |
+| WhatsApp on service pages | Links use `wa.me/8080748282` — **missing `91` country code → broken** | Fix to `wa.me/918080748282` |
 | Pricing | Service pages say "contact for pricing" despite a real rate card existing | Show indicative "from ₹X" pricing |
 | Trust | Unverifiable counts ("10,432 kitchens"), rating mismatch (4.8 vs 4.9), ISO/FSSAI claims | Replace with verifiable proof; add GBP reviews widget |
 | Social proof | Testimonials are plain HTML, not `Review` schema; no real names/photos/GBP link | Use real reviews; link GBP |

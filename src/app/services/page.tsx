@@ -224,10 +224,10 @@ export default function ServicesPage() {
               Get Free Quote
             </Link>
             <a 
-              href="tel:+917710032627" 
+              href="tel:+918080748282" 
               className="border-2 border-white text-white px-6 sm:px-8 py-3 sm:py-4 rounded font-semibold hover:bg-white hover:text-slate-800 transition-colors text-base sm:text-lg"
             >
-              Call Now: +91 77100 32627
+              Call Now: +91 80807 48282
             </a>
           </div>
         </div>

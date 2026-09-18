@@ -8,9 +8,9 @@ export const BUSINESS = {
   website: 'https://www.pestcontrol99.com',
   websiteDisplay: 'pestcontrol99.com',
   email: 'accounts@pestcontrol99.com',
-  phoneDisplay: '+91 77100 32627',
-  phoneTel: '+917710032627',
-  phoneWhatsApp: '917710032627',
+  phoneDisplay: '+91 80807 48282',
+  phoneTel: '+918080748282',
+  phoneWhatsApp: '918080748282',
   address: {
     line1: 'Office No. 2, Hava Mahal Bldg, Ground Floor, Gaothan Lane, 1, Swami Vivekanand Rd',
     city: 'Andheri West',

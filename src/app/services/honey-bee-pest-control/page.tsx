@@ -10,7 +10,7 @@ export default function HoneyBeePestControlPage() {
     <div className="min-h-screen bg-white">
       <PageMeta
         title="Honey Bee & Hive Removal Mumbai | Safe, Same-Day | Pest Control 99"
-        description="Safe honey bee & hive removal in Mumbai, Navi Mumbai, Thane, Pune & Lonavala. Trained technicians remove beehives without harm. Same-day service — +91 77100 32627."
+        description="Safe honey bee & hive removal in Mumbai, Navi Mumbai, Thane, Pune & Lonavala. Trained technicians remove beehives without harm. Same-day service — +91 80807 48282."
         keywords="honey bee removal mumbai, beehive removal, honey bee pest control, bee control mumbai"
         canonical="https://www.pestcontrol99.com/services/honey-bee-pest-control/"
         ogUrl="https://www.pestcontrol99.com/services/honey-bee-pest-control/"
@@ -45,10 +45,10 @@ export default function HoneyBeePestControlPage() {
                   Get My Inspection Slot →
                 </Link>
                 <a
-                  href="https://wa.me/917710032627?text=Hello%20Pest%20Control%2099,%20can%20you%20share%20details%20and%20pricing%20for%20your%20honey%20bee%20pest%20control%20services?"
+                  href="https://wa.me/918080748282?text=Hello%20Pest%20Control%2099,%20can%20you%20share%20details%20and%20pricing%20for%20your%20honey%20bee%20pest%20control%20services?"
                   className="inline-flex items-center justify-center px-8 py-4 bg-white text-green-600 font-semibold rounded-full border-2 border-green-600 hover:bg-green-50 transition-colors duration-300"
                 >
-                  💬 WhatsApp 24 × 7: +91 77100 32627
+                  💬 WhatsApp 24 × 7: +91 80807 48282
                 </a>
               </div>
             </div>
@@ -367,10 +367,10 @@ export default function HoneyBeePestControlPage() {
                 Schedule My Inspection →
               </Link>
               <a
-                href="https://wa.me/917710032627?text=Hello%20Pest%20Control%2099,%20can%20you%20share%20details%20and%20pricing%20for%20your%20honey%20bee%20pest%20control%20services?"
+                href="https://wa.me/918080748282?text=Hello%20Pest%20Control%2099,%20can%20you%20share%20details%20and%20pricing%20for%20your%20honey%20bee%20pest%20control%20services?"
                 className="inline-flex items-center justify-center px-8 py-4 bg-transparent text-white font-semibold rounded-full border-2 border-white hover:bg-white hover:text-green-600 transition-colors duration-300"
               >
-                💬 WhatsApp 24 × 7: +91 77100 32627
+                💬 WhatsApp 24 × 7: +91 80807 48282
               </a>
             </div>
             <p className="text-sm mt-6 opacity-75">
@@ -400,7 +400,7 @@ export default function HoneyBeePestControlPage() {
                 "postalCode": "401107",
                 "addressCountry": "IN"
               },
-              "telephone": "+917710032627"
+              "telephone": "+918080748282"
             },
             "areaServed": [
               { "@type": "City", "name": "Mumbai" },

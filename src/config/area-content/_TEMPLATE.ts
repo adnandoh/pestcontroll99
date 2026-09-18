@@ -10,7 +10,7 @@ import type { AreaRichContent } from './types';
 export const THANE_AREA_CONTENT: AreaRichContent = {
   pageTitle: 'Professional Pest Control Services in Thane | Pest Control 99',
   metaDescription:
-    'Professional pest control in Thane for homes and offices. Same-day cockroach, termite, rodent and mosquito control with warranty. Call +91 77100 32627 for a free quote.',
+    'Professional pest control in Thane for homes and offices. Same-day cockroach, termite, rodent and mosquito control with warranty. Call +91 80807 48282 for a free quote.',
   heroTitle: 'Professional Pest Control Services in Thane',
   heroSubtitle: 'Same-day, warranty-backed pest control across Thane',
   heroImage: '/images/heroimage.webp',
@@ -33,7 +33,7 @@ export const THANE_AREA_CONTENT: AreaRichContent = {
     'Pest Control 99 provides reliable pest control in {Area}…',
   closingParagraph:
     'Book a free inspection today…',
-  phoneCta: '+91 77100 32627',
+  phoneCta: '+91 80807 48282',
   keywords:
     'pest control in Thane, best pest control Thane, cockroach control Thane',
   faq: [
@@ -45,7 +45,7 @@ export const THANE_AREA_CONTENT: AreaRichContent = {
     {
       id: 'same-day',
       question: 'Do you offer same-day pest control in Thane?',
-      answer: 'Yes. Call +91 77100 32627 to confirm a same-day slot.',
+      answer: 'Yes. Call +91 80807 48282 to confirm a same-day slot.',
     },
     // Add 3–5 FAQs total
   ],

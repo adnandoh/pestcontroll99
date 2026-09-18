@@ -208,7 +208,7 @@ export default function LegalPage() {
                   </p>
                   <div className="mt-3 p-4 bg-gray-50 rounded-lg">
                     <p><strong>Email:</strong> accounts@pestcontrol99.com</p>
-                    <p><strong>Phone:</strong> +91 77100 32627</p>
+                    <p><strong>Phone:</strong> +91 80807 48282</p>
                     <p><strong>Address:</strong> 503 Sai Rushabh CHS Ltd, Geeta Nagar Phase 1, Mira Road, Thane, Maharashtra 401107</p>
                   </div>
                 </div>
@@ -256,10 +256,10 @@ export default function LegalPage() {
                   Contact Us
                 </Link>
                 <a
-                  href="tel:+917710032627"
+                  href="tel:+918080748282"
                   className="inline-flex items-center justify-center px-6 py-3 bg-white text-green-600 font-semibold rounded-full border-2 border-green-600 hover:bg-green-50 transition-colors duration-300"
                 >
-                  Call Now: +91 77100 32627
+                  Call Now: +91 80807 48282
                 </a>
               </div>
             </section>

@@ -3,7 +3,7 @@ import type { AreaRichContent } from './types';
 export const ANDHERI_AREA_CONTENT: AreaRichContent = {
   pageTitle: 'Professional Pest Control Services in Andheri | Pest Control 99',
   metaDescription:
-    'Professional pest control in Andheri for homes, offices & shops. Same-day cockroach, termite & rodent treatment with warranty. Call +91 77100 32627.',
+    'Professional pest control in Andheri for homes, offices & shops. Same-day cockroach, termite & rodent treatment with warranty. Call +91 80807 48282.',
   heroTitle: 'Professional Pest Control Services in Andheri',
   heroSubtitle: 'Safe, same-day pest control for homes, offices, restaurants and shops across Andheri East & West',
   heroImage: '/images/heroimage.webp',
@@ -31,7 +31,7 @@ export const ANDHERI_AREA_CONTENT: AreaRichContent = {
     'Pest Control 99 provides reliable pest control services in Andheri for homes, offices, restaurants, and more. Our expert team delivers safe solutions for cockroach, mosquito, rodent, and termite problems, ensuring a clean and pest-free environment. We also offer 24/7 emergency services for urgent pest issues and long-term protection.',
   closingParagraph:
     'Whether you manage an apartment, office, restaurant, warehouse or retail store across Andheri East and Andheri West — including Lokhandwala, Marol, SEEPZ and Versova — Pest Control 99 delivers same-day, warranty-backed pest control using CIB&RC-approved, family-safe treatments. Book a free inspection today and keep your property protected throughout the year.',
-  phoneCta: '+91 77100 32627',
+  phoneCta: '+91 80807 48282',
   keywords:
     'best pest control services in Andheri, affordable pest control in Andheri, professional pest control services in Andheri, reliable pest control services in Andheri, 24/7 pest control services in Andheri, cockroach control services in Andheri, termite treatment in Andheri, rodent control services in Andheri, mosquito control services in Andheri, residential pest control in Andheri, commercial pest control in Andheri, pest control company in Andheri, home pest control in Andheri',
   faq: [
@@ -51,7 +51,7 @@ export const ANDHERI_AREA_CONTENT: AreaRichContent = {
       id: 'same-day',
       question: 'Do you offer same-day and emergency pest control in Andheri?',
       answer:
-        'Yes. Pest Control 99 offers same-day service and 24/7 emergency support for urgent pest problems in Andheri. Call +91 77100 32627 to confirm a slot.',
+        'Yes. Pest Control 99 offers same-day service and 24/7 emergency support for urgent pest problems in Andheri. Call +91 80807 48282 to confirm a slot.',
     },
     {
       id: 'commercial',

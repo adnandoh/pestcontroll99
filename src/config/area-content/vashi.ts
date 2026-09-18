@@ -3,7 +3,7 @@ import type { AreaRichContent } from './types';
 export const VASHI_AREA_CONTENT: AreaRichContent = {
   pageTitle: 'Reliable Pest Control Services in Vashi | Pest Control 99',
   metaDescription:
-    'Reliable pest control in Vashi for homes, offices & hotels. Cockroach, termite, rodent, mosquito & bed bug treatment with 24/7 support. Call +91 77100 32627.',
+    'Reliable pest control in Vashi for homes, offices & hotels. Cockroach, termite, rodent, mosquito & bed bug treatment with 24/7 support. Call +91 80807 48282.',
   heroTitle: 'Reliable Pest Control Services in Vashi',
   heroSubtitle:
     'Professional pest management for housing societies, corporate offices, restaurants, hotels and commercial complexes across Vashi, Navi Mumbai',
@@ -32,7 +32,7 @@ export const VASHI_AREA_CONTENT: AreaRichContent = {
     'Pest Control 99 offers reliable pest control services in Vashi for homes, offices, restaurants, hotels, and more. Our experienced team provides safe solutions for cockroach control, termite treatment, rodent management, mosquito control, bed bug removal, and comprehensive pest protection.',
   closingParagraph:
     'We also offer 24/7 emergency pest control services for urgent issues in Vashi. Book a free inspection today for same-day, warranty-backed pest control across Vashi and Navi Mumbai.',
-  phoneCta: '+91 77100 32627',
+  phoneCta: '+91 80807 48282',
   keywords:
     'best pest control services in Vashi, affordable pest control in Vashi, professional pest control services in Vashi, 24/7 pest control services in Vashi, cockroach control services in Vashi, termite treatment in Vashi, rodent control services in Vashi, mosquito control services in Vashi, bed bug treatment in Vashi, residential pest control in Vashi',
   faq: [
@@ -52,7 +52,7 @@ export const VASHI_AREA_CONTENT: AreaRichContent = {
       id: '24-7',
       question: 'Do you offer 24/7 emergency pest control in Vashi?',
       answer:
-        'Yes. Pest Control 99 offers 24/7 emergency pest control services for urgent issues in Vashi. Call +91 77100 32627.',
+        'Yes. Pest Control 99 offers 24/7 emergency pest control services for urgent issues in Vashi. Call +91 80807 48282.',
     },
     {
       id: 'hotels',

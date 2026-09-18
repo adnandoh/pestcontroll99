@@ -23,7 +23,7 @@ export default function RodentPestControlPage() {
         "postalCode": "401107",
         "addressCountry": "IN"
       },
-      "telephone": "+917710032627"
+      "telephone": "+918080748282"
     },
     "areaServed": [
       { "@type": "City", "name": "Mumbai" },
@@ -45,7 +45,7 @@ export default function RodentPestControlPage() {
       />
       <PageMeta
         title="Rodent & Rat Control in Mumbai | Removal & Entry Sealing"
-        description="Effective rat & rodent control in Mumbai, Navi Mumbai, Thane, Pune & Lonavala. Trapping, baiting & entry-point sealing with 90-day warranty. Call +91 77100 32627."
+        description="Effective rat & rodent control in Mumbai, Navi Mumbai, Thane, Pune & Lonavala. Trapping, baiting & entry-point sealing with 90-day warranty. Call +91 80807 48282."
         keywords="rodent control mumbai, rat control mumbai, rat removal, rodent pest control"
         canonical="https://www.pestcontrol99.com/services/rodent-pest-control/"
         ogUrl="https://www.pestcontrol99.com/services/rodent-pest-control/"
@@ -80,10 +80,10 @@ export default function RodentPestControlPage() {
                   Get My Inspection Slot →
                 </Link>
                 <a
-                  href="https://wa.me/917710032627?text=Hello%20Pest%20Control%2099,%20can%20you%20share%20details%20and%20pricing%20for%20your%20rodent%20pest%20control%20services?"
+                  href="https://wa.me/918080748282?text=Hello%20Pest%20Control%2099,%20can%20you%20share%20details%20and%20pricing%20for%20your%20rodent%20pest%20control%20services?"
                   className="inline-flex items-center justify-center px-8 py-4 bg-white text-green-600 font-semibold rounded-full border-2 border-green-600 hover:bg-green-50 transition-colors duration-300"
                 >
-                  💬 WhatsApp 24 × 7: +91 77100 32627
+                  💬 WhatsApp 24 × 7: +91 80807 48282
                 </a>
               </div>
               
@@ -413,10 +413,10 @@ export default function RodentPestControlPage() {
                 Schedule My Inspection →
               </Link>
               <a
-                href="https://wa.me/917710032627?text=Hello%20Pest%20Control%2099,%20can%20you%20share%20details%20and%20pricing%20for%20your%20rodent%20pest%20control%20services?"
+                href="https://wa.me/918080748282?text=Hello%20Pest%20Control%2099,%20can%20you%20share%20details%20and%20pricing%20for%20your%20rodent%20pest%20control%20services?"
                 className="inline-flex items-center justify-center px-8 py-4 bg-transparent text-white font-semibold rounded-full border-2 border-white hover:bg-white hover:text-green-600 transition-colors duration-300"
               >
-                💬 WhatsApp 24 × 7: +91 77100 32627
+                💬 WhatsApp 24 × 7: +91 80807 48282
               </a>
             </div>
             <p className="text-sm mt-6 opacity-75">

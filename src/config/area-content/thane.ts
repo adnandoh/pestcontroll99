@@ -3,7 +3,7 @@ import type { AreaRichContent } from './types';
 export const THANE_AREA_CONTENT: AreaRichContent = {
   pageTitle: 'Professional Pest Control Services in Thane | Pest Control 99',
   metaDescription:
-    'Professional pest control in Thane for homes, offices & societies. Cockroach, termite, rodent & mosquito treatment with 24/7 support. Call +91 77100 32627.',
+    'Professional pest control in Thane for homes, offices & societies. Cockroach, termite, rodent & mosquito treatment with 24/7 support. Call +91 80807 48282.',
   heroTitle: 'Professional Pest Control Services in Thane',
   heroSubtitle:
     '24/7 pest control for high-rise apartments, offices, restaurants, warehouses and housing societies across Thane',
@@ -32,7 +32,7 @@ export const THANE_AREA_CONTENT: AreaRichContent = {
     'We offer pest control services in Thane for residential properties, offices, restaurants, hotels, hospitals, warehouses, retail shops, and commercial establishments. Our trained pest control technicians use safe, effective treatment methods to deliver long-lasting results while maintaining hygiene and safety standards.',
   closingParagraph:
     'We offer 24/7 pest control services in Thane with customized treatment plans tailored to each infestation and property. Whether you require termite, cockroach, mosquito, rodent control, or comprehensive pest management, Pest Control 99 is committed to delivering professional, year-round pest control services in Thane and keeping your property safe, hygienic, and pest-free.',
-  phoneCta: '+91 77100 32627',
+  phoneCta: '+91 80807 48282',
   keywords:
     'best pest control services in Thane, affordable pest control in Thane, professional pest control in Thane, cockroach control services in Thane, termite treatment in Thane, rodent control services in Thane, mosquito control in Thane, residential pest control in Thane, commercial pest control in Thane, 24/7 pest control services in Thane, anti-termite treatment in Thane, bed bug control services in Thane, reliable pest control in Thane',
   faq: [
@@ -52,7 +52,7 @@ export const THANE_AREA_CONTENT: AreaRichContent = {
       id: '24-7',
       question: 'Do you offer 24/7 pest control in Thane?',
       answer:
-        'Yes. Pest Control 99 offers 24/7 pest control services in Thane with customized treatment plans. Call +91 77100 32627 for urgent support.',
+        'Yes. Pest Control 99 offers 24/7 pest control services in Thane with customized treatment plans. Call +91 80807 48282 for urgent support.',
     },
     {
       id: 'commercial',
