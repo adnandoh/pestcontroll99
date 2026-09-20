@@ -205,6 +205,32 @@ describe('matchRateForPest home guards', () => {
     assert.equal(quote.pricingRateId, 5);
   });
 
+  it('cockroach quote service_type uses Cockroach Standard (not retired Control labels)', () => {
+    const quote = calculateCatalogQuotePrice({
+      rates: fixtureRates,
+      pestTypes: ['cockroach-ants'],
+      premiseType: 'residential',
+      premiseSize: '1bhk',
+      serviceType: 'one-time',
+      treatmentQuality: 'standard',
+    });
+    assert.equal(quote.serviceTypeLabel, 'Cockroach Standard');
+    assert.equal(quote.pricingRateId, 5);
+  });
+
+  it('cockroach premium quote service_type uses Cockroach Premium', () => {
+    const quote = calculateCatalogQuotePrice({
+      rates: fixtureRates,
+      pestTypes: ['cockroach-ants'],
+      premiseType: 'residential',
+      premiseSize: '1bhk',
+      serviceType: 'amc',
+      treatmentQuality: 'premium',
+    });
+    assert.equal(quote.serviceTypeLabel, 'Cockroach Premium');
+    assert.equal(quote.pricingRateId, 7);
+  });
+
   it('cockroach premium AMC 1 BHK shows excl-GST ₹3300 (not ₹3894)', () => {
     const matched = matchRateForPest(fixtureRates, 'cockroach-ants', {
       isAmc: true,

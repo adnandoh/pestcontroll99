@@ -74,9 +74,14 @@ export const PEST_PREFERRED_PACKAGES: Record<
   },
 };
 
-/** Website pest slug → service_type label sent on booking create */
+/**
+ * Website pest slug → fallback service_type when no Pricing Master row matched.
+ * Prefer the matched rate's `service_package` (see serviceTypeLabelForQuote) so
+ * CRM Edit Job Card gets "Cockroach Standard" / "Cockroach Premium" — never the
+ * retired marketing pair "Cockroach Control, Ant Control".
+ */
 export const PEST_SERVICE_LABELS: Record<string, string> = {
-  'cockroach-ants': 'Cockroach Control, Ant Control',
+  'cockroach-ants': 'Cockroach Standard',
   mosquito: 'Mosquito Control',
   termite: 'Termite Control',
   rodent: 'Rodent / Rat Control',
@@ -87,6 +92,22 @@ export const PEST_SERVICE_LABELS: Record<string, string> = {
   'hotel-commercial': 'General Pest Control',
   other: 'General Pest Control',
 };
+
+/** Build JobCard.service_type from matched catalog package(s), not marketing copy. */
+export function serviceTypeLabelForQuote(
+  pestTypes: string[],
+  matchedRate: CatalogRate | null,
+  treatmentQuality: 'standard' | 'premium' = 'standard',
+): string {
+  const pkg = (matchedRate?.service_package || '').trim();
+  if (pkg) return pkg;
+
+  if (pestTypes.length === 1 && pestTypes[0] === 'cockroach-ants') {
+    return treatmentQuality === 'premium' ? 'Cockroach Premium' : 'Cockroach Standard';
+  }
+
+  return pestTypes.map((p) => PEST_SERVICE_LABELS[p] || p).join(', ');
+}
 
 export const PREMISE_SIZE_TO_AREA: Record<string, string> = {
   '1rk': '1 RK',
@@ -352,6 +373,9 @@ export function calculateCatalogQuotePrice(input: {
   const { rates, pestTypes, premiseType, premiseSize, serviceType, treatmentQuality } =
     input;
 
+  const qualityHint: 'standard' | 'premium' =
+    treatmentQuality === 'premium' ? 'premium' : 'standard';
+
   const pending = (
     packageTier: 'standard' | 'premium' = 'standard',
   ): QuotePriceResult => ({
@@ -361,7 +385,7 @@ export function calculateCatalogQuotePrice(input: {
     pricingRateId: null,
     pricePending: true,
     matchedRate: null,
-    serviceTypeLabel: pestTypes.map((p) => PEST_SERVICE_LABELS[p] || p).join(', '),
+    serviceTypeLabel: serviceTypeLabelForQuote(pestTypes, null, qualityHint),
     packageTier,
   });
 
@@ -423,7 +447,7 @@ export function calculateCatalogQuotePrice(input: {
     pricingRateId: pricePending ? null : firstRate!.id,
     pricePending,
     matchedRate: firstRate,
-    serviceTypeLabel: pestTypes.map((p) => PEST_SERVICE_LABELS[p] || p).join(', '),
+    serviceTypeLabel: serviceTypeLabelForQuote(pestTypes, firstRate, quality),
     packageTier: pricePending ? quality : packageTier,
   };
 }
