@@ -27,6 +27,28 @@ export function getBookingSessionId(): string {
   }
 }
 
+/**
+ * Start a fresh booking↔inquiry session.
+ *
+ * sessionStorage survives refresh, so without rotating, re-entering a mobile
+ * only UPDATES the old Website Lead (HTTP 200) and skips Telegram. Call this on
+ * form mount and when the user clears/replaces the phone so each capture creates
+ * + notifies again.
+ */
+export function rotateBookingSession(): string {
+  if (typeof window === 'undefined') {
+    return createUuid();
+  }
+  try {
+    const next = createUuid();
+    sessionStorage.setItem(SESSION_KEY, next);
+    sessionStorage.removeItem(INQUIRY_ID_KEY);
+    return next;
+  } catch {
+    return createUuid();
+  }
+}
+
 export function getStoredInquiryId(): number | null {
   if (typeof window === 'undefined') return null;
   try {

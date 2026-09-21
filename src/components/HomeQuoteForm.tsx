@@ -15,7 +15,7 @@ import {
 } from '@/services/formSubmit';
 import { personNameValidationError, sanitizePersonNameInput } from '@/utils/personName';
 import { customerBookingApi } from '@/services/customerBookingApi';
-import { getBookingSessionId } from '@/utils/bookingSession';
+import { rotateBookingSession } from '@/utils/bookingSession';
 import {
   calculateCatalogQuotePrice,
   type CatalogRate,
@@ -211,9 +211,13 @@ export default function HomeQuoteForm({
   const formDataRef = useRef(formData);
   formDataRef.current = formData;
 
-  // Ensure booking session id exists for this browser tab.
+  // Fresh session per form mount so refresh / reopen creates + Telegram-notifies
+  // again instead of silently updating the previous session lead (HTTP 200).
   useEffect(() => {
-    getBookingSessionId();
+    rotateBookingSession();
+    lastInquiryFingerprintRef.current = '';
+    pendingInquiryDataRef.current = null;
+    inquiryInFlightRef.current = false;
   }, []);
 
   const queueSilentInquiry = useCallback(
@@ -552,6 +556,26 @@ export default function HomeQuoteForm({
     }
     if (field === 'premiseType' && value === 'commercial') {
       setInfoModal(null);
+    }
+
+    // Phone clear / replace → new session so staff get a fresh Website Lead + Telegram.
+    if (field === 'phone') {
+      const nextDigits = String(value || '').replace(/\D/g, '').slice(0, 10);
+      const prevDigits = String(formDataRef.current.phone || '').replace(/\D/g, '');
+      const clearedFully = isValidBookingMobile(prevDigits) && nextDigits.length === 0;
+      const replacedValid =
+        isValidBookingMobile(prevDigits) &&
+        isValidBookingMobile(nextDigits) &&
+        prevDigits !== nextDigits;
+      if (clearedFully || replacedValid) {
+        rotateBookingSession();
+        lastInquiryFingerprintRef.current = '';
+        pendingInquiryDataRef.current = null;
+        inquiryInFlightRef.current = false;
+      } else if (!isValidBookingMobile(nextDigits)) {
+        // Partial edit (e.g. fix last digit) — allow upsert to re-fire when valid again.
+        lastInquiryFingerprintRef.current = '';
+      }
     }
 
     setFormData((prev) => {
