@@ -103,37 +103,58 @@ class CRMApiService {
     inquiryData: InquiryData,
     path = '/api/inquiries/',
   ): Promise<ApiResponse<InquiryResponse>> {
-    const response = await fetch(this.apiPath(baseUrl, path), {
-      method: 'POST',
-      headers: this.getAuthHeaders(),
-      body: JSON.stringify(inquiryData),
-    });
+    const controller =
+      typeof AbortController !== 'undefined' ? new AbortController() : null;
+    const timer =
+      controller && typeof window !== 'undefined'
+        ? window.setTimeout(() => controller.abort(), 12000)
+        : null;
+    try {
+      const response = await fetch(this.apiPath(baseUrl, path), {
+        method: 'POST',
+        headers: this.getAuthHeaders(),
+        body: JSON.stringify(inquiryData),
+        signal: controller?.signal,
+      });
 
-    let result: unknown = null;
-    const contentType = response.headers.get('content-type') || '';
-    if (contentType.includes('application/json')) {
-      result = await response.json();
-    } else {
-      const text = await response.text();
-      try {
-        result = JSON.parse(text);
-      } catch {
-        result = { message: text };
+      let result: unknown = null;
+      const contentType = response.headers.get('content-type') || '';
+      if (contentType.includes('application/json')) {
+        result = await response.json();
+      } else {
+        const text = await response.text();
+        try {
+          result = JSON.parse(text);
+        } catch {
+          result = { message: text };
+        }
       }
-    }
 
-    if (response.ok) {
+      if (response.ok) {
+        return {
+          success: true,
+          data: result as InquiryResponse,
+        };
+      }
+
       return {
-        success: true,
-        data: result as InquiryResponse,
+        success: false,
+        error: this.formatApiError(result, response.status),
+        errors: (result as { errors?: Record<string, string[]> }).errors,
       };
+    } catch (error) {
+      const aborted =
+        (error instanceof DOMException && error.name === 'AbortError') ||
+        (error instanceof Error && /aborted|timeout/i.test(error.message));
+      return {
+        success: false,
+        error: aborted
+          ? 'Inquiry request timed out. Please try again.'
+          : 'Network error occurred.',
+      };
+    } finally {
+      if (timer) window.clearTimeout(timer);
     }
-
-    return {
-      success: false,
-      error: this.formatApiError(result, response.status),
-      errors: (result as { errors?: Record<string, string[]> }).errors,
-    };
   }
 
   async submitInquiry(inquiryData: InquiryData): Promise<ApiResponse<InquiryResponse>> {

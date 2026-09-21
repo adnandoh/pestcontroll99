@@ -206,6 +206,9 @@ export default function HomeQuoteForm({
   const lastInquiryFingerprintRef = useRef('');
   /** Latest form snapshot to retry after an in-flight upsert (avoids dropping name). */
   const pendingInquiryDataRef = useRef<HomeFormData | null>(null);
+  /** Always-current form for blur handlers (avoids stale 9-digit closure on 10th digit). */
+  const formDataRef = useRef(formData);
+  formDataRef.current = formData;
 
   // Ensure booking session id exists for this browser tab.
   useEffect(() => {
@@ -216,6 +219,8 @@ export default function HomeQuoteForm({
     (data: HomeFormData) => {
       if (!isValidBookingMobile(data.phone)) return;
 
+      // Omit estimatedPrice — catalog load updates price after phone entry and used
+      // to reset the debounce / re-fingerprint without changing the lead payload.
       const fingerprint = [
         data.phone,
         data.name,
@@ -227,7 +232,6 @@ export default function HomeQuoteForm({
         (data.pestTypes || []).join(','),
         data.preferredDate,
         data.preferredTime,
-        String(data.estimatedPrice || 0),
       ].join('|');
 
       if (fingerprint === lastInquiryFingerprintRef.current) return;
@@ -264,14 +268,23 @@ export default function HomeQuoteForm({
     [leadSource, defaultCity, defaultState],
   );
 
-  // Debounced silent CRM capture once mobile is a valid 10-digit number.
-  // Name is optional — backend creates "Website Lead" and notifies staff ASAP;
-  // later name edits update the same session lead without duplicate alerts.
+  // Fast path: as soon as mobile becomes a valid 10-digit number, capture the lead
+  // (~300ms) so CRM + Telegram fire without waiting for blur or other field edits.
+  useEffect(() => {
+    if (!isValidBookingMobile(formData.phone)) return;
+    const timer = window.setTimeout(() => {
+      queueSilentInquiry(formDataRef.current);
+    }, 300);
+    return () => window.clearTimeout(timer);
+  }, [formData.phone, queueSilentInquiry]);
+
+  // Debounced silent CRM capture for later edits (name/address/options) on the
+  // same session lead — no duplicate Telegram (backend create-only notify).
   useEffect(() => {
     if (!isValidBookingMobile(formData.phone)) return;
     const timer = window.setTimeout(() => {
       queueSilentInquiry(formData);
-    }, 1000);
+    }, 600);
     return () => window.clearTimeout(timer);
   }, [formData, queueSilentInquiry]);
 
@@ -958,11 +971,12 @@ export default function HomeQuoteForm({
                   type="text"
                   value={formData.name}
                   onChange={(e) => handleChange('name', e.target.value)}
-                  onBlur={() => {
-                    if (isValidBookingMobile(formData.phone) && formData.name.trim()) {
-                      queueSilentInquiry(formData);
-                    }
-                  }}
+                    onBlur={() => {
+                      const latest = formDataRef.current;
+                      if (isValidBookingMobile(latest.phone) && latest.name.trim()) {
+                        queueSilentInquiry(latest);
+                      }
+                    }}
                   placeholder="Full name"
                   className={`booking-input${errors.name ? ' booking-input-error' : ''}`}
                   autoComplete="name"
@@ -993,8 +1007,9 @@ export default function HomeQuoteForm({
                       handleChange('phone', value);
                     }}
                     onBlur={() => {
-                      if (isValidBookingMobile(formData.phone)) {
-                        queueSilentInquiry(formData);
+                      const latest = formDataRef.current;
+                      if (isValidBookingMobile(latest.phone)) {
+                        queueSilentInquiry(latest);
                       }
                     }}
                     placeholder="10 digits"
