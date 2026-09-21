@@ -214,9 +214,12 @@ class CRMApiService {
 
   validateInquiryData(data: Partial<InquiryData>): { isValid: boolean; errors: Record<string, string> } {
     const errors: Record<string, string> = {};
+    const name = (data.name || '').trim();
 
-    if (!data.name || data.name.trim().length < 2) {
+    if (!name || name.length < 2) {
       errors.name = 'Name must be at least 2 characters long';
+    } else if (/\d/.test(name) || !/^[\p{L}\s]+$/u.test(name)) {
+      errors.name = 'Name can only contain letters and spaces';
     }
 
     if (!data.mobile || !/^\d{10}$/.test(data.mobile.replace(/\D/g, ''))) {

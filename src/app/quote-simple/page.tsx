@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import MultiSelectPest from '@/components/MultiSelectPest';
 import { submitHomeInquiryForm } from '@/services/formSubmit';
+import { personNameValidationError, sanitizePersonNameInput } from '@/utils/personName';
 import PageMeta from '@/components/PageMeta';
 
 export default function SimpleQuotePage() {
@@ -24,11 +25,8 @@ export default function SimpleQuotePage() {
   const validateForm = (): boolean => {
     const newErrors: Record<string, string> = {};
 
-    if (!formData.name.trim()) {
-      newErrors.name = 'Name is required';
-    } else if (formData.name.trim().length < 2) {
-      newErrors.name = 'Name must be at least 2 characters';
-    }
+    const nameErr = personNameValidationError(formData.name, { required: true });
+    if (nameErr) newErrors.name = nameErr;
 
     if (!formData.phone.trim()) {
       newErrors.phone = 'Phone number is required';
@@ -96,7 +94,7 @@ export default function SimpleQuotePage() {
     const { name, value } = e.target;
     setFormData((prev) => ({
       ...prev,
-      [name]: value,
+      [name]: name === 'name' ? sanitizePersonNameInput(value) : value,
     }));
 
     if (errors[name]) {

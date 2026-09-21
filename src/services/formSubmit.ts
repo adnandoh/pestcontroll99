@@ -18,6 +18,7 @@ import {
   readUtmParams,
   setStoredInquiryId,
 } from '@/utils/bookingSession';
+import { personNameValidationError, sanitizePersonNameInput } from '@/utils/personName';
 
 export function isValidBookingMobile(phone: string | undefined | null): boolean {
   return /^\d{10}$/.test(String(phone || '').replace(/\D/g, ''));
@@ -44,9 +45,9 @@ export async function silentUpsertWebsiteInquiry(
     const pageUrl =
       typeof window !== 'undefined' ? window.location.href.split('#')[0] : undefined;
 
-    // Send the real name when known; omit placeholder so the backend can keep
-    // an earlier real name and upgrade "Website Lead" once the customer types it.
-    const customerName = String(formData.name || '').trim();
+    // Real name when known (letters only); empty → backend "Website Lead" placeholder.
+    // Never block silent mobile capture on name validation.
+    const customerName = sanitizePersonNameInput(String(formData.name || '')).trim();
 
     const mapped = crmApi.mapFormDataToInquiry(
       {
@@ -87,11 +88,12 @@ export async function submitContactForm(formData: {
   service?: string;
   message: string;
 }) {
-  const name = formData.name?.trim() || '';
+  const name = sanitizePersonNameInput(formData.name?.trim() || '').trim();
   const message = formData.message?.trim() || '';
 
-  if (name.length < 2) {
-    return { ok: false, error: 'Name must be at least 2 characters long' };
+  const nameErr = personNameValidationError(name, { required: true });
+  if (nameErr) {
+    return { ok: false, error: nameErr };
   }
 
   const cleanPhone = formData.phone.replace(/\D/g, '');
@@ -153,9 +155,10 @@ export async function submitHomeInquiryForm(
     return { ok: false, error: 'Missing required fields' };
   }
 
-  const name = String(formData.name || '').trim();
-  if (name.length < 2) {
-    return { ok: false, error: 'Name must be at least 2 characters long' };
+  const name = sanitizePersonNameInput(String(formData.name || '')).trim();
+  const nameErr = personNameValidationError(name, { required: true });
+  if (nameErr) {
+    return { ok: false, error: nameErr };
   }
 
   const cleanPhone = String(formData.phone).replace(/\D/g, '');
@@ -214,9 +217,10 @@ export type HomeBookingOtpSendResult =
 export async function sendHomeBookingOtp(
   formData: Record<string, unknown>,
 ): Promise<HomeBookingOtpSendResult> {
-  const name = String(formData.name || '').trim();
-  if (name.length < 2) {
-    return { ok: false, error: 'Name must be at least 2 characters long' };
+  const name = sanitizePersonNameInput(String(formData.name || '')).trim();
+  const nameErr = personNameValidationError(name, { required: true });
+  if (nameErr) {
+    return { ok: false, error: nameErr };
   }
 
   const cleanPhone = String(formData.phone || '').replace(/\D/g, '');
@@ -309,9 +313,10 @@ export async function submitHomeBookingForm(
     };
   }
 
-  const name = String(formData.name || '').trim();
-  if (name.length < 2) {
-    return { ok: false, error: 'Name must be at least 2 characters long' };
+  const name = sanitizePersonNameInput(String(formData.name || '')).trim();
+  const nameErr = personNameValidationError(name, { required: true });
+  if (nameErr) {
+    return { ok: false, error: nameErr };
   }
 
   const cleanPhone = String(phoneRaw).replace(/\D/g, '');
@@ -457,8 +462,17 @@ export async function submitHomeBookingForm(
 }
 
 export async function submitQuoteForm(formData: Record<string, unknown>) {
+  const cleanedName = sanitizePersonNameInput(String(formData.name || '')).trim();
+  const nameErr = personNameValidationError(cleanedName, { required: true });
+  if (nameErr) {
+    return { ok: false, error: nameErr };
+  }
+
   const inquiryData = crmApi.mapFormDataToInquiry(
-    formData as Parameters<typeof crmApi.mapFormDataToInquiry>[0],
+    {
+      ...(formData as Parameters<typeof crmApi.mapFormDataToInquiry>[0]),
+      name: cleanedName,
+    },
     'quote',
   );
   const validation = crmApi.validateInquiryData(inquiryData);

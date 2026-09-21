@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Breadcrumb from '@/components/Breadcrumb';
 import { submitContactForm } from '@/services/formSubmit';
+import { sanitizePersonNameInput, personNameValidationError } from '@/utils/personName';
 import BusinessDetailsCard from '@/components/BusinessDetailsCard';
 import { BUSINESS, DEFAULT_WHATSAPP_MESSAGE, whatsAppUrl } from '@/config/business';
 import { CONTACT_SERVICE_OPTIONS } from '@/config/serviceOptions';
@@ -21,9 +22,10 @@ export default function ContactForm() {
   const [submitError, setSubmitError] = useState('');
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => {
+    const { name, value } = e.target;
     setFormData({
       ...formData,
-      [e.target.name]: e.target.value
+      [name]: name === 'name' ? sanitizePersonNameInput(value) : value,
     });
   };
 
@@ -33,8 +35,19 @@ export default function ContactForm() {
     setSubmitStatus('idle');
     setSubmitError('');
 
+    const nameErr = personNameValidationError(formData.name, { required: true });
+    if (nameErr) {
+      setSubmitStatus('error');
+      setSubmitError(nameErr);
+      setIsSubmitting(false);
+      return;
+    }
+
     try {
-      const result = await submitContactForm(formData);
+      const result = await submitContactForm({
+        ...formData,
+        name: sanitizePersonNameInput(formData.name).trim(),
+      });
 
       if (result.ok) {
         setFormData({

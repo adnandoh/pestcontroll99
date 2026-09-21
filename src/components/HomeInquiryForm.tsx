@@ -2,6 +2,7 @@ import { useState, useEffect, useRef } from 'react';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 import { HomeFormData, decodeFormDataFromURL, getFormData, clearFormData } from '@/utils/formStorage';
 import { submitHomeInquiryForm } from '@/services/formSubmit';
+import { personNameValidationError, sanitizePersonNameInput } from '@/utils/personName';
 import MultiSelectPest from './MultiSelectPest';
 import { AddressInput } from './GoogleMaps';
 import { CommercialIcon, ResidentialIcon } from './icons/PremiseTypeIcons';
@@ -206,8 +207,9 @@ export default function HomeInquiryForm({
       newErrors.phone = 'Please enter a valid 10-digit phone number';
     }
 
-    if (!formData.name || !formData.name.trim()) {
-      newErrors.name = 'Name is required';
+    {
+      const nameErr = personNameValidationError(formData.name, { required: true });
+      if (nameErr) newErrors.name = nameErr;
     }
 
     if (
@@ -740,10 +742,12 @@ export default function HomeInquiryForm({
                       id="quote-name"
                       type="text"
                       value={formData.name}
-                      onChange={(e) => handleChange('name', e.target.value)}
+                      onChange={(e) => handleChange('name', sanitizePersonNameInput(e.target.value))}
                       placeholder="Full name"
                       className={`booking-input${errors.name ? ' booking-input-error' : ''}`}
                       autoComplete="name"
+                      inputMode="text"
+                      autoCapitalize="words"
                     />
                     {errors.name && (
                       <p className="mt-1 text-[10px] font-semibold text-red-600">{errors.name}</p>
@@ -791,9 +795,11 @@ export default function HomeInquiryForm({
                     <input
                       type="text"
                       value={formData.name}
-                      onChange={(e) => handleChange('name', e.target.value)}
+                      onChange={(e) => handleChange('name', sanitizePersonNameInput(e.target.value))}
                       placeholder="Enter your full name"
                       className={`quote-field w-full font-medium px-4 py-3 ${errors.name ? 'quote-field-error' : ''}`}
+                      inputMode="text"
+                      autoCapitalize="words"
                     />
                     {errors.name && (
                       <p className="mt-1 text-xs text-red-600 font-bold">{errors.name}</p>

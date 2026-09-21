@@ -13,6 +13,7 @@ import {
   silentUpsertWebsiteInquiry,
   isValidBookingMobile,
 } from '@/services/formSubmit';
+import { personNameValidationError, sanitizePersonNameInput } from '@/utils/personName';
 import { customerBookingApi } from '@/services/customerBookingApi';
 import { getBookingSessionId } from '@/utils/bookingSession';
 import {
@@ -351,8 +352,9 @@ export default function HomeQuoteForm({
       newErrors.phone = 'Please enter a valid 10-digit phone number';
     }
 
-    if (!formData.name || !formData.name.trim()) {
-      newErrors.name = 'Name is required';
+    {
+      const nameErr = personNameValidationError(formData.name, { required: true });
+      if (nameErr) newErrors.name = nameErr;
     }
 
     const address = (formData.streetAddress || formData.address || '').trim();
@@ -970,8 +972,18 @@ export default function HomeQuoteForm({
                   id="booking-name"
                   type="text"
                   value={formData.name}
-                  onChange={(e) => handleChange('name', e.target.value)}
-                    onBlur={() => {
+                  onChange={(e) => {
+                    const cleaned = sanitizePersonNameInput(e.target.value);
+                    handleChange('name', cleaned);
+                    if (errors.name) {
+                      setErrors((prev) => {
+                        const next = { ...prev };
+                        delete next.name;
+                        return next;
+                      });
+                    }
+                  }}
+                  onBlur={() => {
                       const latest = formDataRef.current;
                       if (isValidBookingMobile(latest.phone) && latest.name.trim()) {
                         queueSilentInquiry(latest);
@@ -980,6 +992,8 @@ export default function HomeQuoteForm({
                   placeholder="Full name"
                   className={`booking-input${errors.name ? ' booking-input-error' : ''}`}
                   autoComplete="name"
+                  inputMode="text"
+                  autoCapitalize="words"
                 />
                 {errors.name && (
                   <p className="mt-1 text-[10px] font-semibold text-red-600">{errors.name}</p>

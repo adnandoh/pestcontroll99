@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { submitQuoteForm } from '@/services/formSubmit';
+import { sanitizePersonNameInput, personNameValidationError } from '@/utils/personName';
 import {
   ONE_TIME_ONLY_QUOTE_SERVICES,
   QUOTE_FORM_SERVICE_OPTIONS,
@@ -31,7 +32,7 @@ export default function QuoteForm({ service, className = '' }: QuoteFormProps) {
     setFormData(prev => {
       const nextData = {
         ...prev,
-        [name]: value
+        [name]: name === 'name' ? sanitizePersonNameInput(value) : value
       };
 
       // Check if the selected service restricts the service type to One-Time
@@ -49,9 +50,17 @@ export default function QuoteForm({ service, className = '' }: QuoteFormProps) {
     setIsSubmitting(true);
     setSubmitError('');
 
+    const nameErr = personNameValidationError(formData.name, { required: true });
+    if (nameErr) {
+      setSubmitError(nameErr);
+      setIsSubmitting(false);
+      return;
+    }
+
     try {
       const result = await submitQuoteForm({
         ...formData,
+        name: sanitizePersonNameInput(formData.name).trim(),
         phone: formData.phone.replace(/\D/g, '').slice(0, 10),
       });
 
