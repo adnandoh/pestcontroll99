@@ -46,7 +46,7 @@ export const MONSOON_PEST_CONTROL_PUNE_CONTENT: AreaRichContent = {
     'Whether it’s a 1BHK in Pimpri, a restaurant in Viman Nagar, or an office in Magarpatta, we provide same-day service, 24/7 emergency support, and eco-friendly solutions with minimal disruption to your daily routine.',
   closingParagraph:
     'Protect your family, employees and guests this monsoon. Don’t wait for the infestation to get worse — early action saves money and keeps your space hygienic and safe. Pest Control 99 is Pune’s trusted pest control expert. We serve Pune, Pimpri-Chinchwad, Hinjewadi, Baner, Wakad, Kothrud, Hadapsar, Kharadi, Viman Nagar, Koregaon Park, Aundh and all nearby areas.',
-  phoneCta: '+91 80807 48282',
+  phoneCta: '+91 77100 32627',
   keywords:
     'pest control services in Pune, monsoon pest control in Pune, best pest control service in Pune, cockroach control in Pune, mosquito control and fogging in Pune, termite treatment in Pune, bed bug treatment in Pune, residential and commercial pest control Pune, emergency pest control Pune',
   faq: [

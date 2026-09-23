@@ -3,7 +3,7 @@ import type { AreaRichContent } from './types';
 export const BANDRA_AREA_CONTENT: AreaRichContent = {
   pageTitle: 'Pest Control Services in Bandra | Pest Control 99',
   metaDescription:
-    'Professional pest control in Bandra for homes, restaurants & offices. Herbal, pet-safe cockroach, termite, rodent & mosquito treatment. Call +91 80807 48282.',
+    'Professional pest control in Bandra for homes, restaurants & offices. Herbal, pet-safe cockroach, termite, rodent & mosquito treatment. Call +91 77100 32627.',
   heroTitle: 'Pest Control Services in Bandra',
   heroSubtitle:
     'Reliable, affordable pest management for luxury apartments, restaurants, cafes, offices and commercial establishments across Bandra',
@@ -32,7 +32,7 @@ export const BANDRA_AREA_CONTENT: AreaRichContent = {
     'Pest Control 99 provides reliable and affordable pest control services in Bandra for homes, offices, and restaurants. Our expert team tackles cockroaches, mosquitoes, rodents, termites, and bed bugs, offering safe herbal options for kids and pets.',
   closingParagraph:
     'Choose Pest Control 99 for effective pest management in Bandra, with 24/7 emergency service available. Book a free inspection today for same-day, warranty-backed pest control across Bandra East and Bandra West.',
-  phoneCta: '+91 80807 48282',
+  phoneCta: '+91 77100 32627',
   keywords:
     'best pest control service in Bandra, affordable pest control service in Bandra, reliable pest control service in Bandra, professional pest control in Bandra, pest control company in Bandra, residential pest control in Bandra, commercial pest control in Bandra, herbal pest control in Bandra, safe pest control service in Bandra, cockroach control service in Bandra, termite control service in Bandra, rodent control service in Bandra, mosquito control service in Bandra, bed bug control in Bandra, emergency pest control in Bandra, eco-friendly pest control in Bandra',
   faq: [
@@ -52,7 +52,7 @@ export const BANDRA_AREA_CONTENT: AreaRichContent = {
       id: 'emergency',
       question: 'Do you offer emergency pest control in Bandra?',
       answer:
-        'Yes. Pest Control 99 offers 24/7 emergency pest control services in Bandra. Call +91 80807 48282 for urgent support.',
+        'Yes. Pest Control 99 offers 24/7 emergency pest control services in Bandra. Call +91 77100 32627 for urgent support.',
     },
     {
       id: 'services',

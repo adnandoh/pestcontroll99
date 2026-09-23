@@ -3,7 +3,7 @@ import type { AreaRichContent } from './types';
 export const DADAR_AREA_CONTENT: AreaRichContent = {
   pageTitle: 'Best Pest Control Service in Dadar | Pest Control 99',
   metaDescription:
-    'Best pest control in Dadar for homes, societies & offices. Cockroach, termite, bed bug & rodent treatment with herbal, pet-safe chemicals. Call +91 80807 48282.',
+    'Best pest control in Dadar for homes, societies & offices. Cockroach, termite, bed bug & rodent treatment with herbal, pet-safe chemicals. Call +91 77100 32627.',
   heroTitle: 'Best Pest Control Service in Dadar',
   heroSubtitle:
     'Hygienic, effective and affordable pest management for apartments, offices, hotels, restaurants and healthcare facilities in Dadar',
@@ -33,7 +33,7 @@ export const DADAR_AREA_CONTENT: AreaRichContent = {
     'Choose Pest Control 99 for fast, professional, and affordable pest control solutions in Dadar. Our trained experts use government-approved herbal chemicals and advanced methods to deliver long-lasting protection for homes and commercial properties.',
   closingParagraph:
     'Contact us today and enjoy a clean, healthy, and pest-free environment in Dadar. Whether you manage a residential society, office, hotel, restaurant or healthcare facility, Pest Control 99 delivers warranty-backed, same-day pest control across Dadar East and Dadar West.',
-  phoneCta: '+91 80807 48282',
+  phoneCta: '+91 77100 32627',
   keywords:
     'best pest control service in Dadar, pest control in Dadar, cockroach control service Dadar, termite treatment in Dadar, bed bug control service Dadar, rodent control service Dadar, residential pest control Dadar, commercial pest control Dadar, affordable pest control in Dadar, pest control company in Dadar',
   faq: [

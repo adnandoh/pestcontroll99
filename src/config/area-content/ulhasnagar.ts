@@ -3,7 +3,7 @@ import type { AreaRichContent } from './types';
 export const ULHASNAGAR_AREA_CONTENT: AreaRichContent = {
   pageTitle: 'Reliable Pest Control in Ulhasnagar | Pest Control 99',
   metaDescription:
-    'Professional pest control in Ulhasnagar for homes, shops & warehouses. Cockroach, termite, rodent, mosquito & bed bug treatment with warranty. Call +91 80807 48282.',
+    'Professional pest control in Ulhasnagar for homes, shops & warehouses. Cockroach, termite, rodent, mosquito & bed bug treatment with warranty. Call +91 77100 32627.',
   heroTitle: 'Reliable Pest Control in Ulhasnagar',
   heroSubtitle:
     'Safe, effective pest management for homes, offices, restaurants, hotels and wholesale markets across Ulhasnagar',
@@ -32,7 +32,7 @@ export const ULHASNAGAR_AREA_CONTENT: AreaRichContent = {
     'Pest Control 99 offers reliable, professional pest control services tailored for homes, offices, restaurants, hotels, warehouses, retail shops, and residential societies in Ulhasnagar. Our expert team provides safe, effective, and complete pest management solutions, including cockroach control, termite treatment, rodent management, mosquito control, bed bug removal, and comprehensive pest protection services to ensure a clean and healthy environment.',
   closingParagraph:
     'Additionally, we offer 24/7 emergency pest control services for urgent pest-related concerns in Ulhasnagar. Whether you run a wholesale shop, textile unit, restaurant or family home, Pest Control 99 delivers same-day, warranty-backed treatments using CIB&RC-approved products. Book a free inspection today and keep your property protected throughout the year.',
-  phoneCta: '+91 80807 48282',
+  phoneCta: '+91 77100 32627',
   keywords:
     'best pest control services in Ulhasnagar, affordable pest control in Ulhasnagar, professional pest control services in Ulhasnagar, 24/7 pest control services in Ulhasnagar, cockroach control services in Ulhasnagar, termite treatment in Ulhasnagar, rodent control services in Ulhasnagar, mosquito control services in Ulhasnagar, bed bug treatment in Ulhasnagar, residential pest control in Ulhasnagar',
   faq: [
@@ -58,7 +58,7 @@ export const ULHASNAGAR_AREA_CONTENT: AreaRichContent = {
       id: 'same-day',
       question: 'Do you offer same-day and emergency pest control in Ulhasnagar?',
       answer:
-        'Yes. Pest Control 99 offers same-day service and 24/7 emergency support for urgent pest problems in Ulhasnagar. Call +91 80807 48282 to confirm a slot.',
+        'Yes. Pest Control 99 offers same-day service and 24/7 emergency support for urgent pest problems in Ulhasnagar. Call +91 77100 32627 to confirm a slot.',
     },
     {
       id: 'safe',

@@ -75,8 +75,8 @@ Do only #1 and it won't be in the sitemap; the `noindex` flips off automatically
 `src/config/business.ts` is the single source for **name, phone, WhatsApp, email, address, rating**. 
 
 - **Never hardcode the phone/address in a page.** Import from `BUSINESS`.
-- Past bugs we fixed: a **placeholder phone `98 XXX XX 990`** and a **broken WhatsApp link `wa.me/8080748282`** (missing the `91` country code) shipped on service pages; a **conflicting Andheri-West address** lived in the dead `layout.tsx`. All traced back to hardcoding instead of using `business.ts`.
-- WhatsApp links must be `wa.me/918080748282` (use the `whatsAppUrl()` helper).
+- Past bugs we fixed: a **placeholder phone `98 XXX XX 990`** and a **broken WhatsApp link `wa.me/7710032627`** (missing the `91` country code) shipped on service pages; a **conflicting Andheri-West address** lived in the dead `layout.tsx`. All traced back to hardcoding instead of using `business.ts`.
+- WhatsApp links must be `wa.me/917710032627` (use the `whatsAppUrl()` helper).
 
 ---
 
