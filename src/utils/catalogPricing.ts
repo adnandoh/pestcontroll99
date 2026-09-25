@@ -335,7 +335,7 @@ export function resolveTierForMatchedRate(
 
 /**
  * Display-only list markup when the rate card has no separate MRP.
- * Matches the HTML prototype + HomeInquiryForm (~30% OFF badge):
+ * Shared by HomeQuoteForm and HomeInquiryForm (~30% OFF badge):
  * sale = catalog excl-GST (booked amount); list = sale / 0.7.
  * Never change offerPrice / pricing_rate_id — JobCard still uses catalog amount.
  */

@@ -1,42 +1,29 @@
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect, useRef, useCallback } from 'react';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 import { HomeFormData, decodeFormDataFromURL, getFormData, clearFormData } from '@/utils/formStorage';
 import { submitHomeInquiryForm } from '@/services/formSubmit';
 import { personNameValidationError, sanitizePersonNameInput } from '@/utils/personName';
+import { customerBookingApi } from '@/services/customerBookingApi';
+import {
+  calculateCatalogQuotePrice,
+  type CatalogRate,
+} from '@/utils/catalogPricing';
 import MultiSelectPest from './MultiSelectPest';
 import { AddressInput } from './GoogleMaps';
 import { CommercialIcon, ResidentialIcon } from './icons/PremiseTypeIcons';
 import IndiaFlagIcon from './icons/IndiaFlagIcon';
 import { BUSINESS, whatsAppUrl } from '@/config/business';
-import { RESIDENTIAL_PREMISE_SIZE_OPTIONS } from '@/config/serviceOptions';
-
-/** Display-only list markup when rate card has no separate MRP (matches ~30% Save badge). */
-const QUOTE_DISPLAY_DISCOUNT = 0.3;
+import {
+  RESIDENTIAL_PREMISE_SIZE_OPTIONS,
+  amcAvailableForPests,
+  showTreatmentQualityForPests,
+} from '@/config/serviceOptions';
 
 const PREMISE_SIZE_OPTIONS = RESIDENTIAL_PREMISE_SIZE_OPTIONS;
 
-function formatInr(amount: number): string {
-  return `₹ ${amount.toLocaleString('en-IN', {
-    minimumFractionDigits: 2,
-    maximumFractionDigits: 2,
-  })}`;
-}
-
-/** Sale = computed quote (excl. GST). MRP derived only when sale > 0 for promo strikethrough. */
-function getQuotePriceParts(sale: number): {
-  sale: number;
-  mrp: number | null;
-  savePercent: number | null;
-} {
-  if (!sale || sale <= 0) {
-    return { sale: 0, mrp: null, savePercent: null };
-  }
-  const mrp = Math.round(sale / (1 - QUOTE_DISPLAY_DISCOUNT));
-  if (mrp <= sale) {
-    return { sale, mrp: null, savePercent: null };
-  }
-  const savePercent = Math.round(((mrp - sale) / mrp) * 100);
-  return { sale, mrp, savePercent };
+/** Same whole-rupee display as HomeQuoteForm (Confirm Your Booking). */
+function formatInrWhole(amount: number): string {
+  return `₹${amount.toLocaleString('en-IN')}`;
 }
 
 type HomeInquiryFormProps = {
@@ -71,8 +58,67 @@ export default function HomeInquiryForm({
     premiseType: 'residential',
     premiseSize: '',
     serviceType: 'one-time',
+    treatmentQuality: '',
     estimatedPrice: 0
   });
+  const [catalogRates, setCatalogRates] = useState<CatalogRate[]>([]);
+  const [catalogLoading, setCatalogLoading] = useState(true);
+  const [catalogError, setCatalogError] = useState('');
+  const [catalogReloadKey, setCatalogReloadKey] = useState(0);
+
+  const priceFromCatalog = useCallback(
+    (data: HomeFormData, rates: CatalogRate[] = catalogRates) =>
+      calculateCatalogQuotePrice({
+        rates,
+        pestTypes: data.pestTypes,
+        premiseType: data.premiseType,
+        premiseSize: data.premiseSize,
+        serviceType: data.serviceType,
+        treatmentQuality: data.treatmentQuality,
+      }),
+    [catalogRates],
+  );
+
+  useEffect(() => {
+    let cancelled = false;
+    (async () => {
+      setCatalogLoading(true);
+      setCatalogError('');
+      try {
+        // Same unfiltered catalog as Confirm Your Booking (no area-name filter).
+        const res = await customerBookingApi.fetchCatalog();
+        if (cancelled) return;
+        if (res.success && res.data) {
+          setCatalogRates(res.data.results);
+          setCatalogError('');
+          setFormData((prev) => ({
+            ...prev,
+            estimatedPrice: calculateCatalogQuotePrice({
+              rates: res.data!.results,
+              pestTypes: prev.pestTypes,
+              premiseType: prev.premiseType,
+              premiseSize: prev.premiseSize,
+              serviceType: prev.serviceType,
+              treatmentQuality: prev.treatmentQuality,
+            }).offerPrice,
+          }));
+        } else {
+          setCatalogError(res.error || 'Could not load live prices');
+        }
+      } catch (err) {
+        if (cancelled) return;
+        console.error('Catalog load failed:', err);
+        setCatalogError(
+          err instanceof Error ? err.message : 'Could not load live prices',
+        );
+      } finally {
+        if (!cancelled) setCatalogLoading(false);
+      }
+    })();
+    return () => {
+      cancelled = true;
+    };
+  }, [catalogReloadKey]);
 
   // Load pre-filled data on component mount
   useEffect(() => {
@@ -80,16 +126,11 @@ export default function HomeInquiryForm({
     const storageData = getFormData();
     
     if (Object.keys(urlData).length > 0 || storageData) {
-      setFormData(prev => {
-        const nextData = {
-          ...prev,
-          ...storageData,
-          ...urlData
-        };
-        // Re-calculate price for pre-filled data
-        nextData.estimatedPrice = calculatePrice(nextData);
-        return nextData;
-      });
+      setFormData(prev => ({
+        ...prev,
+        ...storageData,
+        ...urlData,
+      }));
     }
     
     if (storageData) {
@@ -106,7 +147,11 @@ export default function HomeInquiryForm({
   const premiseSizeRef = useRef<HTMLDivElement>(null);
   const serviceTypeRef = useRef<HTMLDivElement>(null);
 
-  const priceParts = getQuotePriceParts(formData.estimatedPrice || 0);
+  const quotePrice = priceFromCatalog(formData);
+  const offerPrice = quotePrice.offerPrice;
+  const listPrice = quotePrice.listPrice;
+  const discountPercent = quotePrice.discountPercent;
+  const pricePending = quotePrice.pricePending;
   const isInspectionQuote =
     formData.premiseType === 'commercial' || formData.pestTypes.includes('hotel-commercial');
   const showPremiseSize =
@@ -114,8 +159,25 @@ export default function HomeInquiryForm({
     formData.pestTypes.length > 0 &&
     !formData.pestTypes.includes('hotel-commercial');
   const showServiceType = formData.premiseType === 'residential';
-  const amcAvailable =
-    formData.pestTypes.length > 0 && formData.pestTypes.every((p) => p === 'cockroach-ants');
+  const showTreatmentQuality = showTreatmentQualityForPests(formData.pestTypes);
+  const amcAvailable = amcAvailableForPests(formData.pestTypes);
+  const isOtherPremiseSize = formData.premiseSize === 'other';
+  const selectionsComplete =
+    Boolean(formData.premiseType) &&
+    formData.pestTypes.length > 0 &&
+    (isInspectionQuote ||
+      (Boolean(formData.premiseSize) &&
+        !isOtherPremiseSize &&
+        Boolean(formData.serviceType) &&
+        (!showTreatmentQuality || Boolean(formData.treatmentQuality))));
+  const showPromoPricing =
+    selectionsComplete &&
+    !isInspectionQuote &&
+    !pricePending &&
+    !catalogLoading &&
+    offerPrice > 0 &&
+    listPrice > offerPrice &&
+    discountPercent > 0;
   const oneTimeOnlyHint = formData.pestTypes.some((p) =>
     ['rodent', 'bedbugs', 'termite', 'mosquito'].includes(p),
   );
@@ -151,48 +213,19 @@ export default function HomeInquiryForm({
     };
   }, [premiseSizeOpen, serviceTypeOpen]);
 
-  // Rate card data (amounts excluding GST — no GST is applied in calculatePrice).
-  // 5bhk amounts from rate_chart_2026.csv; 6bhk/other fall through to 0 (custom quote).
-  const RATES: Record<string, unknown> = {
-    'cockroach-ants': {
-      amc: { '1rk': 1800, '1bhk': 2200, '2bhk': 2500, '3bhk': 3000, '4bhk': 3500, '5bhk': 4900 },
-      'one-time': { '1rk': 1000, '1bhk': 1200, '2bhk': 1500, '3bhk': 1800, '4bhk': 2000, '5bhk': 2700 },
-    },
-    bedbugs: { '1rk': 2000, '1bhk': 2500, '2bhk': 3000, '3bhk': 3500, '4bhk': 4000, '5bhk': 5200 },
-    termite: { '1rk': 2000, '1bhk': 2500, '2bhk': 3000, '3bhk': 3500, '4bhk': 4000, '5bhk': 5900 },
-    rodent: { fixed: 1000 },
-    mosquito: { '1rk': 800, '1bhk': 1000, '2bhk': 1500, '3bhk': 1800, '4bhk': 2000, '5bhk': 2800 },
-  };
-
-  const calculatePrice = (data: HomeFormData) => {
-    if (data.premiseType === 'commercial' || data.pestTypes.includes('hotel-commercial')) {
-      return 0; // Inspection required
-    }
-
-    if (data.pestTypes.length === 0 || data.premiseSize === 'other') return 0;
-
-    let totalPrice = 0;
-    data.pestTypes.forEach((pest) => {
-      if (pest === 'cockroach-ants') {
-        if (!data.premiseSize) return;
-        const plan = data.serviceType === 'amc' ? 'amc' : 'one-time';
-        const planRates = (RATES['cockroach-ants'] as Record<string, Record<string, number>>)[plan];
-        totalPrice += planRates[data.premiseSize] || 0;
-        return;
-      }
-      if (pest === 'rodent') {
-        totalPrice += (RATES.rodent as { fixed: number }).fixed;
-        return;
-      }
-      if (pest === 'bedbugs' || pest === 'termite' || pest === 'mosquito') {
-        if (!data.premiseSize) return;
-        const pestRates = RATES[pest] as Record<string, number>;
-        totalPrice += pestRates[data.premiseSize] || 0;
-      }
-    });
-
-    return totalPrice;
-  };
+  useEffect(() => {
+    const offer = priceFromCatalog(formData).offerPrice;
+    setFormData((prev) =>
+      prev.estimatedPrice === offer ? prev : { ...prev, estimatedPrice: offer },
+    );
+  }, [
+    priceFromCatalog,
+    formData.pestTypes,
+    formData.premiseType,
+    formData.premiseSize,
+    formData.serviceType,
+    formData.treatmentQuality,
+  ]);
 
   const validateForm = (): boolean => {
     const newErrors: Record<string, string> = {};
@@ -221,8 +254,13 @@ export default function HomeInquiryForm({
       newErrors.premiseSize = 'Please select a premise size';
     }
 
-    if (formData.premiseType === 'residential' && !formData.serviceType) {
-      newErrors.serviceType = 'Please select a service type';
+    if (formData.premiseType === 'residential' && !isInspectionQuote) {
+      if (showTreatmentQuality && !formData.treatmentQuality) {
+        newErrors.treatmentQuality = 'Please select treatment quality';
+      }
+      if (!formData.serviceType) {
+        newErrors.serviceType = 'Please select a service type';
+      }
     }
 
     setErrors(newErrors);
@@ -273,26 +311,31 @@ export default function HomeInquiryForm({
         [field]: value
       };
 
-      // Check if any selected pest restricts the service to One-Time
-      // Only 'cockroach-ants' currently supports AMC in the CRM pricing
-      const hasAmcSupport = nextData.pestTypes.length > 0 && 
-                           nextData.pestTypes.every(p => p === 'cockroach-ants');
-      
+      nextData.pestTypes = nextData.pestTypes.filter((p) => p !== 'hotel-commercial');
+
+      // AMC exists only for cockroach/ants-only selections (same rule as booking).
+      const hasAmcSupport = amcAvailableForPests(nextData.pestTypes);
+      const needsTreatmentQuality = showTreatmentQualityForPests(nextData.pestTypes);
+
       if (!hasAmcSupport && nextData.serviceType === 'amc') {
         nextData.serviceType = 'one-time';
       }
 
-      // If specific pests are selected that are known to be One-Time only
-      const oneTimeOnlyPests = ['rodent', 'bedbugs', 'termite', 'mosquito'];
-      const isForcedOneTime = nextData.pestTypes.some(p => oneTimeOnlyPests.includes(p));
-      
-      if (isForcedOneTime) {
-        nextData.serviceType = 'one-time';
+      // Standard/Premium only for Cockroach / Ants; otherwise catalog default = standard.
+      if (!needsTreatmentQuality) {
+        nextData.treatmentQuality = 'standard';
+      } else if (field === 'pestTypes' && !showTreatmentQualityForPests(prev.pestTypes)) {
+        nextData.treatmentQuality = '';
       }
-      
-      // Re-calculate price on any relevant change
-      nextData.estimatedPrice = calculatePrice(nextData);
-      
+
+      if (nextData.premiseType === 'commercial') {
+        nextData.treatmentQuality = '';
+        nextData.serviceType = '';
+        nextData.premiseSize = '';
+      }
+
+      nextData.estimatedPrice = priceFromCatalog(nextData).offerPrice;
+
       return nextData;
     });
 
@@ -303,6 +346,9 @@ export default function HomeInquiryForm({
         [field]: ''
       }));
     }
+    if (field === 'pestTypes') {
+      setErrors((prev) => ({ ...prev, treatmentQuality: '', serviceType: '' }));
+    }
 
     // Clear success popup when user starts editing
     if (showSuccessPopup) {
@@ -310,6 +356,84 @@ export default function HomeInquiryForm({
       setSubmitMessage('');
     }
   };
+
+  const priceContent = (() => {
+    if (catalogLoading && !isInspectionQuote) {
+      return <strong className="inquiry-price-inline-amount">…</strong>;
+    }
+    if (isInspectionQuote) {
+      return (
+        <>
+          <strong className="inquiry-price-inline-amount">Inspection</strong>
+          <span className="inquiry-price-inline-sub">Free site visit</span>
+        </>
+      );
+    }
+    if (isOtherPremiseSize) {
+      return (
+        <>
+          <strong className="inquiry-price-inline-amount">Custom</strong>
+          <span className="inquiry-price-inline-sub">Call / WhatsApp</span>
+        </>
+      );
+    }
+    if (!selectionsComplete) {
+      return (
+        <>
+          <strong className="inquiry-price-inline-amount">—</strong>
+          <span className="inquiry-price-inline-sub">Select options</span>
+        </>
+      );
+    }
+    if (pricePending || offerPrice <= 0) {
+      return (
+        <>
+          <strong className="inquiry-price-inline-amount">On request</strong>
+          <span className="inquiry-price-inline-sub">Staff confirmation</span>
+        </>
+      );
+    }
+    return (
+      <>
+        <strong className="inquiry-price-inline-amount">{formatInrWhole(offerPrice)}</strong>
+        {showPromoPricing ? (
+          <span className="inquiry-price-inline-promo">
+            <span className="line-through">{formatInrWhole(listPrice)}</span>
+            <span className="inquiry-price-save">{discountPercent}% OFF</span>
+          </span>
+        ) : (
+          <span className="inquiry-price-inline-sub">Excl. GST</span>
+        )}
+      </>
+    );
+  })();
+
+  const treatmentPicker = showTreatmentQuality && formData.premiseType === 'residential' && !isInspectionQuote ? (
+    <div>
+      <p className="booking-field-label">Treatment Quality *</p>
+      <div className="booking-choice-grid">
+        <button
+          type="button"
+          onClick={() => handleChange('treatmentQuality', 'standard')}
+          className={`booking-choice-card${formData.treatmentQuality === 'standard' ? ' is-selected' : ''}`}
+        >
+          <strong className="booking-choice-title">Standard</strong>
+          <small className="booking-choice-sub">Gel + spray</small>
+        </button>
+        <button
+          type="button"
+          onClick={() => handleChange('treatmentQuality', 'premium')}
+          className={`booking-choice-card booking-choice-recommended${formData.treatmentQuality === 'premium' ? ' is-selected' : ''}`}
+        >
+          <strong className="booking-choice-title">Premium</strong>
+          <small className="booking-choice-sub">No-smell treatment</small>
+        </button>
+      </div>
+      {errors.treatmentQuality && (
+        <p className="mt-1 text-[10px] font-semibold text-red-600">{errors.treatmentQuality}</p>
+      )}
+    </div>
+  ) : null;
 
   return (
     <section
@@ -342,6 +466,20 @@ export default function HomeInquiryForm({
                     {formSubtitle}
                   </p>
                 ) : null}
+              </div>
+            ) : null}
+
+            {catalogError ? (
+              <div className={`rounded-lg border border-amber-200 bg-amber-50 font-semibold text-amber-900 ${compact ? 'mb-2 p-2 text-[11px]' : 'mb-4 p-3 text-sm'}`}>
+                <div>Live prices unavailable — quote may need staff confirmation. {catalogError}</div>
+                <button
+                  type="button"
+                  className="mt-1 text-[11px] font-bold underline underline-offset-2"
+                  disabled={catalogLoading}
+                  onClick={() => setCatalogReloadKey((k) => k + 1)}
+                >
+                  {catalogLoading ? 'Retrying prices…' : 'Retry live prices'}
+                </button>
               </div>
             ) : null}
 
@@ -475,14 +613,7 @@ export default function HomeInquiryForm({
                     <div>
                       <span className="booking-field-label">Est. Price</span>
                       <div className="inquiry-price-inline" data-quote-mode={isInspectionQuote ? 'inspection' : 'priced'}>
-                        {isInspectionQuote ? (
-                          <>
-                            <strong className="inquiry-price-inline-amount">Inspection</strong>
-                            <span className="inquiry-price-inline-sub">Free site visit</span>
-                          </>
-                        ) : (
-                          <strong className="inquiry-price-inline-amount">{formatInr(priceParts.sale)}</strong>
-                        )}
+                        {priceContent}
                       </div>
                     </div>
                   )}
@@ -586,29 +717,13 @@ export default function HomeInquiryForm({
                         <div>
                           <span className="booking-field-label">Est. Price</span>
                           <div className="inquiry-price-inline" data-quote-mode={isInspectionQuote ? 'inspection' : 'priced'}>
-                            {isInspectionQuote ? (
-                              <>
-                                <strong className="inquiry-price-inline-amount">Inspection</strong>
-                                <span className="inquiry-price-inline-sub">Free site visit</span>
-                              </>
-                            ) : (
-                              <>
-                                <strong className="inquiry-price-inline-amount">{formatInr(priceParts.sale)}</strong>
-                                {priceParts.mrp != null && priceParts.savePercent != null ? (
-                                  <span className="inquiry-price-inline-promo">
-                                    <span className="line-through">{formatInr(priceParts.mrp)}</span>
-                                    <span className="inquiry-price-save">Save {priceParts.savePercent}%</span>
-                                  </span>
-                                ) : priceParts.sale > 0 ? (
-                                  <span className="inquiry-price-inline-sub">Excl. GST</span>
-                                ) : null}
-                              </>
-                            )}
+                            {priceContent}
                           </div>
                         </div>
                       ) : null}
                     </div>
                   ) : null}
+                  {treatmentPicker}
                 </>
               ) : (
                 <>
@@ -622,25 +737,34 @@ export default function HomeInquiryForm({
                       </div>
                     ) : (
                       <div className="flex flex-col items-start gap-0.5" data-quote-mode="priced">
-                        {formData.premiseType === 'residential' && priceParts.sale > 0 ? (
+                        {selectionsComplete && !pricePending && offerPrice > 0 ? (
                           <span className="font-medium text-slate-800 text-[15px]">Price (Excluding GST)</span>
                         ) : null}
                         <span className="font-bold text-slate-900 tracking-tight tabular-nums text-[1.85rem] sm:text-[2rem] leading-tight">
-                          {formatInr(priceParts.sale)}
+                          {catalogLoading
+                            ? '…'
+                            : isOtherPremiseSize
+                              ? 'Custom quote'
+                              : !selectionsComplete
+                                ? '—'
+                                : pricePending || offerPrice <= 0
+                                  ? 'On request'
+                                  : formatInrWhole(offerPrice)}
                         </span>
-                        {priceParts.mrp != null && priceParts.savePercent != null && (
+                        {showPromoPricing && (
                           <div className="flex flex-wrap items-center gap-2 mt-0.5">
                             <span className="text-slate-500 line-through tabular-nums text-[15px]">
-                              {formatInr(priceParts.mrp)}
+                              {formatInrWhole(listPrice)}
                             </span>
                             <span className="inline-flex items-center rounded-full bg-green-50 px-2.5 py-0.5 text-sm font-medium text-green-800">
-                              (Save {priceParts.savePercent}%)
+                              ({discountPercent}% OFF)
                             </span>
                           </div>
                         )}
                       </div>
                     )}
                   </div>
+                  {treatmentPicker}
 
                   {showPremiseSize && (
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-5 py-2 animate-in fade-in slide-in-from-top-2">
