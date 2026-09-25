@@ -119,6 +119,37 @@ const fixtureRates: CatalogRate[] = [
     total_with_gst: '4012',
     package_tiers: { standard: '4012', premium: '4613.8' },
   }),
+  rate({
+    id: 9,
+    service_package: 'Cockroach Premium',
+    plan_type: 'AMC 3 Services',
+    area_key: '2 BHK',
+    amount: '6000',
+    base_amount: '6000',
+    total_with_gst: '7080',
+    package_tiers: { standard: '7080', premium: '8142' },
+  }),
+  rate({
+    id: 10,
+    service_package: 'Cockroach Standard',
+    plan_type: 'One Time Service',
+    area_key: '3 BHK',
+    amount: '1900',
+    base_amount: '1900',
+    total_with_gst: '2242',
+    package_tiers: { standard: '2242', premium: '2578.3' },
+  }),
+  rate({
+    id: 11,
+    service_package: 'Cockroach Standard',
+    plan_type: 'One Time Service',
+    area_key: 'Commercial',
+    property_category: 'commercial',
+    amount: '5000',
+    base_amount: '5000',
+    total_with_gst: '5900',
+    package_tiers: { standard: '5900', premium: '6785' },
+  }),
 ];
 
 describe('packageTokenMatches', () => {
@@ -308,6 +339,84 @@ describe('matchRateForPest home guards', () => {
     assert.equal(quote.pricingRateId, 8);
     assert.equal(quote.matchedRate?.service_package, 'Bed Bugs');
   });
+});
+
+describe('inquiry displayed total matches Confirm Your Booking', () => {
+  /**
+   * Both HomeInquiryForm and HomeQuoteForm render calculateCatalogQuotePrice().offerPrice
+   * (excl. GST catalog sale, 30% strikethrough is display-only). Same selection → same rupees.
+   */
+  const selections = [
+    {
+      label: 'residential cockroach standard one-time 1 BHK',
+      input: {
+        pestTypes: ['cockroach-ants'],
+        premiseType: 'residential' as const,
+        premiseSize: '1bhk',
+        serviceType: 'one-time' as const,
+        treatmentQuality: 'standard' as const,
+      },
+      offerPrice: 1250,
+      gstInclusiveMustNotEqual: 1475,
+    },
+    {
+      label: 'residential cockroach premium AMC 2 BHK',
+      input: {
+        pestTypes: ['cockroach-ants'],
+        premiseType: 'residential' as const,
+        premiseSize: '2bhk',
+        serviceType: 'amc' as const,
+        treatmentQuality: 'premium' as const,
+      },
+      offerPrice: 6000,
+      gstInclusiveMustNotEqual: 7080,
+    },
+    {
+      label: 'residential cockroach standard one-time 3 BHK',
+      input: {
+        pestTypes: ['cockroach-ants'],
+        premiseType: 'residential' as const,
+        premiseSize: '3bhk',
+        serviceType: 'one-time' as const,
+        treatmentQuality: 'standard' as const,
+      },
+      offerPrice: 1900,
+      gstInclusiveMustNotEqual: 2242,
+    },
+    {
+      label: 'commercial cockroach (inspection, no catalog total)',
+      input: {
+        pestTypes: ['cockroach-ants'],
+        premiseType: 'commercial' as const,
+        premiseSize: '',
+        serviceType: '' as const,
+        treatmentQuality: '' as const,
+      },
+      offerPrice: 0,
+      gstInclusiveMustNotEqual: 5900,
+    },
+  ];
+
+  for (const selection of selections) {
+    it(selection.label, () => {
+      const booking = calculateCatalogQuotePrice({ rates: fixtureRates, ...selection.input });
+      const inquiry = calculateCatalogQuotePrice({ rates: fixtureRates, ...selection.input });
+      assert.equal(inquiry.offerPrice, booking.offerPrice);
+      assert.equal(inquiry.listPrice, booking.listPrice);
+      assert.equal(inquiry.discountPercent, booking.discountPercent);
+      assert.equal(inquiry.pricePending, booking.pricePending);
+      assert.equal(inquiry.pricingRateId, booking.pricingRateId);
+      assert.equal(booking.offerPrice, selection.offerPrice);
+      assert.notEqual(booking.offerPrice, selection.gstInclusiveMustNotEqual);
+      if (selection.offerPrice > 0) {
+        assert.equal(booking.listPrice, Math.round(selection.offerPrice / 0.7));
+        assert.equal(booking.discountPercent, 30);
+      } else {
+        assert.equal(booking.pricePending, true);
+        assert.equal(booking.listPrice, 0);
+      }
+    });
+  }
 });
 
 describe('booking plan / treatment visibility helpers', () => {
