@@ -14,6 +14,8 @@ export type WebsiteBookingPayload = {
   area?: string;
   booking_type: 'one_time' | 'amc';
   pricing_rate_id?: number | null;
+  /** One catalog rate per selected pest. The booking total is their sum. */
+  pricing_rate_ids?: number[];
   price_confirmation_pending?: boolean;
   notes?: string;
   booking_date?: string;

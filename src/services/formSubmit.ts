@@ -417,6 +417,9 @@ export async function submitHomeBookingForm(
     city,
     booking_type: bookingType as 'one_time' | 'amc',
     pricing_rate_id: quote.pricePending ? null : quote.pricingRateId,
+    pricing_rate_ids: quote.pricePending
+      ? []
+      : quote.matchedRates.map((rate) => rate.id).filter((id) => Number.isInteger(id)),
     price_confirmation_pending: quote.pricePending,
     booking_date: preferredDate,
     booking_time: bookingTime24,

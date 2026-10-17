@@ -60,6 +60,10 @@ const SECTION_META: Record<string, { icon: string; tagline: string }> = {
     icon: '/images/Termite.webp',
     tagline: 'Termites silently destroy furniture and woodwork before you spot them',
   },
+  'wood-borer': {
+    icon: '/images/Wood Borer.webp',
+    tagline: 'Fine wood powder and tiny holes mean borers are eating furniture from inside',
+  },
   mosquito: {
     icon: '/images/Mosquito.webp',
     tagline: 'Cut dengue, malaria & chikungunya risk at the breeding source',
@@ -127,6 +131,28 @@ export const MUMBAI_RATE_SECTIONS: BrochureRateSection[] = [
       { property: '3 BHK', rate: inr(3500) },
       { property: '4 BHK', rate: inr(4000) },
     ],
+  },
+  {
+    id: 'wood-borer',
+    title: 'Wood Borer Treatment',
+    subtitle: 'Standard · 1 treatment visit',
+    warranty: 'Starting from ₹1,500 + GST',
+    columns: [
+      { key: 'property', label: 'Coverage' },
+      { key: 'rate', label: 'Before GST', align: 'right' },
+    ],
+    rows: [
+      { property: '1 small item / door frame', rate: inr(1500) },
+      { property: '1 double bed / wardrobe', rate: inr(2500) },
+      { property: '1 room (upto 3 items)', rate: inr(3500) },
+      { property: '1 RK', rate: inr(3000) },
+      { property: '1 BHK', rate: inr(4000) },
+      { property: '2 BHK', rate: inr(5500) },
+      { property: '3 BHK', rate: inr(7000) },
+      { property: '4 BHK', rate: inr(8500) },
+      { property: 'Office / commercial', rate: 'On inspection' },
+    ],
+    note: 'BHK prices are starting rates. Confirm after furniture quantity and infestation review. +18% GST.',
   },
   {
     id: 'mosquito',
@@ -232,6 +258,28 @@ export const LONAVALA_RATE_SECTIONS: BrochureRateSection[] = [
       { property: '4 BHK', rate: inr(6500) },
       { property: '5 BHK', rate: inr(7500) },
     ],
+  },
+  {
+    id: 'wood-borer',
+    title: 'Wood Borer Treatment',
+    subtitle: 'Standard · 1 treatment visit',
+    warranty: 'Starting from ₹1,500 + GST',
+    columns: [
+      { key: 'property', label: 'Coverage' },
+      { key: 'rate', label: 'Before GST', align: 'right' },
+    ],
+    rows: [
+      { property: '1 small item / door frame', rate: inr(1500) },
+      { property: '1 double bed / wardrobe', rate: inr(2500) },
+      { property: '1 room (upto 3 items)', rate: inr(3500) },
+      { property: '1 RK', rate: inr(3000) },
+      { property: '1 BHK', rate: inr(4000) },
+      { property: '2 BHK', rate: inr(5500) },
+      { property: '3 BHK', rate: inr(7000) },
+      { property: '4 BHK', rate: inr(8500) },
+      { property: 'Office / commercial', rate: 'On inspection' },
+    ],
+    note: 'BHK prices are starting rates. Confirm after furniture quantity and infestation review. +18% GST.',
   },
   {
     id: 'mosquito-spray',

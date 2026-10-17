@@ -96,9 +96,16 @@ export default function AddressInput({
                 />
               </svg>
             ) : (
-              <span className="booking-locate-glyph" aria-hidden>
-                ⌖
-              </span>
+              <svg className="booking-locate-glyph" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                <circle cx="12" cy="12" r="3.15" stroke="currentColor" strokeWidth="1.8" />
+                <circle cx="12" cy="12" r="7.15" stroke="currentColor" strokeWidth="1.8" />
+                <path
+                  d="M12 1.6v2.5M12 19.9v2.5M1.6 12h2.5M19.9 12h2.5"
+                  stroke="currentColor"
+                  strokeWidth="1.8"
+                  strokeLinecap="round"
+                />
+              </svg>
             )}
           </button>
         </div>

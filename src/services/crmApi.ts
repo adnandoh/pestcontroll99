@@ -269,12 +269,14 @@ class CRMApiService {
     formType: 'home' | 'quote',
     tracking?: InquiryTrackingOptions,
   ): InquiryData {
-    const oneTimeOnlyPests = ['rodent', 'bedbugs', 'termite', 'mosquito'];
+    const oneTimeOnlyPests = ['rodent', 'bedbugs', 'termite', 'mosquito', 'wood-borer'];
     const oneTimeOnlyServices = [
       'Rodent Control',
       'Bed Bug Control',
       'Termite Control',
       'Mosquito Control',
+      'Wood Borer Control',
+      'Wood Borer',
       'Other',
     ];
     const forcedOneTime =

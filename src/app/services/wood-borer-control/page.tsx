@@ -9,9 +9,9 @@ export default function WoodBorerControlPage() {
   return (
     <div className="min-h-screen bg-white">
       <PageMeta
-        title="Wood Borer Control in Mumbai | Save Your Furniture"
-        description="Professional wood borer treatment in Mumbai, Navi Mumbai, Thane, Pune & Lonavala. Protect furniture from powder-post beetles. Warranty-backed — call +91 77100 32627."
-        keywords="wood borer control mumbai, wood borer treatment, furniture borer control, powder post beetle treatment"
+        title="Wood Borer Treatment in Mumbai & Thane | Pestcontrol99.com"
+        description="Book Standard wood borer treatment in Mumbai, Navi Mumbai and Thane for furniture and wooden frames. From ₹1,500 + GST. Contact Pestcontrol99.com."
+        keywords="wood borer treatment mumbai, wood borer control thane, furniture borer treatment, wood borer navi mumbai, wood powder furniture pest"
         canonical="https://www.pestcontrol99.com/services/wood-borer-control/"
         ogUrl="https://www.pestcontrol99.com/services/wood-borer-control/"
       />
@@ -26,13 +26,13 @@ export default function WoodBorerControlPage() {
             <div className="space-y-8">
               <div className="space-y-4">
                 <h1 className="text-4xl lg:text-5xl font-bold text-gray-900 leading-tight">
-                  Wood Borer Control Mumbai — <span className="text-green-600">Save Your Furniture Today</span>
+                  Wood Borer Treatment in <span className="text-green-600">Mumbai, Navi Mumbai &amp; Thane</span>
                 </h1>
                 <p className="text-xl text-gray-600 leading-relaxed mb-4">
-                  Powder in corners stops now. Local team for wood borer pest control. Low-odour borate treatment, neat drill-and-seal work. Rooms stay livable once dry.
+                  Fine wood powder near your cupboard, bed or door frame? Get the affected wood checked before the damage spreads.
                 </p>
                 <p className="text-lg text-gray-700 font-medium">
-                  Most furniture sees protection within hours.*
+                  Standard Treatment starting from <span className="text-green-700 font-bold">₹1,500 + GST</span>
                 </p>
               </div>
               
@@ -40,13 +40,13 @@ export default function WoodBorerControlPage() {
                 <Link to="/quote"
                   className="btn btn-cta btn-quote shadow-lg hover:shadow-xl"
                 >
-                  Get My Inspection Slot →
+                  Book a Service →
                 </Link>
                 <a
-                  href="https://wa.me/917710032627?text=Hello%20Pest%20Control%2099,%20can%20you%20share%20details%20and%20pricing%20for%20your%20wood%20borer%20control%20services?"
+                  href="https://wa.me/917710032627?text=Hello%20Pest%20Control%2099,%20I%20need%20Standard%20wood%20borer%20treatment.%20Sharing%20photos%20of%20affected%20furniture."
                   className="inline-flex items-center justify-center px-8 py-4 bg-white text-green-600 font-semibold rounded-full border-2 border-green-600 hover:bg-green-50 transition-colors duration-300"
                 >
-                  💬 WhatsApp 24 × 7: +91 77100 32627
+                  💬 Send Photos on WhatsApp
                 </a>
               </div>
             </div>
@@ -60,6 +60,60 @@ export default function WoodBorerControlPage() {
                 className="rounded-2xl shadow-2xl"
                 priority
               />
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section className="py-16 bg-white border-y border-gray-100">
+        <div className="container mx-auto px-4">
+          <div className="max-w-4xl mx-auto">
+            <h2 className="text-3xl lg:text-4xl font-bold text-gray-900 mb-4 text-center">
+              Wood Borer Treatment Charges
+            </h2>
+            <p className="text-center text-gray-600 mb-8">
+              Standard treatment only · Mumbai, Navi Mumbai &amp; Thane · Prices before GST (18% extra)
+            </p>
+            <div className="overflow-x-auto rounded-2xl border border-gray-200 shadow-sm">
+              <table className="w-full text-sm">
+                <thead>
+                  <tr className="bg-green-50 text-left">
+                    <th className="px-4 py-3 font-bold text-gray-800">Coverage</th>
+                    <th className="px-4 py-3 font-bold text-gray-800">Basis</th>
+                    <th className="px-4 py-3 font-bold text-gray-800 text-right">Rate before GST</th>
+                    <th className="px-4 py-3 font-bold text-gray-800 text-right">Total with GST</th>
+                  </tr>
+                </thead>
+                <tbody className="divide-y divide-gray-100">
+                  {[
+                    ['1 small furniture item / 1 door frame', 'Per item', '₹1,500', '₹1,770'],
+                    ['1 double bed / standard 2-door wardrobe', 'Per item', '₹2,500', '₹2,950'],
+                    ['1 room — up to 3 standard furniture items', 'Per room', '₹3,500', '₹4,130'],
+                    ['1 RK', 'Starting from', '₹3,000', '₹3,540'],
+                    ['1 BHK', 'Starting from', '₹4,000', '₹4,720'],
+                    ['2 BHK', 'Starting from', '₹5,500', '₹6,490'],
+                    ['3 BHK', 'Starting from', '₹7,000', '₹8,260'],
+                    ['4 BHK', 'Starting from', '₹8,500', '₹10,030'],
+                    ['Office / hotel / commercial', 'After inspection', '—', 'Quote'],
+                  ].map(([coverage, basis, rate, total]) => (
+                    <tr key={coverage} className="hover:bg-gray-50/80">
+                      <td className="px-4 py-3 font-semibold text-gray-900">{coverage}</td>
+                      <td className="px-4 py-3 text-gray-600">{basis}</td>
+                      <td className="px-4 py-3 text-right font-bold text-gray-900">{rate}</td>
+                      <td className="px-4 py-3 text-right font-black text-green-700">{total}</td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+            <p className="mt-4 text-sm text-gray-500 text-center">
+              BHK prices are starting rates. Final price confirmed after furniture quantity, size and infestation review.
+              Heavy wardrobes, full kitchen cabinets and concealed woodwork may need a separate quote.
+            </p>
+            <div className="mt-8 text-center">
+              <Link to="/quote" className="btn btn-cta btn-quote shadow-lg hover:shadow-xl">
+                Book Standard Wood Borer Treatment →
+              </Link>
             </div>
           </div>
         </div>

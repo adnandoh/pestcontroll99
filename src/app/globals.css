@@ -2986,8 +2986,9 @@ html[data-scroll-behavior="smooth"] {
 }
 
 .booking-locate-glyph {
-  font-size: 16px;
-  line-height: 1;
+  width: 16px;
+  height: 16px;
+  display: block;
 }
 
 .booking-price-bar {

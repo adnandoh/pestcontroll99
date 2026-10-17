@@ -1,5 +1,6 @@
 import { useState, useEffect, useRef, useCallback } from 'react';
 import { useNavigate, useSearchParams } from 'react-router-dom';
+import './homeBookingForm.css';
 import {
   HomeFormData,
   createEmptyHomeFormData,
@@ -20,13 +21,11 @@ import {
   calculateCatalogQuotePrice,
   type CatalogRate,
 } from '@/utils/catalogPricing';
-import MultiSelectPest from './MultiSelectPest';
 import ClockTimePicker from './ClockTimePicker';
 import { AddressInput } from './GoogleMaps';
 import IndiaFlagIcon from './icons/IndiaFlagIcon';
 import { BUSINESS, whatsAppUrl } from '@/config/business';
 import {
-  RESIDENTIAL_PREMISE_SIZE_OPTIONS,
   AMC_UNAVAILABLE_BADGE,
   AMC_UNAVAILABLE_LABEL,
   amcAvailableForPests,
@@ -41,7 +40,35 @@ import {
   toPreferredTime,
 } from '@/utils/clockTime';
 
-const PREMISE_SIZE_OPTIONS = RESIDENTIAL_PREMISE_SIZE_OPTIONS;
+const PEST_CARDS = [
+  { value: 'cockroach-ants', label: 'Cockroach & Ants', image: '/images/booking-pests/cockroach.jpg' },
+  { value: 'bedbugs', label: 'Bed Bugs', image: '/images/booking-pests/bedbug.jpg' },
+  { value: 'termite', label: 'Termite', image: '/images/booking-pests/termite.jpg' },
+  { value: 'rodent', label: 'Rodent', image: '/images/booking-pests/rodent.jpg' },
+  { value: 'mosquito', label: 'Mosquito', image: '/images/booking-pests/mosquito.jpg' },
+  { value: 'wood-borer', label: 'Wood Borer', image: '/images/booking-pests/woodborer.jpg' },
+] as const;
+
+const HOME_SIZE_CHIPS = [
+  { value: '1rk', label: '1RK' },
+  { value: '1bhk', label: '1BHK' },
+  { value: '2bhk', label: '2BHK' },
+  { value: '3bhk', label: '3BHK' },
+  { value: '4bhk', label: '4BHK' },
+] as const;
+
+function Tick() {
+  return <i className="pc-tick" aria-hidden="true" />;
+}
+
+function CheckLine() {
+  return (
+    <svg viewBox="0 0 16 16" aria-hidden="true">
+      <path d="M3 8.2 6.2 11.3 13 4.6" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" />
+    </svg>
+  );
+}
+
 const OTHER_PREMISE_WHATSAPP_MESSAGE =
   'Hi Pest Control 99, I selected Other for premise size on the website booking form and need a custom quote.';
 
@@ -187,10 +214,9 @@ export default function HomeQuoteForm({
   const [errors, setErrors] = useState<Record<string, string>>({});
   const [showSuccessPopup, setShowSuccessPopup] = useState(false);
   const [submitMessage, setSubmitMessage] = useState('');
-  const [premiseSizeOpen, setPremiseSizeOpen] = useState(false);
+  const [homeKind, setHomeKind] = useState<'flat' | 'villa'>('flat');
   const [infoModal, setInfoModal] = useState<'standard' | 'premium' | null>(null);
   const [otherSizeModalOpen, setOtherSizeModalOpen] = useState(false);
-  const premiseSizeRef = useRef<HTMLDivElement>(null);
 
   const [otpModalOpen, setOtpModalOpen] = useState(false);
   const [otpValue, setOtpValue] = useState('');
@@ -296,30 +322,12 @@ export default function HomeQuoteForm({
   const isInspectionQuote =
     formData.premiseType === 'commercial' || formData.pestTypes.includes('hotel-commercial');
   const isOtherPremiseSize = formData.premiseSize === 'other';
-  const selectedPremiseSize = PREMISE_SIZE_OPTIONS.find((o) => o.value === formData.premiseSize);
+  const residentialBooking = formData.premiseType === 'residential' && !isInspectionQuote;
   const amcAvailable = amcAvailableForPests(formData.pestTypes);
   const showTreatmentQuality = showTreatmentQualityForPests(formData.pestTypes);
   const bedBugsPrimaryPlan = isBedBugsPrimaryPlan(formData.pestTypes);
 
   const dateMin = formatLocalDateYYYYMMDD(new Date());
-
-  useEffect(() => {
-    if (!premiseSizeOpen) return;
-    const onPointerDown = (e: MouseEvent) => {
-      if (premiseSizeRef.current && !premiseSizeRef.current.contains(e.target as Node)) {
-        setPremiseSizeOpen(false);
-      }
-    };
-    const onKeyDown = (e: KeyboardEvent) => {
-      if (e.key === 'Escape') setPremiseSizeOpen(false);
-    };
-    document.addEventListener('mousedown', onPointerDown);
-    document.addEventListener('keydown', onKeyDown);
-    return () => {
-      document.removeEventListener('mousedown', onPointerDown);
-      document.removeEventListener('keydown', onKeyDown);
-    };
-  }, [premiseSizeOpen]);
 
   useEffect(() => {
     if (resendCooldown <= 0) return;
@@ -631,6 +639,28 @@ export default function HomeQuoteForm({
         Boolean(formData.serviceType) &&
         (!showTreatmentQuality || Boolean(formData.treatmentQuality))));
 
+  const priceSummaryLabel = (() => {
+    if (!selectionsComplete) return 'Select options for price';
+    if (isOtherPremiseSize) return 'Custom quote — call / WhatsApp';
+    if (isInspectionQuote) return 'Site inspection';
+    if (formData.serviceType === 'amc') {
+      const quality = formData.treatmentQuality === 'premium' ? 'Premium' : 'Standard';
+      const services = formData.pestTypes.length > 1 ? ` • ${formData.pestTypes.length} services` : '';
+      return `${quality} AMC • 3 visits${services}`;
+    }
+    if (formData.serviceType === 'one-time') {
+      if (bedBugsPrimaryPlan) return '2-Service Package • 2 visits';
+      if (showTreatmentQuality) {
+        const quality = formData.treatmentQuality === 'premium' ? 'Premium' : 'Standard';
+        const services = formData.pestTypes.length > 1 ? ` • ${formData.pestTypes.length} services` : '';
+        return `${quality} • One-Time${services}`;
+      }
+      if (formData.pestTypes.length > 1) return `${formData.pestTypes.length} services • One-Time`;
+      return 'One-Time service';
+    }
+    return 'Select options for price';
+  })();
+
   const showPromoPricing =
     selectionsComplete &&
     !isInspectionQuote &&
@@ -640,36 +670,16 @@ export default function HomeQuoteForm({
     listPrice > offerPrice &&
     discountPercent > 0;
 
-  const priceSummaryLabel = (() => {
-    if (!selectionsComplete) return 'Select options for price';
-    if (isOtherPremiseSize) return 'Custom quote — call / WhatsApp';
-    if (isInspectionQuote) return 'Site inspection';
-    if (formData.serviceType === 'amc') {
-      const quality = formData.treatmentQuality === 'premium' ? 'Premium' : 'Standard';
-      return `${quality} AMC • 3 visits`;
-    }
-    if (formData.serviceType === 'one-time') {
-      if (bedBugsPrimaryPlan) return '2-Service Package • 2 visits';
-      if (showTreatmentQuality) {
-        const quality = formData.treatmentQuality === 'premium' ? 'Premium' : 'Standard';
-        return `${quality} • One-Time`;
-      }
-      return 'One-Time service';
-    }
-    return 'Select options for price';
-  })();
+  const showExclGstLabel =
+    selectionsComplete && !isInspectionQuote && !pricePending && !catalogLoading && offerPrice > 0;
 
-  const title = formTitle || 'Confirm Your Booking';
+  const title = formTitle || 'Book Your Service';
 
   return (
-    <section id="get-quote" className="booking-form-section scroll-mt-24">
-      <div data-hero-form-card="" className="booking-form-card">
-        <div className="booking-form-header">
-          <div className="booking-form-heading">
-            <h2 className="booking-form-title">{title}</h2>
-            <span className="booking-form-warranty">100% Service Warranty</span>
-          </div>
-          <span className="booking-required-hint">* Required</span>
+    <section id="get-quote" className="booking-form-section scroll-mt-24 pc-book-section">
+      <div data-hero-form-card="" className="booking-form-card pc-book">
+        <div className="pc-title-row">
+          <h2 className="pc-title">{title}</h2>
         </div>
         {formSubtitle ? <p className="booking-form-subtitle">{formSubtitle}</p> : null}
 
@@ -695,305 +705,273 @@ export default function HomeQuoteForm({
           </div>
         )}
 
-        <form onSubmit={handleSubmit} className="booking-form-fields">
-          <div className="booking-form-body">
-            <div>
-              <div className="booking-prop-toggle" role="group" aria-label="Property type">
-                <button
-                  type="button"
-                  onClick={() => handleChange('premiseType', 'residential')}
-                  className={`booking-prop-btn${formData.premiseType === 'residential' ? ' is-active' : ''}`}
-                  aria-pressed={formData.premiseType === 'residential'}
-                >
-                  🏠 Residential
-                </button>
-                <button
-                  type="button"
-                  onClick={() => handleChange('premiseType', 'commercial')}
-                  className={`booking-prop-btn${formData.premiseType === 'commercial' ? ' is-active' : ''}`}
-                  aria-pressed={formData.premiseType === 'commercial'}
-                >
-                  🏢 Commercial
-                </button>
-              </div>
-              {errors.premiseType && (
-                <p className="mt-1 text-[10px] font-semibold text-red-600">{errors.premiseType}</p>
-              )}
+        <form onSubmit={handleSubmit} className="booking-form-fields pc-form">
+          <div className="booking-form-body pc-body">
+            <div className="pc-seg" role="radiogroup" aria-label="Service category">
+              <button
+                type="button"
+                className={`pc-seg-btn${formData.premiseType === 'residential' ? ' is-on' : ''}`}
+                role="radio"
+                aria-checked={formData.premiseType === 'residential'}
+                onClick={() => handleChange('premiseType', 'residential')}
+              >
+                <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 10.5 12 4l8 6.5V20a1 1 0 0 1-1 1h-5.2v-6.2H10.2V21H5a1 1 0 0 1-1-1v-9.5Z" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinejoin="round" /></svg>
+                Residential
+                {formData.premiseType === 'residential' ? <Tick /> : null}
+              </button>
+              <button
+                type="button"
+                className={`pc-seg-btn${formData.premiseType === 'commercial' ? ' is-on' : ''}`}
+                role="radio"
+                aria-checked={formData.premiseType === 'commercial'}
+                onClick={() => handleChange('premiseType', 'commercial')}
+              >
+                <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 20V6.5A1.5 1.5 0 0 1 5.5 5H14v15M14 9h4.5A1.5 1.5 0 0 1 20 10.5V20M4 20h16M7.5 8.5h2M7.5 12h2M7.5 15.5h2M16 13h1.5M16 16.5h1.5" fill="none" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" /></svg>
+                Commercial
+                {formData.premiseType === 'commercial' ? <Tick /> : null}
+              </button>
+            </div>
+            {errors.premiseType ? <p className="pc-error">{errors.premiseType}</p> : null}
+
+            <p className="pc-label">What pest problem? <span className="pc-req">*</span></p>
+            <div className="pc-pest-grid" role="group" aria-label="What pest problem?">
+              {PEST_CARDS.map((pest) => {
+                const on = formData.pestTypes.includes(pest.value);
+                return (
+                  <button
+                    key={pest.value}
+                    type="button"
+                    className={`pc-pest${on ? ' is-on' : ''}`}
+                    role="checkbox"
+                    aria-checked={on}
+                    onClick={() => {
+                      const current = formData.pestTypes.filter((p) => p !== 'hotel-commercial');
+                      const next = current.includes(pest.value)
+                        ? current.filter((p) => p !== pest.value)
+                        : [...current, pest.value];
+                      handleChange('pestTypes', next);
+                    }}
+                  >
+                    <span className="pc-pest-photo">
+                      <img src={pest.image} alt="" />
+                    </span>
+                    <span className="pc-pest-name">{pest.label}</span>
+                    {on ? <Tick /> : null}
+                  </button>
+                );
+              })}
+            </div>
+            {errors.pestTypes ? <p className="pc-error">{errors.pestTypes}</p> : null}
+
+            <p className="pc-label">Property type <span className="pc-req">*</span></p>
+            <div className="pc-pair" role="radiogroup" aria-label="Property type">
+              <button
+                type="button"
+                className={`pc-pair-btn${homeKind === 'flat' ? ' is-on' : ''}`}
+                role="radio"
+                aria-checked={homeKind === 'flat'}
+                onClick={() => setHomeKind('flat')}
+              >
+                <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 20V7.5L12 4l7 3.5V20M9 20v-4.5h6V20M9 9.5h.01M12 9.5h.01M15 9.5h.01M9 13h.01M12 13h.01M15 13h.01" fill="none" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round" /></svg>
+                Flat
+                {homeKind === 'flat' ? <Tick /> : null}
+              </button>
+              <button
+                type="button"
+                className={`pc-pair-btn${homeKind === 'villa' ? ' is-on' : ''}`}
+                role="radio"
+                aria-checked={homeKind === 'villa'}
+                onClick={() => setHomeKind('villa')}
+              >
+                <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3.5 11 12 4l8.5 7M6 10.5V20h12v-9.5M10 20v-5h4v5" fill="none" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round" /></svg>
+                Villa
+                {homeKind === 'villa' ? <Tick /> : null}
+              </button>
             </div>
 
-            <div className="booking-grid-2 booking-grid-service">
-              <div>
-                <MultiSelectPest
-                  selectedPests={formData.pestTypes}
-                  onChange={(pests) => handleChange('pestTypes', pests)}
-                  compact
-                />
-                {errors.pestTypes && (
-                  <p className="mt-1 text-[10px] font-semibold text-red-600">{errors.pestTypes}</p>
-                )}
-              </div>
+            <p className="pc-label">Home size</p>
+            <div className="pc-sizes" role="radiogroup" aria-label="Home size">
+              {HOME_SIZE_CHIPS.map((size) => {
+                const on = formData.premiseSize === size.value;
+                return (
+                  <button
+                    key={size.value}
+                    type="button"
+                    className={on ? 'is-on' : ''}
+                    role="radio"
+                    aria-checked={on}
+                    disabled={!residentialBooking}
+                    onClick={() => handleChange('premiseSize', size.value)}
+                  >
+                    {size.label}
+                    {on ? <Tick /> : null}
+                  </button>
+                );
+              })}
+            </div>
+            {errors.premiseSize ? <p className="pc-error">{errors.premiseSize}</p> : null}
 
-              {formData.premiseType === 'residential' &&
-              formData.pestTypes.length > 0 &&
-              !formData.pestTypes.includes('hotel-commercial') ? (
-                <div ref={premiseSizeRef}>
-                  <label id="premise-size-label" className="booking-field-label">
-                    Premise Size *
-                  </label>
+            {residentialBooking && showTreatmentQuality ? (
+              <>
+                <p className="pc-label">Choose treatment <span className="pc-req">*</span></p>
+                <div className="pc-treats" role="radiogroup" aria-label="Choose treatment">
                   <div
-                    className={`booking-select${errors.premiseSize ? ' booking-select-error' : ''}${premiseSizeOpen ? ' is-open' : ''}`}
-                  >
-                    <button
-                      type="button"
-                      id="premise-size-trigger"
-                      aria-haspopup="listbox"
-                      aria-expanded={premiseSizeOpen}
-                      aria-labelledby="premise-size-label premise-size-trigger"
-                      onClick={() => setPremiseSizeOpen((o) => !o)}
-                      className="booking-select-trigger"
-                    >
-                      <span className={selectedPremiseSize ? '' : 'is-placeholder'}>
-                        {selectedPremiseSize?.label ?? 'Select size'}
-                      </span>
-                      <svg
-                        className="h-4 w-4"
-                        fill="none"
-                        viewBox="0 0 24 24"
-                        stroke="currentColor"
-                        aria-hidden
-                      >
-                        <path
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                          strokeWidth={2}
-                          d="M19 9l-7 7-7-7"
-                        />
-                      </svg>
-                    </button>
-                    {premiseSizeOpen && (
-                      <ul
-                        role="listbox"
-                        aria-labelledby="premise-size-label"
-                        className="booking-select-menu"
-                      >
-                        {PREMISE_SIZE_OPTIONS.map((option) => (
-                          <li key={option.value} role="presentation">
-                            <button
-                              type="button"
-                              role="option"
-                              aria-selected={formData.premiseSize === option.value}
-                              className={`booking-select-option${formData.premiseSize === option.value ? ' is-selected' : ''}`}
-                              onClick={() => {
-                                handleChange('premiseSize', option.value);
-                                setPremiseSizeOpen(false);
-                                if (option.value === 'other') {
-                                  setOtherSizeModalOpen(true);
-                                }
-                              }}
-                            >
-                              {option.label}
-                            </button>
-                          </li>
-                        ))}
-                      </ul>
-                    )}
-                  </div>
-                  {errors.premiseSize && (
-                    <p className="mt-1 text-[10px] font-semibold text-red-600">{errors.premiseSize}</p>
-                  )}
-                </div>
-              ) : (
-                <div className="hidden sm:block" aria-hidden />
-              )}
-            </div>
-
-            {formData.premiseType === 'residential' && !isInspectionQuote && showTreatmentQuality && (
-              <div>
-                <p className="booking-field-label">Treatment Quality *</p>
-                <div className="booking-choice-grid">
-                  <button
-                    type="button"
+                    className={`pc-treat${formData.treatmentQuality === 'standard' ? ' is-on' : ''}`}
+                    role="radio"
+                    aria-checked={formData.treatmentQuality === 'standard'}
+                    tabIndex={0}
                     onClick={() => handleChange('treatmentQuality', 'standard')}
-                    className={`booking-choice-card${formData.treatmentQuality === 'standard' ? ' is-selected' : ''}`}
-                  >
-                    <strong className="booking-choice-title">Standard</strong>
-                    <small className="booking-choice-sub">Gel + spray</small>
-                    <i
-                      className="booking-info-icon"
-                      role="button"
-                      tabIndex={0}
-                      aria-label="Standard treatment info"
-                      onClick={(e) => {
-                        e.stopPropagation();
+                    onKeyDown={(e) => {
+                      if (e.key === 'Enter' || e.key === ' ') {
                         e.preventDefault();
-                        setInfoModal('standard');
-                      }}
-                      onKeyDown={(e) => {
-                        if (e.key === 'Enter' || e.key === ' ') {
+                        handleChange('treatmentQuality', 'standard');
+                      }
+                    }}
+                  >
+                    <div className="pc-treat-head">
+                      <strong>Standard</strong>
+                      {formData.treatmentQuality === 'standard' ? <Tick /> : null}
+                    </div>
+                    <p><CheckLine />Spray + standard gel</p>
+                    <p className="pc-treat-last">
+                      <span><CheckLine />Kitchen items need removal</span>
+                      <button
+                        type="button"
+                        className="pc-benefits"
+                        onClick={(e) => {
                           e.stopPropagation();
-                          e.preventDefault();
                           setInfoModal('standard');
-                        }
-                      }}
-                    >
-                      i
-                    </i>
-                  </button>
-                  <button
-                    type="button"
+                        }}
+                      >
+                        Benefits
+                      </button>
+                    </p>
+                  </div>
+                  <div
+                    className={`pc-treat${formData.treatmentQuality === 'premium' ? ' is-on' : ''}`}
+                    role="radio"
+                    aria-checked={formData.treatmentQuality === 'premium'}
+                    tabIndex={0}
                     onClick={() => handleChange('treatmentQuality', 'premium')}
-                    className={`booking-choice-card booking-choice-recommended${formData.treatmentQuality === 'premium' ? ' is-selected' : ''}`}
-                  >
-                    <strong className="booking-choice-title">Premium</strong>
-                    <small className="booking-choice-sub">No-smell treatment</small>
-                    <i
-                      className="booking-info-icon"
-                      role="button"
-                      tabIndex={0}
-                      aria-label="Premium treatment info"
-                      onClick={(e) => {
-                        e.stopPropagation();
+                    onKeyDown={(e) => {
+                      if (e.key === 'Enter' || e.key === ' ') {
                         e.preventDefault();
-                        setInfoModal('premium');
-                      }}
-                      onKeyDown={(e) => {
-                        if (e.key === 'Enter' || e.key === ' ') {
+                        handleChange('treatmentQuality', 'premium');
+                      }
+                    }}
+                  >
+                    <div className="pc-treat-head">
+                      <strong>Premium</strong>
+                      {formData.treatmentQuality === 'premium' ? <Tick /> : null}
+                    </div>
+                    <p><CheckLine />Odourless gel</p>
+                    <p className="pc-treat-last">
+                      <span><CheckLine />No kitchen item removal</span>
+                      <button
+                        type="button"
+                        className="pc-benefits"
+                        onClick={(e) => {
                           e.stopPropagation();
-                          e.preventDefault();
                           setInfoModal('premium');
-                        }
-                      }}
-                    >
-                      i
-                    </i>
-                  </button>
+                        }}
+                      >
+                        Benefits
+                      </button>
+                    </p>
+                  </div>
                 </div>
-                {errors.treatmentQuality && (
-                  <p className="mt-1 text-[10px] font-semibold text-red-600">
-                    {errors.treatmentQuality}
-                  </p>
-                )}
-              </div>
-            )}
+                {errors.treatmentQuality ? <p className="pc-error">{errors.treatmentQuality}</p> : null}
+              </>
+            ) : null}
 
-            {formData.premiseType === 'residential' && !isInspectionQuote && (
-              <div>
-                <p className="booking-field-label">Service Plan *</p>
-                <div className="booking-choice-grid">
+            {residentialBooking ? (
+              <>
+                <p className="pc-label">Service plan <span className="pc-req">*</span></p>
+                <div className="pc-pair" role="radiogroup" aria-label="Service plan">
                   <button
                     type="button"
+                    className={`pc-pair-btn pc-plan${formData.serviceType === 'one-time' ? ' is-on' : ''}`}
+                    role="radio"
+                    aria-checked={formData.serviceType === 'one-time'}
                     onClick={() => handleChange('serviceType', 'one-time')}
-                    className={`booking-choice-card${formData.serviceType === 'one-time' ? ' is-selected' : ''}${bedBugsPrimaryPlan ? ' booking-choice-tall' : ''}`}
                   >
-                    <strong className="booking-choice-title">
-                      {oneTimePlanTitle(formData.pestTypes)}
-                    </strong>
-                    <small className="booking-choice-sub">
-                      {oneTimePlanSub(formData.pestTypes)}
-                    </small>
+                    <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="4" y="5.5" width="16" height="14.5" rx="2" fill="none" stroke="currentColor" strokeWidth="1.7" /><path d="M8 3.5v4M16 3.5v4M4 9.5h16" fill="none" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" /></svg>
+                    <span className="pc-plan-copy">
+                      <b>{oneTimePlanTitle(formData.pestTypes)}</b>
+                      <small>{oneTimePlanSub(formData.pestTypes)}</small>
+                    </span>
+                    {formData.serviceType === 'one-time' ? <Tick /> : null}
                   </button>
                   <button
                     type="button"
-                    disabled={!amcAvailable}
-                    onClick={() => amcAvailable && handleChange('serviceType', 'amc')}
-                    className={`booking-choice-card booking-choice-recommended${formData.serviceType === 'amc' ? ' is-selected' : ''}${!amcAvailable ? ' is-disabled booking-choice-unavailable' : ''}${bedBugsPrimaryPlan && !amcAvailable ? ' booking-choice-tall' : ''}`}
-                    title={amcAvailable ? undefined : AMC_UNAVAILABLE_LABEL}
+                    className={`pc-pair-btn pc-plan${formData.serviceType === 'amc' ? ' is-on' : ''}${!amcAvailable ? ' is-disabled' : ''}`}
+                    role="radio"
+                    aria-checked={formData.serviceType === 'amc'}
                     aria-disabled={!amcAvailable}
+                    disabled={!amcAvailable}
+                    title={amcAvailable ? undefined : AMC_UNAVAILABLE_LABEL}
+                    onClick={() => amcAvailable && handleChange('serviceType', 'amc')}
                   >
-                    <strong className="booking-choice-title">
-                      {amcAvailable ? (
-                        'AMC — 3 Visits'
-                      ) : (
-                        <span className="booking-choice-title-row">
-                          <svg
-                            className="booking-lock-icon"
-                            viewBox="0 0 16 16"
-                            width="11"
-                            height="11"
-                            aria-hidden
-                          >
-                            <path
-                              fill="currentColor"
-                              d="M4.5 7V5.5a3.5 3.5 0 1 1 7 0V7h.75A1.75 1.75 0 0 1 14 8.75v4.5A1.75 1.75 0 0 1 12.25 15h-8.5A1.75 1.75 0 0 1 2 13.25v-4.5A1.75 1.75 0 0 1 3.75 7H4.5Zm1.5 0h4V5.5a2 2 0 1 0-4 0V7Z"
-                            />
-                          </svg>
-                          AMC — 3 Visits
-                        </span>
-                      )}
-                    </strong>
-                    <small className="booking-choice-sub">
-                      {amcAvailable ? '12-month protection' : AMC_UNAVAILABLE_LABEL}
-                    </small>
-                    {!amcAvailable && (
-                      <span className="booking-unavailable-badge">{AMC_UNAVAILABLE_BADGE}</span>
-                    )}
+                    <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20 12a8 8 0 1 1-2.2-5.5" fill="none" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" /><path d="M20 4.5V9h-4.5" fill="none" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round" /></svg>
+                    <span className="pc-plan-copy">
+                      <b>AMC</b>
+                      <small>{amcAvailable ? 'Annual plan' : AMC_UNAVAILABLE_LABEL}</small>
+                    </span>
+                    {formData.serviceType === 'amc' ? <Tick /> : null}
+                    {!amcAvailable ? <span className="pc-unavail">{AMC_UNAVAILABLE_BADGE}</span> : null}
                   </button>
                 </div>
-                {errors.serviceType && (
-                  <p className="mt-1 text-[10px] font-semibold text-red-600">{errors.serviceType}</p>
-                )}
-              </div>
-            )}
+                {errors.serviceType ? <p className="pc-error">{errors.serviceType}</p> : null}
+              </>
+            ) : null}
 
             <AddressInput
-              label="Service Address *"
+              label=""
               value={formData.streetAddress}
               onChange={(value) => handleChange('streetAddress', value)}
-              placeholder="Area, building or full address"
+              placeholder="Area, building & full address"
               inlineLocate
-              className=""
+              className="pc-address-input"
               error={errors.streetAddress}
             />
 
-            <div className="booking-grid-2 booking-grid-schedule">
-              <div>
-                <label htmlFor="preferred-date" className="booking-field-label">
-                  Preferred Date *
-                </label>
-                <div className="booking-date-field">
-                  <span className="booking-date-display" aria-hidden="true">
-                    <span
-                      className={
-                        formatFriendlyPreferredDate(formData.preferredDate)
-                          ? 'booking-date-value'
-                          : 'booking-date-placeholder'
-                      }
-                    >
-                      {formatFriendlyPreferredDate(formData.preferredDate) || 'Select date'}
-                    </span>
-                  </span>
-                  <input
-                    id="preferred-date"
-                    type="date"
-                    min={dateMin}
-                    value={formData.preferredDate || ''}
-                    onChange={(e) => handleChange('preferredDate', e.target.value)}
-                    className="booking-input booking-date-native"
-                    aria-label={
-                      formatFriendlyPreferredDate(formData.preferredDate) || 'Preferred date'
-                    }
-                  />
-                </div>
-              </div>
-              <div>
-                <label htmlFor="preferred-time" className="booking-field-label">
-                  Preferred Time *
-                </label>
+            <div className="pc-split">
+              <label className={`pc-field${errors.preferredDate ? ' is-invalid' : ''}`} htmlFor="preferred-date">
+                <span className="pc-sr">Preferred date, required</span>
+                <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="4" y="5.5" width="16" height="14.5" rx="2" fill="none" stroke="currentColor" strokeWidth="1.7" /><path d="M8 3.5v4M16 3.5v4M4 9.5h16" fill="none" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" /></svg>
+                <input
+                  id="preferred-date"
+                  name="preferredDate"
+                  type="date"
+                  min={dateMin}
+                  value={formData.preferredDate || ''}
+                  onChange={(e) => handleChange('preferredDate', e.target.value)}
+                />
+                <span className="pc-field-face">
+                  {formatFriendlyPreferredDate(formData.preferredDate) || 'Select date'}
+                </span>
+                <svg className="pc-chev" viewBox="0 0 24 24" aria-hidden="true"><path d="m7 10 5 5 5-5" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" /></svg>
+              </label>
+              <div className={`pc-field pc-time${errors.preferredTime ? ' is-invalid' : ''}`}>
                 <ClockTimePicker
                   id="preferred-time"
                   value={formData.preferredTime || ''}
                   onChange={(val) => handleChange('preferredTime', toPreferredTime(val))}
+                  className="pc-clock"
                 />
               </div>
             </div>
+            {errors.preferredDate || errors.preferredTime ? (
+              <p className="pc-error">{errors.preferredDate || errors.preferredTime}</p>
+            ) : null}
 
-            <div className="booking-grid-2 booking-grid-phone">
-              <div>
-                <label htmlFor="booking-name" className="booking-field-label">
-                  Your Name *
-                </label>
+            <div className="pc-split">
+              <label className={`pc-field${errors.name ? ' is-invalid' : ''}`} htmlFor="booking-name">
+                <span className="pc-sr">Your name, required</span>
+                <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="8.2" r="3.1" fill="none" stroke="currentColor" strokeWidth="1.7" /><path d="M5.5 19.2c1.2-2.8 3.5-4.2 6.5-4.2s5.3 1.4 6.5 4.2" fill="none" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" /></svg>
                 <input
                   id="booking-name"
+                  name="name"
                   type="text"
                   value={formData.name}
                   onChange={(e) => {
@@ -1008,125 +986,106 @@ export default function HomeQuoteForm({
                     }
                   }}
                   onBlur={() => {
-                      const latest = formDataRef.current;
-                      if (isValidBookingMobile(latest.phone) && latest.name.trim()) {
-                        queueSilentInquiry(latest);
-                      }
-                    }}
+                    const latest = formDataRef.current;
+                    if (isValidBookingMobile(latest.phone) && latest.name.trim()) {
+                      queueSilentInquiry(latest);
+                    }
+                  }}
                   placeholder="Full name"
-                  className={`booking-input${errors.name ? ' booking-input-error' : ''}`}
                   autoComplete="name"
                   inputMode="text"
                   autoCapitalize="words"
                 />
-                {errors.name && (
-                  <p className="mt-1 text-[10px] font-semibold text-red-600">{errors.name}</p>
-                )}
-              </div>
-              <div>
-                <label htmlFor="booking-phone" className="booking-field-label">
-                  Mobile Number *
-                </label>
-                <div
-                  className={`booking-phone-field${errors.phone ? ' booking-phone-field-error' : ''}`}
-                >
-                  <div className="booking-phone-prefix" aria-hidden="true">
-                    <IndiaFlagIcon className="booking-phone-flag" />
-                    <span className="booking-phone-prefix-code">+91</span>
-                  </div>
-                  <input
-                    id="booking-phone"
-                    type="tel"
-                    inputMode="numeric"
-                    autoComplete="tel-national"
-                    value={formData.phone}
-                    onChange={(e) => {
-                      const value = e.target.value.replace(/\D/g, '').slice(0, 10);
-                      handleChange('phone', value);
-                    }}
-                    onBlur={() => {
-                      const latest = formDataRef.current;
-                      if (isValidBookingMobile(latest.phone)) {
-                        queueSilentInquiry(latest);
-                      }
-                    }}
-                    placeholder="10 digits"
-                    maxLength={10}
-                    className="booking-phone-input"
-                    aria-invalid={Boolean(errors.phone)}
-                    aria-describedby={errors.phone ? 'booking-phone-error' : undefined}
-                  />
-                </div>
-                {errors.phone && (
-                  <p
-                    id="booking-phone-error"
-                    className="mt-1 text-[10px] font-semibold text-red-600"
-                  >
-                    {errors.phone}
-                  </p>
-                )}
-              </div>
+              </label>
+              <label className={`pc-field pc-phone${errors.phone ? ' is-invalid' : ''}`} htmlFor="booking-phone">
+                <span className="pc-sr">Mobile number, required</span>
+                <IndiaFlagIcon className="pc-flag" />
+                <span className="pc-cc">+91</span>
+                <input
+                  id="booking-phone"
+                  name="phone"
+                  type="tel"
+                  inputMode="numeric"
+                  autoComplete="tel-national"
+                  value={formData.phone}
+                  onChange={(e) => {
+                    const value = e.target.value.replace(/\D/g, '').slice(0, 10);
+                    handleChange('phone', value);
+                  }}
+                  onBlur={() => {
+                    const latest = formDataRef.current;
+                    if (isValidBookingMobile(latest.phone)) {
+                      queueSilentInquiry(latest);
+                    }
+                  }}
+                  placeholder="10-digit number"
+                  maxLength={10}
+                  aria-invalid={Boolean(errors.phone)}
+                />
+              </label>
             </div>
+            {errors.name || errors.phone ? (
+              <p className="pc-error">{errors.name || errors.phone}</p>
+            ) : null}
           </div>
 
-          <div className="booking-form-cta">
-            <div className="booking-price-bar">
-              <div className="booking-price-rate-copy">
+          <div className="booking-form-cta pc-cta">
+            <div className="pc-price">
+              <div className="pc-price-copy">
                 <span>{priceSummaryLabel}</span>
-                {selectionsComplete && !isInspectionQuote && !pricePending && offerPrice > 0 ? (
-                  <b>Price (Excluding GST)</b>
-                ) : null}
-                {selectionsComplete && pricePending && !isInspectionQuote ? (
-                  <b>Price confirmation pending</b>
-                ) : null}
+                {showExclGstLabel ? <b>Price (Excluding GST)</b> : null}
               </div>
-              <div className="booking-price-amounts">
+              <div className="pc-price-amounts">
                 {catalogLoading ? (
-                  <strong className="booking-price-discounted">…</strong>
+                  <strong className="pc-price-now">…</strong>
                 ) : isInspectionQuote ? (
-                  <strong className="booking-price-discounted">Free visit</strong>
+                  <strong className="pc-price-now">Free visit</strong>
                 ) : showPromoPricing ? (
                   <>
-                    <span className="booking-price-actual">{formatInrWhole(listPrice)}</span>
-                    <span className="booking-price-off">{discountPercent}% OFF</span>
-                    <strong className="booking-price-discounted">{formatInrWhole(offerPrice)}</strong>
+                    <span className="pc-price-was">{formatInrWhole(listPrice)}</span>
+                    <span className="pc-price-off">{discountPercent}% OFF</span>
+                    <strong className="pc-price-now">{formatInrWhole(offerPrice)}</strong>
                   </>
                 ) : selectionsComplete && !pricePending && offerPrice > 0 ? (
-                  <strong className="booking-price-discounted">{formatInrWhole(offerPrice)}</strong>
-                ) : selectionsComplete && pricePending ? (
-                  <strong className="booking-price-discounted">On request</strong>
+                  <strong className="pc-price-now">{formatInrWhole(offerPrice)}</strong>
+                ) : selectionsComplete && (pricePending || isOtherPremiseSize) ? (
+                  <strong className="pc-price-now">On request</strong>
                 ) : (
-                  <strong className="booking-price-discounted">₹0</strong>
+                  <strong className="pc-price-now">₹0</strong>
                 )}
               </div>
             </div>
 
-            <button type="submit" disabled={isSubmitting || otpSending} className="booking-submit-btn">
-              {isSubmitting || otpSending ? (
-                <>
-                  <svg className="mr-2 h-5 w-5 animate-spin" viewBox="0 0 24 24" fill="none" aria-hidden>
-                    <circle
-                      className="opacity-25"
-                      cx="12"
-                      cy="12"
-                      r="10"
-                      stroke="currentColor"
-                      strokeWidth="4"
-                    />
-                    <path
-                      className="opacity-75"
-                      fill="currentColor"
-                      d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z"
-                    />
-                  </svg>
-                  Sending OTP…
-                </>
-              ) : isOtherPremiseSize ? (
-                <>Call / WhatsApp for Quote →</>
-              ) : (
-                <>Confirm Booking →</>
-              )}
+            <button type="submit" disabled={isSubmitting || otpSending} className="pc-confirm">
+              {isSubmitting || otpSending ? 'Sending OTP…' : isOtherPremiseSize ? 'Call / WhatsApp for Quote →' : 'Confirm Booking →'}
             </button>
+
+            <section className="pc-deep" aria-label="Deep Cleaning Services">
+              <div className="pc-deep-head">
+                <svg viewBox="0 0 32 32" aria-hidden="true">
+                  <path d="M6 14.2 16 6l10 8.2V26a1.4 1.4 0 0 1-1.4 1.4H7.4A1.4 1.4 0 0 1 6 26V14.2Z" fill="none" stroke="#1D4F91" strokeWidth="1.7" />
+                  <path d="M13 27.4v-7h6v7" fill="none" stroke="#1D4F91" strokeWidth="1.7" />
+                </svg>
+                <div>
+                  <strong>Deep Cleaning Services</strong>
+                  <a href="https://www.deepcleaning99.com/" target="_blank" rel="noopener noreferrer">
+                    Deepcleaning99.com
+                  </a>
+                </div>
+              </div>
+              <a className="pc-deep-book" href="https://www.deepcleaning99.com/" target="_blank" rel="noopener noreferrer">
+                Book Deep Cleaning ↗
+              </a>
+              <ul className="pc-deep-services">
+                <li>Full Home</li>
+                <li>Kitchen</li>
+                <li>Sofa</li>
+                <li>Bathroom</li>
+                <li>Mattress</li>
+                <li>Carpet</li>
+                <li>Office</li>
+              </ul>
+            </section>
           </div>
         </form>
       </div>

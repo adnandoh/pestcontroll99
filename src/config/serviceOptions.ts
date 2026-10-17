@@ -40,6 +40,7 @@ export const MULTI_SELECT_PEST_OPTIONS: ServiceOption[] = [
   { value: 'cockroach-ants', label: 'Cockroach / Ants' },
   { value: 'termite', label: 'Termite' },
   { value: 'bedbugs', label: 'Bed Bugs' },
+  { value: 'wood-borer', label: 'Wood Borer' },
   { value: 'rodent', label: 'Rodent' },
   { value: 'mosquito', label: 'Mosquito' },
 ];

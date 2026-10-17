@@ -72,6 +72,10 @@ export const PEST_PREFERRED_PACKAGES: Record<
     standard: ['Bed Bugs'],
     premium: ['Bed Bugs'],
   },
+  'wood-borer': {
+    standard: ['Wood Borer'],
+    premium: ['Wood Borer'],
+  },
 };
 
 /**
@@ -87,7 +91,7 @@ export const PEST_SERVICE_LABELS: Record<string, string> = {
   rodent: 'Rodent / Rat Control',
   bedbugs: 'Bed Bug Control',
   'honey-bee': 'Honey Bee / Wasp Removal',
-  'wood-borer': 'Wood Borer Control',
+  'wood-borer': 'Wood Borer',
   'house-fly': 'Fly Control',
   'hotel-commercial': 'General Pest Control',
   other: 'General Pest Control',
@@ -356,6 +360,8 @@ export type QuotePriceResult = {
   /** Rounded % OFF from list→offer when both set; else 0. */
   discountPercent: number;
   pricingRateId: number | null;
+  /** Every pest's catalog row, in selection order. Booking saves the sum. */
+  matchedRates: CatalogRate[];
   pricePending: boolean;
   matchedRate: CatalogRate | null;
   serviceTypeLabel: string;
@@ -383,6 +389,7 @@ export function calculateCatalogQuotePrice(input: {
     offerPrice: 0,
     discountPercent: 0,
     pricingRateId: null,
+    matchedRates: [],
     pricePending: true,
     matchedRate: null,
     serviceTypeLabel: serviceTypeLabelForQuote(pestTypes, null, qualityHint),
@@ -412,6 +419,7 @@ export function calculateCatalogQuotePrice(input: {
   let total = 0;
   let anyMissing = false;
   let firstRate: CatalogRate | null = null;
+  const matchedRates: CatalogRate[] = [];
   let packageTier: 'standard' | 'premium' = quality;
 
   for (const pest of pestTypes) {
@@ -430,6 +438,7 @@ export function calculateCatalogQuotePrice(input: {
       firstRate = rate;
       packageTier = resolved.packageTier;
     }
+    matchedRates.push(rate);
     total += resolved.amount;
   }
 
@@ -445,6 +454,7 @@ export function calculateCatalogQuotePrice(input: {
     offerPrice,
     discountPercent,
     pricingRateId: pricePending ? null : firstRate!.id,
+    matchedRates: pricePending ? [] : matchedRates,
     pricePending,
     matchedRate: firstRate,
     serviceTypeLabel: serviceTypeLabelForQuote(pestTypes, firstRate, quality),

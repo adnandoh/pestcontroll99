@@ -3,8 +3,6 @@ import { BUSINESS } from '@/config/business';
 import type { ReactNode } from 'react';
 import { Link } from 'react-router-dom';
 
-const HERO_BUGS = ['🪳', '🐜', '🦟', '🐀'] as const;
-
 const PLAY_STORE_URL =
   'https://play.google.com/store/apps/details?id=com.pestcontrol99.pest_99_customer_app';
 
@@ -96,23 +94,6 @@ export default function HomeBookingHero({ form }: HomeBookingHeroProps) {
         </div>
 
         <div className="home-booking-panel">
-          {/* Mobile-only mint band — hidden on desktop so the form sits higher */}
-          <div className="home-booking-hero-band" aria-hidden="true">
-            <span className="home-booking-badge">LICENSED PEST CONTROL</span>
-            <p className="home-booking-headline">
-              Book Pest Control <span className="home-booking-headline-accent">in 60 Seconds</span>
-            </p>
-            <HeroTrustLine />
-            <div className="home-booking-bugline">
-              {HERO_BUGS.map((bug) => (
-                <div key={bug} className="home-booking-bug">
-                  {bug}
-                </div>
-              ))}
-            </div>
-            <div className="home-booking-leaf" />
-          </div>
-
           <div className="home-booking-form-col">{form}</div>
         </div>
       </div>
