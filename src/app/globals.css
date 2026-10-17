@@ -2155,10 +2155,10 @@ html[data-scroll-behavior="smooth"] {
   --hb-soft: #effaf3;
   /* Match sticky site-header: min-h-[3.15rem] bar + 1px border-b */
   --home-header-h: calc(3.15rem + 1px);
-  /* Mobile sticky CTA bar height (buttons + padding + iOS safe area) */
-  --hb-action-bar-pad-top: 2px;
-  --hb-action-bar-pad-bottom: max(6px, env(safe-area-inset-bottom, 0px));
-  --hb-action-bar-btn-h: 34px;
+  /* Bottom Download / Inquiry / Call bar removed — no reserved space */
+  --hb-action-bar-pad-top: 0px;
+  --hb-action-bar-pad-bottom: 0px;
+  --hb-action-bar-btn-h: 0px;
   --hb-action-bar-h: calc(
     var(--hb-action-bar-pad-top) + var(--hb-action-bar-btn-h) + var(--hb-action-bar-pad-bottom)
   );
@@ -2213,8 +2213,7 @@ html[data-scroll-behavior="smooth"] {
   box-shadow: 0 0 30px #0b492019;
   display: flex;
   flex-direction: column;
-  /* Clearance so Confirm Booking isn’t hidden behind the fixed CTA bar */
-  padding-bottom: calc(var(--hb-action-bar-h, 48px) + 10px);
+  padding-bottom: 0;
 }
 
 /* Desktop-only hero media — hidden on mobile so booking UI stays single-column */
@@ -3462,13 +3461,13 @@ html[data-scroll-behavior="smooth"] {
 /* Page sections below the booking hero also clear the fixed bar */
 .home-page-with-sticky-cta {
   /* Same tokens as .home-booking-viewport so padding works on this ancestor */
-  --hb-action-bar-pad-top: 2px;
-  --hb-action-bar-pad-bottom: max(6px, env(safe-area-inset-bottom, 0px));
-  --hb-action-bar-btn-h: 34px;
+  --hb-action-bar-pad-top: 0px;
+  --hb-action-bar-pad-bottom: 0px;
+  --hb-action-bar-btn-h: 0px;
   --hb-action-bar-h: calc(
     var(--hb-action-bar-pad-top) + var(--hb-action-bar-btn-h) + var(--hb-action-bar-pad-bottom)
   );
-  padding-bottom: calc(var(--hb-action-bar-h) + 8px);
+  padding-bottom: 0;
 }
 
 /*
@@ -3813,8 +3812,8 @@ html[data-scroll-behavior="smooth"] {
 @media (max-width: 767px) {
   /* Typical phones: compress so header + hero + form + CTA fit first screen */
   .home-booking-viewport {
-    --hb-action-bar-pad-top: 2px;
-    --hb-action-bar-btn-h: 32px;
+    --hb-action-bar-pad-top: 0px;
+    --hb-action-bar-btn-h: 0px;
   }
 
   .home-booking-hero-band {
@@ -3851,7 +3850,7 @@ html[data-scroll-behavior="smooth"] {
   }
 
   .home-booking-app {
-    padding-bottom: calc(var(--hb-action-bar-h, 44px) + 6px);
+    padding-bottom: 0;
   }
 
   .booking-form-card {
@@ -4009,8 +4008,8 @@ html[data-scroll-behavior="smooth"] {
 
   .home-booking-viewport,
   .home-page-with-sticky-cta {
-    --hb-action-bar-pad-bottom: max(4px, env(safe-area-inset-bottom, 0px));
-    --hb-action-bar-btn-h: 28px;
+    --hb-action-bar-pad-bottom: 0px;
+    --hb-action-bar-btn-h: 0px;
   }
 
   .home-booking-action-bar {
