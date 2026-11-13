@@ -847,7 +847,16 @@ export default function HomeQuoteForm({
                 aria-checked={formData.premiseType === 'society'}
                 onClick={() => handleChange('premiseType', 'society')}
               >
-                <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 20V8l4-3 4 3v12M12 8l4-3 4 3v12M4 20h16M7 12h.01M7 15h.01M15 12h.01M15 15h.01" fill="none" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round" /></svg>
+                <svg viewBox="0 0 24 24" aria-hidden="true">
+                  <path
+                    d="M4 20V5h11v15M15 9h5v11M4 20h16M7.2 8.2h2.2M10.8 8.2h2.2M7.2 11.6h2.2M10.8 11.6h2.2M7.2 15h2.2M10.8 15h2.2M16.8 12.2h1.6M16.8 15.4h1.6M9.2 20v-2.8h2.8V20"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth="1.7"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                  />
+                </svg>
                 Society – FREE ₹0
                 {formData.premiseType === 'society' ? <Tick /> : null}
               </button>
