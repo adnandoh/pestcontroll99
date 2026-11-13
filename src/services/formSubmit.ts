@@ -142,6 +142,123 @@ export type HomeInquirySubmitResult =
   | { ok: true; message: string }
   | { ok: false; error: string };
 
+export type InspectionLeadSubmitResult =
+  | { ok: true; message: string; inquiryId?: number }
+  | { ok: false; error: string };
+
+/**
+ * Society Free / Society Paid / Commercial — create Website Lead with
+ * status Inspection Requested + WhatsApp confirmation (backend).
+ */
+export async function submitInspectionLeadForm(
+  formData: Record<string, unknown>,
+  tracking?: InquiryTrackingOptions,
+): Promise<InspectionLeadSubmitResult> {
+  const home = formData as unknown as HomeFormData;
+  const category = crmApi.resolveLeadCategory(home);
+
+  if (
+    category !== 'society-free' &&
+    category !== 'society-paid' &&
+    category !== 'commercial'
+  ) {
+    return { ok: false, error: 'Invalid inspection category' };
+  }
+
+  const name = sanitizePersonNameInput(String(home.name || '')).trim();
+  const nameErr = personNameValidationError(name, { required: true });
+  if (nameErr) {
+    return { ok: false, error: nameErr };
+  }
+
+  const cleanPhone = String(home.phone || '').replace(/\D/g, '');
+  if (cleanPhone.length !== 10) {
+    return { ok: false, error: 'Phone number must be exactly 10 digits' };
+  }
+
+  const propertyName = String(home.propertyName || '').trim();
+  if (propertyName.length < 2) {
+    return {
+      ok: false,
+      error:
+        category === 'commercial'
+          ? 'Please enter business / property name'
+          : 'Please enter society name',
+    };
+  }
+
+  const area = (home.streetAddress || home.address || '').trim();
+  if (area.length < 2) {
+    return { ok: false, error: 'Please enter area / pincode' };
+  }
+
+  if (category === 'society-paid' && !(home.pestTypes || []).length) {
+    return { ok: false, error: 'Please select at least one paid service' };
+  }
+
+  if (category === 'commercial') {
+    if (!String(home.commercialPropertyType || '').trim()) {
+      return { ok: false, error: 'Please select a property type' };
+    }
+    if (!(home.pestTypes || []).length) {
+      return { ok: false, error: 'Please select at least one pest problem' };
+    }
+  }
+
+  const sessionId = getBookingSessionId();
+  const utm = readUtmParams();
+  const pageUrl =
+    typeof window !== 'undefined' ? window.location.href.split('#')[0] : undefined;
+
+  const mapped = crmApi.mapFormDataToInquiry(
+    {
+      ...home,
+      phone: cleanPhone,
+      name,
+      propertyName,
+      streetAddress: area,
+      estimatedPrice: 0,
+    },
+    'home',
+    {
+      ...tracking,
+      leadSource: tracking?.leadSource || 'Website Booking Form',
+    },
+  );
+
+  const payload = {
+    ...mapped,
+    booking_session_id: sessionId,
+    page_url: pageUrl,
+    ...utm,
+    status: 'Inspection Requested',
+    is_inspection_required: true,
+    estimated_price: 0,
+    remark:
+      mapped.remark ||
+      `Lead source: Website · Category: ${category} · Status: Inspection Requested`,
+  };
+
+  const result = await crmApi.upsertWebsiteInquiry(payload);
+  if (result.success) {
+    if (result.data?.id) {
+      setStoredInquiryId(result.data.id);
+    }
+    const msg =
+      category === 'society-free'
+        ? 'Free inspection booked! We will contact you on WhatsApp shortly.'
+        : category === 'society-paid'
+          ? 'Paid inspection request received! We will contact you on WhatsApp shortly.'
+          : 'Inspection & quotation request received! We will contact you on WhatsApp shortly.';
+    return { ok: true, message: msg, inquiryId: result.data?.id };
+  }
+
+  return {
+    ok: false,
+    error: result.error || 'Failed to submit inspection request',
+  };
+}
+
 /** Classic quote/inquiry lead — POST /api/inquiries/ (not a website booking). */
 export async function submitHomeInquiryForm(
   formData: Record<string, unknown>,
@@ -341,12 +458,12 @@ export async function submitHomeBookingForm(
   }
 
   const premiseType = home.premiseType;
-  if (premiseType !== 'residential' && premiseType !== 'commercial') {
-    return { ok: false, error: 'Please select Residential or Commercial' };
+  // Confirm Booking is residential-only. Society / Commercial use inspection lead submit.
+  if (premiseType !== 'residential') {
+    return { ok: false, error: 'Please select Residential for Confirm Booking' };
   }
 
-  const isInspection =
-    premiseType === 'commercial' || pestTypes.includes('hotel-commercial');
+  const isInspection = pestTypes.includes('hotel-commercial');
 
   const serviceType = home.serviceType;
   const treatmentQuality = home.treatmentQuality;
@@ -388,8 +505,7 @@ export async function submitHomeBookingForm(
 
   const city = resolveCityFromAddress(address, tracking?.defaultCity);
   const bhkSize = areaKeyForForm(premiseType, home.premiseSize);
-  const propertyType =
-    premiseType === 'commercial' ? 'Commercial Space' : 'Home / Flat';
+  const propertyType = 'Home / Flat';
   const bookingType = planType === 'amc' ? 'amc' : 'one_time';
   const qualityLabel = needsTreatmentQuality
     ? quality === 'premium'
@@ -411,7 +527,7 @@ export async function submitHomeBookingForm(
     service_type: serviceLabel,
     package_tier: quote.packageTier,
     property_type: propertyType,
-    bhk_size: bhkSize || (premiseType === 'commercial' ? 'Commercial' : ''),
+    bhk_size: bhkSize || '',
     address,
     full_address: address,
     city,
@@ -425,9 +541,7 @@ export async function submitHomeBookingForm(
     booking_time: bookingTime24,
     timezone: 'Asia/Kolkata',
     time_slot: preferredTime,
-    notes: `Website booking · ${
-      premiseType === 'commercial' ? 'Commercial' : 'Home (Residential)'
-    } · ${bhkSize || '—'} · ${qualityLabel} · ${planLabel} · ${preferredTime} · ${priceNote}${leadNote}`,
+    notes: `Website booking · Home (Residential) · ${bhkSize || '—'} · ${qualityLabel} · ${planLabel} · ${preferredTime} · ${priceNote}${leadNote}`,
     otp_verification_token: token,
     booking_session_id: getBookingSessionId(),
     inquiry_id: getStoredInquiryId(),

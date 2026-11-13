@@ -2,6 +2,9 @@
 
 import { getDefaultPreferredSchedule } from '@/utils/clockTime';
 
+export type BookingCategory = 'residential' | 'society' | 'commercial' | '';
+export type SocietyProgram = 'free' | 'paid' | '';
+
 export interface HomeFormData {
   pestTypes: string[];
   phone: string;
@@ -9,7 +12,15 @@ export interface HomeFormData {
   streetAddress: string;
   name: string;
   /** Defaults to Residential on the home booking form */
-  premiseType?: 'residential' | 'commercial' | '';
+  premiseType?: BookingCategory;
+  /** Society tab: FREE Programme vs Paid Services */
+  societyProgram?: SocietyProgram;
+  /** Society / commercial property or business name */
+  propertyName?: string;
+  /** Commercial property type chip (restaurant, hotel, …) */
+  commercialPropertyType?: string;
+  /** Commercial approx area in sq ft */
+  approxSqFt?: string;
   premiseSize?: string;
   serviceType?: 'amc' | 'one-time' | '';
   /** Standard (gel+spray) vs Premium (no-smell) — maps to booking package_tier */
@@ -32,6 +43,10 @@ export function createEmptyHomeFormData(): HomeFormData {
     streetAddress: '',
     name: '',
     premiseType: 'residential',
+    societyProgram: 'free',
+    propertyName: '',
+    commercialPropertyType: '',
+    approxSqFt: '',
     premiseSize: '',
     serviceType: '',
     treatmentQuality: '',
@@ -49,6 +64,10 @@ export const EMPTY_HOME_FORM_DATA: HomeFormData = {
   streetAddress: '',
   name: '',
   premiseType: 'residential',
+  societyProgram: 'free',
+  propertyName: '',
+  commercialPropertyType: '',
+  approxSqFt: '',
   premiseSize: '',
   serviceType: '',
   treatmentQuality: '',

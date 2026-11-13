@@ -9,11 +9,16 @@ import {
 } from '@/utils/formStorage';
 import {
   submitHomeBookingForm,
+  submitInspectionLeadForm,
   sendHomeBookingOtp,
   verifyHomeBookingOtp,
   silentUpsertWebsiteInquiry,
   isValidBookingMobile,
 } from '@/services/formSubmit';
+import {
+  SocietyBookingPanel,
+  CommercialBookingPanel,
+} from '@/components/BookingInspectionPanels';
 import { personNameValidationError, sanitizePersonNameInput } from '@/utils/personName';
 import { customerBookingApi } from '@/services/customerBookingApi';
 import { rotateBookingSession } from '@/utils/bookingSession';
@@ -142,7 +147,7 @@ export default function HomeQuoteForm({
       calculateCatalogQuotePrice({
         rates,
         pestTypes: data.pestTypes,
-        premiseType: data.premiseType,
+        premiseType: data.premiseType === 'commercial' ? 'commercial' : 'residential',
         premiseSize: data.premiseSize,
         serviceType: data.serviceType,
         treatmentQuality: data.treatmentQuality,
@@ -163,14 +168,17 @@ export default function HomeQuoteForm({
           setCatalogError('');
           setFormData((prev) => ({
             ...prev,
-            estimatedPrice: calculateCatalogQuotePrice({
-              rates: res.data!.results,
-              pestTypes: prev.pestTypes,
-              premiseType: prev.premiseType,
-              premiseSize: prev.premiseSize,
-              serviceType: prev.serviceType,
-              treatmentQuality: prev.treatmentQuality,
-            }).offerPrice,
+            estimatedPrice:
+              prev.premiseType === 'residential'
+                ? calculateCatalogQuotePrice({
+                    rates: res.data!.results,
+                    pestTypes: prev.pestTypes,
+                    premiseType: 'residential',
+                    premiseSize: prev.premiseSize,
+                    serviceType: prev.serviceType,
+                    treatmentQuality: prev.treatmentQuality,
+                  }).offerPrice
+                : 0,
           }));
         } else {
           setCatalogError(res.error || 'Could not load live prices');
@@ -257,6 +265,10 @@ export default function HomeQuoteForm({
         data.name,
         data.streetAddress || data.address,
         data.premiseType,
+        data.societyProgram,
+        data.propertyName,
+        data.commercialPropertyType,
+        data.approxSqFt,
         data.premiseSize,
         data.treatmentQuality,
         data.serviceType,
@@ -319,8 +331,12 @@ export default function HomeQuoteForm({
     return () => window.clearTimeout(timer);
   }, [formData, queueSilentInquiry]);
 
+  const isSocietyTab = formData.premiseType === 'society';
+  const isCommercialTab = formData.premiseType === 'commercial';
+  const isInspectionLeadTab = isSocietyTab || isCommercialTab;
+  /** Legacy hotel pest slug only — commercial tab is now an inspection lead, not priced booking. */
   const isInspectionQuote =
-    formData.premiseType === 'commercial' || formData.pestTypes.includes('hotel-commercial');
+    isInspectionLeadTab || formData.pestTypes.includes('hotel-commercial');
   const isOtherPremiseSize = formData.premiseSize === 'other';
   const residentialBooking = formData.premiseType === 'residential' && !isInspectionQuote;
   const amcAvailable = amcAvailableForPests(formData.pestTypes);
@@ -351,11 +367,7 @@ export default function HomeQuoteForm({
     const newErrors: Record<string, string> = {};
 
     if (!formData.premiseType) {
-      newErrors.premiseType = 'Please select Residential or Commercial';
-    }
-
-    if (formData.pestTypes.length === 0) {
-      newErrors.pestTypes = 'Please select at least one pest type';
+      newErrors.premiseType = 'Please select Residential, Society or Commercial';
     }
 
     if (!formData.phone) {
@@ -367,6 +379,40 @@ export default function HomeQuoteForm({
     {
       const nameErr = personNameValidationError(formData.name, { required: true });
       if (nameErr) newErrors.name = nameErr;
+    }
+
+    if (isInspectionLeadTab) {
+      const propertyName = (formData.propertyName || '').trim();
+      if (propertyName.length < 2) {
+        newErrors.propertyName = isCommercialTab
+          ? 'Please enter business / property name'
+          : 'Please enter society name';
+      }
+
+      const area = (formData.streetAddress || formData.address || '').trim();
+      if (area.length < 2) {
+        newErrors.streetAddress = 'Please enter area / pincode';
+      }
+
+      if (isSocietyTab && formData.societyProgram === 'paid' && formData.pestTypes.length === 0) {
+        newErrors.pestTypes = 'Please select at least one paid service';
+      }
+
+      if (isCommercialTab) {
+        if (!formData.commercialPropertyType) {
+          newErrors.commercialPropertyType = 'Please select a property type';
+        }
+        if (formData.pestTypes.length === 0) {
+          newErrors.pestTypes = 'Please select at least one pest type';
+        }
+      }
+
+      setErrors(newErrors);
+      return Object.keys(newErrors).length === 0;
+    }
+
+    if (formData.pestTypes.length === 0) {
+      newErrors.pestTypes = 'Please select at least one pest type';
     }
 
     const address = (formData.streetAddress || formData.address || '').trim();
@@ -452,7 +498,7 @@ export default function HomeQuoteForm({
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (formData.premiseSize === 'other') {
+    if (!isInspectionLeadTab && formData.premiseSize === 'other') {
       setOtherSizeModalOpen(true);
       setErrors((prev) => ({
         ...prev,
@@ -467,6 +513,36 @@ export default function HomeQuoteForm({
     setSubmitMessage('');
 
     try {
+      if (isInspectionLeadTab) {
+        const result = await submitInspectionLeadForm(
+          formData as unknown as Record<string, unknown>,
+          {
+            leadSource: leadSource || 'Website Booking Form',
+            defaultCity,
+            defaultState,
+          },
+        );
+        if (result.ok) {
+          clearFormData();
+          setErrors({});
+          rotateBookingSession();
+          lastInquiryFingerprintRef.current = '';
+          navigate(
+            `${thankYouPath}?inspection=1&category=${encodeURIComponent(
+              formData.premiseType === 'society'
+                ? formData.societyProgram === 'paid'
+                  ? 'society-paid'
+                  : 'society-free'
+                : 'commercial',
+            )}`,
+            { replace: true },
+          );
+          return;
+        }
+        setSubmitMessage(result.error || 'Failed to submit inspection request.');
+        return;
+      }
+
       await startOtpFlow();
     } finally {
       setIsSubmitting(false);
@@ -562,7 +638,7 @@ export default function HomeQuoteForm({
       );
       if (!showTreatmentQualityForPests(pests)) setInfoModal(null);
     }
-    if (field === 'premiseType' && value === 'commercial') {
+    if (field === 'premiseType' && (value === 'commercial' || value === 'society')) {
       setInfoModal(null);
     }
 
@@ -608,14 +684,59 @@ export default function HomeQuoteForm({
         nextData.treatmentQuality = '';
       }
 
-      // Commercial / inspection: clear residential-only selections.
-      if (nextData.premiseType === 'commercial') {
+      // Society / Commercial inspection: clear residential-only selections.
+      if (nextData.premiseType === 'commercial' || nextData.premiseType === 'society') {
         nextData.treatmentQuality = '';
         nextData.serviceType = '';
         nextData.premiseSize = '';
+        nextData.preferredDate = '';
+        nextData.preferredTime = '';
+        nextData.estimatedPrice = 0;
       }
 
-      nextData.estimatedPrice = priceFromCatalog(nextData).offerPrice;
+      if (field === 'premiseType' && value === 'society') {
+        nextData.societyProgram = nextData.societyProgram || 'free';
+        if (nextData.societyProgram === 'free') {
+          nextData.pestTypes = ['cockroach-ants', 'rodent'];
+        } else if (
+          !nextData.pestTypes.length ||
+          nextData.pestTypes.every((p) => p === 'cockroach-ants' || p === 'rodent')
+        ) {
+          nextData.pestTypes = [];
+        }
+      }
+
+      if (field === 'societyProgram') {
+        if (value === 'free') {
+          nextData.pestTypes = ['cockroach-ants', 'rodent'];
+        } else if (value === 'paid') {
+          nextData.pestTypes = nextData.pestTypes.filter(
+            (p) => !['cockroach-ants', 'rodent'].includes(p),
+          );
+        }
+      }
+
+      if (field === 'premiseType' && value === 'commercial') {
+        nextData.pestTypes = [];
+        nextData.commercialPropertyType = nextData.commercialPropertyType || '';
+      }
+
+      if (field === 'premiseType' && value === 'residential') {
+        if (!nextData.pestTypes.length) {
+          nextData.pestTypes = ['cockroach-ants'];
+        }
+        if (!nextData.preferredDate || !nextData.preferredTime) {
+          const schedule = createEmptyHomeFormData();
+          nextData.preferredDate = nextData.preferredDate || schedule.preferredDate;
+          nextData.preferredTime = nextData.preferredTime || schedule.preferredTime;
+        }
+      }
+
+      if (nextData.premiseType === 'residential') {
+        nextData.estimatedPrice = priceFromCatalog(nextData).offerPrice;
+      } else {
+        nextData.estimatedPrice = 0;
+      }
       return nextData;
     });
 
@@ -707,7 +828,7 @@ export default function HomeQuoteForm({
 
         <form onSubmit={handleSubmit} className="booking-form-fields pc-form">
           <div className="booking-form-body pc-body">
-            <div className="pc-seg" role="radiogroup" aria-label="Service category">
+            <div className="pc-seg pc-seg-3" role="radiogroup" aria-label="Service category">
               <button
                 type="button"
                 className={`pc-seg-btn${formData.premiseType === 'residential' ? ' is-on' : ''}`}
@@ -718,6 +839,17 @@ export default function HomeQuoteForm({
                 <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 10.5 12 4l8 6.5V20a1 1 0 0 1-1 1h-5.2v-6.2H10.2V21H5a1 1 0 0 1-1-1v-9.5Z" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinejoin="round" /></svg>
                 Residential
                 {formData.premiseType === 'residential' ? <Tick /> : null}
+              </button>
+              <button
+                type="button"
+                className={`pc-seg-btn${formData.premiseType === 'society' ? ' is-on' : ''}`}
+                role="radio"
+                aria-checked={formData.premiseType === 'society'}
+                onClick={() => handleChange('premiseType', 'society')}
+              >
+                <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 20V8l4-3 4 3v12M12 8l4-3 4 3v12M4 20h16M7 12h.01M7 15h.01M15 12h.01M15 15h.01" fill="none" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round" /></svg>
+                Society – FREE ₹0
+                {formData.premiseType === 'society' ? <Tick /> : null}
               </button>
               <button
                 type="button"
@@ -733,6 +865,33 @@ export default function HomeQuoteForm({
             </div>
             {errors.premiseType ? <p className="pc-error">{errors.premiseType}</p> : null}
 
+            {isSocietyTab ? (
+              <SocietyBookingPanel
+                formData={formData}
+                errors={errors}
+                onChange={handleChange}
+                onQueueInquiry={() => {
+                  const latest = formDataRef.current;
+                  if (isValidBookingMobile(latest.phone)) queueSilentInquiry(latest);
+                }}
+                onSwitchToPaid={() => handleChange('societyProgram', 'paid')}
+              />
+            ) : null}
+
+            {isCommercialTab ? (
+              <CommercialBookingPanel
+                formData={formData}
+                errors={errors}
+                onChange={handleChange}
+                onQueueInquiry={() => {
+                  const latest = formDataRef.current;
+                  if (isValidBookingMobile(latest.phone)) queueSilentInquiry(latest);
+                }}
+              />
+            ) : null}
+
+            {residentialBooking ? (
+              <>
             <p className="pc-label">What pest problem? <span className="pc-req">*</span></p>
             <div className="pc-pest-grid" role="group" aria-label="What pest problem?">
               {PEST_CARDS.map((pest) => {
@@ -784,7 +943,7 @@ export default function HomeQuoteForm({
                 onClick={() => setHomeKind('villa')}
               >
                 <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3.5 11 12 4l8.5 7M6 10.5V20h12v-9.5M10 20v-5h4v5" fill="none" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round" /></svg>
-                Villa
+                Villa/Bungalow
                 {homeKind === 'villa' ? <Tick /> : null}
               </button>
             </div>
@@ -1027,37 +1186,51 @@ export default function HomeQuoteForm({
             {errors.name || errors.phone ? (
               <p className="pc-error">{errors.name || errors.phone}</p>
             ) : null}
+              </>
+            ) : null}
           </div>
 
           <div className="booking-form-cta pc-cta">
-            <div className="pc-price">
-              <div className="pc-price-copy">
-                <span>{priceSummaryLabel}</span>
-                {showExclGstLabel ? <b>Price (Excluding GST)</b> : null}
-              </div>
-              <div className="pc-price-amounts">
-                {catalogLoading ? (
-                  <strong className="pc-price-now">…</strong>
-                ) : isInspectionQuote ? (
-                  <strong className="pc-price-now">Free visit</strong>
-                ) : showPromoPricing ? (
-                  <>
-                    <span className="pc-price-was">{formatInrWhole(listPrice)}</span>
-                    <span className="pc-price-off">{discountPercent}% OFF</span>
+            {residentialBooking ? (
+              <div className="pc-price">
+                <div className="pc-price-copy">
+                  <span>{priceSummaryLabel}</span>
+                  {showExclGstLabel ? <b>Price (Excluding GST)</b> : null}
+                </div>
+                <div className="pc-price-amounts">
+                  {catalogLoading ? (
+                    <strong className="pc-price-now">…</strong>
+                  ) : showPromoPricing ? (
+                    <>
+                      <span className="pc-price-was">{formatInrWhole(listPrice)}</span>
+                      <span className="pc-price-off">{discountPercent}% OFF</span>
+                      <strong className="pc-price-now">{formatInrWhole(offerPrice)}</strong>
+                    </>
+                  ) : selectionsComplete && !pricePending && offerPrice > 0 ? (
                     <strong className="pc-price-now">{formatInrWhole(offerPrice)}</strong>
-                  </>
-                ) : selectionsComplete && !pricePending && offerPrice > 0 ? (
-                  <strong className="pc-price-now">{formatInrWhole(offerPrice)}</strong>
-                ) : selectionsComplete && (pricePending || isOtherPremiseSize) ? (
-                  <strong className="pc-price-now">On request</strong>
-                ) : (
-                  <strong className="pc-price-now">₹0</strong>
-                )}
+                  ) : selectionsComplete && (pricePending || isOtherPremiseSize) ? (
+                    <strong className="pc-price-now">On request</strong>
+                  ) : (
+                    <strong className="pc-price-now">₹0</strong>
+                  )}
+                </div>
               </div>
-            </div>
+            ) : null}
 
             <button type="submit" disabled={isSubmitting || otpSending} className="pc-confirm">
-              {isSubmitting || otpSending ? 'Sending OTP…' : isOtherPremiseSize ? 'Call / WhatsApp for Quote →' : 'Confirm Booking →'}
+              {isSubmitting || otpSending
+                ? isInspectionLeadTab
+                  ? 'Submitting…'
+                  : 'Sending OTP…'
+                : isSocietyTab
+                  ? formData.societyProgram === 'paid'
+                    ? 'Request Paid Inspection →'
+                    : 'Book Free Inspection →'
+                  : isCommercialTab
+                    ? 'Request Free Inspection →'
+                    : isOtherPremiseSize
+                      ? 'Call / WhatsApp for Quote →'
+                      : 'Confirm Booking →'}
             </button>
 
             <section className="pc-deep" aria-label="Deep Cleaning Services">

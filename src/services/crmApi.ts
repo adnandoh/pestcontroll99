@@ -14,6 +14,8 @@ export interface InquiryData {
   estimated_price?: number;
   is_inspection_required?: boolean;
   service_frequency?: string;
+  /** Website lead status — inspection forms send "Inspection Requested" */
+  status?: string;
   /** Stored as website-lead remark in CRM when provided */
   remark?: string;
   booking_session_id?: string;
@@ -258,6 +260,10 @@ class CRMApiService {
       pestTypes?: string[];
       service?: string;
       premiseType?: string;
+      societyProgram?: string;
+      propertyName?: string;
+      commercialPropertyType?: string;
+      approxSqFt?: string;
       premiseSize?: string;
       estimatedPrice?: number;
       serviceType?: string;
@@ -285,6 +291,11 @@ class CRMApiService {
     const serviceFrequency = forcedOneTime ? 'one-time' : formData.serviceType || 'one-time';
     const address = formData.streetAddress || formData.address || '';
     const city = this.resolveCity(address, tracking?.defaultCity);
+    const category = this.resolveLeadCategory(formData);
+    const isInspectionLead =
+      category === 'commercial' ||
+      category === 'society-free' ||
+      category === 'society-paid';
 
     const inquiry: InquiryData = {
       name: formData.name || '',
@@ -295,14 +306,22 @@ class CRMApiService {
       service_interest:
         formType === 'quote' && formData.service
           ? this.formatServiceType(formData.service)
-          : this.formatPestTypes(formData.pestTypes || []),
+          : category === 'society-free'
+            ? 'FREE Society Programme — General Pest + Rodent'
+            : this.formatPestTypes(formData.pestTypes || []),
       message: this.generateMessage(formData, formType, serviceFrequency, tracking?.leadSource),
-      premise_type: formData.premiseType || 'residential',
-      premise_size: formData.premiseSize || '',
-      pest_problems: (formData.pestTypes || []).join(', '),
-      estimated_price: formData.estimatedPrice || 0,
-      is_inspection_required:
-        formData.premiseType === 'commercial' || formData.estimatedPrice === 0,
+      premise_type: category,
+      premise_size:
+        formData.premiseSize ||
+        (formData.approxSqFt ? `${formData.approxSqFt} sqft` : '') ||
+        formData.commercialPropertyType ||
+        '',
+      pest_problems:
+        category === 'society-free'
+          ? 'cockroach-ants, rodent'
+          : (formData.pestTypes || []).join(', '),
+      estimated_price: isInspectionLead ? 0 : formData.estimatedPrice || 0,
+      is_inspection_required: isInspectionLead || formData.estimatedPrice === 0,
       service_frequency: serviceFrequency,
     };
 
@@ -311,6 +330,19 @@ class CRMApiService {
     }
 
     return inquiry;
+  }
+
+  /** CRM category: residential | society-free | society-paid | commercial */
+  resolveLeadCategory(formData: {
+    premiseType?: string;
+    societyProgram?: string;
+  }): string {
+    const premise = (formData.premiseType || '').toLowerCase();
+    if (premise === 'society') {
+      return formData.societyProgram === 'paid' ? 'society-paid' : 'society-free';
+    }
+    if (premise === 'commercial') return 'commercial';
+    return 'residential';
   }
 
   private resolveCity(address: string, defaultCity?: string): string {
@@ -401,6 +433,10 @@ class CRMApiService {
       pestTypes?: string[];
       service?: string;
       premiseType?: string;
+      societyProgram?: string;
+      propertyName?: string;
+      commercialPropertyType?: string;
+      approxSqFt?: string;
       premiseSize?: string;
       estimatedPrice?: number;
       treatmentQuality?: string;
@@ -413,6 +449,7 @@ class CRMApiService {
     leadSource?: string,
   ): string {
     const parts: string[] = [];
+    const category = this.resolveLeadCategory(formData);
 
     if (leadSource) {
       parts.push(`Lead source: ${leadSource}.`);
@@ -424,19 +461,43 @@ class CRMApiService {
         ? 'home page'
         : 'quote page';
     parts.push(`Quote request from website ${pageLabel}.`);
+    parts.push(`Category: ${category}.`);
+    parts.push('Source: Website.');
 
-    if (formData.pestTypes && formData.pestTypes.length > 0) {
+    if (formData.propertyName) {
+      const label =
+        category === 'commercial'
+          ? 'Business / property'
+          : category.startsWith('society')
+            ? 'Society'
+            : 'Property';
+      parts.push(`${label}: ${formData.propertyName}.`);
+    }
+
+    if (formData.commercialPropertyType) {
+      parts.push(`Commercial property type: ${formData.commercialPropertyType}.`);
+    }
+
+    if (formData.approxSqFt) {
+      parts.push(`Approx. area: ${formData.approxSqFt} sq. ft.`);
+    }
+
+    if (category === 'society-free') {
+      parts.push(
+        'FREE Society Programme — General Pest Control (Cockroach & Ants) + Rodent Control for approved common areas. 4 services / 12 months / ₹0 society cost.',
+      );
+    } else if (formData.pestTypes && formData.pestTypes.length > 0) {
       parts.push(`Pest problems: ${formData.pestTypes.join(', ')}.`);
     } else if (formData.service) {
       parts.push(`Service: ${formData.service}.`);
     }
 
-    if (serviceFrequency) {
+    if (serviceFrequency && category === 'residential') {
       const label = serviceFrequency === 'amc' ? 'AMC 3 Services' : 'One-Time Service';
       parts.push(`Service type: ${label}.`);
     }
 
-    if (formData.treatmentQuality) {
+    if (formData.treatmentQuality && category === 'residential') {
       const quality =
         formData.treatmentQuality === 'premium'
           ? 'Premium (no-smell treatment)'
@@ -444,10 +505,8 @@ class CRMApiService {
       parts.push(`Treatment quality: ${quality}.`);
     }
 
-    if (formData.premiseType) {
-      parts.push(
-        `Premise: ${formData.premiseType}${formData.premiseSize ? ` (${formData.premiseSize.toUpperCase()})` : ''}.`,
-      );
+    if (formData.premiseType === 'residential' && formData.premiseSize) {
+      parts.push(`Premise: residential (${formData.premiseSize.toUpperCase()}).`);
     }
 
     if (formData.preferredDate || formData.preferredTime) {
@@ -461,10 +520,18 @@ class CRMApiService {
 
     const address = formData.streetAddress || formData.address;
     if (address) {
-      parts.push(`Property address: ${address}.`);
+      parts.push(
+        category.startsWith('society') || category === 'commercial'
+          ? `Area / pincode: ${address}.`
+          : `Property address: ${address}.`,
+      );
     }
 
-    parts.push('Customer requested same-day quotation.');
+    if (category === 'society-free' || category === 'society-paid' || category === 'commercial') {
+      parts.push('Customer requested free inspection / quotation.');
+    } else {
+      parts.push('Customer requested same-day quotation.');
+    }
 
     return parts.join(' ');
   }

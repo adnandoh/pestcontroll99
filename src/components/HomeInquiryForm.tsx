@@ -71,7 +71,7 @@ export default function HomeInquiryForm({
       calculateCatalogQuotePrice({
         rates,
         pestTypes: data.pestTypes,
-        premiseType: data.premiseType,
+        premiseType: data.premiseType === 'commercial' ? 'commercial' : 'residential',
         premiseSize: data.premiseSize,
         serviceType: data.serviceType,
         treatmentQuality: data.treatmentQuality,
@@ -96,7 +96,8 @@ export default function HomeInquiryForm({
             estimatedPrice: calculateCatalogQuotePrice({
               rates: res.data!.results,
               pestTypes: prev.pestTypes,
-              premiseType: prev.premiseType,
+              premiseType:
+                prev.premiseType === 'commercial' ? 'commercial' : 'residential',
               premiseSize: prev.premiseSize,
               serviceType: prev.serviceType,
               treatmentQuality: prev.treatmentQuality,

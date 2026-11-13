@@ -626,3 +626,194 @@
   text-align: center;
   white-space: nowrap;
 }
+
+/* Three booking category tabs */
+.pc-seg.pc-seg-3 {
+  grid-template-columns: 1fr 1.35fr 1fr;
+  gap: 5px;
+}
+
+.pc-seg.pc-seg-3 .pc-seg-btn {
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 2px;
+  min-height: 46px;
+  padding: 5px 14px 5px 4px;
+  font-size: 10px;
+  line-height: 1.15;
+  text-align: center;
+}
+
+.pc-seg.pc-seg-3 .pc-seg-btn svg {
+  width: 16px;
+  height: 16px;
+}
+
+/* Society / Commercial inspection panels */
+.pc-society,
+.pc-commercial,
+.pc-inspect-fields {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.pc-society-banner {
+  margin: 2px 0;
+  padding: 8px 10px;
+  border-radius: 10px;
+  background: #e8f8ef;
+  border: 1px solid #b7e4c7;
+  color: var(--pc-navy);
+}
+
+.pc-society-banner strong {
+  display: block;
+  font-size: 12px;
+  font-weight: 800;
+  line-height: 1.25;
+}
+
+.pc-society-banner p {
+  margin: 4px 0 0;
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: 0.02em;
+  color: var(--pc-green);
+}
+
+.pc-society-free-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 6px;
+  min-height: 72px;
+  height: 72px;
+}
+
+.pc-society-free-grid .pc-pest {
+  cursor: default;
+}
+
+.pc-pest-grid-tall {
+  height: auto;
+  min-height: 96px;
+  grid-template-rows: none;
+}
+
+.pc-pest-grid-tall .pc-pest {
+  min-height: 64px;
+}
+
+.pc-society-paid-cta {
+  margin-top: 4px;
+  padding: 8px 10px;
+  border-radius: 10px;
+  border: 1px solid var(--pc-line);
+  background: #f7fafc;
+}
+
+.pc-society-paid-cta strong {
+  display: block;
+  font-size: 12px;
+  font-weight: 800;
+  color: var(--pc-navy);
+}
+
+.pc-society-paid-cta p {
+  margin: 2px 0 6px;
+  font-size: 10px;
+  color: #4e6284;
+  font-weight: 650;
+}
+
+.pc-outline-btn {
+  width: 100%;
+  min-height: 34px;
+  border-radius: 9px;
+  border: 1.5px solid var(--pc-green);
+  background: #fff;
+  color: var(--pc-green);
+  font-size: 12px;
+  font-weight: 800;
+  cursor: pointer;
+}
+
+.pc-outline-btn:hover {
+  background: var(--pc-soft);
+}
+
+.pc-society-note {
+  margin: 2px 0 0;
+  font-size: 9.5px;
+  line-height: 1.35;
+  color: #5a6d88;
+  font-weight: 600;
+}
+
+.pc-prop-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 5px;
+}
+
+.pc-prop-btn {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  min-height: 34px;
+  padding: 6px 16px 6px 8px;
+  border: 1px solid var(--pc-line);
+  border-radius: 9px;
+  background: #fff;
+  color: #4e6284;
+  font-size: 11px;
+  font-weight: 800;
+  text-align: center;
+  cursor: pointer;
+}
+
+.pc-prop-btn.is-on {
+  border-color: var(--pc-green);
+  background: var(--pc-soft);
+  color: var(--pc-navy);
+  box-shadow: inset 0 0 0 0.5px var(--pc-green);
+}
+
+.pc-prop-btn .pc-tick {
+  position: absolute;
+  top: 4px;
+  right: 5px;
+}
+
+.pc-inspect-fields .pc-field {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  min-height: 38px;
+  padding: 0 10px;
+}
+
+.pc-inspect-fields .pc-field svg {
+  width: 16px;
+  height: 16px;
+  flex: 0 0 auto;
+  color: #5a6d88;
+}
+
+.pc-inspect-fields .pc-field input {
+  flex: 1 1 auto;
+  border: 0;
+  outline: none;
+  background: transparent;
+  font-size: 13px;
+  font-weight: 650;
+  color: var(--pc-navy);
+  min-width: 0;
+}
+
+.pc-inspect-fields .pc-field.is-invalid {
+  border-color: #d12626;
+}

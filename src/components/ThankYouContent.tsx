@@ -33,6 +33,8 @@ export default function ThankYouContent({
   const bookingCode = searchParams.get('code') || '';
   const bookingId = searchParams.get('id') || '';
   const pricePending = searchParams.get('pending') === '1';
+  const isInspection = searchParams.get('inspection') === '1';
+  const inspectionCategory = searchParams.get('category') || '';
   const isBooking = Boolean(bookingCode || bookingId);
 
   useLayoutEffect(() => {
@@ -69,6 +71,10 @@ export default function ThankYouContent({
               <>
                 Booking Confirmed. <span className="text-green-600">Thank You!</span>
               </>
+            ) : isInspection ? (
+              <>
+                Inspection Requested. <span className="text-green-600">Thank You!</span>
+              </>
             ) : (
               <>
                 Thank You! <span className="text-green-600">Request Received.</span>
@@ -90,6 +96,14 @@ export default function ThankYouContent({
                   : 'Our team will confirm your schedule shortly. A technician will be assigned from the partner app.'}
               </p>
             </div>
+          ) : isInspection ? (
+            <p className="text-xl text-gray-600 mb-10 leading-relaxed max-w-xl mx-auto">
+              {inspectionCategory === 'society-free'
+                ? 'Your free society inspection request is in. We will confirm on WhatsApp shortly.'
+                : inspectionCategory === 'society-paid'
+                  ? 'Your paid society inspection request is in. We will confirm on WhatsApp shortly.'
+                  : 'Your commercial inspection & quotation request is in. We will confirm on WhatsApp shortly.'}
+            </p>
           ) : (
             <p className="text-xl text-gray-600 mb-10 leading-relaxed max-w-xl mx-auto">
               Our team will contact you shortly to provide your personalized quote and discuss the next steps.
@@ -111,7 +125,9 @@ export default function ThankYouContent({
                 href={whatsAppUrl(
                   isBooking
                     ? `Hi, I just booked online${bookingCode ? ` (${bookingCode})` : ''}.`
-                    : 'Hi, I just submitted a quote request on your website.',
+                    : isInspection
+                      ? 'Hi, I just requested an inspection on your website.'
+                      : 'Hi, I just submitted a quote request on your website.',
                 )}
                 target="_blank"
                 rel="noopener noreferrer"
