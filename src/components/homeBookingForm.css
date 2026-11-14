@@ -629,7 +629,8 @@
 
 /* Three booking category tabs */
 .pc-seg.pc-seg-3 {
-  grid-template-columns: 1fr 1.35fr 1fr;
+  /* Residential a bit wider; Society / Commercial smaller */
+  grid-template-columns: 1.32fr 1fr 0.92fr;
   gap: 5px;
 }
 
